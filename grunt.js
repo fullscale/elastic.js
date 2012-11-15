@@ -1,0 +1,77 @@
+module.exports = function (grunt) {
+
+  // Project configuration.
+  grunt.initConfig({
+    pkg: '<json:package.json>',
+    meta: {
+      banner: '/*! <%= pkg.name %> - v<%= pkg.version %> - ' +
+        '<%= grunt.template.today("yyyy-mm-dd") %>\n' +
+        '<%= pkg.homepage ? "* " + pkg.homepage + "\n" : "" %>' +
+        '* Copyright (c) <%= grunt.template.today("yyyy") %> <%= pkg.author.name %>;' +
+        ' Licensed <%= _.pluck(pkg.licenses, "type").join(", ") %> */'
+    },
+    concat: {
+      dist: {
+        src: [
+          '<banner:meta.banner>',
+          'src/pre.js',
+          'src/util.js',
+          'src/facet.js',
+          'src/filter.js',
+          'src/index.js',
+          'src/query.js',
+          'src/search.js',
+          'src/utils.js',
+          'src/post.js'
+        ],
+        dest: 'dist/elastic.js'
+      }
+    },
+    min: {
+      dist: {
+        src: ['<banner:meta.banner>', '<config:concat.dist.dest>'],
+        dest: 'dist/elastic.min.js'
+      }
+    },
+    test: {
+      files: ['tests/**/*.js']
+    },
+    lint: {
+      files: ['grunt.js', '<config:concat.dist.dest>', 'tests/**/*.js']
+    },
+    watch: {
+      files: '<config:lint.files>',
+      tasks: 'lint test'
+    },
+    jshint: {
+      options: {
+        bitwise: true,
+        curly: true,
+        eqeqeq: true,
+        immed: true,
+        indent: 2,
+        latedef: true,
+        newcap: true,
+        noarg: true,
+        sub: true,
+        undef: true,
+        boss: true,
+        eqnull: true
+      },
+      globals: {
+        exports: true,
+        module: false,
+        ejs: true
+      }
+    },
+    uglify: {
+      codegen: {
+        ascii_only: true
+      }
+    }
+  });
+
+  // Default task.
+  grunt.registerTask('default', 'concat lint test min');
+
+};
