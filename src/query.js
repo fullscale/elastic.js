@@ -3,7 +3,7 @@
     A <code>TextQuery</code> is a type of <code>Query</code> that accepts a
     string of text, analyzes it, generates a query based on the
     <code>TextQuery</code> type.
-
+`
     @name ejs.TextQuery
 
     @desc
@@ -42,7 +42,7 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       boost: function (boost) {
-        if (typeof boost === 'undefined' || boost === null) {
+        if (boost == null) {
           return query.text[k].boost;
         }
 
@@ -58,7 +58,7 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       query: function (qstr) {
-        if (typeof qstr === 'undefined' || qstr === null) {
+        if (qstr == null) {
           return query.text[k].query;
         }
 
@@ -75,7 +75,7 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       type: function (type) {
-        if (typeof type === 'undefined' || type === null) {
+        if (type == null) {
           return query.text[k].type;
         }
 
@@ -94,7 +94,7 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       fuzziness: function (fuzz) {
-        if (typeof fuzz === 'undefined' || fuzz === null) {
+        if (fuzz == null) {
           return query.text[k].fuzziness;
         }
 
@@ -110,7 +110,7 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       prefixLength: function (l) {
-        if (typeof l === 'undefined' || l === null) {
+        if (l == null) {
           return query.text[k].prefix_length;
         }
 
@@ -126,7 +126,7 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       maxExpansions: function (e) {
-        if (typeof e === 'undefined' || e === null) {
+        if (e == null) {
           return query.text[k].max_expansions;
         }
 
@@ -142,7 +142,7 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       operator: function (op) {
-        if (typeof op === 'undefined' || op === null) {
+        if (op == null) {
           return query.text[k].operator;
         }
 
@@ -163,7 +163,7 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       slop: function (slop) {
-        if (typeof slop === 'undefined' || slop === null) {
+        if (slop == null) {
           return query.text[k].slop;
         }
 
@@ -179,7 +179,7 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       analyzer: function (analyzer) {
-        if (typeof analyzer === 'undefined' || analyzer === null) {
+        if (analyzer == null) {
           return query.text[k].analyzer;
         }
 
@@ -256,7 +256,7 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       boost: function (boost) {
-        if (typeof boost === 'undefined' || boost === null) {
+        if (boost == null) {
           return query.term[k].boost;
         }
 
@@ -327,8 +327,12 @@
              @returns {Object} returns <code>this</code> so that calls can be chained.
              */
       must: function (oQuery) {
-        if (typeof query.bool.must === 'undefined' || query.bool.must === null) {
+        if (query.bool.must == null) {
           query.bool.must = [];
+        }
+        
+        if (oQuery == null) {
+          return query.bool.must;
         }
 
         query.bool.must.push(oQuery.get());
@@ -343,10 +347,14 @@
              @returns {Object} returns <code>this</code> so that calls can be chained.
              */
       mustNot: function (oQuery) {
-        if (typeof query.bool.mustNot === 'undefined' || query.bool.mustNot === null) {
+        if (query.bool.mustNot == null) {
           query.bool.mustNot = [];
         }
 
+        if (oQuery == null) {
+          return query.bool.mustNot;
+        }
+        
         query.bool.mustNot.push(oQuery.get());
         return this;
       },
@@ -359,10 +367,14 @@
              @returns {Object} returns <code>this</code> so that calls can be chained.
              */
       should: function (oQuery) {
-        if (typeof query.bool.should === 'undefined' || query.bool.should === null) {
+        if (query.bool.should == null) {
           query.bool.should = [];
         }
 
+        if (oQuery == null) {
+          return query.bool.should;
+        }
+        
         query.bool.should.push(oQuery.get());
         return this;
       },
@@ -375,7 +387,7 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       boost: function (boost) {
-        if (typeof boost === 'undefined' || boost === null) {
+        if (boost == null) {
           return query.bool.boost;
         }
 
@@ -392,7 +404,7 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       disableCoord: function (trueFalse) {
-        if (typeof trueFalse === 'undefined' || trueFalse === null) {
+        if (trueFalse == null) {
           return query.bool.disable_coord;
         }
 
@@ -416,7 +428,7 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       minimumNumberShouldMatch: function (minMatch) {
-        if (typeof minMatch === 'undefined' || minMatch === null) {
+        if (minMatch == null) {
           return query.bool.minimum_number_should_match;
         }
 
@@ -497,6 +509,10 @@
             */
       defaultOperator: function (op) {
         setupExtra();
+        if (op == null) {
+          return query.field[f].default_operator;
+        }
+        
         op = op.toUpperCase();
         if (op === 'AND' || op === 'OR') {
           query.field[f].default_operator = op;
@@ -512,11 +528,11 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       analyzer: function (analyzer) {
-        if (typeof analyzer === 'undefined' || analyzer === null) {
+        setupExtra();
+        if (analyzer == null) {
           return query.field[f].analyzer;
         }
 
-        setupExtra();
         query.field[f].analyzer = analyzer;
         return this;
       },
@@ -530,11 +546,11 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       autoGeneratePhraseQueries: function (trueFalse) {
-        if (typeof trueFalse === 'undefined' || trueFalse === null) {
+        setupExtra();
+        if (trueFalse == null) {
           return query.field[f].auto_generate_phrase_queries;
         }
 
-        setupExtra();
         query.field[f].auto_generate_phrase_queries = trueFalse;
         return this;
       },
@@ -548,11 +564,11 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       allowLeadingWildcard: function (trueFalse) {
-        if (typeof trueFalse === 'undefined' || trueFalse === null) {
+        setupExtra();
+        if (trueFalse == null) {
           return query.field[f].allow_leading_wildcard;
         }
 
-        setupExtra();
         query.field[f].allow_leading_wildcard = trueFalse;
         return this;
       },
@@ -567,11 +583,11 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       lowercaseExpandedTerms: function (trueFalse) {
-        if (typeof trueFalse === 'undefined' || trueFalse === null) {
+        setupExtra();
+        if (trueFalse == null) {
           return query.field[f].lowercase_expanded_terms;
         }
 
-        setupExtra();
         query.field[f].lowercase_expanded_terms = trueFalse;
         return this;
       },
@@ -585,11 +601,11 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       enablePositionIncrements: function (trueFalse) {
-        if (typeof trueFalse === 'undefined' || trueFalse === null) {
+        setupExtra();
+        if (trueFalse == null) {
           return query.field[f].enable_position_increments;
         }
 
-        setupExtra();
         query.field[f].enable_position_increments = trueFalse;
         return this;
       },
@@ -602,11 +618,11 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       fuzzyMinSim: function (minSim) {
-        if (typeof minSim === 'undefined' || minSim === null) {
+        setupExtra();
+        if (minSim == null) {
           return query.field[f].fuzzy_min_sim;
         }
 
-        setupExtra();
         query.field[f].fuzzy_min_sim = minSim;
         return this;
       },
@@ -619,11 +635,11 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       boost: function (boost) {
-        if (typeof boost === 'undefined' || boost === null) {
+        setupExtra();
+        if (boost == null) {
           return query.field[f].boost;
         }
 
-        setupExtra();
         query.field[f].boost = boost;
         return this;
       },
@@ -636,11 +652,11 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       fuzzyPrefixLength: function (fuzzLen) {
-        if (typeof fuzzLen === 'undefined' || fuzzLen === null) {
+        setupExtra();
+        if (fuzzLen == null) {
           return query.field[f].fuzzy_prefix_length;
         }
 
-        setupExtra();
         query.field[f].fuzzy_prefix_length = fuzzLen;
         return this;
       },
@@ -654,11 +670,11 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       phraseSlop: function (slop) {
-        if (typeof slop === 'undefined' || slop === null) {
+        setupExtra();
+        if (slop == null) {
           return query.field[f].phrase_slop;
         }
 
-        setupExtra();
         query.field[f].phrase_slop = slop;
         return this;
       },
@@ -673,11 +689,11 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       analyzeWildcard: function (trueFalse) {
-        if (typeof trueFalse === 'undefined' || trueFalse === null) {
+        setupExtra();
+        if (trueFalse == null) {
           return query.field[f].analyze_wildcard;
         }
 
-        setupExtra();
         query.field[f].analyze_wildcard = trueFalse;
         return this;
       },
@@ -691,11 +707,11 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       minimumShouldMatch: function (minMatch) {
-        if (typeof minMatch === 'undefined' || minMatch === null) {
+        setupExtra();
+        if (minMatch == null) {
           return query.field[f].minimum_should_match;
         }
 
-        setupExtra();
         query.field[f].minimum_should_match = minMatch;
         return this;
       },
@@ -758,6 +774,10 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       add: function (subQuery) {
+        if (subQuery == null) {
+          return query.dis_max.queries;
+        }
+        
         if (typeof query.dis_max.queries !== "undefined") {
           query.dis_max.queries.push(subQuery.get());
         } else {
@@ -775,7 +795,7 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       boost: function (boost) {
-        if (typeof boost === 'undefined' || boost === null) {
+        if (boost == null) {
           return query.dis_max.boost;
         }
 
@@ -796,7 +816,7 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       tieBreaker: function (tieBreaker) {
-        if (typeof tieBreaker === 'undefined' || tieBreaker === null) {
+        if (tieBreaker == null) {
           return query.dis_max.tie_breaker;
         }
 
@@ -864,7 +884,7 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       query: function (queryStr) {
-        if (typeof queryStr === 'undefined' || queryStr === null) {
+        if (queryStr == null) {
           return query.query_string.query;
         }
 
@@ -880,6 +900,10 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       defaultField: function (fieldName) {
+        if (fieldName == null) {
+          return query.query_string.default_field;
+        }
+        
         query.query_string.default_field = fieldName;
         return this;
       },
@@ -896,6 +920,10 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       fields: function (fieldNames) {
+        if (fieldNames == null) {
+          return query.query_string.fields;
+        }
+        
         query.query_string.fields = fieldNames;
         return this;
       },
@@ -910,6 +938,10 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       useDisMax: function (trueFalse) {
+        if (trueFalse == null) {
+          return query.query_string.use_dis_max;
+        }
+        
         query.query_string.use_dis_max = trueFalse;
         return this;
       },
@@ -924,6 +956,10 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       defaultOperator: function (op) {
+        if (op == null) {
+          return query.query_string.default_operator;
+        }
+        
         op = op.toUpperCase();
         if (op === 'AND' || op === 'OR') {
           query.query_string.default_operator = op;
@@ -939,7 +975,7 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       analyzer: function (analyzer) {
-        if (typeof analyzer === 'undefined' || analyzer === null) {
+        if (analyzer == null) {
           return query.query_string.analyzer;
         }
 
@@ -956,7 +992,7 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       allowLeadingWildcard: function (trueFalse) {
-        if (typeof trueFalse === 'undefined' || trueFalse === null) {
+        if (trueFalse == null) {
           return query.query_string.allow_leading_wildcard;
         }
 
@@ -974,7 +1010,7 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       lowercaseExpandedTerms: function (trueFalse) {
-        if (typeof trueFalse === 'undefined' || trueFalse === null) {
+        if (trueFalse == null) {
           return query.query_string.lowercase_expanded_terms;
         }
 
@@ -991,7 +1027,7 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       enablePositionIncrements: function (trueFalse) {
-        if (typeof trueFalse === 'undefined' || trueFalse === null) {
+        if (trueFalse == null) {
           return query.query_string.enable_position_increments;
         }
 
@@ -1008,7 +1044,7 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       fuzzyPrefixLength: function (fuzzLen) {
-        if (typeof fuzzLen === 'undefined' || fuzzLen === null) {
+        if (fuzzLen == null) {
           return query.query_string.fuzzy_prefix_length;
         }
 
@@ -1024,7 +1060,7 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       fuzzyMinSim: function (minSim) {
-        if (typeof minSim === 'undefined' || minSim === null) {
+        if (minSim == null) {
           return query.query_string.fuzzy_min_sim;
         }
 
@@ -1041,7 +1077,7 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       phraseSlop: function (slop) {
-        if (typeof slop === 'undefined' || slop === null) {
+        if (slop == null) {
           return query.query_string.phrase_slop;
         }
 
@@ -1057,7 +1093,7 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       boost: function (boost) {
-        if (typeof boost === 'undefined' || boost === null) {
+        if (boost == null) {
           return query.query_string.boost;
         }
 
@@ -1075,7 +1111,7 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       analyzeWildcard: function (trueFalse) {
-        if (typeof trueFalse === 'undefined' || trueFalse === null) {
+        if (trueFalse == null) {
           return query.query_string.analyze_wildcard;
         }
 
@@ -1092,7 +1128,7 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       autoGeneratePhraseQueries: function (trueFalse) {
-        if (typeof trueFalse === 'undefined' || trueFalse === null) {
+        if (trueFalse == null) {
           return query.query_string.auto_generate_phrase_queries;
         }
 
@@ -1109,7 +1145,7 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       minimumShouldMatch: function (minMatch) {
-        if (typeof minMatch === 'undefined' || minMatch === null) {
+        if (minMatch == null) {
           return query.query_string.minimum_should_match;
         }
 
@@ -1130,7 +1166,7 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       tieBreaker: function (tieBreaker) {
-        if (typeof tieBreaker === 'undefined' || tieBreaker === null) {
+        if (tieBreaker == null) {
           return query.query_string.tie_breaker;
         }
 
@@ -1248,7 +1284,7 @@
       nested: {}
     };
 
-    if (typeof oQuery !== 'undefined' && oQuery !== null) {
+    if (oQuery != null) {
       query.nested.query = oQuery.get();
     }
 
@@ -1260,6 +1296,10 @@
              @returns {nestedQuery} Returns a reference to the current object.
              */
       path: function (path) {
+        if (path == null) {
+          return query.nested.path;
+        }
+        
         query.nested.path = path;
         return this;
       },
@@ -1272,6 +1312,10 @@
              @returns {nestedQuery} Returns a reference to the current object.
              */
       scoreMode: function (mode) {
+        if (mode == null) {
+          return query.nested.score_mode;
+        }
+        
         query.nested.score_mode = mode;
         return this;
       },
@@ -1282,6 +1326,10 @@
              @returns {nestedQuery} Returns a reference to the current object.
              */
       query: function (oQuery) {
+        if (oQuery == null) {
+          return query.nested.query;
+        }
+        
         query.nested.query = oQuery.get();
         return this;
       },
@@ -1347,6 +1395,10 @@
              @returns {Object} returns <code>this</code> so that calls can be chained.
              */
       query: function (oQuery) {
+        if (oQuery == null) {
+          return query.constant_score.query;
+        }
+        
         query.constant_score.query = oQuery.get();
         return this;
       },
@@ -1359,6 +1411,10 @@
              @returns {Object} returns <code>this</code> so that calls can be chained.
              */
       filter: function (oFilter) {
+        if (oFilter == null) {
+          return query.constant_score.filter;
+        }
+        
         query.constant_score.filter = oFilter.get();
         return this;
       },
@@ -1371,7 +1427,7 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       boost: function (boost) {
-        if (typeof boost === 'undefined' || boost === null) {
+        if (boost == null) {
           return query.constant_score.boost;
         }
 
@@ -1492,7 +1548,7 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       boost: function (boost) {
-        if (typeof boost === 'undefined' || boost === null) {
+        if (boost == null) {
           return query.span_term[k].boost;
         }
 
@@ -1558,8 +1614,7 @@
     },
 
     len = aSpanQuery.length,
-
-      i = 0;
+    i = 0;
 
     for (; i < len; i++) {
       query.span_near.clauses.push(aSpanQuery[i].get());
@@ -1575,6 +1630,10 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       addClause: function (spanQuery) {
+        if (spanQuery == null) {
+          return query.span_near.clauses;
+        }
+        
         query.span_near.clauses.push(spanQuery.get());
         return this;
       },
@@ -1587,6 +1646,10 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       clauses: function (aSpanQuery) {
+        if (aSpanQuery == null) {
+          return query.span_near.clauses;
+        }
+        
         query.span_near.clauses = [];
         var len = aSpanQuery.length,
           i = 0;
@@ -1604,6 +1667,10 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       slop: function (distance) {
+        if (distance == null) {
+          return query.span_near.slop;
+        }
+        
         query.span_near.slop = distance;
         return this;
       },
@@ -1616,6 +1683,10 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       inOrder: function (trueFalse) {
+        if (trueFalse == null) {
+          return query.span_near.in_order;
+        }
+        
         query.span_near.in_order = trueFalse;
         return this;
       },
@@ -1629,6 +1700,10 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       collectPayloads: function (trueFalse) {
+        if (trueFalse == null) {
+          return query.span_near.collect_payloads;
+        }
+        
         query.span_near.collect_payloads = trueFalse;
         return this;
       },
@@ -1691,6 +1766,10 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       include: function (spanQuery) {
+        if (spanQuery == null) {
+          return query.span_not.include;
+        }
+        
         query.span_not.include = spanQuery.get();
         return this;
       },
@@ -1703,6 +1782,10 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       exclude: function (spanQuery) {
+        if (spanQuery == null) {
+          return query.span_not.exclude;
+        }
+        
         query.span_not.exclude = spanQuery.get();
         return this;
       },
@@ -1759,8 +1842,7 @@
     },
 
     len = aSpanQuery.length,
-
-      i = 0;
+    i = 0;
 
     for (; i < len; i++) {
       query.span_or.clauses.push(aSpanQuery[i].get());
@@ -1776,6 +1858,10 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       addClause: function (spanQuery) {
+        if (spanQuery == null) {
+          return query.span_or.clauses;
+        }
+        
         query.span_or.clauses.push(spanQuery.get());
         return this;
       },
@@ -1788,6 +1874,10 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       clauses: function (aSpanQuery) {
+        if (aSpanQuery == null) {
+          return query.span_or.clauses;
+        }
+        
         query.span_or.clauses = [];
         var len = aSpanQuery.length,
           i = 0;
@@ -1854,6 +1944,10 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       match: function (spanQuery) {
+        if (spanQuery == null) {
+          return query.span_first.match;
+        }
+        
         query.span_first.match = spanQuery.get();
         return this;
       },
@@ -1866,6 +1960,10 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       end: function (position) {
+        if (position == null) {
+          return query.span_first.end;
+        }
+        
         query.span_first.end = position;
         return this;
       },
