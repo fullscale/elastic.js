@@ -47,6 +47,10 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       field: function (fieldName) {
+        if (fieldName == null) {
+          return facet[name].terms.field;
+        }
+        
         facet[name].terms.field = fieldName;
         return this;
       },
@@ -61,6 +65,10 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       size: function (facetSize) {
+        if (facetSize == null) {
+          return facet[name].terms.size;
+        }
+        
         facet[name].terms.size = facetSize;
         return this;
       },
@@ -78,6 +86,10 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       order: function (sortOrder) {
+        if (sortOrder == null) {
+          return facet[name].terms.order;
+        }
+        
         facet[name].terms.order = sortOrder;
         return this;
       },
@@ -92,6 +104,10 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       allTerms: function (trueFalse) {
+        if (trueFalse == null) {
+          return facet[name].terms.all_terms;
+        }
+        
         facet[name].terms.all_terms = trueFalse;
         return this;
       },
@@ -104,6 +120,10 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       exclude: function () {
+        if (arguments.length === 0) {
+          return facet[name].terms.exclude;
+        }
+        
         facet[name].terms.exclude = [];
         for (var i = 0; i < arguments.length; i++) {
           facet[name].terms.exclude.push(arguments[i].get());
@@ -120,10 +140,18 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       regex: function (exp, flags) {
+        if (arguments.length === 0) {
+          return {
+            exp: facet[name].terms.regex,
+            flags: facet[name].terms.regex_flags
+          };
+        }
+        
         facet[name].terms.regex = exp;
-        if (flags !== undefined) {
+        if (flags != null) {
           facet[name].terms.regex_flags = flags;
         }
+        
         return this;
       },
 
@@ -135,6 +163,10 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       filter: function (oFilter) {
+        if (oFilter == null) {
+          return facet[name].facet_filter;
+        }
+        
         facet[name].facet_filter = oFilter.get();
         return this;
       },
@@ -219,6 +251,10 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       field: function (fieldName) {
+        if (fieldName == null) {
+          return facet[name].date_histogram.field;
+        }
+        
         facet[name].date_histogram.field = fieldName;
         return this;
       },
@@ -231,6 +267,10 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       interval: function (timeInterval) {
+        if (timeInterval == null) {
+          return facet[name].date_histogram.interval;
+        }
+        
         facet[name].date_histogram.interval = timeInterval;
         return this;
       },
@@ -244,6 +284,10 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       timeZone: function (tz) {
+        if (tz == null) {
+          return facet[name].date_histogram.time_zone;
+        }
+        
         facet[name].date_histogram.time_zone = tz;
         return this;
       },
@@ -256,6 +300,10 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       valueField: function (fieldName) {
+        if (fieldName == null) {
+          return facet[name].date_histogram.value_field;
+        }
+        
         facet[name].date_histogram.value_field = fieldName;
         return this;
       },
@@ -268,6 +316,10 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       keyField: function (fieldName) {
+        if (fieldName == null) {
+          return facet[name].date_histogram.key_field;
+        }
+        
         facet[name].date_histogram.key_field = fieldName;
         return this;
       },
@@ -281,6 +333,10 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       valueScript: function (scriptCode) {
+        if (scriptCode == null) {
+          return facet[name].date_histogram.value_script;
+        }
+        
         facet[name].date_histogram.value_script = scriptCode;
         return this;
       },
@@ -294,6 +350,10 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       lang: function (language) {
+        if (language == null) {
+          return facet[name].date_histogram.lang;
+        }
+        
         facet[name].date_histogram.lang = language;
         return this;
       },
@@ -306,6 +366,10 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       filter: function (oFilter) {
+        if (oFilter == null) {
+          return facet[name].facet_filter;
+        }
+        
         facet[name].facet_filter = oFilter.get();
         return this;
       },
@@ -387,6 +451,10 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       field: function (fieldName) {
+        if (fieldName == null) {
+          return facet[name].histogram.field;
+        }
+        
         facet[name].histogram.field = fieldName;
         return this;
       },
@@ -399,6 +467,10 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       interval: function (numericInterval) {
+        if (numericInterval == null) {
+          return facet[name].histogram.interval;
+        }
+        
         facet[name].histogram.interval = numericInterval;
         return this;
       },
@@ -411,6 +483,10 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       valueField: function (fieldName) {
+        if (fieldName == null) {
+          return facet[name].histogram.value_field;
+        }
+        
         facet[name].histogram.value_field = fieldName;
         return this;
       },
@@ -423,6 +499,10 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       keyField: function (fieldName) {
+        if (fieldName == null) {
+          return facet[name].histogram.key_field;
+        }
+        
         facet[name].histogram.key_field = fieldName;
         return this;
       },
@@ -436,6 +516,10 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       valueScript: function (scriptCode) {
+        if (scriptCode == null) {
+          return facet[name].histogram.value_script;
+        }
+        
         facet[name].histogram.value_script = scriptCode;
         return this;
       },
@@ -449,6 +533,10 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       keyScript: function (scriptCode) {
+        if (scriptCode == null) {
+          return facet[name].histogram.value_script;
+        }
+        
         facet[name].histogram.value_script = scriptCode;
         return this;
       },
@@ -462,6 +550,10 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       lang: function (language) {
+        if (language == null) {
+          return facet[name].histogram.lang;
+        }
+        
         facet[name].histogram.lang = language;
         return this;
       },
@@ -474,6 +566,10 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       filter: function (oFilter) {
+        if (oFilter == null) {
+          return facet[name].facet_filter;
+        }
+        
         facet[name].facet_filter = oFilter.get();
         return this;
       },
@@ -553,6 +649,10 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       field: function (fieldName) {
+        if (fieldName == null) {
+          return facet[name].statistical.field;
+        }
+        
         facet[name].statistical.field = fieldName;
         return this;
       },
@@ -564,8 +664,12 @@
             @param {Array} aFieldName An array of field names.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
-      fields: function (aFieldName) {
-        facet[name].statistical.fields = aFieldName;
+      fields: function (fields) {
+        if (fields == null) {
+          return facet[name].statistical.fields;
+        }
+        
+        facet[name].statistical.fields = fields;
         return this;
       },
 
@@ -578,6 +682,10 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       script: function (code) {
+        if (code == null) {
+          return facet[name].statistical.script;
+        }
+        
         facet[name].statistical.script = code;
         return this;
       },
@@ -591,6 +699,10 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       lang: function (language) {
+        if (language == null) {
+          return facet[name].statistical.lang;
+        }
+        
         facet[name].statistical.lang = language;
         return this;
       },
@@ -603,6 +715,10 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       params: function (oParams) {
+        if (oParams == null) {
+          return facet[name].statistical.params;
+        }
+        
         facet[name].statistical.params = oParams;
         return this;
       },
@@ -615,6 +731,10 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       filter: function (oFilter) {
+        if (oFilter == null) {
+          return facet[name].facet_filter;
+        }
+        
         facet[name].facet_filter = oFilter.get();
         return this;
       },
@@ -697,6 +817,10 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       valueField: function (fieldName) {
+        if (fieldName == null) {
+          return facet[name].terms_stats.value_field;
+        }
+        
         facet[name].terms_stats.value_field = fieldName;
         return this;
       },
@@ -709,6 +833,10 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       keyField: function (fieldName) {
+        if (fieldName == null) {
+          return facet[name].terms_stats.key_field;
+        }
+        
         facet[name].terms_stats.key_field = fieldName;
         return this;
       },
@@ -722,6 +850,10 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       valueScript: function (code) {
+        if (code == null) {
+          return facet[name].terms_stats.value_script;
+        }
+        
         facet[name].terms_stats.value_script = code;
         return this;
       },
@@ -735,6 +867,10 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       lang: function (language) {
+        if (language == null) {
+          return facet[name].terms_stats.lang;
+        }
+        
         facet[name].terms_stats.lang = language;
         return this;
       },
@@ -747,6 +883,10 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       params: function (oParams) {
+        if (oParams == null) {
+          return facet[name].terms_stats.params;
+        }
+        
         facet[name].terms_stats.params = oParams;
         return this;
       },
@@ -761,6 +901,10 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       size: function (facetSize) {
+        if (facetSize == null) {
+          return facet[name].terms_stats.size;
+        }
+        
         facet[name].terms_stats.size = facetSize;
         return this;
       },
@@ -773,6 +917,10 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       order: function (ordering) {
+        if (ordering == null) {
+          return facet[name].terms_stats.order;
+        }
+        
         facet[name].terms_stats.order = ordering;
         return this;
       },
@@ -785,6 +933,10 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       filter: function (oFilter) {
+        if (oFilter == null) {
+          return facet[name].facet_filter;
+        }
+        
         facet[name].facet_filter = oFilter.get();
         return this;
       },
@@ -853,7 +1005,7 @@
         @property {Object} facet
         */
     var facet = {},
-    ranges = [],
+      ranges = [],
       geoCoordinate = [0, 0],
       field = null;
 
@@ -873,6 +1025,10 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       pointField: function (fieldName) {
+        if (fieldName == null) {
+          return field;
+        }
+        
         field = fieldName;
         //facet[name].geo_distance[field] = geoCoordinate;
         return this;
@@ -887,6 +1043,10 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       point: function (lon, lat) {
+        if (arguments.length === 0) {
+          return geoCoordinate;
+        }
+        
         geoCoordinate = [lon, lat];
         return this;
       },
@@ -900,6 +1060,10 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       addRange: function (from, to) {
+        if (arguments.length === 0) {
+          return ranges;
+        }
+        
         ranges.push({
           "from": from,
           "to": to
@@ -915,6 +1079,10 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       addUnboundedFrom: function (from) {
+        if (from == null) {
+          return ranges;
+        }
+        
         ranges.push({
           "from": from
         });
@@ -929,6 +1097,10 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       addUnboundedTo: function (to) {
+        if (to == null) {
+          return ranges;
+        }
+        
         ranges.push({
           "to": to
         });
@@ -943,6 +1115,10 @@
              @returns {Object} returns <code>this</code> so that calls can be chained.
              */
       distanceUnit: function (unit) {
+        if (unit == null) {
+          return facet[name].geo_distance.distance_unit;
+        }
+        
         facet[name].geo_distance.distance_unit = unit;
         return this;
       },
@@ -955,6 +1131,10 @@
              @returns {Object} returns <code>this</code> so that calls can be chained.
              */
       distanceType: function (type) {
+        if (type == null) {
+          return facet[name].geo_distance.distance_type;
+        }
+        
         facet[name].geo_distance.distance_type = type;
         return this;
       },
@@ -967,6 +1147,10 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       filter: function (oFilter) {
+        if (oFilter == null) {
+          return facet[name].facet_filter;
+        }
+        
         facet[name].facet_filter = oFilter.get();
         return this;
       },
@@ -1051,6 +1235,10 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       query: function (oQuery) {
+        if (oQuery == null) {
+          return facet[name].query;
+        }
+        
         facet[name].query = oQuery.get();
         return this;
       },
@@ -1063,6 +1251,10 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       filter: function (oFilter) {
+        if (oFilter == null) {
+          return facet[name].facet_filter;
+        }
+        
         facet[name].facet_filter = oFilter.get();
         return this;
       },
@@ -1138,7 +1330,11 @@
             @param {Object} oFilter A valid <code>Query</code> object.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
-      fltr: function (oFilter) {
+      filter: function (oFilter) {
+        if (oFilter == null) {
+          return facet[name].filter;
+        }
+        
         facet[name].filter = oFilter.get();
         return this;
       },
@@ -1150,7 +1346,11 @@
             @param {Object} oFilter A valid <code>Filter</code> object.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
-      filter: function (oFilter) {
+      facetFilter: function (oFilter) {
+        if (oFilter == null) {
+          return facet[name].facet_filter;
+        }
+        
         facet[name].facet_filter = oFilter.get();
         return this;
       },
@@ -1231,6 +1431,10 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       field: function (fieldName) {
+        if (fieldName == null) {
+          return facet[name].range.field;
+        }
+        
         facet[name].range.field = fieldName;
         return this;
       },
@@ -1243,6 +1447,10 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       keyField: function (fieldName) {
+        if (fieldName == null) {
+          return facet[name].range.key_field;
+        }
+        
         facet[name].range.key_field = fieldName;
         return this;
       },
@@ -1255,6 +1463,10 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       valuefield: function (fieldName) {
+        if (fieldName == null) {
+          return facet[name].range.value_field;
+        }
+        
         facet[name].range.value_field = fieldName;
         return this;
       },
@@ -1268,6 +1480,10 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       valueScript: function (scriptCode) {
+        if (scriptCode == null) {
+          return facet[name].range.value_script;
+        }
+        
         facet[name].range.value_script = scriptCode;
         return this;
       },
@@ -1281,6 +1497,10 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       keyScript: function (scriptCode) {
+        if (scriptCode == null) {
+          return facet[name].range.value_script;
+        }
+        
         facet[name].range.value_script = scriptCode;
         return this;
       },
@@ -1294,6 +1514,10 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       lang: function (language) {
+        if (language == null) {
+          return facet[name].range.lang;
+        }
+        
         facet[name].range.lang = language;
         return this;
       },
@@ -1307,6 +1531,10 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       addRange: function (from, to) {
+        if (arguments.length === 0) {
+          return ranges;
+        }
+        
         ranges.push({
           "from": from,
           "to": to
@@ -1322,6 +1550,10 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       addUnboundedFrom: function (from) {
+        if (from == null) {
+          return ranges;
+        }
+        
         ranges.push({
           "from": from
         });
@@ -1336,6 +1568,10 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       addUnboundedTo: function (to) {
+        if (to == null) {
+          return ranges;
+        }
+        
         ranges.push({
           "to": to
         });
@@ -1350,6 +1586,10 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       filter: function (oFilter) {
+        if (oFilter == null) {
+          return facet[name].facet_filter;
+        }
+        
         facet[name].facet_filter = oFilter.get();
         return this;
       },

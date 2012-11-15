@@ -315,11 +315,11 @@ exports.facets = {
     test.ok(filterFacet.get(), 'get() works');
     doTest();
 
-    filterFacet.fltr(termFilter1);
+    filterFacet.filter(termFilter1);
     expected.somename.filter = termFilter1.get();
     doTest();
 
-    filterFacet.filter(termFilter2);
+    filterFacet.facetFilter(termFilter2);
     expected.somename.facet_filter = termFilter2.get();
     doTest();
 
