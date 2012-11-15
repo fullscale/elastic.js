@@ -3,7 +3,7 @@
     A <code>TextQuery</code> is a type of <code>Query</code> that accepts a
     string of text, analyzes it, generates a query based on the
     <code>TextQuery</code> type.
-`
+    
     @name ejs.TextQuery
 
     @desc
