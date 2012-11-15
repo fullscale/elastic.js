@@ -3,40 +3,11 @@
 Javascript API for ElasticSearch
 
 ## Getting Started
-### On the server
-Install the module with: `npm install elastic.js`
-
-```javascript
-var ejs = require('elastic.js');
-ejs.awesome(); // "awesome"
-```
-
-### In the browser
-Download the [production version][min] or the [development version][max].
-
-[min]: https://raw.github.com/fullscale/cloud9-javascript-api/master/elastic.min.js
-[max]: https://raw.github.com/fullscale/cloud9-javascript-api/master/elastic.js
-
-In your web page:
-
-```html
-<script src="elastic.min.js"></script>
-<script>
-ejs.awesome(); // "awesome"
-</script>
-```
-
-In your code, you can attach elastic.js methods to any object.
-
-```html
-<script>
-this.exports = Bocoup.utils;
-</script>
-<script src="dist/elastic.min.js"></script>
-<script>
-Bocoup.utils.awesome(); // "awesome"
-</script>
-```
+### Building From Source
+1. Install NodeJS and NPM
+2. Run `npm install`
+3. Ensure grunt was installed and is available on your PATH.
+4. Run `grunt`
 
 ## Documentation
 _(Coming soon)_
