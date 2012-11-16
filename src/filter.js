@@ -31,6 +31,44 @@
     return {
 
       /**
+             Provides access to the filter key used to construct the termFilter object.
+             @member ejs.TermFilter
+             @param {String} k the key term
+             @returns {Object} returns <code>this</code> so that calls can be chained.
+              When k is not specified, Returns {String}, the filter key used to construct 
+              the termFilter object.
+             */
+      key: function (k) {
+        var oldValue = filter.term[key];
+        
+        if (k == null) {
+          return key;
+        }
+        
+        key = k;
+        filter.term = {};
+        filter.term[key] = oldValue;
+        
+        return this;
+      },
+
+      /**
+             Provides access to the filter value used to construct the termFilter object.
+             @member ejs.TermFilter
+             @returns {Object} returns <code>this</code> so that calls can be chained.
+              When k is not specified, Returns {String}, the filter value used 
+              to construct the termFilter object.
+             */
+      value: function (v) {
+        if (v == null) {
+          return value;
+        }
+        
+        filter.term[key] = v;
+        return this;
+      },
+
+      /**
              Serializes the internal filter object as a JSON string.
              @member ejs.TermFilter
              @returns {String} Returns a JSON representation of the termFilter object.
@@ -38,27 +76,7 @@
       toString: function () {
         return JSON.stringify(filter);
       },
-
-      /**
-             Provides access to the filter key used to construct the termFilter object.
-             @member ejs.TermFilter
-             @returns {String} Returns the filter key used to construct the
-             termFilter object.
-             */
-      key: function () {
-        return key;
-      },
-
-      /**
-             Provides access to the filter value used to construct the termFilter object.
-             @member ejs.TermFilter
-             @returns {String} Returns the filter value used to construct the
-             termFilter object.
-             */
-      value: function () {
-        return value;
-      },
-
+      
       /**
             This method is used to retrieve the raw filter object. It's designed
             for internal use when composing and serializing queries.
@@ -106,6 +124,10 @@
              @returns {Object} returns <code>this</code> so that calls can be chained.
              */
       type: function (type) {
+        if (type == null) {
+          return filter.type.value;
+        }
+        
         filter.type.value = type;
         return this;
       },
@@ -166,6 +188,10 @@
              @returns {Object} returns <code>this</code> so that calls can be chained.
              */
       filter: function (fltr) {
+        if (fltr == null) {
+          return filter.not;
+        }
+        
         filter.not = fltr.get();
         return this;
       },
@@ -231,6 +257,10 @@
              @returns {Object} returns <code>this</code> so that calls can be chained.
              */
       add: function (fltr) {
+        if (fltr == null) {
+          return filter.and;
+        }
+        
         filter.and.push(fltr.get());
         return this;
       },
@@ -310,7 +340,7 @@
              @returns {Object} returns <code>this</code> so that calls can be chained.
              */
       from: function (startPoint) {
-        if (typeof startPoint === 'undefined' || startPoint === null) {
+        if (startPoint == null) {
           return start;
         }
 
@@ -327,7 +357,7 @@
              @returns {Object} returns <code>this</code> so that calls can be chained.
              */
       to: function (endPoint) {
-        if (typeof endPoint === 'undefined' || endPoint === null) {
+        if (endPoint == null) {
           return end;
         }
 
@@ -340,30 +370,42 @@
              Returns the field name used to create this object.
 
              @member ejs.NumericRangeFilter
-             @returns {String} field name
+             @param {String} field the field name
+             @returns {Object} returns <code>this</code> so that calls can be 
+              chained. Returns {String}, field name when field is not specified.
              */
-      field: function () {
-        return fieldName;
+      field: function (field) {
+        var oldValue = filter.numeric_range[fieldName];
+        
+        if (field == null) {
+          return fieldName;
+        }
+        
+        fieldName = field;
+        filter.numeric_range = {};
+        filter.numeric_range[fieldName] = oldValue;
+        
+        return this;
       },
 
       /**
-             Returns the filter term used to create this object.
+             Returns the filter term used to create this object. Alias for `field`.
 
              @member ejs.NumericRangeFilter
              @returns {String} filter term
              */
-      key: function () {
-        return fieldName;
+      key: function (field) {
+        return this.field(field);
       },
 
       /**
-             Returns the filter value used to create this object.
+             Returns the filter value used to create this object. Alias for `from`.
 
              @member ejs.NumericRangeFilter
              @returns {String} filter term
              */
-      value: function () {
-        return start;
+      value: function (from) {
+        return this.from(from);
       },
 
       /**
@@ -427,6 +469,10 @@
              @returns {Object} returns <code>this</code> so that calls can be chained.
              */
       points: function (pointsArray) {
+        if (pointsArray == null) {
+          return filter.geo_polygon[fieldName].points;
+        }
+        
         filter.geo_polygon[fieldName].points = pointsArray;
         return this;
       },
@@ -440,9 +486,14 @@
              @returns {Object} returns <code>this</code> so that calls can be chained.
              */
       point: function (lon, lat) {
-        if (typeof filter.geo_polygon[fieldName].points === 'undefined' || filter.geo_polygon[fieldName].points === null) {
+        if (filter.geo_polygon[fieldName].points == null) {
           filter.geo_polygon[fieldName].points = [];
         }
+        
+        if (arguments.length === 0) {
+          return filter.geo_polygon[fieldName].points;
+        }
+        
         filter.geo_polygon[fieldName].points.push([lon, lat]);
         return this;
       },
@@ -506,6 +557,10 @@
              @returns {Object} returns <code>this</code> so that calls can be chained.
              */
       topLeft: function (lon, lat) {
+        if (arguments.length === 0) {
+          return filter.geo_bounding_box[fieldName].top_left;
+        }
+        
         filter.geo_bounding_box[fieldName].top_left = [lon, lat];
         return this;
       },
@@ -519,6 +574,10 @@
              @returns {Object} returns <code>this</code> so that calls can be chained.
              */
       bottomRight: function (lon, lat) {
+        if (arguments.length === 0) {
+          return filter.geo_bounding_box[fieldName].bottom_right;
+        }
+        
         filter.geo_bounding_box[fieldName].bottom_right = [lon, lat];
         return this;
       },
@@ -585,6 +644,10 @@
              @returns {Object} returns <code>this</code> so that calls can be chained.
              */
       distance: function (numericDistance) {
+        if (numericDistance == null) {
+          return filter.geo_distance.distance;
+        }
+        
         filter.geo_distance.distance = numericDistance;
         return this;
       },
@@ -597,6 +660,10 @@
              @returns {Object} returns <code>this</code> so that calls can be chained.
              */
       distanceUnit: function (unit) {
+        if (unit == null) {
+          return filter.geo_distance.distance_unit;
+        }
+        
         filter.geo_distance.distance_unit = unit;
         return this;
       },
@@ -610,6 +677,10 @@
              @returns {Object} returns <code>this</code> so that calls can be chained.
              */
       point: function (lon, lat) {
+        if (arguments.length === 0) {
+          return filter.geo_distance[fieldName];
+        }
+        
         filter.geo_distance[fieldName] = [lon, lat];
         return this;
       },
@@ -673,6 +744,10 @@
              @returns {Object} returns <code>this</code> so that calls can be chained.
              */
       from: function (numericDistance) {
+        if (numericDistance == null) {
+          return filter.geo_distance_range.from;
+        }
+        
         filter.geo_distance_range.from = numericDistance;
         return this;
       },
@@ -685,6 +760,10 @@
              @returns {Object} returns <code>this</code> so that calls can be chained.
              */
       to: function (numericDistance) {
+        if (numericDistance == null) {
+          return filter.geo_distance_range.to;
+        }
+        
         filter.geo_distance_range.to = numericDistance;
         return this;
       },
@@ -697,6 +776,10 @@
              @returns {Object} returns <code>this</code> so that calls can be chained.
              */
       distanceUnit: function (unit) {
+        if (unit == null) {
+          return filter.geo_distance_range.distance_unit;
+        }
+        
         filter.geo_distance_range.distance_unit = unit;
         return this;
       },
@@ -710,6 +793,10 @@
              @returns {Object} returns <code>this</code> so that calls can be chained.
              */
       point: function (lon, lat) {
+        if (arguments.length === 0) {
+          return filter.geo_distance_range[fieldName];
+        }
+        
         filter.geo_distance_range[fieldName] = [lon, lat];
         return this;
       },
@@ -820,6 +907,10 @@
              @returns {Object} returns <code>this</code> so that calls can be chained.
              */
       prefix: function (value) {
+        if (value == null) {
+          return filter.prefix[fieldName];
+        }
+        
         filter.prefix[fieldName] = value;
         return this;
       },
@@ -934,6 +1025,10 @@
              @returns {Object} returns <code>this</code> so that calls can be chained.
              */
       add: function (fltr) {
+        if (fltr == null) {
+          return filter.or;
+        }
+        
         filter.or.push(fltr.get());
         return this;
       },
