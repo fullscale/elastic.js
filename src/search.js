@@ -33,7 +33,7 @@
 
     conf = conf || {};
     // check if we are searching across any specific indeices        
-    if (typeof conf.collections === "undefined" || conf.collections === null) {
+    if (conf.collections == null) {
       indices = [];
     } else if (typeof conf.collections === "string") {
       indices = [conf.collections];
@@ -42,7 +42,7 @@
     }
 
     // check if we are searching across any specific types
-    if (typeof conf.types === "undefined" || conf.types === null) {
+    if (conf.types == null) {
       types = [];
     } else if (typeof conf.types === "string") {
       types = [conf.types];
@@ -70,10 +70,14 @@
       sort: function (fieldName, order) {
         order = order || "desc";
 
-        if (!query.hasOwnProperty("sort")) {
+        if (!has(query, "sort")) {
           query.sort = [];
         }
 
+        if (arguments.length === 0) {
+          return query.sort;
+        }
+        
         var sorter = {};
         sorter[fieldName] = order;
         query.sort.push(sorter);
@@ -89,12 +93,12 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       size: function (s) {
-        if (typeof s === "undefined" || s === null) {
+        if (s == null) {
           return query.size;
-        } else {
-          query.size = s;
-          return this;
         }
+        
+        query.size = s;
+        return this;
       },
 
       /**
@@ -106,6 +110,10 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       fields: function (fieldList) {
+        if (fieldList == null) {
+          return query.fields;
+        }
+        
         query.fields = fieldList;
         return this;
       },
@@ -121,12 +129,12 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       from: function (f) {
-        if (typeof f === "undefined" || f === null) {
+        if (f == null) {
           return query.from;
-        } else {
-          query.from = f;
-          return this;
         }
+          
+        query.from = f;
+        return this;
       },
 
       /**
@@ -138,6 +146,10 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       query: function (someQuery) {
+        if (someQuery == null) {
+          return query.query;
+        }
+        
         query.query = someQuery.get();
         return this;
       },
@@ -151,7 +163,7 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       collections: function (indexArray) {
-        if (typeof indexArray === "undefined" || indexArray === null) {
+        if (indexArray == null) {
           return indices;
         } else if (typeof indexArray === "string") {
           indices = [indexArray];
@@ -177,7 +189,7 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       types: function (typeArray) {
-        if (typeof typeArray === "undefined" || typeArray === null) {
+        if (typeArray == null) {
           return types;
         } else if (typeof typeArray === "string") {
           types = [typeArray];
@@ -203,13 +215,16 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       facet: function (facet) {
-        var theFacet = facet.get();
-        if ("facets" in query) {
-          extend(query.facets, theFacet);
-        } else {
-          query.facets = {};
-          extend(query.facets, theFacet);
+        if (facet == null) {
+          return query.facets;
         }
+        
+        if (query.facets == null) {
+          query.facets = {};
+        }
+        
+        extend(query.facets, facet.get());
+
         return this;
       },
 
@@ -221,6 +236,10 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       filter: function (filter) {
+        if (filter == null) {
+          return query.filter;
+        }
+        
         query.filter = filter.get();
         return this;
       },
@@ -229,18 +248,22 @@
             Performs highlighting of matched terms against the specified fields.
 
             @member ejs.Request
-            @param {Facet} aFieldNames An array of field names which to perform highlighting against.
+            @param {Facet} fieldNames An array of field names which to perform highlighting against.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
-      highlight: function (aFieldNames) {
+      highlight: function (fieldNames) {
         var i, len;
 
         query.highlight = {
           fields: {}
         };
 
-        for (i = 0, len = aFieldNames.length; i < len; i++) {
-          query.highlight.fields[aFieldNames[i]] = {};
+        if (fieldNames == null) {
+          return query.highlight.fields;
+        }
+        
+        for (i = 0, len = fieldNames.length; i < len; i++) {
+          query.highlight.fields[fieldNames[i]] = {};
         }
 
         return this;
@@ -255,13 +278,17 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       highlightPreTags: function (tags, oField) {
-        if (typeof query.highlight === 'undefined' || query.highlight === null) {
+        if (query.highlight == null) {
           query.highlight = {
             fields: {}
           };
         }
 
-        if (typeof oField === 'undefined' || oField === null) {
+        if (arguments.length === 0) {
+          return query.highlight.pre_tags;
+        }
+        
+        if (oField == null) {
           query.highlight.pre_tags = tags;
         } else {
           query.highlight.fields[oField] = query.highlight.fields[oField] || {};
@@ -280,13 +307,17 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       highlightPostTags: function (tags, oField) {
-        if (typeof query.highlight === 'undefined' || query.highlight === null) {
+        if (query.highlight == null) {
           query.highlight = {
             fields: {}
           };
         }
 
-        if (typeof oField === 'undefined' || oField === null) {
+        if (arguments.length === 0) {
+          return query.highlight.post_tags;
+        }
+        
+        if (oField == null) {
           query.highlight.post_tags = tags;
         } else {
           query.highlight.fields[oField] = query.highlight.fields[oField] || {};
@@ -305,13 +336,17 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       highlightTagSchema: function (tagSchema, oField) {
-        if (typeof query.highlight === 'undefined' || query.highlight === null) {
+        if (query.highlight == null) {
           query.highlight = {
             fields: {}
           };
         }
 
-        if (typeof oField === 'undefined' || oField === null) {
+        if (arguments.length === 0) {
+          return query.highlight.tags_schema;
+        }
+        
+        if (oField == null) {
           query.highlight.tags_schema = tagSchema;
         } else {
           query.highlight.fields[oField] = query.highlight.fields[oField] || {};
@@ -330,13 +365,17 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       highlightFragments: function (num, oField) {
-        if (typeof query.highlight === 'undefined' || query.highlight === null) {
+        if (query.highlight == null) {
           query.highlight = {
             fields: {}
           };
         }
 
-        if (typeof oField === 'undefined' || oField === null) {
+        if (arguments.length === 0) {
+          return query.highlight.number_of_fragments;
+        }
+        
+        if (oField == null) {
           query.highlight.number_of_fragments = num;
         } else {
           query.highlight.fields[oField] = query.highlight.fields[oField] || {};
@@ -355,13 +394,17 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       highlightFragmentSize: function (num, oField) {
-        if (typeof query.highlight === 'undefined' || query.highlight === null) {
+        if (query.highlight == null) {
           query.highlight = {
             fields: {}
           };
         }
 
-        if (typeof oField === 'undefined' || oField === null) {
+        if (arguments.length === 0) {
+          return query.highlight.fragment_size;
+        }
+        
+        if (oField == null) {
           query.highlight.fragment_size = num;
         } else {
           query.highlight.fields[oField] = query.highlight.fields[oField] || {};
@@ -379,13 +422,16 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       computedProperty: function (oComputedProperty) {
-        var theScriptField = oComputedProperty.get();
-        if (query.hasOwnProperty("script_fields")) {
-          extend(query.script_fields, theScriptField);
-        } else {
-          query.script_fields = {};
-          extend(query.script_fields, theScriptField);
+        if (oComputedProperty == null) {
+          return query.script_fields;
         }
+        
+        if (query.script_fields == null) {
+          query.script_fields = {};
+        }
+        
+        
+        extend(query.script_fields, oComputedProperty.get());
         return this;
       },
 
@@ -404,6 +450,10 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       preference: function (perf) {
+        if (perf == null) {
+          return query.perference;
+        }
+        
         query.perference = perf;
         return this;
       },
@@ -417,10 +467,14 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       indexBoost: function (index, boost) {
-        if (typeof query.indices_boost === 'undefined') {
+        if (query.indices_boost == null) {
           query.indices_boost = {};
         }
 
+        if (arguments.length === 0) {
+          return query.indices_boost;
+        }
+        
         query.indices_boost[index] = boost;
         return this;
       },
@@ -433,12 +487,12 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       explain: function (trueFalse) {
-        if (typeof trueFalse === "undefined" || trueFalse === null) {
+        if (trueFalse == null) {
           return query.explain;
-        } else {
-          query.explain = trueFalse;
-          return this;
-        }
+        } 
+          
+        query.explain = trueFalse;
+        return this;
       },
 
       /**
@@ -449,12 +503,12 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       version: function (trueFalse) {
-        if (typeof trueFalse === "undefined" || trueFalse === null) {
+        if (trueFalse == null) {
           return query.version;
-        } else {
-          query.version = trueFalse;
-          return this;
         }
+          
+        query.version = trueFalse;
+        return this;
       },
 
       /**
@@ -465,12 +519,12 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       minScore: function (min) {
-        if (typeof min === "undefined" || min === null) {
+        if (min == null) {
           return query.min_score;
-        } else {
-          query.min_score = min;
-          return this;
         }
+          
+        query.min_score = min;
+        return this;
       },
 
       /**
@@ -588,6 +642,10 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       lang: function (language) {
+        if (language == null) {
+          return script[fieldName].lang;
+        }
+        
         script[fieldName].lang = language;
         return this;
       },
@@ -600,6 +658,10 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       script: function (expression) {
+        if (expression == null) {
+          return script[fieldName].script;
+        }
+        
         script[fieldName].script = expression;
         return this;
       },
@@ -612,6 +674,10 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       params: function (oParams) {
+        if (oParams == null) {
+          return script[fieldName].params;
+        }
+        
         script[fieldName].params = oParams;
         return this;
       },
