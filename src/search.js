@@ -546,7 +546,26 @@
             @returns {void} Returns the value of the callback when executing on the server.
             */
       get: function (fnCallBack) {
-        return JSON.stringify(query);
+        var 
+          queryData = JSON.stringify(query),
+          searchUrl = '';
+        
+        // make sure the user has set a client
+        if (ejs.client == null) {
+          throw new Error("No Client Set");
+        }
+            
+        // generate the search url
+        if (indices.length > 0) {
+          searchUrl = searchUrl + '/' + indices.join();
+        }
+
+        if (types.length > 0) {
+          searchUrl = searchUrl + '/' + types.join();
+        }
+          
+        searchUrl = searchUrl + '/_search';
+        return ejs.client.post(searchUrl, queryData, fnCallBack);
       }
     };
   };

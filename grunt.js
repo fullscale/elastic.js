@@ -25,19 +25,42 @@ module.exports = function (grunt) {
           'src/post.js'
         ],
         dest: 'dist/elastic.js'
+      },
+      client_node: {
+        src: [
+          '<banner:meta.banner>',
+          'src/clients/elastic-node-client.js'
+        ],
+        dest: 'dist/elastic-node-client.js'
+      },
+      client_jquery: {
+        src: [
+          '<banner:meta.banner>',
+          'src/clients/elastic-jquery-client.js'
+        ],
+        dest: 'dist/elastic-jquery-client.js'
       }
     },
     min: {
       dist: {
         src: ['<banner:meta.banner>', '<config:concat.dist.dest>'],
         dest: 'dist/elastic.min.js'
+      },
+      client_jquery: {
+        src: ['<banner:meta.banner>', 'src/clients/elastic-jquery-client.js'],
+        dest: 'dist/elastic-jquery-client.min.js'
       }
     },
     test: {
       files: ['tests/**/*.js']
     },
     lint: {
-      files: ['grunt.js', '<config:concat.dist.dest>', 'tests/**/*.js']
+      files: [
+        'grunt.js', 
+        '<config:concat.dist.dest>', 
+        'tests/**/*.js',
+        'src/clients/*.js'
+      ]
     },
     watch: {
       files: '<config:lint.files>',
@@ -46,6 +69,7 @@ module.exports = function (grunt) {
     jshint: {
       options: {
         bitwise: true,
+        jquery: true,
         curly: true,
         eqeqeq: true,
         immed: true,
