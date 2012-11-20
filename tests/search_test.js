@@ -26,10 +26,9 @@ exports.search = {
     done();
   },
   exists: function (test) {
-    test.expect(3);
+    test.expect(2);
 
     test.ok(ejs.Request, 'Request');
-    test.ok(ejs.Pager, 'Pager');
     test.ok(ejs.ComputedProperty, 'ComputedProperty');
 
     test.done();

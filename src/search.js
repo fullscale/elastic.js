@@ -570,62 +570,6 @@
     };
   };
 
-  ejs.Pager = function (srch, cb) {
-    var search = srch,
-      callback = cb,
-      hits = 0,
-      total = 0,
-      current = 0,
-      update = function () {
-        total = Math.ceil(hits / search.size());
-        total = total === 0 ? 1 : total;
-        current = Math.ceil((search.from() / search.size()) + 1);
-      };
-
-    return {
-      hits: function (h) {
-        hits = h;
-        update();
-        return this;
-      },
-      total: function () {
-        return total;
-      },
-      current: function () {
-        return current;
-      },
-      next: function () {
-        var next = current;
-        if (current < total) {
-          next = current + 1;
-        }
-        return next;
-      },
-      previous: function () {
-        var prev = current;
-        if (current > 1) {
-          prev = current - 1;
-        }
-        return prev;
-      },
-      pages: function (min, max) {
-        var pages = [],
-          end = current + min < total ? current + min : total + 1,
-          start = end - max > 1 ? end - max : 1,
-          i;
-
-        for (i = start; i < end; i++) {
-          pages.push(i);
-        }
-        return pages;
-      },
-      go: function (page) {
-        var from = (page * search.size()) - search.size();
-        return search.from(from).get(callback);
-      }
-    };
-  };
-
   /**
     @class
     <p>Computed properties allow you create dynamic fields on stored documents at query
