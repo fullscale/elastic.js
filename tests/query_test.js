@@ -26,9 +26,10 @@ exports.queries = {
     done();
   },
   exists: function (test) {
-    test.expect(15);
+    test.expect(16);
 
     test.ok(ejs.MatchQuery, 'MatchQuery');
+    test.ok(ejs.MultiMatchQuery, 'MultiMatchQuery');
     test.ok(ejs.TermQuery, 'TermQuery');
     test.ok(ejs.BoolQuery, 'BoolQuery');
     test.ok(ejs.FieldQuery, 'FieldQuery');
@@ -126,6 +127,100 @@ exports.queries = {
     doTest();
 
     test.strictEqual(matchQuery.toString(), JSON.stringify(expected));
+
+    test.done();
+  },
+  MultiMatchQuery: function (test) {
+    test.expect(22);
+
+    var mmQuery = ejs.MultiMatchQuery(['t1', 't2'], 'v1'),
+      expected,
+      doTest = function () {
+        test.deepEqual(mmQuery.get(), expected);
+      };
+
+    expected = {
+      multi_match: {
+        query: 'v1',
+        fields: ['t1', 't2']
+      }
+    };
+
+    test.ok(mmQuery, 'MultiMatchQuery exists');
+    test.ok(mmQuery.get(), 'get() works');
+    doTest();
+
+    mmQuery.boost(1.5);
+    expected.multi_match.boost = 1.5;
+    doTest();
+
+    mmQuery.query('v2');
+    expected.multi_match.query = 'v2';
+    doTest();
+
+    mmQuery.fields(['f3', 'f4']);
+    expected.multi_match.fields = ['f3', 'f4'];
+    doTest();
+    
+    mmQuery.useDisMax(true);
+    expected.multi_match.use_dis_max = true;
+    doTest();
+    
+    mmQuery.tieBreaker(0.6);
+    expected.multi_match.tie_breaker = 0.6;
+    doTest();
+    
+    mmQuery.type('boolean');
+    expected.multi_match.type = 'boolean';
+    doTest();
+
+    mmQuery.type('junk');
+    doTest();
+
+    mmQuery.type('phrase');
+    expected.multi_match.type = 'phrase';
+    doTest();
+
+    mmQuery.type('phrase_prefix');
+    expected.multi_match.type = 'phrase_prefix';
+    doTest();
+
+    mmQuery.type('phrasePrefix');
+    expected.multi_match.type = 'phrasePrefix';
+    doTest();
+
+    mmQuery.fuzziness(0.5);
+    expected.multi_match.fuzziness = 0.5;
+    doTest();
+
+    mmQuery.prefixLength(2);
+    expected.multi_match.prefix_length = 2;
+    doTest();
+
+    mmQuery.maxExpansions(5);
+    expected.multi_match.max_expansions = 5;
+    doTest();
+
+    mmQuery.operator('and');
+    expected.multi_match.operator = 'and';
+    doTest();
+
+    mmQuery.operator('junk');
+    doTest();
+
+    mmQuery.operator('or');
+    expected.multi_match.operator = 'or';
+    doTest();
+
+    mmQuery.slop(15);
+    expected.multi_match.slop = 15;
+    doTest();
+
+    mmQuery.analyzer('the analyzer');
+    expected.multi_match.analyzer = 'the analyzer';
+    doTest();
+
+    test.strictEqual(mmQuery.toString(), JSON.stringify(expected));
 
     test.done();
   },
