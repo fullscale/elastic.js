@@ -26,8 +26,9 @@ exports.queries = {
     done();
   },
   exists: function (test) {
-    test.expect(14);
+    test.expect(15);
 
+    test.ok(ejs.MatchQuery, 'MatchQuery');
     test.ok(ejs.TermQuery, 'TermQuery');
     test.ok(ejs.BoolQuery, 'BoolQuery');
     test.ok(ejs.FieldQuery, 'FieldQuery');
@@ -45,86 +46,86 @@ exports.queries = {
 
     test.done();
   },
-  TextQuery: function (test) {
+  MatchQuery: function (test) {
     test.expect(19);
 
-    var textQuery = ejs.TextQuery('t1', 'v1'),
+    var matchQuery = ejs.MatchQuery('t1', 'v1'),
       expected,
       doTest = function () {
-        test.deepEqual(textQuery.get(), expected);
+        test.deepEqual(matchQuery.get(), expected);
       };
 
     expected = {
-      text: {
+      match: {
         t1: {
           query: 'v1'
         }
       }
     };
 
-    test.ok(textQuery, 'TextQuery exists');
-    test.ok(textQuery.get(), 'get() works');
+    test.ok(matchQuery, 'MatchQuery exists');
+    test.ok(matchQuery.get(), 'get() works');
     doTest();
 
-    textQuery.boost(1.5);
-    expected.text.t1.boost = 1.5;
+    matchQuery.boost(1.5);
+    expected.match.t1.boost = 1.5;
     doTest();
 
-    textQuery.query('v2');
-    expected.text.t1.query = 'v2';
+    matchQuery.query('v2');
+    expected.match.t1.query = 'v2';
     doTest();
 
-    textQuery.type('boolean');
-    expected.text.t1.type = 'boolean';
+    matchQuery.type('boolean');
+    expected.match.t1.type = 'boolean';
     doTest();
 
-    textQuery.type('junk');
+    matchQuery.type('junk');
     doTest();
 
-    textQuery.type('phrase');
-    expected.text.t1.type = 'phrase';
+    matchQuery.type('phrase');
+    expected.match.t1.type = 'phrase';
     doTest();
 
-    textQuery.type('phrase_prefix');
-    expected.text.t1.type = 'phrase_prefix';
+    matchQuery.type('phrase_prefix');
+    expected.match.t1.type = 'phrase_prefix';
     doTest();
 
-    textQuery.type('phrasePrefix');
-    expected.text.t1.type = 'phrasePrefix';
+    matchQuery.type('phrasePrefix');
+    expected.match.t1.type = 'phrasePrefix';
     doTest();
 
-    textQuery.fuzziness(0.5);
-    expected.text.t1.fuzziness = 0.5;
+    matchQuery.fuzziness(0.5);
+    expected.match.t1.fuzziness = 0.5;
     doTest();
 
-    textQuery.prefixLength(2);
-    expected.text.t1.prefix_length = 2;
+    matchQuery.prefixLength(2);
+    expected.match.t1.prefix_length = 2;
     doTest();
 
-    textQuery.maxExpansions(5);
-    expected.text.t1.max_expansions = 5;
+    matchQuery.maxExpansions(5);
+    expected.match.t1.max_expansions = 5;
     doTest();
 
-    textQuery.operator('and');
-    expected.text.t1.operator = 'and';
+    matchQuery.operator('and');
+    expected.match.t1.operator = 'and';
     doTest();
 
-    textQuery.operator('junk');
+    matchQuery.operator('junk');
     doTest();
 
-    textQuery.operator('or');
-    expected.text.t1.operator = 'or';
+    matchQuery.operator('or');
+    expected.match.t1.operator = 'or';
     doTest();
 
-    textQuery.slop(15);
-    expected.text.t1.slop = 15;
+    matchQuery.slop(15);
+    expected.match.t1.slop = 15;
     doTest();
 
-    textQuery.analyzer('the analyzer');
-    expected.text.t1.analyzer = 'the analyzer';
+    matchQuery.analyzer('the analyzer');
+    expected.match.t1.analyzer = 'the analyzer';
     doTest();
 
-    test.strictEqual(textQuery.toString(), JSON.stringify(expected));
+    test.strictEqual(matchQuery.toString(), JSON.stringify(expected));
 
     test.done();
   },

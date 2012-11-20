@@ -1,34 +1,34 @@
   /**
     @class
-    A <code>TextQuery</code> is a type of <code>Query</code> that accepts a
-    string of text, analyzes it, generates a query based on the
-    <code>TextQuery</code> type.
+    A <code>MatchQuery</code> is a type of <code>Query</code> that accepts 
+    text/numerics/dates, analyzes it, generates a query based on the
+    <code>MatchQuery</code> type.
     
-    @name ejs.TextQuery
+    @name ejs.MatchQuery
 
     @desc
     A Query that appects text, analyzes it, generates internal query based
-    on the TextQuery type.
+    on the MatchQuery type.
 
     @param {String} key the document field/key to query against
     @param {String} value the text query string
     */
-  ejs.TextQuery = function (key, value) {
+  ejs.MatchQuery = function (key, value) {
 
     /**
          The internal query object. <code>Use get()</code>
-         @member ejs.TextQuery
+         @member ejs.MatchQuery
          @property {Object} query
          */
     var k,
     v,
     query = {
-      text: {}
+      match: {}
     };
 
     k = key;
     v = value;
-    query.text[k] = {
+    query.match[k] = {
       query: v
     };
 
@@ -37,50 +37,50 @@
       /**
             Sets the boost value for documents matching the <code>Query</code>.
 
-            @member ejs.TextQuery
+            @member ejs.MatchQuery
             @param {Number} boost A positive <code>double</code> value.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       boost: function (boost) {
         if (boost == null) {
-          return query.text[k].boost;
+          return query.match[k].boost;
         }
 
-        query.text[k].boost = boost;
+        query.match[k].boost = boost;
         return this;
       },
 
       /**
             Sets the query string for the <code>Query</code>.
 
-            @member ejs.TextQuery
+            @member ejs.MatchQuery
             @param {String} qstr The query string to search for.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       query: function (qstr) {
         if (qstr == null) {
-          return query.text[k].query;
+          return query.match[k].query;
         }
 
-        query.text[k].query = qstr;
+        query.match[k].query = qstr;
         return this;
       },
 
       /**
-            Sets the type of the <code>textQuery</code>.  Valid values are
+            Sets the type of the <code>MatchQuery</code>.  Valid values are
             boolean, phrase, and phrase_prefix or phrasePrefix.
 
-            @member ejs.TextQuery
+            @member ejs.MatchQuery
             @param {String} type Any of boolean, phrase, phrase_prefix or phrasePrefix.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       type: function (type) {
         if (type == null) {
-          return query.text[k].type;
+          return query.match[k].type;
         }
 
         if (type === 'boolean' || type === 'phrase' || type === 'phrase_prefix' || type === 'phrasePrefix') {
-          query.text[k].type = type;
+          query.match[k].type = type;
         }
 
         return this;
@@ -89,66 +89,66 @@
       /**
             Sets the fuzziness value for the <code>Query</code>.
 
-            @member ejs.TextQuery
+            @member ejs.MatchQuery
             @param {Double} fuzz A <code>double</code> value between 0.0 and 1.0.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       fuzziness: function (fuzz) {
         if (fuzz == null) {
-          return query.text[k].fuzziness;
+          return query.match[k].fuzziness;
         }
 
-        query.text[k].fuzziness = fuzz;
+        query.match[k].fuzziness = fuzz;
         return this;
       },
 
       /**
             Sets the prefix length for a fuzzy prefix <code>textQuery</code>.
 
-            @member ejs.TextQuery
+            @member ejs.MatchQuery
             @param {Integer} l A positive <code>integer</code> length value.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       prefixLength: function (l) {
         if (l == null) {
-          return query.text[k].prefix_length;
+          return query.match[k].prefix_length;
         }
 
-        query.text[k].prefix_length = l;
+        query.match[k].prefix_length = l;
         return this;
       },
 
       /**
             Sets the max expansions of a fuzzy <code>textQuery</code>.
 
-            @member ejs.TextQuery
+            @member ejs.MatchQuery
             @param {Integer} e A positive <code>integer</code> value.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       maxExpansions: function (e) {
         if (e == null) {
-          return query.text[k].max_expansions;
+          return query.match[k].max_expansions;
         }
 
-        query.text[k].max_expansions = e;
+        query.match[k].max_expansions = e;
         return this;
       },
 
       /**
             Sets default operator of the <code>Query</code>.  Default: or.
 
-            @member ejs.TextQuery
+            @member ejs.MatchQuery
             @param {String} op Any of "and" or "or", no quote characters.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       operator: function (op) {
         if (op == null) {
-          return query.text[k].operator;
+          return query.match[k].operator;
         }
 
         op = op.toLowerCase();
         if (op === 'and' || op === 'or') {
-          query.text[k].operator = op;
+          query.match[k].operator = op;
         }
 
         return this;
@@ -158,39 +158,39 @@
             Sets the default slop for phrases. If zero, then exact phrase matches
             are required.  Default: 0.
 
-            @member ejs.TextQuery
+            @member ejs.MatchQuery
             @param {Integer} slop A positive <code>integer</code> value.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       slop: function (slop) {
         if (slop == null) {
-          return query.text[k].slop;
+          return query.match[k].slop;
         }
 
-        query.text[k].slop = slop;
+        query.match[k].slop = slop;
         return this;
       },
 
       /**
             Sets the analyzer name used to analyze the <code>Query</code> object.
 
-            @member ejs.TextQuery
+            @member ejs.MatchQuery
             @param {String} analyzer A valid analyzer name.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       analyzer: function (analyzer) {
         if (analyzer == null) {
-          return query.text[k].analyzer;
+          return query.match[k].analyzer;
         }
 
-        query.text[k].analyzer = analyzer;
+        query.match[k].analyzer = analyzer;
         return this;
       },
 
       /**
             Allows you to serialize this object into a JSON encoded string.
 
-            @member ejs.TextQuery
+            @member ejs.MatchQuery
             @returns {String} returns this object as a serialized JSON string.
             */
       toString: function () {
@@ -201,7 +201,7 @@
             Retrieves the internal <code>query</code> object. This is typically used by
             internal API functions so use with caution.
 
-            @member ejs.TextQuery
+            @member ejs.MatchQuery
             @returns {String} returns this object's internal <code>query</code> property.
             */
       get: function () {
