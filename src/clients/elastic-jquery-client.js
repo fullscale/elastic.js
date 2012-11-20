@@ -19,16 +19,32 @@
       ejs = root.ejs;
     }
   }
-  
+
+  /**
+    @class
+    A <code>jQueryClient</code> is a type of <code>client</code> that uses
+    jQuery for communication with ElasticSearch.
+    
+    @name ejs.jQueryClient
+
+    @desc
+    A client that uses jQuery for communication.
+
+    @param {String} server the ElasticSearch server location.  Leave blank if
+    code is running on the same server as ElasticSearch, ie. in a plugin.  
+    An example server is http://localhost:9200/.
+    */  
   ejs.jQueryClient = function (server) {
     var 
     
+      // jQuery defaults
       options = {
         contentType: 'application/json',
         dataType: 'json',
         processData: false
       },
     
+      // method to ensure the path always starts with a slash
       getPath = function (path) {
         if (path.charAt(0) !== '/') {
           path = '/' + path;
@@ -37,7 +53,8 @@
         return server + path;
       };
     
-      
+    
+    // check that the server path does no end with a slash
     if (server == null) {
       server = '';
     } else if (server.charAt(server.length - 1) === '/') {
@@ -45,7 +62,16 @@
     }
       
     return {
-      
+
+
+      /**
+            Sets the ElasticSearch server location.
+
+            @member ejs.jQueryClient
+            @param {String} server The server url
+            @returns {Object} returns <code>this</code> so that calls can be 
+            chained. Returns {String} current value if `server` is not specified.
+            */
       server: function (s) {
         if (s == null) {
           return server;
@@ -60,6 +86,15 @@
         return this;
       },
       
+      /**
+            Sets a jQuery ajax option.
+
+            @member ejs.jQueryClient
+            @param {String} oKey The option name
+            @param {String} oVal The option value
+            @returns {Object} returns <code>this</code> so that calls can be 
+            chained. Returns the current value of oKey if oVal is not set.
+            */
       option: function (oKey, oVal) {
         if (oKey == null) {
           return options;
@@ -72,6 +107,16 @@
         options[oKey] = oVal;
       },
       
+      /**
+            Performs HTTP GET requests against the server.
+
+            @member ejs.jQueryClient
+            @param {String} path the path to GET from the server
+            @param {Object} data an object of url parameters for the request
+            @param {Function} cb a callback function that will be called with
+              the results of the request.
+            @returns {Object} returns jQuery <code>jqXHR</code> for the request.
+            */
       get: function (path, data, cb) {
         var opt = jQuery.extend({}, options);
         
@@ -83,6 +128,16 @@
         return jQuery.ajax(opt);
       },
       
+      /**
+            Performs HTTP POST requests against the server.
+
+            @member ejs.jQueryClient
+            @param {String} path the path to POST to on the server
+            @param {String} data the POST body
+            @param {Function} cb a callback function that will be called with
+              the results of the request.
+            @returns {Object} returns jQuery <code>jqXHR</code> for the request.
+            */
       post: function (path, data, cb) {
         var opt = jQuery.extend({}, options);
         
@@ -94,6 +149,16 @@
         return jQuery.ajax(opt);  
       },
       
+      /**
+            Performs HTTP PUT requests against the server.
+
+            @member ejs.jQueryClient
+            @param {String} path the path to PUT to on the server
+            @param {String} data the PUT body
+            @param {Function} cb a callback function that will be called with
+              the results of the request.
+            @returns {Object} returns jQuery <code>jqXHR</code> for the request. 
+            */
       put: function (path, data, cb) {
         var opt = jQuery.extend({}, options);
         
@@ -105,6 +170,16 @@
         return jQuery.ajax(opt);
       },
       
+      /**
+            Performs HTTP DELETE requests against the server.
+
+            @member ejs.jQueryClient
+            @param {String} path the path to DELETE to on the server
+            @param {String} data the DELETE body
+            @param {Function} cb a callback function that will be called with
+              the results of the request.
+            @returns {Object} returns jQuery <code>jqXHR</code> for the request. 
+            */
       del: function (path, data, cb) {
         var opt = jQuery.extend({}, options);
         
@@ -116,6 +191,17 @@
         return jQuery.ajax(opt);
       },
       
+      /**
+            Performs HTTP HEAD requests against the server. Same as 
+            <code>get</code>, except only returns headers.
+
+            @member ejs.jQueryClient
+            @param {String} path the path to HEAD to on the server
+            @param {Object} data an object of url parameters.
+            @param {Function} cb a callback function that will be called with
+              the an object of the returned headers.
+            @returns {Object} returns jQuery <code>jqXHR</code> for the request.
+            */
       head: function (path, data, cb) {
         var opt = jQuery.extend({}, options);
         
