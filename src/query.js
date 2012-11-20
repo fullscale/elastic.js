@@ -11,7 +11,7 @@
     on the MatchQuery type.
 
     @param {String} key the document field/key to query against
-    @param {String} value the text query string
+    @param {String} value the query string
     */
   ejs.MatchQuery = function (key, value) {
 
@@ -103,7 +103,7 @@
       },
 
       /**
-            Sets the prefix length for a fuzzy prefix <code>textQuery</code>.
+            Sets the prefix length for a fuzzy prefix <code>MatchQuery</code>.
 
             @member ejs.MatchQuery
             @param {Integer} l A positive <code>integer</code> length value.
@@ -119,7 +119,7 @@
       },
 
       /**
-            Sets the max expansions of a fuzzy <code>textQuery</code>.
+            Sets the max expansions of a fuzzy <code>MatchQuery</code>.
 
             @member ejs.MatchQuery
             @param {Integer} e A positive <code>integer</code> value.
