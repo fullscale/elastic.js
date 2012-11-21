@@ -1,3 +1,5 @@
+'use strict';
+
 module.exports = function (grunt) {
 
   // Project configuration.
@@ -70,8 +72,7 @@ module.exports = function (grunt) {
         'grunt.js', 
         '<config:concat.dist.dest>', 
         'tests/**/*.js',
-        'src/clients/elastic-jquery-client.js',
-        'src/clients/elastic-node-client.js'
+        'src/clients/*.js'
       ]
     },
     watch: {
@@ -81,7 +82,6 @@ module.exports = function (grunt) {
     jshint: {
       options: {
         bitwise: true,
-        jquery: true,
         curly: true,
         eqeqeq: true,
         immed: true,
@@ -92,12 +92,12 @@ module.exports = function (grunt) {
         sub: true,
         undef: true,
         boss: true,
-        eqnull: true
+        eqnull: true,
+        globalstrict: true
       },
       globals: {
         exports: true,
-        module: false,
-        ejs: true
+        module: false
       }
     },
     uglify: {

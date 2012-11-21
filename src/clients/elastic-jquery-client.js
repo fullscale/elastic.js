@@ -1,3 +1,6 @@
+/*jshint jquery:true */
+'use strict';
+
 (function () {
 
   var 
@@ -229,4 +232,4 @@
     };
   };
 
-}(this));
+}());

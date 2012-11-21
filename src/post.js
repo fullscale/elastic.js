@@ -4,4 +4,4 @@
     return this;
   };
   
-}(this));
+}());

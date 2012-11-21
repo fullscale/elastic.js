@@ -1,4 +1,6 @@
 /*global require:true */
+'use strict';
+
 var ejs = require('../dist/elastic.js');
 
 /*

@@ -1,4 +1,6 @@
 /*global require:true */
+'use strict';
+
 (function () {
 
   var 
@@ -271,4 +273,4 @@
     };
   };
 
-}(this));
+}());

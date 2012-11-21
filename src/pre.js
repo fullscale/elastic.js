@@ -1,3 +1,5 @@
+'use strict';
+
 /**
  @namespace
  @name ejs
@@ -13,7 +15,7 @@
     root = this,
     
     // save the previous version of ejs
-    _ejs = root.ejs,
+    _ejs = root && root.ejs,
 
     // from underscore.js, used in utils
     ArrayProto = Array.prototype, 
