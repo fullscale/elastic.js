@@ -1,3 +1,8 @@
+/**
+ @namespace
+ @name ejs
+ @desc All modules are organized under the ejs namespace.
+ */
 (function () {
 
   var 
