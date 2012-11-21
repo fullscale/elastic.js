@@ -16,7 +16,7 @@ module.exports = function (grunt) {
           '<banner:meta.banner>',
           'src/pre.js',
           'src/util.js',
-          'src/facet.js',
+          'src/facet/*.js',
           'src/filter.js',
           'src/index.js',
           'src/query/*.js',
