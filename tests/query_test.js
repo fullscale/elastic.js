@@ -26,8 +26,9 @@ exports.queries = {
     done();
   },
   exists: function (test) {
-    test.expect(17);
+    test.expect(18);
 
+    test.ok(ejs.IdsQuery, 'IdsQuery');
     test.ok(ejs.BoostingQuery, 'BoostingQuery');
     test.ok(ejs.MatchQuery, 'MatchQuery');
     test.ok(ejs.MultiMatchQuery, 'MultiMatchQuery');
@@ -45,6 +46,57 @@ exports.queries = {
     test.ok(ejs.MatchAllQuery, 'SpanNotQuery');
     test.ok(ejs.MatchAllQuery, 'SpanOrQuery');
     test.ok(ejs.MatchAllQuery, 'SpanFirstQuery');
+
+    test.done();
+  },
+  IdsQuery: function (test) {
+    test.expect(11);
+
+    var idsQuery = ejs.IdsQuery('id1'),
+      expected,
+      doTest = function () {
+        test.deepEqual(idsQuery.get(), expected);
+      };
+
+    expected = {
+      ids: {
+        values: ['id1']
+      }
+    };
+
+    test.ok(idsQuery, 'IdsQuery exists');
+    test.ok(idsQuery.get(), 'get() works');
+    doTest();
+    
+    idsQuery = ejs.IdsQuery(['id2', 'id3']);
+    expected.ids.values = ['id2', 'id3'];
+    doTest();
+    
+    idsQuery.values('id4');
+    expected.ids.values.push('id4');
+    doTest();
+    
+    idsQuery.values(['id5', 'id6']);
+    expected.ids.values = ['id5', 'id6'];
+    doTest();
+    
+    idsQuery.type('type1');
+    expected.ids.type = ['type1'];
+    doTest();
+    
+    idsQuery.type('type2');
+    expected.ids.type.push('type2');
+    doTest();
+    
+    idsQuery.type(['type3', 'type4']);
+    expected.ids.type = ['type3', 'type4'];
+    doTest();
+    
+    idsQuery.boost(0.5);
+    expected.ids.boost = 0.5;
+    doTest();
+    
+    test.strictEqual(idsQuery.toString(), JSON.stringify(expected));
 
     test.done();
   },
