@@ -1,6 +1,6 @@
 # elastic.js
 
-`elastic.js` is a JavaScript implementation of the [elasticsearch](http://www.elasticsearch.org/) Query [DSL](http://www.elasticsearch.org/guide/reference/query-dsl/).
+A JavaScript implementation of the [elasticsearch](http://www.elasticsearch.org/) Query [DSL](http://www.elasticsearch.org/guide/reference/query-dsl/).
 
 ## Getting Started
 ### Building From Source
@@ -18,13 +18,12 @@ _(Coming Soon)_
 ### Client Implementations ###
 In order to run on both client and server, elastic.js provides an interface that allows you to plug in different client implementations.
 This provides the flexibility to run in different environments across different JavaScript frameworks while still maintaining a fairly
-consistent experience.
-
-Below are some client implementations we provide by default.
+consistent experience. Below are some client implementations we provide by default.
 
 #### node.js ####
-A mode.js client implementation for use on the server side.
+A node.js client implementation for use on the server side.
 
+```javascript
     /* A simple search example using elasticjs on node */
     (function() {
 
@@ -57,10 +56,12 @@ A mode.js client implementation for use on the server side.
         r.get(resultsCallBack);
 
     })(this);
+```
 
 #### jQuery ####
 A jQuery client implementation for general use from within a browser.
 
+```javascript
     (function($) {
     
         /* setup client */
@@ -89,10 +90,12 @@ A jQuery client implementation for general use from within a browser.
         r.get(resultsCallBack);
 
     })(jQuery);
+```
 
 #### Angular.js ####
 An angular.js service module that can be injected into your controllers via angular's dependency injection.
 
+```javascript
     /* start by injecting the module into your application */
     angular.module('MyApp', ['MyApp.controllers', 'elasticjs.service']);
    
@@ -103,13 +106,14 @@ An angular.js service module that can be injected into your controllers via angu
             /* instantiate (takes an optional url string) */
             var ejs = ejsResource();
 
-            /* returns a promise - get() also takes success/error callbacks args */
+            /* returns a promise - get() also takes success/error callback args */
             $scope.results = ejs.Request()
                 .collections("twitter") 
                 .types("tweet")
                 .query(ejs.TermQuery("user", "kimchy"))
                 .get();
         )};
+```
 
 ## Contributing
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [grunt](http://gruntjs.com/).
