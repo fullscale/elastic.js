@@ -26,8 +26,9 @@ exports.queries = {
     done();
   },
   exists: function (test) {
-    test.expect(16);
+    test.expect(17);
 
+    test.ok(ejs.BoostingQuery, 'BoostingQuery');
     test.ok(ejs.MatchQuery, 'MatchQuery');
     test.ok(ejs.MultiMatchQuery, 'MultiMatchQuery');
     test.ok(ejs.TermQuery, 'TermQuery');
@@ -44,6 +45,49 @@ exports.queries = {
     test.ok(ejs.MatchAllQuery, 'SpanNotQuery');
     test.ok(ejs.MatchAllQuery, 'SpanOrQuery');
     test.ok(ejs.MatchAllQuery, 'SpanFirstQuery');
+
+    test.done();
+  },
+  BoostingQuery: function (test) {
+    test.expect(8);
+
+    var termQuery1 = ejs.TermQuery('t1', 'v1'),
+      termQuery2 = ejs.TermQuery('t2', 'v2'),
+      boostingQuery = ejs.BoostingQuery(termQuery1, termQuery2, 0.2),
+      expected,
+      doTest = function () {
+        test.deepEqual(boostingQuery.get(), expected);
+      };
+
+    expected = {
+      boosting: {
+        positive: termQuery1.get(),
+        negative: termQuery2.get(),
+        negative_boost: 0.2
+      }
+    };
+
+    test.ok(boostingQuery, 'BoostingQuery exists');
+    test.ok(boostingQuery.get(), 'get() works');
+    doTest();
+
+    boostingQuery.positive(termQuery2);
+    expected.boosting.positive = termQuery2.get();
+    doTest();
+    
+    boostingQuery.negative(termQuery1);
+    expected.boosting.negative = termQuery1.get();
+    doTest();
+    
+    boostingQuery.negativeBoost(0.6);
+    expected.boosting.negative_boost = 0.6;
+    doTest();
+    
+    boostingQuery.boost(3);
+    expected.boosting.boost = 3;
+    doTest();
+    
+    test.strictEqual(boostingQuery.toString(), JSON.stringify(expected));
 
     test.done();
   },
