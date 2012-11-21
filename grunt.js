@@ -17,7 +17,7 @@ module.exports = function (grunt) {
           'src/pre.js',
           'src/util.js',
           'src/facet/*.js',
-          'src/filter.js',
+          'src/filter/*.js',
           'src/index.js',
           'src/query/*.js',
           'src/search.js',
