@@ -77,7 +77,7 @@
         if (arguments.length === 0) {
           return query.sort;
         }
-        
+      
         var sorter = {};
         sorter[fieldName] = order;
         query.sort.push(sorter);
@@ -96,7 +96,7 @@
         if (s == null) {
           return query.size;
         }
-        
+      
         query.size = s;
         return this;
       },
@@ -113,7 +113,7 @@
         if (fieldList == null) {
           return query.fields;
         }
-        
+      
         query.fields = fieldList;
         return this;
       },
@@ -132,7 +132,7 @@
         if (f == null) {
           return query.from;
         }
-          
+        
         query.from = f;
         return this;
       },
@@ -149,7 +149,7 @@
         if (someQuery == null) {
           return query.query;
         }
-        
+      
         query.query = someQuery.get();
         return this;
       },
@@ -218,11 +218,11 @@
         if (facet == null) {
           return query.facets;
         }
-        
+      
         if (query.facets == null) {
           query.facets = {};
         }
-        
+      
         extend(query.facets, facet.get());
 
         return this;
@@ -239,7 +239,7 @@
         if (filter == null) {
           return query.filter;
         }
-        
+      
         query.filter = filter.get();
         return this;
       },
@@ -261,7 +261,7 @@
         if (fieldNames == null) {
           return query.highlight.fields;
         }
-        
+      
         for (i = 0, len = fieldNames.length; i < len; i++) {
           query.highlight.fields[fieldNames[i]] = {};
         }
@@ -287,7 +287,7 @@
         if (arguments.length === 0) {
           return query.highlight.pre_tags;
         }
-        
+      
         if (oField == null) {
           query.highlight.pre_tags = tags;
         } else {
@@ -316,7 +316,7 @@
         if (arguments.length === 0) {
           return query.highlight.post_tags;
         }
-        
+      
         if (oField == null) {
           query.highlight.post_tags = tags;
         } else {
@@ -345,7 +345,7 @@
         if (arguments.length === 0) {
           return query.highlight.tags_schema;
         }
-        
+      
         if (oField == null) {
           query.highlight.tags_schema = tagSchema;
         } else {
@@ -374,7 +374,7 @@
         if (arguments.length === 0) {
           return query.highlight.number_of_fragments;
         }
-        
+      
         if (oField == null) {
           query.highlight.number_of_fragments = num;
         } else {
@@ -403,7 +403,7 @@
         if (arguments.length === 0) {
           return query.highlight.fragment_size;
         }
-        
+      
         if (oField == null) {
           query.highlight.fragment_size = num;
         } else {
@@ -425,12 +425,12 @@
         if (oComputedProperty == null) {
           return query.script_fields;
         }
-        
+      
         if (query.script_fields == null) {
           query.script_fields = {};
         }
-        
-        
+      
+      
         extend(query.script_fields, oComputedProperty.get());
         return this;
       },
@@ -453,7 +453,7 @@
         if (perf == null) {
           return query.perference;
         }
-        
+      
         query.perference = perf;
         return this;
       },
@@ -474,7 +474,7 @@
         if (arguments.length === 0) {
           return query.indices_boost;
         }
-        
+      
         query.indices_boost[index] = boost;
         return this;
       },
@@ -490,7 +490,7 @@
         if (trueFalse == null) {
           return query.explain;
         } 
-          
+        
         query.explain = trueFalse;
         return this;
       },
@@ -506,7 +506,7 @@
         if (trueFalse == null) {
           return query.version;
         }
-          
+        
         query.version = trueFalse;
         return this;
       },
@@ -522,7 +522,7 @@
         if (min == null) {
           return query.min_score;
         }
-          
+        
         query.min_score = min;
         return this;
       },
@@ -549,12 +549,12 @@
         var 
           queryData = JSON.stringify(query),
           searchUrl = '';
-        
+      
         // make sure the user has set a client
         if (ejs.client == null) {
           throw new Error("No Client Set");
         }
-            
+          
         // generate the search url
         if (indices.length > 0) {
           searchUrl = searchUrl + '/' + indices.join();
@@ -563,108 +563,9 @@
         if (types.length > 0) {
           searchUrl = searchUrl + '/' + types.join();
         }
-          
+        
         searchUrl = searchUrl + '/_search';
         return ejs.client.post(searchUrl, queryData, fnCallBack);
       }
     };
   };
-
-  /**
-    @class
-    <p>Computed properties allow you create dynamic fields on stored documents at query
-    time. For example, you might have a set of document thats containsthe fields
-    <code>price</code> and <code>quantity</code>. At query time, you could define a computed
-    property that dynamically creates a new field called <code>total</code>in each document
-    based on the calculation <code>price * quantity</code>.</p>
-
-    <p><strong>Note:</strong> This module contains a related code example.&nbsp;
-    <a target="_blank" class="btn c9" href="https://gist.github.com/1895052">View Code Example</a></p>
-
-    @name ejs.ComputedProperty
-
-    @desc
-    <p>Computes dynamic document properties based on information from other fields.</p>
-
-    @param {String} fieldName A name of the computed property to create.
-  
-    */
-  ejs.ComputedProperty = function (fieldName) {
-    var script = {};
-
-    script[fieldName] = {};
-
-    return {
-
-      /**
-            The script language being used. Currently supported values are
-            <code>javascript</code> and <code>mvel</code>.
-
-            @member ejs.ComputedProperty
-            @param {String} language The language of the script.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      lang: function (language) {
-        if (language == null) {
-          return script[fieldName].lang;
-        }
-        
-        script[fieldName].lang = language;
-        return this;
-      },
-
-      /**
-            Sets the script/code that will be used to perform the calculation.
-
-            @member ejs.ComputedProperty
-            @param {String} expression The script/code to use.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      script: function (expression) {
-        if (expression == null) {
-          return script[fieldName].script;
-        }
-        
-        script[fieldName].script = expression;
-        return this;
-      },
-
-      /**
-            Allows you to set script parameters to be used during the execution of the script.
-
-            @member ejs.ComputedProperty
-            @param {Object} oParams An object containing key/value pairs representing param name/value.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      params: function (oParams) {
-        if (oParams == null) {
-          return script[fieldName].params;
-        }
-        
-        script[fieldName].params = oParams;
-        return this;
-      },
-
-      /**
-            Allows you to serialize this object into a JSON encoded string.
-
-            @member ejs.ComputedProperty
-            @returns {String} returns this object as a serialized JSON string.
-            */
-      toString: function () {
-        return JSON.stringify(script);
-      },
-
-      /**
-            Retrieves the internal <code>script</code> object. This is typically used by
-            internal API functions so use with caution.
-
-            @member ejs.ComputedProperty
-            @returns {String} returns this object's internal <code>facet</code> property.
-            */
-      get: function () {
-        return script;
-      }
-    };
-  };
-
