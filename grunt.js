@@ -39,6 +39,13 @@ module.exports = function (grunt) {
           'src/clients/elastic-jquery-client.js'
         ],
         dest: 'dist/elastic-jquery-client.js'
+      },
+      client_angular: {
+        src: [
+          '<banner:meta.banner>',
+          'src/clients/elastic-angular-client.js'
+        ],
+        dest: 'dist/elastic-angular-client.js'
       }
     },
     min: {
@@ -49,6 +56,10 @@ module.exports = function (grunt) {
       client_jquery: {
         src: ['<banner:meta.banner>', 'src/clients/elastic-jquery-client.js'],
         dest: 'dist/elastic-jquery-client.min.js'
+      },
+      client_angular: {
+        src: ['<banner:meta.banner>', 'src/clients/elastic-angular-client.js'],
+        dest: 'dist/elastic-angular-client.min.js'
       }
     },
     test: {
@@ -59,7 +70,8 @@ module.exports = function (grunt) {
         'grunt.js', 
         '<config:concat.dist.dest>', 
         'tests/**/*.js',
-        'src/clients/*.js'
+        'src/clients/elastic-jquery-client.js',
+        'src/clients/elastic-node-client.js'
       ]
     },
     watch: {

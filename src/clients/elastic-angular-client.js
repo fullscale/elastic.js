@@ -22,10 +22,10 @@ angular.module('elasticjs.service', [])
                     return undefined;
                 });
             };
-        
+ 
             /* implement the elastic.js client interface for angular */
             ejs.client = {
-                server: function(s) {
+                server: function (s) {
                     if (s === null) {
                         return url;
                     } else {
@@ -37,25 +37,25 @@ angular.module('elasticjs.service', [])
                     path = url + path;
                     return promiseThen($http.post(path, data), successcb, errorcb);
                 },
-                get: function(path, data, successcb, errorcb) {
+                get: function (path, data, successcb, errorcb) {
                     path = url + path;
                     return promiseThen($http.get(path, data), successcb, errorcb);
                 },
-                put: function(path, data, successcb, errorcb) {
+                put: function (path, data, successcb, errorcb) {
                     path = url + path;
                     return promiseThen($http.put(path, data), successcb, errorcb);
                 },
-                del: function(path, data, successcb, errorcb) {
+                del: function (path, data, successcb, errorcb) {
                     path = url + path;
                     return promiseThen($http.delee(path, data), successcb, errorcb);
                 },
-                head: function(path, data, successcb, errorcb) {
+                head: function (path, data, successcb, errorcb) {
                     path = url + path;
                     return $http.head(path, data)
-                        .then(function(response) {
+                        .then(function (response) {
                             (successcb || angular.noop)(response.headers());
                             return response.headers();
-                        }, function(response) {
+                        }, function (response) {
                             (errorcb || angular.noop)(undefined);
                             return undefined;
                         });
