@@ -7,7 +7,7 @@ Angular.js service wrapping the elastic.js API. This module can simply
 be injected into your angular controllers. 
 */
 angular.module('elasticjs.service', [])
-  .factory('ejsResource', function ($http) {
+  .factory('ejsResource', ['$http', function ($http) {
 
   return function (url) {
 
@@ -73,4 +73,4 @@ angular.module('elasticjs.service', [])
   
     return ejs;
   };
-});
+}]);
