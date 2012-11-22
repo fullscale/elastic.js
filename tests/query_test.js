@@ -28,8 +28,9 @@ exports.queries = {
     done();
   },
   exists: function (test) {
-    test.expect(18);
+    test.expect(19);
 
+    test.ok(ejs.CustomScoreQuery, 'CustomScoreQuery');
     test.ok(ejs.IdsQuery, 'IdsQuery');
     test.ok(ejs.BoostingQuery, 'BoostingQuery');
     test.ok(ejs.MatchQuery, 'MatchQuery');
@@ -48,6 +49,56 @@ exports.queries = {
     test.ok(ejs.MatchAllQuery, 'SpanNotQuery');
     test.ok(ejs.MatchAllQuery, 'SpanOrQuery');
     test.ok(ejs.MatchAllQuery, 'SpanFirstQuery');
+
+    test.done();
+  },
+  CustomScoreQuery: function (test) {
+    test.expect(10);
+
+    var termQuery = ejs.TermQuery('t1', 'v1'),
+      termQuery2 = ejs.TermQuery('t2', 'v2'),
+      customScoreQuery = ejs.CustomScoreQuery(termQuery, 's1'),
+      expected,
+      doTest = function () {
+        test.deepEqual(customScoreQuery.get(), expected);
+      };
+
+    expected = {
+      custom_score: {
+        query: termQuery.get(),
+        script: 's1'
+      }
+    };
+
+    test.ok(customScoreQuery, 'CustomScoreQuery exists');
+    test.ok(customScoreQuery.get(), 'get() works');
+    doTest();
+    
+    customScoreQuery.query(termQuery2);
+    expected.custom_score.query = termQuery2.get();
+    doTest();
+    
+    customScoreQuery.script('s2');
+    expected.custom_score.script = 's2';
+    doTest();
+    
+    customScoreQuery.lang('native');
+    expected.custom_score.lang = 'native';
+    doTest();
+    
+    customScoreQuery.boost(1.2);
+    expected.custom_score.boost = 1.2;
+    doTest();
+    
+    customScoreQuery.params({p1: 'v1', p2: 'v2'});
+    expected.custom_score.params = {p1: 'v1', p2: 'v2'};
+    doTest();
+    
+    customScoreQuery.params({p3: 'v3'});
+    expected.custom_score.params = {p3: 'v3'};
+    doTest();
+    
+    test.strictEqual(customScoreQuery.toString(), JSON.stringify(expected));
 
     test.done();
   },
