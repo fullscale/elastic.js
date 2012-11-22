@@ -10,14 +10,14 @@
     <p><strong>Note:</strong> This module contains a related code example.&nbsp;
     <a target="_blank" class="btn c9" href="https://gist.github.com/1893397">View Code Example</a></p>
 
-    @name ejs.QueryString
+    @name ejs.QueryStringQuery
 
     @desc
     A query that is parsed using Lucene's default query parser.
 
     @param {String} queryStr A valid Lucene query string.
     */
-  ejs.QueryString = function (queryStr) {
+  ejs.QueryStringQuery = function (queryStr) {
 
     var query = {
       query_string: {}
@@ -30,7 +30,7 @@
       /**
             Sets the query string on this <code>Query</code> object.
 
-            @member ejs.QueryString
+            @member ejs.QueryStringQuery
             @param {String} queryStr A valid Lucene query string.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
@@ -46,7 +46,7 @@
       /**
             Sets the default field/property this query should execute against.
 
-            @member ejs.QueryString
+            @member ejs.QueryStringQuery
             @param {String} fieldName The name of document field/property.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
@@ -66,7 +66,7 @@
             DisjunctionMaxQuery</a> (if <code>dismax</code> is set to <code>true</code>) or
             <code>boolQuery</code> if <code>dismax</code> is set to <code>false</code>.
 
-            @member ejs.QueryString
+            @member ejs.QueryStringQuery
             @param {Array} fieldNames A list of document fields/properties.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
@@ -84,7 +84,7 @@
             <a href="http://lucene.apache.org/java/3_0_0/api/core/org/apache/lucene/search/DisjunctionMaxQuery.html">
             DisjunctionMaxQuery</a>
 
-            @member ejs.QueryString
+            @member ejs.QueryStringQuery
             @param {String} trueFalse A <code>true/false</code> value.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
@@ -102,7 +102,7 @@
             terms when no operator is explicity used in the query string (i.e., <code>this AND that</code>).
             Defaults to <code>OR</code> (<em>same as Google</em>).
 
-            @member ejs.QueryString
+            @member ejs.QueryStringQuery
             @param {String} op The boost value to apply.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
@@ -121,7 +121,7 @@
       /**
             Sets the analyzer name used to analyze the <code>Query</code> object.
 
-            @member ejs.QueryString
+            @member ejs.QueryStringQuery
             @param {String} analyzer A valid analyzer name.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
@@ -138,7 +138,7 @@
             Sets whether or not wildcard characters (* and ?) are allowed as the
             first character of the <code>Query</code>.  Default: true.
 
-            @member ejs.QueryString
+            @member ejs.QueryStringQuery
             @param {Boolean} trueFalse A <code>true/false</code> value.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
@@ -156,7 +156,7 @@
             range queries should automatically be lowercased in the <code>Query</code>
             since they are not analyzed.  Default: true.
 
-            @member ejs.QueryString
+            @member ejs.QueryStringQuery
             @param {Boolean} trueFalse A <code>true/false</code> value.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
@@ -173,7 +173,7 @@
             Sets whether or not position increments will be used in the
             <code>Query</code>. Default: true.
 
-            @member ejs.QueryString
+            @member ejs.QueryStringQuery
             @param {Boolean} trueFalse A <code>true/false</code> value.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
@@ -190,7 +190,7 @@
       /**
             Sets the prefix length for fuzzy queries.  Default: 0.
 
-            @member ejs.QueryString
+            @member ejs.QueryStringQuery
             @param {Integer} fuzzLen A positive <code>integer</code> value.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
@@ -206,7 +206,7 @@
       /**
             Set the minimum similarity for fuzzy queries.  Default: 0.5.
 
-            @member ejs.QueryString
+            @member ejs.QueryStringQuery
             @param {Double} minSim A <code>double</code> value between 0 and 1.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
@@ -223,7 +223,7 @@
             Sets the default slop for phrases. If zero, then exact phrase matches
             are required.  Default: 0.
 
-            @member ejs.QueryString
+            @member ejs.QueryStringQuery
             @param {Integer} slop A positive <code>integer</code> value.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
@@ -239,7 +239,7 @@
       /**
             Sets the boost value of the <code>Query</code>.  Default: 1.0.
 
-            @member ejs.QueryString
+            @member ejs.QueryStringQuery
             @param {Double} boost A positive <code>double</code> value.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
@@ -257,7 +257,7 @@
             <code>Query</code>. By default, wildcard terms are not analyzed.
             Analysis of wildcard characters is not perfect.  Default: false.
 
-            @member ejs.QueryString
+            @member ejs.QueryStringQuery
             @param {Boolean} trueFalse A <code>true/false</code> value.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
@@ -274,7 +274,7 @@
             Sets whether or not we should auto generate phrase queries *if* the
             analyzer returns more than one term. Default: false.
 
-            @member ejs.QueryString
+            @member ejs.QueryStringQuery
             @param {Boolean} trueFalse A <code>true/false</code> value.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
@@ -291,7 +291,7 @@
             Sets a percent value controlling how many "should" clauses in the
             resulting <code>Query</code> should match.
 
-            @member ejs.QueryString
+            @member ejs.QueryStringQuery
             @param {Integer} minMatch An <code>integer</code> between 0 and 100.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
@@ -312,7 +312,7 @@
             fields, without confusing this with the better case of two different
             terms in the multiple fields.  Default: 0.0.
 
-            @member ejs.QueryString
+            @member ejs.QueryStringQuery
             @param {Double} tieBreaker A positive <code>double</code> value.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
@@ -328,7 +328,7 @@
       /**
             Allows you to serialize this object into a JSON encoded string.
 
-            @member ejs.QueryString
+            @member ejs.QueryStringQuery
             @returns {String} returns this object as a serialized JSON string.
             */
       toString: function () {
@@ -339,7 +339,7 @@
             Retrieves the internal <code>query</code> object. This is typically used by
             internal API functions so use with caution.
 
-            @member ejs.QueryString
+            @member ejs.QueryStringQuery
             @returns {String} returns this object's internal <code>query</code> property.
             */
       get: function () {

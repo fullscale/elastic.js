@@ -38,7 +38,7 @@ exports.queries = {
     test.ok(ejs.BoolQuery, 'BoolQuery');
     test.ok(ejs.FieldQuery, 'FieldQuery');
     test.ok(ejs.DisMaxQuery, 'DisMaxQuery');
-    test.ok(ejs.QueryString, 'QueryString');
+    test.ok(ejs.QueryStringQuery, 'QueryStringQuery');
     test.ok(ejs.FilteredQuery, 'FilteredQuery');
     test.ok(ejs.NestedQuery, 'NestedQuery');
     test.ok(ejs.ConstantScoreQuery, 'ConstantScoreQuery');
@@ -529,10 +529,10 @@ exports.queries = {
 
     test.done();
   },
-  QueryString: function (test) {
+  QueryStringQuery: function (test) {
     test.expect(23);
 
-    var queryString = ejs.QueryString('this AND that'),
+    var queryString = ejs.QueryStringQuery('this AND that'),
       expected,
       doTest = function () {
         test.deepEqual(queryString.get(), expected);
