@@ -28,8 +28,9 @@ exports.queries = {
     done();
   },
   exists: function (test) {
-    test.expect(19);
+    test.expect(20);
 
+    test.ok(ejs.CustomBoostFactorQuery, 'CustomBoostFactorQuery');
     test.ok(ejs.CustomScoreQuery, 'CustomScoreQuery');
     test.ok(ejs.IdsQuery, 'IdsQuery');
     test.ok(ejs.BoostingQuery, 'BoostingQuery');
@@ -49,6 +50,43 @@ exports.queries = {
     test.ok(ejs.MatchAllQuery, 'SpanNotQuery');
     test.ok(ejs.MatchAllQuery, 'SpanOrQuery');
     test.ok(ejs.MatchAllQuery, 'SpanFirstQuery');
+
+    test.done();
+  },
+  CustomBoostFactorQuery: function (test) {
+    test.expect(7);
+
+    var termQuery = ejs.TermQuery('t1', 'v1'),
+      termQuery2 = ejs.TermQuery('t2', 'v2'),
+      cbfQuery = ejs.CustomBoostFactorQuery(termQuery),
+      expected,
+      doTest = function () {
+        test.deepEqual(cbfQuery.get(), expected);
+      };
+
+    expected = {
+      custom_boost_factor: {
+        query: termQuery.get()
+      }
+    };
+
+    test.ok(cbfQuery, 'CustomScoreQuery exists');
+    test.ok(cbfQuery.get(), 'get() works');
+    doTest();
+    
+    cbfQuery.query(termQuery2);
+    expected.custom_boost_factor.query = termQuery2.get();
+    doTest();
+    
+    cbfQuery.boostFactor(5.1);
+    expected.custom_boost_factor.boost_factor = 5.1;
+    doTest();
+    
+    cbfQuery.boost(1.2);
+    expected.custom_boost_factor.boost = 1.2;
+    doTest();
+    
+    test.strictEqual(cbfQuery.toString(), JSON.stringify(expected));
 
     test.done();
   },
