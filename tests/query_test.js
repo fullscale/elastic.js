@@ -50,11 +50,11 @@ exports.queries = {
     test.ok(ejs.NestedQuery, 'NestedQuery');
     test.ok(ejs.ConstantScoreQuery, 'ConstantScoreQuery');
     test.ok(ejs.MatchAllQuery, 'MatchAllQuery');
-    test.ok(ejs.MatchAllQuery, 'SpanTermQuery');
-    test.ok(ejs.MatchAllQuery, 'SpanNearQuery');
-    test.ok(ejs.MatchAllQuery, 'SpanNotQuery');
-    test.ok(ejs.MatchAllQuery, 'SpanOrQuery');
-    test.ok(ejs.MatchAllQuery, 'SpanFirstQuery');
+    test.ok(ejs.SpanTermQuery, 'SpanTermQuery');
+    test.ok(ejs.SpanNearQuery, 'SpanNearQuery');
+    test.ok(ejs.SpanNotQuery, 'SpanNotQuery');
+    test.ok(ejs.SpanOrQuery, 'SpanOrQuery');
+    test.ok(ejs.SpanFirstQuery, 'SpanFirstQuery');
 
     test.done();
   },
