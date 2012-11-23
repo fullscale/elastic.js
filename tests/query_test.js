@@ -28,8 +28,9 @@ exports.queries = {
     done();
   },
   exists: function (test) {
-    test.expect(23);
+    test.expect(24);
 
+    test.ok(ejs.HasChildQuery, 'HasChildQuery');
     test.ok(ejs.FuzzyQuery, 'FuzzyQuery');
     test.ok(ejs.FuzzyLikeThisFieldQuery, 'FuzzyLikeThisFieldQuery');
     test.ok(ejs.FuzzyLikeThisQuery, 'FuzzyLikeThisQuery');
@@ -53,6 +54,48 @@ exports.queries = {
     test.ok(ejs.MatchAllQuery, 'SpanNotQuery');
     test.ok(ejs.MatchAllQuery, 'SpanOrQuery');
     test.ok(ejs.MatchAllQuery, 'SpanFirstQuery');
+
+    test.done();
+  },
+  HasChildQuery: function (test) {
+    test.expect(8);
+
+    var termQuery = ejs.TermQuery('t1', 'v1'),
+      termQuery2 = ejs.TermQuery('t2', 'v2'),
+      hasChildQuery = ejs.HasChildQuery(termQuery, 't1'),
+      expected,
+      doTest = function () {
+        test.deepEqual(hasChildQuery.get(), expected);
+      };
+
+    expected = {
+      has_child: {
+        query: termQuery.get(),
+        type: 't1'
+      }
+    };
+
+    test.ok(hasChildQuery, 'HasChildQuery exists');
+    test.ok(hasChildQuery.get(), 'get() works');
+    doTest();
+    
+    hasChildQuery.query(termQuery2);
+    expected.has_child.query = termQuery2.get();
+    doTest();
+    
+    hasChildQuery.type('t2');
+    expected.has_child.type = 't2';
+    doTest();
+    
+    hasChildQuery.scope('my_scope');
+    expected.has_child._scope = 'my_scope';
+    doTest();
+    
+    hasChildQuery.boost(1.2);
+    expected.has_child.boost = 1.2;
+    doTest();
+    
+    test.strictEqual(hasChildQuery.toString(), JSON.stringify(expected));
 
     test.done();
   },
