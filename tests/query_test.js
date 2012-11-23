@@ -28,8 +28,9 @@ exports.queries = {
     done();
   },
   exists: function (test) {
-    test.expect(21);
+    test.expect(22);
 
+    test.ok(ejs.FuzzyLikeThisFieldQuery, 'FuzzyLikeThisFieldQuery');
     test.ok(ejs.FuzzyLikeThisQuery, 'FuzzyLikeThisQuery');
     test.ok(ejs.CustomBoostFactorQuery, 'CustomBoostFactorQuery');
     test.ok(ejs.CustomScoreQuery, 'CustomScoreQuery');
@@ -51,6 +52,69 @@ exports.queries = {
     test.ok(ejs.MatchAllQuery, 'SpanNotQuery');
     test.ok(ejs.MatchAllQuery, 'SpanOrQuery');
     test.ok(ejs.MatchAllQuery, 'SpanFirstQuery');
+
+    test.done();
+  },
+  FuzzyLikeThisFieldQuery: function (test) {
+    test.expect(12);
+
+    var fltQuery = ejs.FuzzyLikeThisFieldQuery('f1', 'like text'),
+      expected,
+      doTest = function () {
+        test.deepEqual(fltQuery.get(), expected);
+      };
+
+    expected = {
+      flt_field: {
+        f1: {
+          like_text: 'like text'
+        }
+      }
+    };
+
+    test.ok(fltQuery, 'FuzzyLikeThisFieldQuery exists');
+    test.ok(fltQuery.get(), 'get() works');
+    doTest();
+    
+    fltQuery.likeText('like text 2');
+    expected.flt_field.f1.like_text = 'like text 2';
+    doTest();
+    
+    fltQuery.field('f2');
+    expected = {
+      flt_field: {
+        f2: {
+          like_text: 'like text 2'
+        }
+      }
+    };
+    doTest();
+    
+    fltQuery.ignoreTf(false);
+    expected.flt_field.f2.ignore_tf = false;
+    doTest();
+    
+    fltQuery.maxQueryTerms(10);
+    expected.flt_field.f2.max_query_terms = 10;
+    doTest();
+    
+    fltQuery.minSimilarity(0.6);
+    expected.flt_field.f2.min_similarity = 0.6;
+    doTest();
+    
+    fltQuery.prefixLength(4);
+    expected.flt_field.f2.prefix_length = 4;
+    doTest();
+    
+    fltQuery.analyzer('some analyzer');
+    expected.flt_field.f2.analyzer = 'some analyzer';
+    doTest();
+    
+    fltQuery.boost(1.2);
+    expected.flt_field.f2.boost = 1.2;
+    doTest();
+    
+    test.strictEqual(fltQuery.toString(), JSON.stringify(expected));
 
     test.done();
   },
