@@ -19,8 +19,8 @@
 
     /**
          The internal Query object. Use <code>get()</code>.
-         @member ejs.ConstantScoreQuery
-         @property {Object} ConstantScoreQuery
+         @member ejs.BoostingQuery
+         @property {Object} BoostingQuery
          */
     var query = {
       boosting: {

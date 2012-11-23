@@ -15,8 +15,8 @@
 
     /**
          The internal query object. <code>Use get()</code>
-         @member ejs.SpanOrQuery
-         @property {Object} query
+         @member ejs.IdsQuery
+         @property {Object} IdsQuery
          */
     var query = {
       ids: {}

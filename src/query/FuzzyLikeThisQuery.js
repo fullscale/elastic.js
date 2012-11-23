@@ -24,7 +24,8 @@
     @desc
     <p>Constructs a query where each documents returned are “like” provided text</p>
 
-     */
+    @param {String} likeText The text to find documents like it.
+    */
   ejs.FuzzyLikeThisQuery = function (likeText) {
 
     /**

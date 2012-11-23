@@ -13,7 +13,10 @@
 
     @desc
     <p>Constructs a query where each documents returned are “like” provided text</p>
-
+    
+    @param {String} field The field to run the fuzzy query against.
+    @param {String} value The value to fuzzify.
+    
      */
   ejs.FuzzyQuery = function (field, value) {
 
