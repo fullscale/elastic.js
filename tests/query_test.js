@@ -28,8 +28,9 @@ exports.queries = {
     done();
   },
   exists: function (test) {
-    test.expect(26);
+    test.expect(27);
 
+    test.ok(ejs.MoreLikeThisFieldQuery, 'MoreLikeThisFieldQuery');
     test.ok(ejs.MoreLikeThisQuery, 'MoreLikeThisQuery');
     test.ok(ejs.HasParentQuery, 'HasParentQuery');
     test.ok(ejs.HasChildQuery, 'HasChildQuery');
@@ -56,6 +57,89 @@ exports.queries = {
     test.ok(ejs.SpanNotQuery, 'SpanNotQuery');
     test.ok(ejs.SpanOrQuery, 'SpanOrQuery');
     test.ok(ejs.SpanFirstQuery, 'SpanFirstQuery');
+
+    test.done();
+  },
+  MoreLikeThisFieldQuery: function (test) {
+    test.expect(17);
+
+    var mltQuery = ejs.MoreLikeThisFieldQuery('f1', 'like text'),
+      expected,
+      doTest = function () {
+        test.deepEqual(mltQuery.get(), expected);
+      };
+
+    expected = {
+      mlt_field: {
+        f1: {
+          like_text: 'like text'
+        }
+      }
+    };
+
+    test.ok(mltQuery, 'MoreLikeThisFieldQuery exists');
+    test.ok(mltQuery.get(), 'get() works');
+    doTest();
+    
+    mltQuery.likeText('like text 2');
+    expected.mlt_field.f1.like_text = 'like text 2';
+    doTest();
+    
+    mltQuery.field('f2');
+    expected = {
+      mlt_field: {
+        f2: {
+          like_text: 'like text 2'
+        }
+      }
+    };
+    doTest();
+    
+    mltQuery.percentTermsToMatch(0.7);
+    expected.mlt_field.f2.percent_terms_to_match = 0.7;
+    doTest();
+    
+    mltQuery.minTermFreq(3);
+    expected.mlt_field.f2.min_term_freq = 3;
+    doTest();
+    
+    mltQuery.maxQueryTerms(6);
+    expected.mlt_field.f2.max_query_terms = 6;
+    doTest();
+    
+    mltQuery.stopWords(['s1', 's2']);
+    expected.mlt_field.f2.stop_words = ['s1', 's2'];
+    doTest();
+    
+    mltQuery.minDocFreq(2);
+    expected.mlt_field.f2.min_doc_freq = 2;
+    doTest();
+    
+    mltQuery.maxDocFreq(4);
+    expected.mlt_field.f2.max_doc_freq = 4;
+    doTest();
+    
+    mltQuery.minWordLen(3);
+    expected.mlt_field.f2.min_word_len = 3;
+    doTest();
+    
+    mltQuery.maxWordLen(6);
+    expected.mlt_field.f2.max_word_len = 6;
+    doTest();
+    
+    mltQuery.boostTerms(1.3);
+    expected.mlt_field.f2.boost_terms = 1.3;
+    doTest();
+    
+    mltQuery.analyzer('some analyzer');
+    expected.mlt_field.f2.analyzer = 'some analyzer';
+    doTest();
+    
+    mltQuery.boost(1.2);
+    expected.mlt_field.f2.boost = 1.2;
+    doTest();
+    
+    test.strictEqual(mltQuery.toString(), JSON.stringify(expected));
 
     test.done();
   },
