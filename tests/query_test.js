@@ -28,8 +28,9 @@ exports.queries = {
     done();
   },
   exists: function (test) {
-    test.expect(22);
+    test.expect(23);
 
+    test.ok(ejs.FuzzyQuery, 'FuzzyQuery');
     test.ok(ejs.FuzzyLikeThisFieldQuery, 'FuzzyLikeThisFieldQuery');
     test.ok(ejs.FuzzyLikeThisQuery, 'FuzzyLikeThisQuery');
     test.ok(ejs.CustomBoostFactorQuery, 'CustomBoostFactorQuery');
@@ -52,6 +53,65 @@ exports.queries = {
     test.ok(ejs.MatchAllQuery, 'SpanNotQuery');
     test.ok(ejs.MatchAllQuery, 'SpanOrQuery');
     test.ok(ejs.MatchAllQuery, 'SpanFirstQuery');
+
+    test.done();
+  },
+  FuzzyQuery: function (test) {
+    test.expect(11);
+
+    var fuzzyQuery = ejs.FuzzyQuery('f1', 'fuzz'),
+      expected,
+      doTest = function () {
+        test.deepEqual(fuzzyQuery.get(), expected);
+      };
+
+    expected = {
+      fuzzy: {
+        f1: {
+          value: 'fuzz'
+        }
+      }
+    };
+
+    test.ok(fuzzyQuery, 'FuzzyQuery exists');
+    test.ok(fuzzyQuery.get(), 'get() works');
+    doTest();
+    
+    fuzzyQuery.value('fuzz2');
+    expected.fuzzy.f1.value = 'fuzz2';
+    doTest();
+    
+    fuzzyQuery.field('f2');
+    expected = {
+      fuzzy: {
+        f2: {
+          value: 'fuzz2'
+        }
+      }
+    };
+    doTest();
+    
+    fuzzyQuery.transpositions(false);
+    expected.fuzzy.f2.transpositions = false;
+    doTest();
+    
+    fuzzyQuery.maxExpansions(10);
+    expected.fuzzy.f2.max_expansions = 10;
+    doTest();
+    
+    fuzzyQuery.minSimilarity(0.6);
+    expected.fuzzy.f2.min_similarity = 0.6;
+    doTest();
+    
+    fuzzyQuery.prefixLength(4);
+    expected.fuzzy.f2.prefix_length = 4;
+    doTest();
+    
+    fuzzyQuery.boost(1.2);
+    expected.fuzzy.f2.boost = 1.2;
+    doTest();
+    
+    test.strictEqual(fuzzyQuery.toString(), JSON.stringify(expected));
 
     test.done();
   },
