@@ -14,28 +14,63 @@
     A Query that matches documents containing a term. This may be
     combined with other terms with a BooleanQuery.
 
-    @param {String} key the document field/key to query against
-    @param {String} value the literal value to be matched
+    @param {String} field the document field/key to query against
+    @param {String} term the literal value to be matched
     */
-  ejs.TermQuery = function (key, value) {
+  ejs.TermQuery = function (field, term) {
 
     /**
          The internal query object. <code>Use get()</code>
          @member ejs.TermQuery
-         @property {Object} query
+         @property {Object} TermQuery
          */
-    var k,
-    v,
-    query = {
+    var query = {
       term: {}
     };
 
-    k = key;
-    v = value;
-    query.term[k] = v;
+    query.term[field] = {
+      term: term
+    };
 
     return {
 
+      /**
+            Sets the fields to query against.
+
+            @member ejs.TermQuery
+            @param {String} f A valid field name.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      field: function (f) {
+        var oldValue = query.term[field];
+      
+        if (f == null) {
+          return field;
+        }
+
+        field = f;
+        query.term = {};
+        query.term[f] = oldValue;
+      
+        return this;
+      },
+    
+      /**
+            Sets the term.
+
+            @member ejs.TermQuery
+            @param {String} t A single term.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      term: function (t) {
+        if (t == null) {
+          return query.term[field].term;
+        }
+
+        query.term[field].term = t;
+        return this;
+      },
+      
       /**
             Sets the boost value for documents matching the <code>Query</code>.
 
@@ -45,13 +80,10 @@
             */
       boost: function (boost) {
         if (boost == null) {
-          return query.term[k].boost;
+          return query.term[field].boost;
         }
 
-        query.term[k] = {
-          value: v,
-          boost: boost
-        };
+        query.term[field].boost = boost;
         return this;
       },
 

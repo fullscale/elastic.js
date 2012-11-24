@@ -1018,9 +1018,9 @@ exports.queries = {
     test.done();
   },
   TermQuery: function (test) {
-    test.expect(5);
+    test.expect(7);
 
-    var termQuery = ejs.TermQuery('t1', 'v1'),
+    var termQuery = ejs.TermQuery('f1', 't1'),
       expected,
       doTest = function () {
         test.deepEqual(termQuery.get(), expected);
@@ -1028,7 +1028,9 @@ exports.queries = {
 
     expected = {
       term: {
-        t1: 'v1'
+        f1: {
+          term: 't1'
+        }
       }
     };
 
@@ -1037,12 +1039,24 @@ exports.queries = {
     doTest();
 
     termQuery.boost(1.5);
-    expected.term.t1 = {
-      value: 'v1',
-      boost: 1.5
-    };
+    expected.term.f1.boost = 1.5;
     doTest();
 
+    termQuery.field('f2');
+    expected = {
+      term: {
+        f2: {
+          term: 't1',
+          boost: 1.5
+        }
+      }
+    };
+    doTest();
+    
+    termQuery.term('t2');
+    expected.term.f2.term = 't2';
+    doTest();
+    
     test.strictEqual(termQuery.toString(), JSON.stringify(expected));
 
     test.done();
