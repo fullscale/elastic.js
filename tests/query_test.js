@@ -28,8 +28,9 @@ exports.queries = {
     done();
   },
   exists: function (test) {
-    test.expect(30);
+    test.expect(31);
 
+    test.ok(ejs.TopChildrenQuery, 'TopChildrenQuery');
     test.ok(ejs.TermsQuery, 'TermsQuery');
     test.ok(ejs.RangeQuery, 'RangeQuery');
     test.ok(ejs.PrefixQuery, 'PrefixQuery');
@@ -60,6 +61,71 @@ exports.queries = {
     test.ok(ejs.SpanNotQuery, 'SpanNotQuery');
     test.ok(ejs.SpanOrQuery, 'SpanOrQuery');
     test.ok(ejs.SpanFirstQuery, 'SpanFirstQuery');
+
+    test.done();
+  },
+  TopChildrenQuery: function (test) {
+    test.expect(14);
+
+    var termQuery = ejs.TermQuery('t1', 'v1'),
+      termQuery2 = ejs.TermQuery('t2', 'v2'),
+      topChildren = ejs.TopChildrenQuery(termQuery, 't1'),
+      expected,
+      doTest = function () {
+        test.deepEqual(topChildren.get(), expected);
+      };
+
+    expected = {
+      top_children: {
+        query: termQuery.get(),
+        type: 't1'
+      }
+    };
+
+    test.ok(topChildren, 'TopChildrenQuery exists');
+    test.ok(topChildren.get(), 'get() works');
+    doTest();
+    
+    topChildren.query(termQuery2);
+    expected.top_children.query = termQuery2.get();
+    doTest();
+    
+    topChildren.type('t2');
+    expected.top_children.type = 't2';
+    doTest();
+    
+    topChildren.scope('my_scope');
+    expected.top_children._scope = 'my_scope';
+    doTest();
+    
+    topChildren.boost(1.2);
+    expected.top_children.boost = 1.2;
+    doTest();
+    
+    topChildren.score('silently fail');
+    doTest();
+    
+    topChildren.score('max');
+    expected.top_children.score = 'max';
+    doTest();
+    
+    topChildren.score('SUM');
+    expected.top_children.score = 'sum';
+    doTest();
+    
+    topChildren.score('avg');
+    expected.top_children.score = 'avg';
+    doTest();
+    
+    topChildren.factor(7);
+    expected.top_children.factor = 7;
+    doTest();
+    
+    topChildren.incrementalFactor(3);
+    expected.top_children.incremental_factor = 3;
+    doTest();
+    
+    test.strictEqual(topChildren.toString(), JSON.stringify(expected));
 
     test.done();
   },
