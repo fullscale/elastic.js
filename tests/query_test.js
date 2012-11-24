@@ -28,8 +28,9 @@ exports.queries = {
     done();
   },
   exists: function (test) {
-    test.expect(29);
+    test.expect(30);
 
+    test.ok(ejs.TermsQuery, 'TermsQuery');
     test.ok(ejs.RangeQuery, 'RangeQuery');
     test.ok(ejs.PrefixQuery, 'PrefixQuery');
     test.ok(ejs.MoreLikeThisFieldQuery, 'MoreLikeThisFieldQuery');
@@ -59,6 +60,55 @@ exports.queries = {
     test.ok(ejs.SpanNotQuery, 'SpanNotQuery');
     test.ok(ejs.SpanOrQuery, 'SpanOrQuery');
     test.ok(ejs.SpanFirstQuery, 'SpanFirstQuery');
+
+    test.done();
+  },
+  TermsQuery: function (test) {
+    test.expect(9);
+
+    var termsQuery = ejs.TermsQuery('f1', ['t1', 't2']),
+      expected,
+      doTest = function () {
+        test.deepEqual(termsQuery.get(), expected);
+      };
+
+    expected = {
+      terms: {
+        f1: ['t1', 't2']
+      }
+    };
+
+    test.ok(termsQuery, 'TermsQuery exists');
+    test.ok(termsQuery.get(), 'get() works');
+    doTest();
+
+    termsQuery.boost(1.5);
+    expected.terms.boost = 1.5;
+    doTest();
+
+    termsQuery.minimumMatch(2);
+    expected.terms.minimum_match = 2;
+    doTest();
+    
+    termsQuery.field('f2');
+    expected = {
+      terms: {
+        boost: 1.5,
+        minimum_match: 2,
+        f2: ['t1', 't2']
+      }
+    };
+    doTest();
+    
+    termsQuery.terms('t3');
+    expected.terms.f2.push('t3');
+    doTest();
+    
+    termsQuery.terms(['t4']);
+    expected.terms.f2 = ['t4'];
+    doTest();
+    
+    test.strictEqual(termsQuery.toString(), JSON.stringify(expected));
 
     test.done();
   },
