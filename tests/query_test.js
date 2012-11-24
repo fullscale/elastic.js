@@ -28,8 +28,9 @@ exports.queries = {
     done();
   },
   exists: function (test) {
-    test.expect(28);
+    test.expect(29);
 
+    test.ok(ejs.RangeQuery, 'RangeQuery');
     test.ok(ejs.PrefixQuery, 'PrefixQuery');
     test.ok(ejs.MoreLikeThisFieldQuery, 'MoreLikeThisFieldQuery');
     test.ok(ejs.MoreLikeThisQuery, 'MoreLikeThisQuery');
@@ -58,6 +59,75 @@ exports.queries = {
     test.ok(ejs.SpanNotQuery, 'SpanNotQuery');
     test.ok(ejs.SpanOrQuery, 'SpanOrQuery');
     test.ok(ejs.SpanFirstQuery, 'SpanFirstQuery');
+
+    test.done();
+  },
+  RangeQuery: function (test) {
+    test.expect(14);
+
+    var rangeQuery = ejs.RangeQuery('f1'),
+      expected,
+      doTest = function () {
+        test.deepEqual(rangeQuery.get(), expected);
+      };
+
+    expected = {
+      range: {
+        f1: {}
+      }
+    };
+
+    test.ok(rangeQuery, 'RangeQuery exists');
+    test.ok(rangeQuery.get(), 'get() works');
+    doTest();
+    
+    rangeQuery.from(1);
+    expected.range.f1.from = 1;
+    doTest();
+    
+    rangeQuery.field('f2');
+    expected = {
+      range: {
+        f2: {
+          from: 1
+        }
+      }
+    };
+    doTest();
+    
+    rangeQuery.to(3);
+    expected.range.f2.to = 3;
+    doTest();
+    
+    rangeQuery.includeLower(false);
+    expected.range.f2.include_lower = false;
+    doTest();
+    
+    rangeQuery.includeUpper(true);
+    expected.range.f2.include_upper = true;
+    doTest();
+    
+    rangeQuery.gt(4);
+    expected.range.f2.gt = 4;
+    doTest();
+    
+    rangeQuery.gte(4);
+    expected.range.f2.gte = 4;
+    doTest();
+    
+    rangeQuery.lt(6);
+    expected.range.f2.lt = 6;
+    doTest();
+    
+    rangeQuery.lte(6);
+    expected.range.f2.lte = 6;
+    doTest();
+    
+    rangeQuery.boost(1.2);
+    expected.range.f2.boost = 1.2;
+    doTest();
+    
+    test.strictEqual(rangeQuery.toString(), JSON.stringify(expected));
 
     test.done();
   },
