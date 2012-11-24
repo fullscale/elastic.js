@@ -28,8 +28,9 @@ exports.queries = {
     done();
   },
   exists: function (test) {
-    test.expect(27);
+    test.expect(28);
 
+    test.ok(ejs.PrefixQuery, 'PrefixQuery');
     test.ok(ejs.MoreLikeThisFieldQuery, 'MoreLikeThisFieldQuery');
     test.ok(ejs.MoreLikeThisQuery, 'MoreLikeThisQuery');
     test.ok(ejs.HasParentQuery, 'HasParentQuery');
@@ -57,6 +58,49 @@ exports.queries = {
     test.ok(ejs.SpanNotQuery, 'SpanNotQuery');
     test.ok(ejs.SpanOrQuery, 'SpanOrQuery');
     test.ok(ejs.SpanFirstQuery, 'SpanFirstQuery');
+
+    test.done();
+  },
+  PrefixQuery: function (test) {
+    test.expect(7);
+
+    var prefixQuery = ejs.PrefixQuery('f1', 'prefix'),
+      expected,
+      doTest = function () {
+        test.deepEqual(prefixQuery.get(), expected);
+      };
+
+    expected = {
+      prefix: {
+        f1: {
+          value: 'prefix'
+        }
+      }
+    };
+
+    test.ok(prefixQuery, 'PrefixQuery exists');
+    test.ok(prefixQuery.get(), 'get() works');
+    doTest();
+    
+    prefixQuery.value('prefix2');
+    expected.prefix.f1.value = 'prefix2';
+    doTest();
+    
+    prefixQuery.field('f2');
+    expected = {
+      prefix: {
+        f2: {
+          value: 'prefix2'
+        }
+      }
+    };
+    doTest();
+    
+    prefixQuery.boost(1.2);
+    expected.prefix.f2.boost = 1.2;
+    doTest();
+    
+    test.strictEqual(prefixQuery.toString(), JSON.stringify(expected));
 
     test.done();
   },
