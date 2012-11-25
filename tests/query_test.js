@@ -28,8 +28,9 @@ exports.queries = {
     done();
   },
   exists: function (test) {
-    test.expect(31);
+    test.expect(32);
 
+    test.ok(ejs.WildcardQuery, 'WildcardQuery');
     test.ok(ejs.TopChildrenQuery, 'TopChildrenQuery');
     test.ok(ejs.TermsQuery, 'TermsQuery');
     test.ok(ejs.RangeQuery, 'RangeQuery');
@@ -61,6 +62,50 @@ exports.queries = {
     test.ok(ejs.SpanNotQuery, 'SpanNotQuery');
     test.ok(ejs.SpanOrQuery, 'SpanOrQuery');
     test.ok(ejs.SpanFirstQuery, 'SpanFirstQuery');
+
+    test.done();
+  },
+  WildcardQuery: function (test) {
+    test.expect(7);
+
+    var wildcardQuery = ejs.WildcardQuery('f1', 'wild*card'),
+      expected,
+      doTest = function () {
+        test.deepEqual(wildcardQuery.get(), expected);
+      };
+
+    expected = {
+      wildcard: {
+        f1: {
+          value: 'wild*card'
+        }
+      }
+    };
+
+    test.ok(wildcardQuery, 'WildcardQuery exists');
+    test.ok(wildcardQuery.get(), 'get() works');
+    doTest();
+
+    wildcardQuery.boost(1.5);
+    expected.wildcard.f1.boost = 1.5;
+    doTest();
+
+    wildcardQuery.field('f2');
+    expected = {
+      wildcard: {
+        f2: {
+          value: 'wild*card',
+          boost: 1.5
+        }
+      }
+    };
+    doTest();
+    
+    wildcardQuery.value('wild?card');
+    expected.wildcard.f2.value = 'wild?card';
+    doTest();
+    
+    test.strictEqual(wildcardQuery.toString(), JSON.stringify(expected));
 
     test.done();
   },
