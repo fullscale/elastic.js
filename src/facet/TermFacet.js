@@ -12,7 +12,7 @@
     <p>For more information on faceted navigation, see this Wikipedia article on
        <a href="http://en.wikipedia.org/wiki/Faceted_classification">Faceted Classification</a></p<
 
-    @name ejs.TermFacet
+    @name ejs.TermsFacet
 
     @desc
     <p>A facet which returns the N most frequent terms within a collection
@@ -24,11 +24,11 @@
         facet by that name, possibly simplifying some of the display logic.
 
     */
-  ejs.TermFacet = function (name) {
+  ejs.TermsFacet = function (name) {
 
     /**
         The internal facet object.
-        @member ejs.TermFacet
+        @member ejs.TermsFacet
         @property {Object} facet
         */
     var facet = {};
@@ -42,7 +42,7 @@
       /**
             Sets the field to be used to construct the this facet.
 
-            @member ejs.TermFacet
+            @member ejs.TermsFacet
             @param {String} fieldName The field name whose data will be used to construct the facet.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
@@ -60,7 +60,7 @@
             might ask for only the top 5 <code>authors</code> although there might be hundreds of
             unique authors.
 
-            @member ejs.TermFacet
+            @member ejs.TermsFacet
             @param {Integer} facetSize The numer of facet entries to be returned.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
@@ -81,7 +81,7 @@
             <p>Possible ordering is <code>count, term, reverse_count,</code> and <code>reverse_term</code>.
             The default ordering is by <code>count</code>.</p>
 
-            @member ejs.TermFacet
+            @member ejs.TermsFacet
             @param {String} sortOrder The numer of facet entries to be returned.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
@@ -99,7 +99,7 @@
                used on fields that contain a large number of unique terms because it could cause
                <em>out-of-memory</em> errors.</p>
 
-            @member ejs.TermFacet
+            @member ejs.TermsFacet
             @param {String} trueFalse <code>true</code> or <code>false</code>
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
@@ -115,7 +115,7 @@
       /**
             <p>Allows you to filter out unwanted facet entries.</p>
 
-            @member ejs.TermFacet
+            @member ejs.TermsFacet
             @param {String ...args} args A variable length ist of terms to exclude.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
@@ -134,7 +134,7 @@
       /**
             <p>Allows you to only include facet entries matching a specified regular expression.</p>
 
-            @member ejs.TermFacet
+            @member ejs.TermsFacet
             @param {String} exp A valid regular expression.
             @param {String} flags A valid regex flag - see <a href="http://docs.oracle.com/javase/6/docs/api/java/util/regex/Pattern.html#field_summary">Java Pattern API</a>
             @returns {Object} returns <code>this</code> so that calls can be chained.
@@ -158,7 +158,7 @@
       /**
             <p>Allows you to reduce the documents used for computing facet results.</p>
 
-            @member ejs.TermFacet
+            @member ejs.TermsFacet
             @param {Object} oFilter A valid <code>Filter</code> object.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
@@ -174,7 +174,7 @@
       /**
             <p>Allows you to serialize this object into a JSON encoded string.</p>
 
-            @member ejs.TermFacet
+            @member ejs.TermsFacet
             @returns {String} returns this object as a serialized JSON string.
             */
       toString: function () {
@@ -185,7 +185,7 @@
             <p>Retrieves the internal <code>facet</code> property. This is typically used by
                internal API functions so use with caution.</p>
 
-            @member ejs.TermFacet
+            @member ejs.TermsFacet
             @returns {String} returns this object's internal <code>facet</code> property.
             */
       get: function () {

@@ -30,7 +30,7 @@ exports.facets = {
   exists: function (test) {
     test.expect(9);
 
-    test.ok(ejs.TermFacet, 'TermFacet');
+    test.ok(ejs.TermsFacet, 'TermsFacet');
     test.ok(ejs.DateHistogramFacet, 'DateHistogramFacet');
     test.ok(ejs.GeoDistanceFacet, 'GeoDistanceFacet');
     test.ok(ejs.StatisticalFacet, 'StatisticalFacet');
@@ -42,10 +42,10 @@ exports.facets = {
 
     test.done();
   },
-  TermFacet: function (test) {
+  TermsFacet: function (test) {
     test.expect(8);
 
-    var termFacet = ejs.TermFacet('somename'),
+    var termFacet = ejs.TermsFacet('somename'),
       termFilter = ejs.TermFilter('t1', 'v1'),
       expected,
       doTest = function () {
@@ -58,7 +58,7 @@ exports.facets = {
       }
     };
 
-    test.ok(termFacet, 'TermFacet exists');
+    test.ok(termFacet, 'TermsFacet exists');
     test.ok(termFacet.get(), 'get() works');
     doTest();
 
