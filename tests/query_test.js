@@ -28,8 +28,9 @@ exports.queries = {
     done();
   },
   exists: function (test) {
-    test.expect(32);
-
+    test.expect(33);
+    
+    test.ok(ejs.CustomFiltersScoreQuery, 'CustomFiltersScoreQuery');
     test.ok(ejs.WildcardQuery, 'WildcardQuery');
     test.ok(ejs.TopChildrenQuery, 'TopChildrenQuery');
     test.ok(ejs.TermsQuery, 'TermsQuery');
@@ -62,6 +63,104 @@ exports.queries = {
     test.ok(ejs.SpanNotQuery, 'SpanNotQuery');
     test.ok(ejs.SpanOrQuery, 'SpanOrQuery');
     test.ok(ejs.SpanFirstQuery, 'SpanFirstQuery');
+
+    test.done();
+  },
+  CustomFiltersScoreQuery: function (test) {
+    test.expect(20);
+
+    var termQuery = ejs.TermQuery('t1', 'v1'),
+      termQuery2 = ejs.TermQuery('t2', 'v2'),
+      termFilter = ejs.TermFilter('tf1', 'fv1'),
+      termFilter2 = ejs.TermFilter('tf2', 'fv2'), 
+      cfsQuery = ejs.CustomFiltersScoreQuery(termQuery, [{filter: termFilter, boost: 1.2}]),
+      expected,
+      doTest = function () {
+        test.deepEqual(cfsQuery.get(), expected);
+      };
+
+    expected = {
+      custom_filters_score: {
+        query: termQuery.get(),
+        filters: [{
+          filter: termFilter.get(),
+          boost: 1.2
+        }]
+      }
+    };
+
+    test.ok(cfsQuery, 'CustomFiltersScoreQuery exists');
+    test.ok(cfsQuery.get(), 'get() works');
+    doTest();
+
+    cfsQuery.boost(1.5);
+    expected.custom_filters_score.boost = 1.5;
+    doTest();
+    
+    cfsQuery.query(termQuery2);
+    expected.custom_filters_score.query = termQuery2.get();
+    doTest();
+    
+    // invalid filter because no boost or script, results in empty filters.
+    cfsQuery.filters([{filter: termFilter, invalid: true}]);
+    expected.custom_filters_score.filters = [];
+    doTest();
+    
+    cfsQuery.filters([{filter: termFilter, script: 's'}]);
+    expected.custom_filters_score.filters = [{filter: termFilter.get(), script: 's'}];
+    doTest();
+    
+    cfsQuery.filters([{filter: termFilter, invalid: true}, {filter: termFilter2, boost: 2}]);
+    expected.custom_filters_score.filters = [{filter: termFilter2.get(), boost: 2}];
+    doTest();
+    
+    cfsQuery.filters([{filter: termFilter, script: 's'}, {filter: termFilter2, boost: 2.2}]);
+    expected.custom_filters_score.filters = [
+      {filter: termFilter.get(), script: 's'}, 
+      {filter: termFilter2.get(), boost: 2.2}
+    ];
+    doTest();
+    
+    cfsQuery.scoreMode('first');
+    expected.custom_filters_score.score_mode = 'first';
+    doTest();
+    
+    cfsQuery.scoreMode('INVALID');
+    doTest();
+    
+    cfsQuery.scoreMode('MIN');
+    expected.custom_filters_score.score_mode = 'min';
+    doTest();
+    
+    cfsQuery.scoreMode('max');
+    expected.custom_filters_score.score_mode = 'max';
+    doTest();
+    
+    cfsQuery.scoreMode('TOTAL');
+    expected.custom_filters_score.score_mode = 'total';
+    doTest();
+    
+    cfsQuery.scoreMode('avg');
+    expected.custom_filters_score.score_mode = 'avg';
+    doTest();
+    
+    cfsQuery.scoreMode('Multiply');
+    expected.custom_filters_score.score_mode = 'multiply';
+    doTest();
+    
+    cfsQuery.params({param1: true, param2: false});
+    expected.custom_filters_score.params = {param1: true, param2: false};
+    doTest();
+    
+    cfsQuery.lang('mvel');
+    expected.custom_filters_score.lang = 'mvel';
+    doTest();
+    
+    cfsQuery.maxBoost(6.0);
+    expected.custom_filters_score.max_boost = 6.0;
+    doTest();
+    
+    test.strictEqual(cfsQuery.toString(), JSON.stringify(expected));
 
     test.done();
   },
