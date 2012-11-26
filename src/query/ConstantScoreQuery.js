@@ -23,7 +23,7 @@
     /**
          The internal Query object. Use <code>get()</code>.
          @member ejs.ConstantScoreQuery
-         @property {Object} ConstantScoreQuery
+         @property {Object} query
          */
     var query = {
       constant_score: {}
