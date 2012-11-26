@@ -1,0 +1,91 @@
+<?js
+    var params = this;
+    
+    /* sort subparams under their parent params (like opts.classname) */
+    var parentParam = null;
+    params.forEach(function(param, i) {
+        if (!param) { return; }
+        if ( parentParam && param.name.indexOf(parentParam.name + '.') === 0 ) {
+            param.name = param.name.substr(parentParam.name.length+1);
+            parentParam.subparams = parentParam.subparams || [];
+            parentParam.subparams.push(param);
+            params[i] = null;
+        }
+        else {
+            parentParam = param;
+        }
+    });
+    
+    /* determine if we need extra columns, "attributes" and "default" */
+    params.hasAttributes = false;
+    params.hasDefault = false;
+    params.hasName = false;
+    
+    params.forEach(function(param) {
+        if (!param) { return; }
+        
+        if (param.optional || param.nullable) {
+            params.hasAttributes = true;
+        }
+        
+        if (param.name) {
+            params.hasName = true;
+        }
+        
+        if (typeof param.defaultvalue !== 'undefined') {
+            params.hasDefault = true;
+        }
+    });
+?>
+	<?js
+	    params.forEach(function(param) {
+	        if (!param) { 
+                return; 
+            }
+	?>
+
+            <?js if (params.hasName) {?>
+                <code><?js= param.name ?></code>
+            <?js } ?>
+
+            <?js
+                if (param.type && param.type.names) {
+                    print('<code>&lt;');
+                    param.type.names.forEach(function(name, i) {
+                        print( linkto(name, htmlsafe(name)) );
+                        if (i < param.type.names.length-1) { print(' | '); }
+                    });
+                    print('&gt;</code>');
+                }
+            ?>
+            
+            <?js if (params.hasAttributes) {?>
+                <span class="attributes">
+                <?js
+                    if (param.optional) {
+                        print( '&lt;optional><br>' );
+                    }
+                    
+                    if (param.nullable) {
+                        print( '&lt;nullable><br>' );
+                    }
+                ?>
+                </span>
+            <?js } ?>
+            
+            <?js if (params.hasDefault) {?>
+                <span class="default">
+                <?js
+                    if (typeof param.defaultvalue !== 'undefined') {
+                        print( htmlsafe(param.defaultvalue) );
+                    }
+                ?>
+                </span>
+            <?js } ?>
+            
+            <span><?js= param.description ?><?js if (param.subparams) {
+                print( '<h6>Properties</h6>' + render('params.tmpl', param.subparams) );
+            }?></span>
+            <br>
+	
+	<?js }); ?>

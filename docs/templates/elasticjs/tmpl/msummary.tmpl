@@ -1,0 +1,31 @@
+<div class="method-body">
+    <tr>
+        <?js 
+            var classes = find({kind: 'class', longname: longname});
+
+            if (classes.length === 0) {
+                var retVals = [];
+
+                this.returns.forEach(function(val, i) {
+                    val.type.names.forEach(function(name, i) {
+                        retVals.push(name);
+                    });
+                });
+
+                if (this.params && params.length) {
+                    var paramNames = [];
+                    this.params.forEach(function(param, i) {
+                        paramNames.push(param.name);
+                    });
+                    print('<td><code>' + retVals.join(' |') + '</code></td><td><code><a href="#' + longname + '">' + name + '(' + paramNames.join(',') + ')</a></code></td>');
+                } else { 
+                    print('<td><code>' + retVals.join(' |') + '</code></td><td><code><a href="#' + longname + '">' + name + '()</a></code></td>'); 
+                }
+            }
+                    
+            if (this.description) {
+                print('<td>' + this.description + '</td>')
+            }
+        ?>
+    </tr>
+</div>
