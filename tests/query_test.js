@@ -1679,7 +1679,7 @@ exports.queries = {
     test.done();
   },
   ConstantScoreQuery: function (test) {
-    test.expect(7);
+    test.expect(9);
 
     var termQuery1 = ejs.TermQuery('t1', 'v1'),
       termFilter1 = ejs.TermFilter('tf1', 'fv1'),
@@ -1712,6 +1712,14 @@ exports.queries = {
     };
     doTest();
 
+    constantScoreQuery.cache(true);
+    expected.constant_score._cache = true;
+    doTest();
+    
+    constantScoreQuery.cacheKey('key');
+    expected.constant_score._cache_key = 'key';
+    doTest();
+    
     test.strictEqual(constantScoreQuery.toString(), JSON.stringify(expected));
 
     test.done();

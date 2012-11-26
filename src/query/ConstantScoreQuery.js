@@ -63,6 +63,38 @@
       },
 
       /**
+            Enables caching of the filter.
+
+            @member ejs.ConstantScoreQuery
+            @param {Boolean} trueFalse A boolean value.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      cache: function (trueFalse) {
+        if (trueFalse == null) {
+          return query.constant_score._cache;
+        }
+
+        query.constant_score._cache = trueFalse;
+        return this;
+      },
+      
+      /**
+            Set the cache key.
+
+            @member ejs.ConstantScoreQuery
+            @param {String} k A string cache key.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      cacheKey: function (k) {
+        if (k == null) {
+          return query.constant_score._cache_key;
+        }
+
+        query.constant_score._cache_key = k;
+        return this;
+      },
+      
+      /**
             Sets the boost value of the <code>Query</code>.
 
             @member ejs.ConstantScoreQuery
