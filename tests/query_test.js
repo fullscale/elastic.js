@@ -28,8 +28,9 @@ exports.queries = {
     done();
   },
   exists: function (test) {
-    test.expect(33);
+    test.expect(34);
     
+    test.ok(ejs.IndicesQuery, 'IndicesQuery');
     test.ok(ejs.CustomFiltersScoreQuery, 'CustomFiltersScoreQuery');
     test.ok(ejs.WildcardQuery, 'WildcardQuery');
     test.ok(ejs.TopChildrenQuery, 'TopChildrenQuery');
@@ -63,6 +64,72 @@ exports.queries = {
     test.ok(ejs.SpanNotQuery, 'SpanNotQuery');
     test.ok(ejs.SpanOrQuery, 'SpanOrQuery');
     test.ok(ejs.SpanFirstQuery, 'SpanFirstQuery');
+
+    test.done();
+  },
+  IndicesQuery: function (test) {
+    test.expect(14);
+
+    var termQuery = ejs.TermQuery('t1', 'v1'),
+      termQuery2 = ejs.TermQuery('t2', 'v2'),
+      termQuery3 = ejs.TermQuery('t3', 'v3'),
+      indicesQuery = ejs.IndicesQuery(termQuery, 'i1'),
+      expected,
+      doTest = function () {
+        test.deepEqual(indicesQuery.get(), expected);
+      };
+
+    expected = {
+      indices: {
+        query: termQuery.get(),
+        indices: ['i1']
+      }
+    };
+
+    test.ok(indicesQuery, 'IndicesQuery exists');
+    test.ok(indicesQuery.get(), 'get() works');
+    doTest();
+
+    indicesQuery = ejs.IndicesQuery(termQuery, ['i2', 'i3']);
+    expected.indices.indices = ['i2', 'i3'];
+    doTest();
+    
+    indicesQuery.indices('i4');
+    expected.indices.indices.push('i4');
+    doTest();
+    
+    indicesQuery.indices(['i5']);
+    expected.indices.indices = ['i5'];
+    doTest();
+    
+    indicesQuery.query(termQuery2);
+    expected.indices.query = termQuery2.get();
+    doTest();
+    
+    indicesQuery.noMatchQuery('invalid');
+    doTest();
+    
+    indicesQuery.noMatchQuery('none');
+    expected.indices.no_match_query = 'none';
+    doTest();
+    
+    indicesQuery.noMatchQuery('ALL');
+    expected.indices.no_match_query = 'all';
+    doTest();
+    
+    indicesQuery.noMatchQuery(termQuery3);
+    expected.indices.no_match_query = termQuery3.get();
+    doTest();
+     
+    indicesQuery.boost(1.5);
+    expected.indices.boost = 1.5;
+    doTest();
+    
+    indicesQuery.query(termQuery2);
+    expected.indices.query = termQuery2.get();
+    doTest();
+    
+    test.strictEqual(indicesQuery.toString(), JSON.stringify(expected));
 
     test.done();
   },
