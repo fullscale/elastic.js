@@ -21,7 +21,7 @@
     /**
          The internal query object. <code>Use get()</code>
          @member ejs.TopChildrenQuery
-         @property {Object} TopChildrenQuery
+         @property {Object} query
          */
     var query = {
       top_children: {

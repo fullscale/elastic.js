@@ -19,6 +19,11 @@
     */
   ejs.QueryStringQuery = function (queryStr) {
 
+    /**
+         The internal Query object. Use <code>get()</code>.
+         @member ejs.QueryStringQuery
+         @property {Object} query
+         */
     var query = {
       query_string: {}
     };

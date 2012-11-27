@@ -16,7 +16,7 @@
     /**
          The internal query object. <code>Use get()</code>
          @member ejs.IdsQuery
-         @property {Object} IdsQuery
+         @property {Object} query
          */
     var query = {
       ids: {}

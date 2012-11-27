@@ -22,7 +22,7 @@
     /**
          The internal query object. <code>Use get()</code>
          @member ejs.WildcardQuery
-         @property {Object} WildcardQuery
+         @property {Object} query
          */
     var query = {
       wildcard: {}

@@ -17,7 +17,7 @@
     /**
          The internal query object. <code>Use get()</code>
          @member ejs.TermsQuery
-         @property {Object} TermsQuery
+         @property {Object} query
          */
     var query = {
       terms: {}

@@ -17,7 +17,7 @@
     /**
          The internal query object. <code>Use get()</code>
          @member ejs.RangeQuery
-         @property {Object} RangeQuery
+         @property {Object} query
          */
     var query = {
       range: {}

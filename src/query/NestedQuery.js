@@ -22,7 +22,7 @@
     /**
          The internal Query object. Use <code>get()</code>.
          @member ejs.NestedQuery
-         @property {Object} NestedQuery
+         @property {Object} query
          */
     var query = {
       nested: {}

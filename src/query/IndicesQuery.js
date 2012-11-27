@@ -19,7 +19,7 @@
     /**
          The internal query object. <code>Use get()</code>
          @member ejs.IndicesQuery
-         @property {Object} IndicesQuery
+         @property {Object} query
          */
     var query = {
       indices: {
