@@ -1,0 +1,104 @@
+<tr><td>
+<div id="<?js= longname ?>" class="method-body">
+    <a style="text-decoration:none" name="<?js= longname ?>">
+        <h3 style="color:#557e2f;background-color:#eee;font-family:Menlo,Monaco,Consolas,Courier New,monospace;" id="<?js= name ?>">&nbsp;<?js= name ?></h3>
+    </a>
+        <code>
+        <?js 
+            var classes = find({kind: 'class', longname: longname});
+            if (classes.length === 0) {
+                var retVals = [];
+                this.returns.forEach(function(val, i) {
+                    val.type.names.forEach(function(name, i) {
+                        retVals.push(name);
+                    });
+                });
+                if (this.params && params.length) {
+                    var paramNames = [];
+                    this.params.forEach(function(param, i) {
+                        paramNames.push(param.name);
+                    });
+                    print(retVals.join(' |') + ' ' + name + ' ( ' + paramNames.join(', ') + ' )');
+                } else { 
+                    print(retVals.join(' |') + ' ' + name +' ( )'); 
+                }
+            } else {
+                 if (this.params && params.length) {
+                    var paramNames = [];
+                    this.params.forEach(function(param, i) {
+                        paramNames.push(param.name);
+                    });
+                    print(name + ' ( ' + paramNames.join(', ') + ' )');
+                } else { 
+                    print(name +' ( )'); 
+                }               
+            }
+        ?>
+    </code>
+
+    <?js 
+        if (this.description) {
+            print('<div style="margin-left:15px">' + this.description + '</div><br>');
+        }
+    ?>  
+    
+    <dl style="margin-left:15px;margin-right:20px;margin-top:0px;">  
+
+        <?js
+        if (this['this']) {
+            print('<h5>This:</h5>');
+            print( '<ul><li>'+linkto(this['this'], this['this'])+'</li></ul>' );
+        }
+        ?>
+    
+        <?js
+        if (this.params && params.length) {
+            print('<dt>Parameters</dt>');
+            print('<dd>'+render('params.tmpl', params)+'</dd>' );
+        }
+        ?>
+    
+        <?js if (this.fires && fires.length) { ?>
+        <h5>Fires:</h5>
+        <ul><?js
+            fires.forEach(function(f) {
+                print( render('fires.tmpl', f) );
+            });
+        ?></ul>
+        <?js } ?>
+    
+        <?js if (this.exceptions && exceptions.length) { ?>
+        <h5>Throws:</h5>
+        <?js if (exceptions.length > 1) { ?><ul><?js
+            exceptions.forEach(function(r) {
+                print( '<li>' + render('exceptions.tmpl', r) + '</li>' );
+            });
+        ?></ul><?js } else {
+            exceptions.forEach(function(r) {
+                print( render('exceptions.tmpl', r) );
+            });
+        } } ?>
+    
+        <?js if (this.returns && returns.length) { ?>
+        <dt>Returns</dt>
+        <?js if (returns.length > 1) { ?><ul><?js
+            returns.forEach(function(r) {
+                print( '<li>' + render('returns.tmpl', r) + '</li>' );
+            });
+        ?></ul><?js } else {
+            returns.forEach(function(r) {
+                print('<dd>'+render('returns.tmpl', r)+'</dd>');
+            });
+        } } ?>
+    
+        <?js
+        if (this.examples && examples.length) {
+            print('<h5>Example' + (examples.length > 1? 's':'') + '</h5>');
+            print( render('examples.tmpl', examples) );
+        }
+        ?>
+
+    </dl>
+
+</div>
+</td></tr>

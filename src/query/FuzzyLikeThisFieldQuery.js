@@ -35,7 +35,7 @@
     /**
          The internal Query object. Use <code>get()</code>.
          @member ejs.FuzzyLikeThisFieldQuery
-         @property {Object} FuzzyLikeThisFieldQuery
+         @property {Object} query
          */
     var query = {
       flt_field: {}

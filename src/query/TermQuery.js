@@ -22,7 +22,7 @@
     /**
          The internal query object. <code>Use get()</code>
          @member ejs.TermQuery
-         @property {Object} TermQuery
+         @property {Object} query
          */
     var query = {
       term: {}

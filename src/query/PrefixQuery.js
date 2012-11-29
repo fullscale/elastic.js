@@ -16,7 +16,7 @@
     /**
          The internal query object. <code>Use get()</code>
          @member ejs.PrefixQuery
-         @property {Object} PrefixQuery
+         @property {Object} query
          */
     var query = {
       prefix: {}

@@ -1,0 +1,344 @@
+(function() {
+
+    var template = require('underscore/template'),
+        fs = require('fs'),
+        helper = require('jsdoc/util/templateHelper');
+        
+        template.settings.evaluate    = /<\?js([\s\S]+?)\?>/g;
+        template.settings.interpolate = /<\?js=([\s\S]+?)\?>/g;
+    
+    /**
+        @global
+        @param {TAFFY} data See <http://taffydb.com/>.
+        @param {object} opts
+     */
+    publish = function(data, opts) {
+        var out = '',
+            containerTemplate = template.render(fs.readFileSync(__dirname + '/templates/elasticjs/tmpl/container.tmpl'));
+        
+        function render(tmpl, partialData) {
+            var renderFunction = arguments.callee.cache[tmpl];
+            if (!renderFunction) {
+                renderFunction = arguments.callee.cache[tmpl] = template.render(fs.readFileSync(__dirname + '/templates/elasticjs/tmpl/'+tmpl));
+            }
+            partialData.render = arguments.callee;
+            partialData.find = find;
+            partialData.linkto = linkto;
+            partialData.htmlsafe = htmlsafe;
+            
+            return renderFunction.call(partialData, partialData);
+        }
+        render.cache = {};
+        
+        function find(spec) {
+            return data.get( data.find(spec) );
+        }
+        
+        function htmlsafe(str) {
+            return str.replace(/</g, '&lt;');
+        }
+
+        function addSignatureParams(f) {
+            var pnames = [];
+            if (f.params) {
+                f.params.forEach(function(p) {
+                    if (p.name && p.name.indexOf('.') === -1) {
+                        if (p.optional) { pnames.push('['+p.name+']'); }
+                        else { pnames.push(p.name); }
+                    }
+                });
+            }
+            
+            f.signature = (f.signature || '') + '('+pnames.join(', ')+')';
+        }
+        
+        function generateAncestry(doc) {
+            var ancestors = [];
+
+            while (doc = doc.memberof) {
+                doc = find({longname: doc});
+                if (doc) { doc = doc[0]; }
+                if (!doc) break;
+                ancestors.unshift( linkto(doc.longname, doc.name) );
+            }
+            return ancestors;
+        }
+        
+        function addSignatureReturns(f) {
+            var returnTypes = [];
+            
+            if (f.returns) {
+                f.returns.forEach(function(r) {
+                    if (r.type && r.type.names) {
+                        returnTypes = r.type.names;
+                    }
+                });
+            }
+            
+            f.signature = '<span class="type-signature">'+htmlsafe(returnTypes.length? returnTypes.join('|') : '')+'</span>';
+        }
+        
+        function addSignatureType(f) {
+            var types = [];
+            
+            if (f.type && f.type.names) {
+                types = f.type.names;
+            }
+            
+            f.signature = (f.signature || '') + '<span class="type-signature">'+htmlsafe(types.length? ' &lt;'+types.join('|') : '')+'&gt;</span>';
+        }
+        
+        function addAttribs(f) {
+            var attribs = [];
+            
+            if (f.access && f.access !== 'public') {
+                attribs.push(f.access);
+            }
+            
+            if (f.scope && f.scope !== 'instance') {
+                if (f.kind == 'function' || f.kind == 'property') attribs.push(f.scope);
+            }
+            
+            if (f.readonly === true) {
+                if (f.kind == 'property') attribs.push('readonly');
+            }
+            
+            f.attribs = '<span class="type-signature">'+htmlsafe(attribs.length? '<'+attribs.join(', ')+'> ' : '')+'</span>';
+        }
+        
+        data.remove({undocumented: true});
+        data.remove({ignore: true});
+        data.remove({memberof: '<anonymous>'});
+	    
+	    var packageInfo = (find({kind: 'package'}) || []) [0];
+        
+        //function renderLinks(text) {
+        //    return helper.resolveLinks(text);
+        //}
+        
+	    data.forEach(function(doclet) {
+	        doclet.signature = '';
+            doclet.attribs = '';
+            
+	        if (doclet.kind === 'function' || doclet.kind === 'class') {
+	            addSignatureParams(doclet);
+	            addSignatureReturns(doclet);
+	            addAttribs(doclet);
+	        }
+	        
+	        if (doclet.kind === 'property') {
+	            addSignatureType(doclet);
+	            addAttribs(doclet)
+	        }
+	        
+	        if (doclet.examples) {
+	            doclet.examples = doclet.examples.map(function(example) {
+	                var caption, code;
+	                
+	                if (example.match(/^\s*<caption>([\s\S]+?)<\/caption>(\s*[\n\r])([\s\S]+)$/i)) {
+	                    caption = RegExp.$1;
+	                    code    = RegExp.$3;
+	                }
+	                
+                    return {
+                        caption: caption || '',
+                        code: code || example
+                    };
+                });
+	        }
+	        else if (doclet.see) {
+	            doclet.see.forEach(function(seeItem, i) {
+	                doclet.see[i] = hashToLink(doclet, seeItem);
+	            });
+	        }
+	    });
+	    
+	    data.orderBy(['longname', 'version', 'since']);
+        
+        // kinds of containers
+        var globals = find( {kind: ['property', 'function'], memberof: {isUndefined: true}} ),
+            modules = find({kind: 'module'}),
+            externals = find({kind: 'external'}),
+            mixins = find({kind: 'mixin'}),
+	        namespaces = find({kind: 'namespace'});
+
+        var outdir = opts.destination;
+        if (packageInfo) {
+            outdir += '/' + packageInfo.name + '/' + packageInfo.version + '/';
+        }
+        fs.mkPath(outdir);
+
+        // copy static files to outdir
+        var fromDir = __dirname + '/templates/elasticjs/static',
+            staticFiles = fs.ls(fromDir, 3);
+            
+        staticFiles.forEach(function(fileName) {
+            var toDir = fs.toDir(fileName.replace(fromDir, outdir));
+            fs.mkPath(toDir);
+            fs.copyFile(fileName, toDir);
+        });
+        
+        function linkto(longname, linktext) {
+            var url = helper.longnameToUrl[longname];
+            return url? '<a href="'+url+'">'+(linktext || longname)+'</a>' : (linktext || longname);
+        }
+        
+        var containers = ['class', 'module', 'external', 'namespace', 'mixin'];
+        
+        data.forEach(function(doclet) {
+            var url = helper.createLink(doclet);
+            helper.registerLink(doclet.longname, url);
+        });
+        
+        // do this after the urls have all been generated
+        data.forEach(function(doclet) {
+            //if (doclet.classdesc) doclet.classdesc = renderLinks(doclet.classdesc);
+            //if (doclet.description) doclet.description = renderLinks(doclet.description);
+            
+            doclet.ancestors = generateAncestry(doclet);
+        });
+        
+        var nav = '',
+            seen = {};
+        
+        var moduleNames = find({kind: 'module'});
+        if (moduleNames.length) {
+            nav = nav + '<h3>Modules</h3><ul class="toc-item">';
+            moduleNames.forEach(function(m) {
+                if ( !seen.hasOwnProperty(m.longname) ) nav += '<li>'+linkto(m.longname, m.name)+'</li>';
+                seen[m.longname] = true;
+            });
+            
+            nav = nav + '</ul>';
+        }
+        
+        var externalNames = find({kind: 'external'});
+        if (externalNames.length) {
+            nav = nav + '<h3>Externals</h3><ul class="toc-item">';
+            externalNames.forEach(function(e) {
+                if ( !seen.hasOwnProperty(e.longname) ) nav += '<li>'+linkto( e.longname, e.name.replace(/(^"|"$)/g, '') )+'</li>';
+                seen[e.longname] = true;
+            });
+            
+            nav = nav + '</ul>';
+        }
+        
+        var namespaceNames = find({kind: 'namespace'});
+        if (namespaceNames.length) {
+            nav = nav + '<h3>Namespaces</h3><ul class="toc-item">';
+            namespaceNames.forEach(function(n) {
+                if ( !seen.hasOwnProperty(n.longname) ) nav += '<li>'+linkto(n.longname, n.name)+'</li>';
+                seen[n.longname] = true;
+            });
+            
+            nav = nav + '</ul>';
+        }
+        
+        // sorts an array of objects based on a property within that object
+        var sort = function (prop, arr) {
+            arr.sort(function (a, b) {
+                if (a[prop] < b[prop]) {
+                    return -1;
+                } else if (a[prop] > b[prop]) {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            });
+        };
+
+        var classNames = find({kind: 'class'});
+        if (classNames.length) {
+            nav = nav + '<h3>Modules</h3><ul class="toc-item">';
+            sort("name", classNames);
+            classNames.forEach(function(c) {
+                var moduleSameName = find({kind: 'module', longname: c.longname});
+                if (moduleSameName.length) {
+                    c.name = c.name.replace('module:', 'require(')+')';
+                    moduleSameName[0].module = c;
+                }
+                //print(c.name);
+                if (!seen.hasOwnProperty(c.longname) ) nav += '<li>'+linkto(c.longname, c.name)+'</li>';
+                seen[c.longname] = true;
+            });
+            
+            nav = nav + '</ul>';
+        }
+        
+        
+        
+        var mixinNames = find({kind: 'mixin'});
+        if (mixinNames.length) {
+            nav = nav + '<h3>Mixins</h3><ul class="toc-item">';
+            mixinNames.forEach(function(m) {
+                if ( !seen.hasOwnProperty(m.longname) ) nav += '<li>'+linkto(m.longname, m.name)+'</li>';
+                seen[m.longname] = true;
+            });
+            
+            nav = nav + '</ul>';
+        }
+
+        var globalNames = find({kind: ['property', 'function'], 'memberof': {'isUndefined': true}});
+
+        if (globalNames.length) {
+            nav = nav + '<h3>Global</h3><ul class="toc-item">';
+            globalNames.forEach(function(g) {
+                if ( !seen.hasOwnProperty(g.longname) ) nav += '<li>'+linkto(g.longname, g.name)+'</li>';
+                seen[g.longname] = true;
+            });
+            
+            nav = nav + '</ul>';
+        }
+        
+        for (var longname in helper.longnameToUrl) {
+            var classes = find({kind: 'class', longname: longname});
+            if (classes.length) generate('Module: '+classes[0].name, classes, helper.longnameToUrl[longname]);
+        
+            var modules = find({kind: 'module', longname: longname});
+            if (modules.length) generate('Module: '+modules[0].name, modules, helper.longnameToUrl[longname]);
+            
+            var namespaces = find({kind: 'namespace', longname: longname});
+            if (namespaces.length) generate('Namespace: '+namespaces[0].name, namespaces, helper.longnameToUrl[longname]);        
+
+            var mixins = find({kind: 'mixin', longname: longname});
+            if (mixins.length) generate('Mixin: '+mixins[0].name, mixins, helper.longnameToUrl[longname]);        
+        
+            var externals = find({kind: 'external', longname: longname});
+            if (externals.length) generate('External: '+externals[0].name, externals, helper.longnameToUrl[longname]);
+        }
+        
+        if (globals.length) generate('Global', [{kind: 'globalobj'}], 'global.html');
+
+         
+        function generate(title, docs, filename) {
+            var data = {
+                title: title,
+                docs: docs,
+                nav: nav,
+                
+                // helpers
+                render: render,
+                find: find,
+                linkto: linkto,
+                htmlsafe: htmlsafe
+            };
+            
+            var path = outdir + '/' + filename,
+                html = containerTemplate.call(data, data);
+            
+            html = helper.resolveLinks(html); // turn {@link foo} into <a href="foodoc.html">foo</a>
+            
+            fs.writeFileSync(path, html)
+        }
+    }
+    
+    function hashToLink(doclet, hash) {
+        if ( !/^(#.+)/.test(hash) ) { return hash; }
+        
+        var url = helper.createLink(doclet);
+        
+        url = url.replace(/(#.+|$)/, hash);
+        return '<a href="'+url+'">'+hash+'</a>';
+    }
+    
+})();

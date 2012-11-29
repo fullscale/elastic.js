@@ -1,0 +1,18 @@
+<tr>
+<div id="property:<?js= longname ?>" class="method-body">
+    <td><code><?js= name + this.signature ?></code></td>
+
+    <?js if (this.description) { ?>
+    <td>
+        <?js= this.description ?>
+    </td>
+    <?js } ?>
+    
+    <?js 
+        if (this.examples && examples.length) {
+            print('<h5>Example' + (examples.length > 1? 's':'') + '</h5>');
+            print( render('examples.tmpl', examples) );
+        }
+    ?>
+</div>
+</tr>

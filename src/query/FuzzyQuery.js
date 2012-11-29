@@ -23,7 +23,7 @@
     /**
          The internal Query object. Use <code>get()</code>.
          @member ejs.FuzzyQuery
-         @property {Object} FuzzyQuery
+         @property {Object} query
          */
     var query = {
       fuzzy: {}

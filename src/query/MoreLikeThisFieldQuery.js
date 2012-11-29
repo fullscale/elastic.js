@@ -17,7 +17,7 @@
     /**
          The internal Query object. Use <code>get()</code>.
          @member ejs.MoreLikeThisFieldQuery
-         @property {Object} MoreLikeThisFieldQuery
+         @property {Object} query
          */
     var query = {
       mlt_field: {}

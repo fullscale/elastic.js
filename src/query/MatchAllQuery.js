@@ -17,7 +17,7 @@
     /**
          The internal Query object. Use <code>get()</code>.
          @member ejs.MatchAllQuery
-         @property {Object} MatchAllQuery
+         @property {Object} query
          */
     var query = {
       match_all: {}

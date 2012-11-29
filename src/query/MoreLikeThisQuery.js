@@ -16,7 +16,7 @@
     /**
          The internal Query object. Use <code>get()</code>.
          @member ejs.MoreLikeThisQuery
-         @property {Object} MoreLikeThisQuery
+         @property {Object} query
          */
     var query = {
       mlt: {

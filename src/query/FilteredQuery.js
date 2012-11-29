@@ -36,9 +36,9 @@
     return {
 
       /**
-             The internal query object. See get()
+             Converts this object to a json string
              @member ejs.FilteredQuery
-             @property {Object} query
+             @returns {Object} string
              */
       toString: function () {
         return JSON.stringify(query);
