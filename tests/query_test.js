@@ -28,8 +28,9 @@ exports.queries = {
     done();
   },
   exists: function (test) {
-    test.expect(34);
+    test.expect(35);
     
+    test.ok(ejs.GeoShapeQuery, 'GeoShapeQuery');
     test.ok(ejs.IndicesQuery, 'IndicesQuery');
     test.ok(ejs.CustomFiltersScoreQuery, 'CustomFiltersScoreQuery');
     test.ok(ejs.WildcardQuery, 'WildcardQuery');
@@ -65,6 +66,83 @@ exports.queries = {
     test.ok(ejs.SpanOrQuery, 'SpanOrQuery');
     test.ok(ejs.SpanFirstQuery, 'SpanFirstQuery');
 
+    test.done();
+  },
+  GeoShapeQuery: function (test) {
+    test.expect(14);
+
+    var geoShapeQuery = ejs.GeoShapeQuery('f1'),
+      shape1 = ejs.Shape('envelope', [[-45.0, 45.0], [45.0, -45.0]]),
+      shape2 = ejs.Shape('polygon', [[-180.0, 10.0], [20.0, 90.0], 
+        [180.0, -5.0], [-30.0, -90.0]]),
+      iShape1 = ejs.IndexedShape('countries', 'New Zealand'),
+      iShape2 = ejs.IndexedShape('state', 'CA')
+        .index('states')
+        .shapeFieldName('stateShape'),
+      expected,
+      doTest = function () {
+        test.deepEqual(geoShapeQuery.get(), expected);
+      };
+
+    expected = {
+      geo_shape: {
+        f1: {}
+      }
+    };
+
+    test.ok(geoShapeQuery, 'GeoShapeQuery exists');
+    test.ok(geoShapeQuery.get(), 'get() works');
+    doTest();
+
+    geoShapeQuery.shape(shape1);
+    expected.geo_shape.f1.shape = shape1.get();
+    doTest();
+    
+    geoShapeQuery.field('f2');
+    expected = {
+      geo_shape: {
+        f2: {
+          shape: shape1.get()
+        }
+      }
+    };
+    doTest();
+    
+    geoShapeQuery.shape(shape2);
+    expected.geo_shape.f2.shape = shape2.get();
+    doTest();
+    
+    geoShapeQuery.relation('intersects');
+    expected.geo_shape.f2.relation = 'intersects';
+    doTest();
+    
+    geoShapeQuery.relation('INVALID');
+    doTest();
+    
+    geoShapeQuery.relation('DisJoint');
+    expected.geo_shape.f2.relation = 'disjoint';
+    doTest();
+    
+    geoShapeQuery.relation('WITHIN');
+    expected.geo_shape.f2.relation = 'within';
+    doTest();
+    
+    geoShapeQuery.indexedShape(iShape1);
+    delete expected.geo_shape.f2.shape;
+    expected.geo_shape.f2.indexed_shape = iShape1.get();
+    doTest();
+    
+    geoShapeQuery.indexedShape(iShape2);
+    expected.geo_shape.f2.indexed_shape = iShape2.get();
+    doTest();
+    
+    
+    geoShapeQuery.boost(1.5);
+    expected.geo_shape.f2.boost = 1.5;
+    doTest();
+    
+    test.strictEqual(geoShapeQuery.toString(), JSON.stringify(expected));
+    
     test.done();
   },
   IndicesQuery: function (test) {
