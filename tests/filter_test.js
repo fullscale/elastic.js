@@ -28,8 +28,9 @@ exports.filters = {
     done();
   },
   exists: function (test) {
-    test.expect(16);
+    test.expect(17);
 
+    test.ok(ejs.LimitFilter, 'LimitFilter');
     test.ok(ejs.IdsFilter, 'IdsFilter');
     test.ok(ejs.BoolFilter, 'BoolFilter');
     test.ok(ejs.GeoShapeFilter, 'GeoShapeFilter');
@@ -46,6 +47,33 @@ exports.filters = {
     test.ok(ejs.PrefixFilter, 'PrefixFilter');
     test.ok(ejs.MissingFilter, 'MissingFilter');
     test.ok(ejs.OrFilter, 'OrFilter');
+
+    test.done();
+  },
+  LimitFilter: function (test) {
+    test.expect(5);
+
+    var limitFilter = ejs.LimitFilter(100),
+      expected,
+      doTest = function () {
+        test.deepEqual(limitFilter.get(), expected);
+      };
+
+    expected = {
+      limit: {
+        value: 100
+      }
+    };
+
+    test.ok(limitFilter, 'LimitFilter exists');
+    test.ok(limitFilter.get(), 'get() works');
+    doTest();
+    
+    limitFilter.value(1000);
+    expected.limit.value = 1000;
+    doTest();
+
+    test.strictEqual(limitFilter.toString(), JSON.stringify(expected));
 
     test.done();
   },
