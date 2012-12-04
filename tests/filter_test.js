@@ -28,8 +28,9 @@ exports.filters = {
     done();
   },
   exists: function (test) {
-    test.expect(15);
+    test.expect(16);
 
+    test.ok(ejs.IdsFilter, 'IdsFilter');
     test.ok(ejs.BoolFilter, 'BoolFilter');
     test.ok(ejs.GeoShapeFilter, 'GeoShapeFilter');
     test.ok(ejs.TermFilter, 'TermFilter');
@@ -45,6 +46,57 @@ exports.filters = {
     test.ok(ejs.PrefixFilter, 'PrefixFilter');
     test.ok(ejs.MissingFilter, 'MissingFilter');
     test.ok(ejs.OrFilter, 'OrFilter');
+
+    test.done();
+  },
+  IdsFilter: function (test) {
+    test.expect(11);
+
+    var idsFilter = ejs.IdsFilter('id1'),
+      expected,
+      doTest = function () {
+        test.deepEqual(idsFilter.get(), expected);
+      };
+
+    expected = {
+      ids: {
+        values: ['id1']
+      }
+    };
+
+    test.ok(idsFilter, 'IdsFilter exists');
+    test.ok(idsFilter.get(), 'get() works');
+    doTest();
+    
+    idsFilter = ejs.IdsFilter(['id2', 'id3']);
+    expected.ids.values = ['id2', 'id3'];
+    doTest();
+    
+    idsFilter.values('id4');
+    expected.ids.values.push('id4');
+    doTest();
+    
+    idsFilter.values(['id5', 'id6']);
+    expected.ids.values = ['id5', 'id6'];
+    doTest();
+    
+    idsFilter.type('type1');
+    expected.ids.type = ['type1'];
+    doTest();
+    
+    idsFilter.type('type2');
+    expected.ids.type.push('type2');
+    doTest();
+    
+    idsFilter.type(['type3', 'type4']);
+    expected.ids.type = ['type3', 'type4'];
+    doTest();
+    
+    idsFilter.name('idsfilter');
+    expected.ids._name = 'idsfilter';
+    doTest();
+    
+    test.strictEqual(idsFilter.toString(), JSON.stringify(expected));
 
     test.done();
   },
