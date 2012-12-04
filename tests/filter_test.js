@@ -28,8 +28,9 @@ exports.filters = {
     done();
   },
   exists: function (test) {
-    test.expect(13);
+    test.expect(14);
 
+    test.ok(ejs.GeoShapeFilter, 'GeoShapeFilter');
     test.ok(ejs.TermFilter, 'TermFilter');
     test.ok(ejs.TypeFilter, 'TypeFilter');
     test.ok(ejs.NotFilter, 'NotFilter');
@@ -44,6 +45,91 @@ exports.filters = {
     test.ok(ejs.MissingFilter, 'MissingFilter');
     test.ok(ejs.OrFilter, 'OrFilter');
 
+    test.done();
+  },
+  GeoShapeFilter: function (test) {
+    test.expect(16);
+
+    var geoShapeFilter = ejs.GeoShapeFilter('f1'),
+      shape1 = ejs.Shape('envelope', [[-45.0, 45.0], [45.0, -45.0]]),
+      shape2 = ejs.Shape('polygon', [[-180.0, 10.0], [20.0, 90.0], 
+        [180.0, -5.0], [-30.0, -90.0]]),
+      iShape1 = ejs.IndexedShape('countries', 'New Zealand'),
+      iShape2 = ejs.IndexedShape('state', 'CA')
+        .index('states')
+        .shapeFieldName('stateShape'),
+      expected,
+      doTest = function () {
+        test.deepEqual(geoShapeFilter.get(), expected);
+      };
+
+    expected = {
+      geo_shape: {
+        f1: {}
+      }
+    };
+
+    test.ok(geoShapeFilter, 'GeoShapeFilter exists');
+    test.ok(geoShapeFilter.get(), 'get() works');
+    doTest();
+
+    geoShapeFilter.shape(shape1);
+    expected.geo_shape.f1.shape = shape1.get();
+    doTest();
+    
+    geoShapeFilter.field('f2');
+    expected = {
+      geo_shape: {
+        f2: {
+          shape: shape1.get()
+        }
+      }
+    };
+    doTest();
+    
+    geoShapeFilter.shape(shape2);
+    expected.geo_shape.f2.shape = shape2.get();
+    doTest();
+    
+    geoShapeFilter.relation('intersects');
+    expected.geo_shape.f2.relation = 'intersects';
+    doTest();
+    
+    geoShapeFilter.relation('INVALID');
+    doTest();
+    
+    geoShapeFilter.relation('DisJoint');
+    expected.geo_shape.f2.relation = 'disjoint';
+    doTest();
+    
+    geoShapeFilter.relation('WITHIN');
+    expected.geo_shape.f2.relation = 'within';
+    doTest();
+    
+    geoShapeFilter.indexedShape(iShape1);
+    delete expected.geo_shape.f2.shape;
+    expected.geo_shape.f2.indexed_shape = iShape1.get();
+    doTest();
+    
+    geoShapeFilter.indexedShape(iShape2);
+    expected.geo_shape.f2.indexed_shape = iShape2.get();
+    doTest();
+    
+    
+    geoShapeFilter.cache(true);
+    expected.geo_shape.f2._cache = true;
+    doTest();
+    
+    geoShapeFilter.name('geofiltername');
+    expected.geo_shape.f2._name = 'geofiltername';
+    doTest();
+    
+    geoShapeFilter.cacheKey('test_key');
+    expected.geo_shape.f2._cache_key = 'test_key';
+    doTest();
+    
+    test.strictEqual(geoShapeFilter.toString(), JSON.stringify(expected));
+    
     test.done();
   },
   TermFilter: function (test) {
