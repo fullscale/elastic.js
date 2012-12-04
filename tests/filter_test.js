@@ -28,8 +28,9 @@ exports.filters = {
     done();
   },
   exists: function (test) {
-    test.expect(18);
+    test.expect(19);
 
+    test.ok(ejs.HasParentFilter, 'HasParentFilter');
     test.ok(ejs.HasChildFilter, 'HasChildFilter');
     test.ok(ejs.LimitFilter, 'LimitFilter');
     test.ok(ejs.IdsFilter, 'IdsFilter');
@@ -48,6 +49,48 @@ exports.filters = {
     test.ok(ejs.PrefixFilter, 'PrefixFilter');
     test.ok(ejs.MissingFilter, 'MissingFilter');
     test.ok(ejs.OrFilter, 'OrFilter');
+
+    test.done();
+  },
+  HasParentFilter: function (test) {
+    test.expect(8);
+
+    var termFilter = ejs.TermFilter('t1', 'v1'),
+      termFilter2 = ejs.TermFilter('t2', 'v2'),
+      hasParentFilter = ejs.HasParentFilter(termFilter, 't1'),
+      expected,
+      doTest = function () {
+        test.deepEqual(hasParentFilter.get(), expected);
+      };
+
+    expected = {
+      has_parent: {
+        query: termFilter.get(),
+        parent_type: 't1'
+      }
+    };
+
+    test.ok(hasParentFilter, 'HasParentFilter exists');
+    test.ok(hasParentFilter.get(), 'get() works');
+    doTest();
+    
+    hasParentFilter.query(termFilter2);
+    expected.has_parent.query = termFilter2.get();
+    doTest();
+    
+    hasParentFilter.parentType('t2');
+    expected.has_parent.parent_type = 't2';
+    doTest();
+    
+    hasParentFilter.scope('my_scope');
+    expected.has_parent._scope = 'my_scope';
+    doTest();
+    
+    hasParentFilter.name('has_parent');
+    expected.has_parent._name = 'has_parent';
+    doTest();
+    
+    test.strictEqual(hasParentFilter.toString(), JSON.stringify(expected));
 
     test.done();
   },
