@@ -28,8 +28,9 @@ exports.filters = {
     done();
   },
   exists: function (test) {
-    test.expect(21);
+    test.expect(22);
 
+    test.ok(ejs.RangeFilter, 'RangeFilter');
     test.ok(ejs.QueryFilter, 'QueryFilter');
     test.ok(ejs.MatchAllFilter, 'MatchAllFilter');
     test.ok(ejs.HasParentFilter, 'HasParentFilter');
@@ -51,6 +52,83 @@ exports.filters = {
     test.ok(ejs.PrefixFilter, 'PrefixFilter');
     test.ok(ejs.MissingFilter, 'MissingFilter');
     test.ok(ejs.OrFilter, 'OrFilter');
+
+    test.done();
+  },
+  RangeFilter: function (test) {
+    test.expect(16);
+
+    var rangeFilter = ejs.RangeFilter('f1'),
+      expected,
+      doTest = function () {
+        test.deepEqual(rangeFilter.get(), expected);
+      };
+
+    expected = {
+      range: {
+        f1: {}
+      }
+    };
+
+    test.ok(rangeFilter, 'RangeFilter exists');
+    test.ok(rangeFilter.get(), 'get() works');
+    doTest();
+    
+    rangeFilter.from(1);
+    expected.range.f1.from = 1;
+    doTest();
+    
+    rangeFilter.field('f2');
+    expected = {
+      range: {
+        f2: {
+          from: 1
+        }
+      }
+    };
+    doTest();
+    
+    rangeFilter.to(3);
+    expected.range.f2.to = 3;
+    doTest();
+    
+    rangeFilter.includeLower(false);
+    expected.range.f2.include_lower = false;
+    doTest();
+    
+    rangeFilter.includeUpper(true);
+    expected.range.f2.include_upper = true;
+    doTest();
+    
+    rangeFilter.gt(4);
+    expected.range.f2.gt = 4;
+    doTest();
+    
+    rangeFilter.gte(4);
+    expected.range.f2.gte = 4;
+    doTest();
+    
+    rangeFilter.lt(6);
+    expected.range.f2.lt = 6;
+    doTest();
+    
+    rangeFilter.lte(6);
+    expected.range.f2.lte = 6;
+    doTest();
+    
+    rangeFilter.name('range_filter');
+    expected.range._name = 'range_filter';
+    doTest();
+    
+    rangeFilter.cache(true);
+    expected.range._cache = true;
+    doTest();
+    
+    rangeFilter.cacheKey('range_filter_key');
+    expected.range._cache_key = 'range_filter_key';
+    doTest();
+    
+    test.strictEqual(rangeFilter.toString(), JSON.stringify(expected));
 
     test.done();
   },
