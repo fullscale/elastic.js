@@ -28,8 +28,9 @@ exports.filters = {
     done();
   },
   exists: function (test) {
-    test.expect(20);
+    test.expect(21);
 
+    test.ok(ejs.QueryFilter, 'QueryFilter');
     test.ok(ejs.MatchAllFilter, 'MatchAllFilter');
     test.ok(ejs.HasParentFilter, 'HasParentFilter');
     test.ok(ejs.HasChildFilter, 'HasChildFilter');
@@ -50,6 +51,47 @@ exports.filters = {
     test.ok(ejs.PrefixFilter, 'PrefixFilter');
     test.ok(ejs.MissingFilter, 'MissingFilter');
     test.ok(ejs.OrFilter, 'OrFilter');
+
+    test.done();
+  },
+  QueryFilter: function (test) {
+    test.expect(8);
+
+    var termQuery = ejs.TermQuery('t1', 'v1'),
+      termQuery2 = ejs.TermQuery('t2', 'v2'),
+      queryFilter = ejs.QueryFilter(termQuery),
+      expected,
+      doTest = function () {
+        test.deepEqual(queryFilter.get(), expected);
+      };
+
+    expected = {
+      fquery: {
+        query: termQuery.get()
+      }
+    };
+
+    test.ok(queryFilter, 'QueryFilter exists');
+    test.ok(queryFilter.get(), 'get() works');
+    doTest();
+    
+    queryFilter.query(termQuery2);
+    expected.fquery.query = termQuery2.get();
+    doTest();
+    
+    queryFilter.name('fquery');
+    expected.fquery._name = 'fquery';
+    doTest();
+    
+    queryFilter.cache(true);
+    expected.fquery._cache = true;
+    doTest();
+    
+    queryFilter.cacheKey('fquery_cached');
+    expected.fquery._cache_key = 'fquery_cached';
+    doTest();
+    
+    test.strictEqual(queryFilter.toString(), JSON.stringify(expected));
 
     test.done();
   },
