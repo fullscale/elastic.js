@@ -682,7 +682,7 @@ exports.filters = {
     test.done();
   },
   MissingFilter: function (test) {
-    test.expect(4);
+    test.expect(8);
 
     var missingFilter = ejs.MissingFilter('title'),
       expected,
@@ -700,6 +700,22 @@ exports.filters = {
     test.ok(missingFilter.get(), 'get() works');
     doTest();
 
+    missingFilter.field('body');
+    expected.missing.field = 'body';
+    doTest();
+    
+    missingFilter.existence(true);
+    expected.missing.existence = true;
+    doTest();
+    
+    missingFilter.nullValue(true);
+    expected.missing.null_value = true;
+    doTest();
+    
+    missingFilter.name('missing_filter');
+    expected.missing._name = 'missing_filter';
+    doTest();
+    
     test.strictEqual(missingFilter.toString(), JSON.stringify(expected));
 
     test.done();
