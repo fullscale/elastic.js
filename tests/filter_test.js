@@ -28,8 +28,9 @@ exports.filters = {
     done();
   },
   exists: function (test) {
-    test.expect(14);
+    test.expect(15);
 
+    test.ok(ejs.BoolFilter, 'BoolFilter');
     test.ok(ejs.GeoShapeFilter, 'GeoShapeFilter');
     test.ok(ejs.TermFilter, 'TermFilter');
     test.ok(ejs.TypeFilter, 'TypeFilter');
@@ -44,6 +45,59 @@ exports.filters = {
     test.ok(ejs.PrefixFilter, 'PrefixFilter');
     test.ok(ejs.MissingFilter, 'MissingFilter');
     test.ok(ejs.OrFilter, 'OrFilter');
+
+    test.done();
+  },
+  BoolFilter: function (test) {
+    test.expect(11);
+
+    var termFilter = ejs.TermFilter('t1', 'v1'),
+      termFilter2 = ejs.TermFilter('t2', 'v2'),
+      termFilter3 = ejs.TermFilter('t3', 'v3'),
+      termFilter4 = ejs.TermFilter('t4', 'v4'),
+      boolFilter = ejs.BoolFilter(),
+      expected,
+      doTest = function () {
+        test.deepEqual(boolFilter.get(), expected);
+      };
+
+    expected = {
+      bool: {}
+    };
+
+    test.ok(boolFilter, 'BoolFilter exists');
+    test.ok(boolFilter.get(), 'get() works');
+    doTest();
+
+    boolFilter.must(termFilter);
+    expected.bool.must = [termFilter.get()];
+    doTest();
+
+    boolFilter.mustNot(termFilter2);
+    expected.bool.must_not = [termFilter2.get()];
+    doTest();
+
+    boolFilter.should(termFilter3);
+    expected.bool.should = [termFilter3.get()];
+    doTest();
+
+    boolFilter.should(termFilter4);
+    expected.bool.should.push(termFilter4.get());
+    doTest();
+
+    boolFilter.name('boolfilter');
+    expected.bool._name = 'boolfilter';
+    doTest();
+    
+    boolFilter.cache(true);
+    expected.bool._cache = true;
+    doTest();
+    
+    boolFilter.cacheKey('testkey');
+    expected.bool._cache_key = 'testkey';
+    doTest();
+    
+    test.strictEqual(boolFilter.toString(), JSON.stringify(expected));
 
     test.done();
   },
