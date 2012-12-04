@@ -401,15 +401,15 @@ exports.filters = {
     
     
     geoShapeFilter.cache(true);
-    expected.geo_shape.f2._cache = true;
+    expected.geo_shape._cache = true;
     doTest();
     
     geoShapeFilter.name('geofiltername');
-    expected.geo_shape.f2._name = 'geofiltername';
+    expected.geo_shape._name = 'geofiltername';
     doTest();
     
     geoShapeFilter.cacheKey('test_key');
-    expected.geo_shape.f2._cache_key = 'test_key';
+    expected.geo_shape._cache_key = 'test_key';
     doTest();
     
     test.strictEqual(geoShapeFilter.toString(), JSON.stringify(expected));

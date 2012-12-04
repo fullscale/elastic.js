@@ -127,7 +127,7 @@
           return filter.geo_shape[field]._name;
         }
 
-        filter.geo_shape[field]._name = name;
+        filter.geo_shape._name = name;
         return this;
       },
 
@@ -143,7 +143,7 @@
           return filter.geo_shape[field]._cache;
         }
 
-        filter.geo_shape[field]._cache = trueFalse;
+        filter.geo_shape._cache = trueFalse;
         return this;
       },
     
@@ -159,7 +159,7 @@
           return filter.geo_shape[field]._cache_key;
         }
 
-        filter.geo_shape[field]._cache_key = key;
+        filter.geo_shape._cache_key = key;
         return this;
       },
         
