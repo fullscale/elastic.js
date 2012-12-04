@@ -28,8 +28,9 @@ exports.filters = {
     done();
   },
   exists: function (test) {
-    test.expect(19);
+    test.expect(20);
 
+    test.ok(ejs.MatchAllFilter, 'MatchAllFilter');
     test.ok(ejs.HasParentFilter, 'HasParentFilter');
     test.ok(ejs.HasChildFilter, 'HasChildFilter');
     test.ok(ejs.LimitFilter, 'LimitFilter');
@@ -49,6 +50,27 @@ exports.filters = {
     test.ok(ejs.PrefixFilter, 'PrefixFilter');
     test.ok(ejs.MissingFilter, 'MissingFilter');
     test.ok(ejs.OrFilter, 'OrFilter');
+
+    test.done();
+  },
+  MatchAllFilter: function (test) {
+    test.expect(4);
+
+    var matchAllFilter = ejs.MatchAllFilter(),
+      expected,
+      doTest = function () {
+        test.deepEqual(matchAllFilter.get(), expected);
+      };
+
+    expected = {
+      match_all: {}
+    };
+
+    test.ok(matchAllFilter, 'MatchAllFilter exists');
+    test.ok(matchAllFilter.get(), 'get() works');
+    doTest();
+
+    test.strictEqual(matchAllFilter.toString(), JSON.stringify(expected));
 
     test.done();
   },
