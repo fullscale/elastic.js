@@ -1718,38 +1718,73 @@ exports.queries = {
     test.done();
   },
   NestedQuery: function (test) {
-    test.expect(8);
+    test.expect(16);
 
     var termQuery1 = ejs.TermQuery('t1', 'v1'),
       termQuery2 = ejs.TermQuery('t2', 'v2'),
-      nestedQuery = ejs.NestedQuery(),
+      termFilter1 = ejs.TermFilter('tf1', 'v1'),
+      termFilter2 = ejs.TermFilter('tf2', 'v2'),
+      nestedQuery = ejs.NestedQuery('root'),
       expected,
       doTest = function () {
         test.deepEqual(nestedQuery.get(), expected);
       };
 
     expected = {
-      nested: {}
+      nested: {
+        path: 'root'
+      }
     };
 
     test.ok(nestedQuery, 'NestedQuery exists');
     test.ok(nestedQuery.get(), 'get() works');
     doTest();
 
-    nestedQuery = ejs.NestedQuery(termQuery1);
-    expected.nested.query = termQuery1.get();
-    doTest();
-
     nestedQuery.path('root/path');
     expected.nested.path = 'root/path';
     doTest();
 
+    nestedQuery.query(termQuery1);
+    expected.nested.query = termQuery1.get();
+    doTest();
+    
+    nestedQuery.filter(termFilter1);
+    expected.nested.filter = termFilter1.get();
+    doTest();
+    
+    nestedQuery.query(termQuery2);
+    expected.nested.query = termQuery2.get();
+    doTest();
+    
+    nestedQuery.filter(termFilter2);
+    expected.nested.filter = termFilter2.get();
+    doTest();
+    
     nestedQuery.scoreMode('avg');
     expected.nested.score_mode = 'avg';
     doTest();
 
-    nestedQuery.query(termQuery2);
-    expected.nested.query = termQuery2.get();
+    nestedQuery.scoreMode('INVALID');
+    doTest();
+    
+    nestedQuery.scoreMode('TOTAL');
+    expected.nested.score_mode = 'total';
+    doTest();
+    
+    nestedQuery.scoreMode('Max');
+    expected.nested.score_mode = 'max';
+    doTest();
+    
+    nestedQuery.scoreMode('none');
+    expected.nested.score_mode = 'none';
+    doTest();
+    
+    nestedQuery.scope('my_scope');
+    expected.nested._scope = 'my_scope';
+    doTest();
+    
+    nestedQuery.boost(3.2);
+    expected.nested.boost = 3.2;
     doTest();
 
     test.strictEqual(nestedQuery.toString(), JSON.stringify(expected));
