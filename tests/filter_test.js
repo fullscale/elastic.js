@@ -28,8 +28,9 @@ exports.filters = {
     done();
   },
   exists: function (test) {
-    test.expect(23);
+    test.expect(24);
 
+    test.ok(ejs.NestedFilter, 'NestedFilter');
     test.ok(ejs.ScriptFilter, 'ScriptFilter');
     test.ok(ejs.RangeFilter, 'RangeFilter');
     test.ok(ejs.QueryFilter, 'QueryFilter');
@@ -53,6 +54,63 @@ exports.filters = {
     test.ok(ejs.PrefixFilter, 'PrefixFilter');
     test.ok(ejs.MissingFilter, 'MissingFilter');
     test.ok(ejs.OrFilter, 'OrFilter');
+
+    test.done();
+  },
+  NestedFilter: function (test) {
+    test.expect(12);
+
+    var termQuery = ejs.TermQuery('tq1', 'v1'),
+      termFilter = ejs.TermFilter('tf1', 'v1'),
+      nestedFilter = ejs.NestedFilter('root'),
+      expected,
+      doTest = function () {
+        test.deepEqual(nestedFilter.get(), expected);
+      };
+
+    expected = {
+      nested: {
+        path: 'root'
+      }
+    };
+
+    test.ok(nestedFilter, 'NestedFilter exists');
+    test.ok(nestedFilter.get(), 'get() works');
+    doTest();
+
+    nestedFilter.path('new.root');
+    expected.nested.path = 'new.root';
+    doTest();
+    
+    nestedFilter.query(termQuery);
+    expected.nested.query = termQuery.get();
+    doTest();
+    
+    nestedFilter.filter(termFilter);
+    expected.nested.filter = termFilter.get();
+    doTest();
+    
+    nestedFilter.scope('my_scope');
+    expected.nested._scope = 'my_scope';
+    doTest();
+    
+    nestedFilter.boost(2.2);
+    expected.nested.boost = 2.2;
+    doTest();
+    
+    nestedFilter.name('filter_name');
+    expected.nested._name = 'filter_name';
+    doTest();
+    
+    nestedFilter.cache(true);
+    expected.nested._cache = true;
+    doTest();
+    
+    nestedFilter.cacheKey('filter_cache_key');
+    expected.nested._cache_key = 'filter_cache_key';
+    doTest();
+    
+    test.strictEqual(nestedFilter.toString(), JSON.stringify(expected));
 
     test.done();
   },
