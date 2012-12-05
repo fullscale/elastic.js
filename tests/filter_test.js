@@ -878,31 +878,66 @@ exports.filters = {
     test.done();
   },
   AndFilter: function (test) {
-    test.expect(5);
+    test.expect(13);
 
     var termFilter1 = ejs.TermFilter('t1', 'v1'),
       termFilter2 = ejs.TermFilter('t2', 'v2'),
       termFilter3 = ejs.TermFilter('t3', 'v3'),
-      andFilter = ejs.AndFilter([termFilter1, termFilter2]),
+      termFilter4 = ejs.TermFilter('t4', 'v4'),
+      andFilter = ejs.AndFilter(termFilter1),
       expected,
       doTest = function () {
         test.deepEqual(andFilter.get(), expected);
       };
 
     expected = {
-      and: [termFilter1.get(), termFilter2.get()]
+      and: {
+        filters: [termFilter1.get()]
+      }
     };
 
     test.ok(andFilter, 'AndFilter exists');
     test.ok(andFilter.get(), 'get() works');
     doTest();
 
-    andFilter.add(termFilter3);
-    expected.and.push(termFilter3.get());
+    andFilter.filters(termFilter2);
+    expected.and.filters.push(termFilter2.get());
     doTest();
 
+    andFilter.filters([termFilter3, termFilter4]);
+    expected.and.filters = [termFilter3.get(), termFilter4.get()];
+    doTest();
+    
+    andFilter.name('filter_name');
+    expected.and._name = 'filter_name';
+    doTest();
+    
+    andFilter.cache(true);
+    expected.and._cache = true;
+    doTest();
+    
+    andFilter.cacheKey('filter_cache_key');
+    expected.and._cache_key = 'filter_cache_key';
+    doTest();
+    
     test.strictEqual(andFilter.toString(), JSON.stringify(expected));
 
+    test.throws(function () {
+      ejs.AndFilter('junk');
+    }, TypeError);
+    
+    test.throws(function () {
+      ejs.AndFilter([termFilter1, 'junk']);
+    }, TypeError);
+
+    test.throws(function () {
+      andFilter.filters('junk');
+    }, TypeError);
+    
+    test.throws(function () {
+      andFilter.filters([termFilter1, 'junk']);
+    }, TypeError);
+    
     test.done();
   },
   NumericRangeFilter: function (test) {

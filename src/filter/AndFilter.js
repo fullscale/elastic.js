@@ -7,9 +7,10 @@
     @desc
     A container Filter that allows Boolean AND composition of Filters.
 
-    @param {Array} filterArray A javascript array of valid Filter objects such as termFilter, etc.
+    @param {Filter || Array} f A single Filter object or an array of valid 
+      Filter objects.
     */
-  ejs.AndFilter = function (filterArray) {
+  ejs.AndFilter = function (f) {
 
     /**
          The internal filter object. Use <code>get()</code>
@@ -17,34 +18,113 @@
          @member ejs.AndFilter
          @property {Object} filter
          */
-    var filter, i, len;
+    var i,
+      len,
+      filter = {
+        and: {
+          filters: []
+        }
+      };
 
-    filter = {
-      "and": []
-    };
-
-    for (i = 0, len = filterArray.length; i < len; i++) {
-      filter.and.push(filterArray[i].get());
+    if (isEJSObject(f)) {
+      filter.and.filters.push(f.get());
+    } else if (isArray(f)) {
+      for (i = 0, len = f.length; i < len; i++) {
+        if (!isEJSObject(f[i])) {
+          throw new TypeError('Array must contain only Filter objects');
+        }
+        
+        filter.and.filters.push(f[i].get());
+      }
+    } else {
+      throw new TypeError('Argument must be a Filter or Array of Filters');
     }
 
     return {
 
       /**
-             * Adds a new filter to the filter container
+             Sets the filters for the filter.  If fltr is a single 
+             Filter, it is added to the current filters.  If fltr is an array
+             of Filters, then they replace all existing filters.
 
              @member ejs.AndFilter
-             @param {Object} fltr A valid filter object such as a termFilter, etc.
+             @param {Filter || Array} fltr A valid filter object or an array of filters.
              @returns {Object} returns <code>this</code> so that calls can be chained.
              */
-      add: function (fltr) {
+      filters: function (fltr) {
+        var i,
+          len;
+          
         if (fltr == null) {
-          return filter.and;
+          return filter.and.filters;
         }
       
-        filter.and.push(fltr.get());
+        if (isEJSObject(fltr)) {
+          filter.and.filters.push(fltr.get());
+        } else if (isArray(fltr)) {
+          filter.and.filters = [];
+          for (i = 0, len = fltr.length; i < len; i++) {
+            if (!isEJSObject(fltr[i])) {
+              throw new TypeError('Array must contain only Filter objects');
+            }
+            
+            filter.and.filters.push(fltr[i].get());
+          }
+        } else {
+          throw new TypeError('Argument must be a Filter or an Array of Filters');
+        }
+        
         return this;
       },
 
+      /**
+            Sets the filter name.
+
+            @member ejs.AndFilter
+            @param {String} name A name for the filter.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      name: function (name) {
+        if (name == null) {
+          return filter.and._name;
+        }
+
+        filter.and._name = name;
+        return this;
+      },
+
+      /**
+            Enable or disable caching of the filter
+
+            @member ejs.AndFilter
+            @param {Boolean} trueFalse True to cache the filter, false otherwise.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      cache: function (trueFalse) {
+        if (trueFalse == null) {
+          return filter.and._cache;
+        }
+
+        filter.and._cache = trueFalse;
+        return this;
+      },
+  
+      /**
+            Sets the cache key.
+
+            @member ejs.AndFilter
+            @param {String} key the cache key as a string.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      cacheKey: function (key) {
+        if (key == null) {
+          return filter.and._cache_key;
+        }
+
+        filter.and._cache_key = key;
+        return this;
+      },
+      
       /**
              Returns the filter container as a JSON string
 
