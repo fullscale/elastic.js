@@ -34,6 +34,7 @@
     isString,
     isNumber,
     isFunction,
+    isEJSObject, // checks if valid ejs object
 
     // create ejs object
     ejs;

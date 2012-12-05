@@ -75,3 +75,9 @@
     };
   }
   
+  // Is a given value an ejs object?
+  // Yes if it is an object and has "get" and "toString" properties
+  isEJSObject = function (obj) {
+    return (isObject(obj) && has(obj, 'get') && has(obj, 'toString'));
+  };
+  
