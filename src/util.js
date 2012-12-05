@@ -64,3 +64,14 @@
     return toString.call(obj) === '[object Number]';
   };
   
+  // switched to ===, not sure why underscore used ==
+  if (typeof (/./) !== 'function') {
+    isFunction = function (obj) {
+      return typeof obj === 'function';
+    };
+  } else {
+    isFunction = function (obj) {
+      return toString.call(obj) === '[object Function]';
+    };
+  }
+  

@@ -33,6 +33,7 @@
     isObject,
     isString,
     isNumber,
+    isFunction,
 
     // create ejs object
     ejs;
