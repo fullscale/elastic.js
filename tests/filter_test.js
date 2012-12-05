@@ -28,8 +28,9 @@ exports.filters = {
     done();
   },
   exists: function (test) {
-    test.expect(24);
+    test.expect(25);
 
+    test.ok(ejs.TermsFilter, 'TermsFilter');
     test.ok(ejs.NestedFilter, 'NestedFilter');
     test.ok(ejs.ScriptFilter, 'ScriptFilter');
     test.ok(ejs.RangeFilter, 'RangeFilter');
@@ -54,6 +55,88 @@ exports.filters = {
     test.ok(ejs.PrefixFilter, 'PrefixFilter');
     test.ok(ejs.MissingFilter, 'MissingFilter');
     test.ok(ejs.OrFilter, 'OrFilter');
+
+    test.done();
+  },
+  TermsFilter: function (test) {
+    test.expect(18);
+
+    var termsFilter = ejs.TermsFilter('f1', ['t1', 't2']),
+      expected,
+      doTest = function () {
+        test.deepEqual(termsFilter.get(), expected);
+      };
+
+    expected = {
+      terms: {
+        f1: ['t1', 't2']
+      }
+    };
+
+    test.ok(termsFilter, 'TermsFilter exists');
+    test.ok(termsFilter.get(), 'get() works');
+    doTest();
+
+    termsFilter.field('f2');
+    expected = {
+      terms: {
+        f2: ['t1', 't2']
+      }
+    };
+    doTest();
+    
+    termsFilter.terms('t3');
+    expected.terms.f2.push('t3');
+    doTest();
+    
+    termsFilter.terms(['t4']);
+    expected.terms.f2 = ['t4'];
+    doTest();
+    
+    termsFilter.execution('plain');
+    expected.terms.execution = 'plain';
+    doTest();
+    
+    termsFilter.execution('INVALID');
+    doTest();
+    
+    termsFilter.execution('AND');
+    expected.terms.execution = 'and';
+    doTest();
+    
+    termsFilter.execution('and_NOCACHE');
+    expected.terms.execution = 'and_nocache';
+    doTest();
+    
+    termsFilter.execution('or');
+    expected.terms.execution = 'or';
+    doTest();
+    
+    termsFilter.execution('or_nocache');
+    expected.terms.execution = 'or_nocache';
+    doTest();
+    
+    termsFilter.execution('BOOL');
+    expected.terms.execution = 'bool';
+    doTest();
+    
+    termsFilter.execution('BOOL_nocache');
+    expected.terms.execution = 'bool_nocache';
+    doTest();
+    
+    termsFilter.name('filter_name');
+    expected.terms._name = 'filter_name';
+    doTest();
+    
+    termsFilter.cache(true);
+    expected.terms._cache = true;
+    doTest();
+    
+    termsFilter.cacheKey('filter_cache_key');
+    expected.terms._cache_key = 'filter_cache_key';
+    doTest();
+    
+    test.strictEqual(termsFilter.toString(), JSON.stringify(expected));
 
     test.done();
   },
