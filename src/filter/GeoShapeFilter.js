@@ -124,7 +124,7 @@
             */
       name: function (name) {
         if (name == null) {
-          return filter.geo_shape[field]._name;
+          return filter.geo_shape._name;
         }
 
         filter.geo_shape._name = name;
@@ -140,7 +140,7 @@
             */
       cache: function (trueFalse) {
         if (trueFalse == null) {
-          return filter.geo_shape[field]._cache;
+          return filter.geo_shape._cache;
         }
 
         filter.geo_shape._cache = trueFalse;
@@ -156,7 +156,7 @@
             */
       cacheKey: function (key) {
         if (key == null) {
-          return filter.geo_shape[field]._cache_key;
+          return filter.geo_shape._cache_key;
         }
 
         filter.geo_shape._cache_key = key;

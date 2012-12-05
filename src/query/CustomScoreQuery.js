@@ -65,7 +65,7 @@
             any existing params.
 
             @member ejs.CustomScoreQuery
-            @param {Object} q An object where the keys are the parameter name and 
+            @param {Object} p An object where the keys are the parameter name and 
               values are the parameter value.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */

@@ -187,7 +187,7 @@
             */
       name: function (name) {
         if (name == null) {
-          return filter.range[field]._name;
+          return filter.range._name;
         }
 
         filter.range._name = name;
@@ -203,7 +203,7 @@
             */
       cache: function (trueFalse) {
         if (trueFalse == null) {
-          return filter.range[field]._cache;
+          return filter.range._cache;
         }
 
         filter.range._cache = trueFalse;
@@ -219,7 +219,7 @@
             */
       cacheKey: function (key) {
         if (key == null) {
-          return filter.range[field]._cache_key;
+          return filter.range._cache_key;
         }
 
         filter.range._cache_key = key;
