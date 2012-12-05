@@ -28,8 +28,9 @@ exports.filters = {
     done();
   },
   exists: function (test) {
-    test.expect(22);
+    test.expect(23);
 
+    test.ok(ejs.ScriptFilter, 'ScriptFilter');
     test.ok(ejs.RangeFilter, 'RangeFilter');
     test.ok(ejs.QueryFilter, 'QueryFilter');
     test.ok(ejs.MatchAllFilter, 'MatchAllFilter');
@@ -52,6 +53,53 @@ exports.filters = {
     test.ok(ejs.PrefixFilter, 'PrefixFilter');
     test.ok(ejs.MissingFilter, 'MissingFilter');
     test.ok(ejs.OrFilter, 'OrFilter');
+
+    test.done();
+  },
+  ScriptFilter: function (test) {
+    test.expect(10);
+
+    var scriptFilter = ejs.ScriptFilter('the script'),
+      expected,
+      doTest = function () {
+        test.deepEqual(scriptFilter.get(), expected);
+      };
+
+    expected = {
+      script: {
+        script: 'the script'
+      }
+    };
+
+    test.ok(scriptFilter, 'ScriptFilter exists');
+    test.ok(scriptFilter.get(), 'get() works');
+    doTest();
+
+    scriptFilter.params({param1: 1});
+    expected.script.params = {param1: 1};
+    doTest();
+    
+    scriptFilter.params({param1: 2, param2: 3});
+    expected.script.params = {param1: 2, param2: 3};
+    doTest();
+    
+    scriptFilter.lang('python');
+    expected.script.lang = 'python';
+    doTest();
+    
+    scriptFilter.name('script_filter');
+    expected.script._name = 'script_filter';
+    doTest();
+    
+    scriptFilter.cache(true);
+    expected.script._cache = true;
+    doTest();
+    
+    scriptFilter.cacheKey('script_filter_key');
+    expected.script._cache_key = 'script_filter_key';
+    doTest();
+    
+    test.strictEqual(scriptFilter.toString(), JSON.stringify(expected));
 
     test.done();
   },
