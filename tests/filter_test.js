@@ -546,7 +546,7 @@ exports.filters = {
     test.done();
   },
   BoolFilter: function (test) {
-    test.expect(11);
+    test.expect(14);
 
     var termFilter = ejs.TermFilter('t1', 'v1'),
       termFilter2 = ejs.TermFilter('t2', 'v2'),
@@ -596,6 +596,18 @@ exports.filters = {
     
     test.strictEqual(boolFilter.toString(), JSON.stringify(expected));
 
+    test.throws(function () {
+      boolFilter.must('junk');
+    }, TypeError);
+    
+    test.throws(function () {
+      boolFilter.mustNot('junk');
+    }, TypeError);
+    
+    test.throws(function () {
+      boolFilter.should('junk');
+    }, TypeError);
+    
     test.done();
   },
   GeoShapeFilter: function (test) {

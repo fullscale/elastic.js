@@ -41,6 +41,10 @@
           return filter.bool.must;
         }
 
+        if (!isEJSObject(oFilter)) {
+          throw new TypeError('Argument must be a valid Filter object');
+        }
+        
         filter.bool.must.push(oFilter.get());
         return this;
       },
@@ -61,6 +65,10 @@
           return filter.bool.must_not;
         }
     
+        if (!isEJSObject(oFilter)) {
+          throw new TypeError('Argument must be a valid Filter object');
+        }
+        
         filter.bool.must_not.push(oFilter.get());
         return this;
       },
@@ -81,6 +89,10 @@
           return filter.bool.should;
         }
     
+        if (!isEJSObject(oFilter)) {
+          throw new TypeError('Argument must be a valid Filter object');
+        }
+        
         filter.bool.should.push(oFilter.get());
         return this;
       },
