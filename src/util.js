@@ -41,3 +41,26 @@
     });
     return obj;
   };
+
+  // Is a given value an array?
+  // Delegates to ECMA5's native Array.isArray
+  // switched to ===, not sure why underscore used ==
+  isArray = nativeIsArray || function (obj) {
+    return toString.call(obj) === '[object Array]';
+  };
+
+  // Is a given variable an object?
+  isObject = function (obj) {
+    return obj === Object(obj);
+  };
+  
+  // switched to ===, not sure why underscore used ==
+  isString = function (obj) {
+    return toString.call(obj) === '[object String]';
+  };
+  
+  // switched to ===, not sure why underscore used ==
+  isNumber = function (obj) {
+    return toString.call(obj) === '[object Number]';
+  };
+  

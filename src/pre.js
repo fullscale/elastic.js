@@ -21,12 +21,18 @@
     ArrayProto = Array.prototype, 
     ObjProto = Object.prototype, 
     slice = ArrayProto.slice,
+    toString = ObjProto.toString,
     hasOwnProp = ObjProto.hasOwnProperty,
     nativeForEach = ArrayProto.forEach,
+    nativeIsArray = Array.isArray,
     breaker = {},
     has,
     each,
     extend,
+    isArray,
+    isObject,
+    isString,
+    isNumber,
 
     // create ejs object
     ejs;
