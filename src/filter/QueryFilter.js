@@ -19,6 +19,10 @@
     */
   ejs.QueryFilter = function (qry) {
 
+    if (!isEJSObject(qry)) {
+      throw new TypeError('Argument must be a Query');
+    }
+    
     /**
          The internal query object. <code>Use get()</code>
          @member ejs.QueryFilter
@@ -44,6 +48,10 @@
           return filter.fquery.query;
         }
 
+        if (!isEJSObject(q)) {
+          throw new TypeError('Argument must be a Query');
+        }
+        
         filter.fquery.query = q.get();
         return this;
       },

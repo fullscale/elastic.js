@@ -330,7 +330,7 @@ exports.filters = {
     test.done();
   },
   QueryFilter: function (test) {
-    test.expect(8);
+    test.expect(10);
 
     var termQuery = ejs.TermQuery('t1', 'v1'),
       termQuery2 = ejs.TermQuery('t2', 'v2'),
@@ -368,6 +368,14 @@ exports.filters = {
     
     test.strictEqual(queryFilter.toString(), JSON.stringify(expected));
 
+    test.throws(function () {
+      ejs.QueryFilter('invalid');
+    }, TypeError);
+    
+    test.throws(function () {
+      queryFilter.query('invalid');
+    }, TypeError);
+    
     test.done();
   },
   MatchAllFilter: function (test) {
