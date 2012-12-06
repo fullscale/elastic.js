@@ -38,8 +38,8 @@
           return field;
         }
 
+        delete filter.range[field];
         field = f;
-        filter.range = {};
         filter.range[f] = oldValue;
 
         return this;
