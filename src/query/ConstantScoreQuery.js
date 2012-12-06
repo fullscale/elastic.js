@@ -42,6 +42,10 @@
           return query.constant_score.query;
         }
       
+        if (!isEJSObject(oQuery)) {
+          throw new TypeError('Argument must be a Query');
+        }
+        
         query.constant_score.query = oQuery.get();
         return this;
       },
@@ -58,6 +62,10 @@
           return query.constant_score.filter;
         }
       
+        if (!isEJSObject(oFilter)) {
+          throw new TypeError('Argument must be a Filter');
+        }
+        
         query.constant_score.filter = oFilter.get();
         return this;
       },

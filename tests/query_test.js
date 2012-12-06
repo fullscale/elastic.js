@@ -1844,7 +1844,7 @@ exports.queries = {
     test.done();
   },
   ConstantScoreQuery: function (test) {
-    test.expect(9);
+    test.expect(11);
 
     var termQuery1 = ejs.TermQuery('t1', 'v1'),
       termFilter1 = ejs.TermFilter('tf1', 'fv1'),
@@ -1887,6 +1887,14 @@ exports.queries = {
     
     test.strictEqual(constantScoreQuery.toString(), JSON.stringify(expected));
 
+    test.throws(function () {
+      constantScoreQuery.query('invalid');
+    }, TypeError);
+    
+    test.throws(function () {
+      constantScoreQuery.filter('invalid');
+    }, TypeError);
+    
     test.done();
   },
   MatchAllQuery: function (test) {
