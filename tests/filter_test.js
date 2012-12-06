@@ -1301,7 +1301,7 @@ exports.filters = {
     test.done();
   },
   NumericRangeFilter: function (test) {
-    test.expect(11);
+    test.expect(25);
 
     var numericRangeFilter = ejs.NumericRangeFilter('f1'),
       expected,
@@ -1321,22 +1321,91 @@ exports.filters = {
     test.ok(numericRangeFilter, 'NumericRangeFilter exists');
     test.ok(numericRangeFilter.get(), 'get() works');
     test.strictEqual(numericRangeFilter.field(), 'f1');
-    test.strictEqual(numericRangeFilter.from(), '-1');
-    test.strictEqual(numericRangeFilter.to(), '-1');
     doTest();
 
     numericRangeFilter.from(start.getTime());
     expected.numeric_range.f1.from = start.getTime();
-    test.strictEqual(numericRangeFilter.from(), JSON.stringify(start.getTime()));
+    test.strictEqual(numericRangeFilter.from(), start.getTime());
     doTest();
 
     numericRangeFilter.to(end.getTime());
     expected.numeric_range.f1.to = end.getTime();
-    test.strictEqual(numericRangeFilter.to(), JSON.stringify(end.getTime()));
+    test.strictEqual(numericRangeFilter.to(), end.getTime());
     doTest();
 
+    numericRangeFilter.field('f2');
+    expected = {
+      numeric_range: {
+        f2: {
+          from: start.getTime(),
+          to: end.getTime()
+        }
+      }
+    };
+    doTest();
+    
+    numericRangeFilter.includeUpper(true);
+    expected.numeric_range.f2.include_upper = true;
+    doTest();
+    
+    numericRangeFilter.includeLower(false);
+    expected.numeric_range.f2.include_lower = false;
+    doTest();
+    
+    numericRangeFilter.gt(start.getTime());
+    expected.numeric_range.f2.gt = start.getTime();
+    doTest();
+    
+    numericRangeFilter.gte(start.getTime());
+    expected.numeric_range.f2.gte = start.getTime();
+    doTest();
+    
+    numericRangeFilter.lt(end.getTime());
+    expected.numeric_range.f2.lt = end.getTime();
+    doTest();
+    
+    numericRangeFilter.lte(end.getTime());
+    expected.numeric_range.f2.lte = end.getTime();
+    doTest();
+    
+    numericRangeFilter.name('filter_name');
+    expected.numeric_range._name = 'filter_name';
+    doTest();
+    
+    numericRangeFilter.cache(true);
+    expected.numeric_range._cache = true;
+    doTest();
+    
+    numericRangeFilter.cacheKey('filter_cache_key');
+    expected.numeric_range._cache_key = 'filter_cache_key';
+    doTest();
+    
     test.strictEqual(numericRangeFilter.toString(), JSON.stringify(expected));
 
+    test.throws(function () {
+      numericRangeFilter.from('invalid');
+    }, TypeError);
+    
+    test.throws(function () {
+      numericRangeFilter.to('invalid');
+    }, TypeError);
+    
+    test.throws(function () {
+      numericRangeFilter.gt('invalid');
+    }, TypeError);
+    
+    test.throws(function () {
+      numericRangeFilter.gte('invalid');
+    }, TypeError);
+    
+    test.throws(function () {
+      numericRangeFilter.lt('invalid');
+    }, TypeError);
+    
+    test.throws(function () {
+      numericRangeFilter.lte('invalid');
+    }, TypeError);
+    
     test.done();
   },
   ExistsFilter: function (test) {
