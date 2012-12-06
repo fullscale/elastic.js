@@ -825,9 +825,11 @@ exports.filters = {
     test.done();
   },
   GeoBboxFilter: function (test) {
-    test.expect(14);
+    test.expect(16);
 
     var geoBboxFilter = ejs.GeoBboxFilter('location'),
+      point1 = ejs.GeoPoint([37.7819288, -122.396480]),
+      point2 = ejs.GeoPoint([37.7817289, -122.396181]),
       expected,
       doTest = function () {
         test.deepEqual(geoBboxFilter.get(), expected);
@@ -844,12 +846,12 @@ exports.filters = {
     test.ok(geoBboxFilter.get(), 'get() works');
     doTest();
 
-    geoBboxFilter.topLeft(37.7819288, -122.396480);
-    expected.geo_bounding_box.location.top_left = [-122.396480, 37.7819288];
+    geoBboxFilter.topLeft(point1);
+    expected.geo_bounding_box.location.top_left = point1.get();
     doTest(); 
     
-    geoBboxFilter.bottomRight(37.7817289, -122.396181);
-    expected.geo_bounding_box.location.bottom_right = [-122.396181, 37.7817289];
+    geoBboxFilter.bottomRight(point2);
+    expected.geo_bounding_box.location.bottom_right = point2.get();
     doTest();
     
     geoBboxFilter.type('memory');
@@ -868,8 +870,8 @@ exports.filters = {
       geo_bounding_box: {
         type: 'indexed',
         location2: {
-          top_left: [-122.396480, 37.7819288],
-          bottom_right: [-122.396181, 37.7817289]
+          top_left: point1.get(),
+          bottom_right: point2.get()
         }
       }
     };
@@ -892,6 +894,14 @@ exports.filters = {
     doTest();
     
     test.strictEqual(geoBboxFilter.toString(), JSON.stringify(expected));
+    
+    test.throws(function () {
+      geoBboxFilter.topLeft('invalid');
+    }, TypeError);
+    
+    test.throws(function () {
+      geoBboxFilter.bottomRight('invalid');
+    }, TypeError);
     
     test.done();
   },

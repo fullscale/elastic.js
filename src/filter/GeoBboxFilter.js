@@ -52,16 +52,20 @@
              Sets the top-left coordinate of the bounding box
 
              @member ejs.GeoBboxFilter
-             @param {Number} lat the latitude coordinate
-             @param {Number} lon the longitude coordinate
+             @param {GeoPoint} p A valid GeoPoint object
              @returns {Object} returns <code>this</code> so that calls can be chained.
              */
-      topLeft: function (lat, lon) {
-        if (arguments.length === 0) {
+      topLeft: function (p) {
+        if (p == null) {
           return filter.geo_bounding_box[fieldName].top_left;
         }
       
-        filter.geo_bounding_box[fieldName].top_left = [lon, lat];
+        if (isEJSObject(p)) {
+          filter.geo_bounding_box[fieldName].top_left = p.get();
+        } else {
+          throw new TypeError('Argument must be a GeoPoint');
+        }
+        
         return this;
       },
 
@@ -69,16 +73,20 @@
              Sets the bottom-right coordinate of the bounding box
 
              @member ejs.GeoBboxFilter
-             @param {Number} lat the latitude coordinate
-             @param {Number} lon the longitude coordinate
+             @param {GeoPoint} p A valid GeoPoint object
              @returns {Object} returns <code>this</code> so that calls can be chained.
              */
-      bottomRight: function (lat, lon) {
-        if (arguments.length === 0) {
+      bottomRight: function (p) {
+        if (p == null) {
           return filter.geo_bounding_box[fieldName].bottom_right;
         }
       
-        filter.geo_bounding_box[fieldName].bottom_right = [lon, lat];
+        if (isEJSObject(p)) {
+          filter.geo_bounding_box[fieldName].bottom_right = p.get();
+        } else {
+          throw new TypeError('Argument must be a GeoPoint');
+        }
+        
         return this;
       },
 
