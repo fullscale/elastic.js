@@ -141,7 +141,7 @@ exports.filters = {
     test.done();
   },
   NestedFilter: function (test) {
-    test.expect(12);
+    test.expect(14);
 
     var termQuery = ejs.TermQuery('tq1', 'v1'),
       termFilter = ejs.TermFilter('tf1', 'v1'),
@@ -195,6 +195,14 @@ exports.filters = {
     
     test.strictEqual(nestedFilter.toString(), JSON.stringify(expected));
 
+    test.throws(function () {
+      nestedFilter.query('junk');
+    }, TypeError);
+    
+    test.throws(function () {
+      nestedFilter.filter('junk');
+    }, TypeError);
+    
     test.done();
   },
   ScriptFilter: function (test) {

@@ -51,7 +51,7 @@
       /**
              Sets the nested query to be executed.
              @member ejs.NestedFilter
-             @param {Object} oQuery A valid Query object
+             @param {Query} oQuery A valid Query object
              @returns {Object} returns <code>this</code> so that calls can be chained.
              */
       query: function (oQuery) {
@@ -59,6 +59,10 @@
           return filter.nested.query;
         }
     
+        if (!isEJSObject(oQuery)) {
+          throw new TypeError('Argument must be a Query object');
+        }
+        
         filter.nested.query = oQuery.get();
         return this;
       },
@@ -75,6 +79,10 @@
           return filter.nested.filter;
         }
     
+        if (!isEJSObject(oFilter)) {
+          throw new TypeError('Argument must be a Filter object');
+        }
+        
         filter.nested.filter = oFilter.get();
         return this;
       },
