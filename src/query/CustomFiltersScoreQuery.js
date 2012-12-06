@@ -15,11 +15,16 @@
     matched in a filter.  
 
     @param {Object} qry A valid query object.
-    @param {Array} filters An array of objects.  Each object must have a 
-      'filter' property and either a 'boost' or 'script' property.
+    @param {Object || Array} filters A single object or array of objects.  Each 
+      object must have a 'filter' property and either a 'boost' or 'script' 
+      property.
     */
   ejs.CustomFiltersScoreQuery = function (qry, filters) {
 
+    if (!isEJSObject(qry)) {
+      throw new TypeError('Argument must be a Query');
+    }
+    
     /**
          The internal query object. <code>Use get()</code>
          @member ejs.CustomFiltersScoreQuery
@@ -37,7 +42,7 @@
     genFilterObject = function (filter) {
       var obj = null;
     
-      if (filter.filter) {
+      if (filter.filter && isEJSObject(filter.filter)) {
         obj = {
           filter: filter.filter.get()
         };
@@ -55,7 +60,7 @@
       return obj;
     }; 
 
-    each(filters, function (filter) {
+    each((isArray(filters) ? filters : [filters]), function (filter) {
       var fObj = genFilterObject(filter);
       if (fObj !== null) {
         query.custom_filters_score.filters.push(fObj);
@@ -76,6 +81,10 @@
           return query.custom_filters_score.query;
         }
   
+        if (!isEJSObject(q)) {
+          throw new TypeError('Argument must be a Query');
+        }
+        
         query.custom_filters_score.query = q.get();
         return this;
       },
@@ -83,16 +92,17 @@
       /**
             Sets the filters and their related boost or script scoring method.
             Takes an array of objects where each object has a 'filter' property
-            and either a 'boost' or 'script' property.  Overwrites any existing
-            filters.
+            and either a 'boost' or 'script' property.  Pass a single object to
+            add to the current list of filters or pass a list of objects to
+            overwrite all existing filters.
           
             <code>
             {filter: someFilter, boost: 2.1}
             </code>
 
             @member ejs.CustomFiltersScoreQuery
-            @param {Array} fltrs An array of objects contining a filter and
-              either a boost or script property.
+            @param {Object || Array} fltrs An object or array of objects 
+              contining a filter and either a boost or script property.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       filters: function (fltrs) {
@@ -100,8 +110,11 @@
           return query.custom_filters_score.filters;
         }
   
-        query.custom_filters_score.filters = [];
-        each(fltrs, function (f) {
+        if (isArray(fltrs)) {
+          query.custom_filters_score.filters = [];
+        }
+        
+        each((isArray(fltrs) ? fltrs : [fltrs]), function (f) {
           var fObj = genFilterObject(f);
           if (fObj !== null) {
             query.custom_filters_score.filters.push(fObj);

@@ -212,13 +212,16 @@ exports.queries = {
     test.done();
   },
   CustomFiltersScoreQuery: function (test) {
-    test.expect(20);
+    test.expect(24);
 
     var termQuery = ejs.TermQuery('t1', 'v1'),
       termQuery2 = ejs.TermQuery('t2', 'v2'),
       termFilter = ejs.TermFilter('tf1', 'fv1'),
       termFilter2 = ejs.TermFilter('tf2', 'fv2'), 
-      cfsQuery = ejs.CustomFiltersScoreQuery(termQuery, [{filter: termFilter, boost: 1.2}]),
+      cfsQuery = ejs.CustomFiltersScoreQuery(termQuery, [
+        {filter: termFilter, boost: 1.2}, 
+        {filter: termFilter2, script: 's'}
+      ]),
       expected,
       doTest = function () {
         test.deepEqual(cfsQuery.get(), expected);
@@ -230,6 +233,9 @@ exports.queries = {
         filters: [{
           filter: termFilter.get(),
           boost: 1.2
+        }, {
+          filter: termFilter2.get(),
+          script: 's'
         }]
       }
     };
@@ -238,6 +244,18 @@ exports.queries = {
     test.ok(cfsQuery.get(), 'get() works');
     doTest();
 
+    cfsQuery = ejs.CustomFiltersScoreQuery(termQuery, {filter: termFilter, boost: 1.2});
+    expected = {
+      custom_filters_score: {
+        query: termQuery.get(),
+        filters: [{
+          filter: termFilter.get(),
+          boost: 1.2
+        }]
+      }
+    };
+    doTest();
+    
     cfsQuery.boost(1.5);
     expected.custom_filters_score.boost = 1.5;
     doTest();
@@ -251,12 +269,18 @@ exports.queries = {
     expected.custom_filters_score.filters = [];
     doTest();
     
+    // overwrite existing
     cfsQuery.filters([{filter: termFilter, script: 's'}]);
     expected.custom_filters_score.filters = [{filter: termFilter.get(), script: 's'}];
     doTest();
     
     cfsQuery.filters([{filter: termFilter, invalid: true}, {filter: termFilter2, boost: 2}]);
     expected.custom_filters_score.filters = [{filter: termFilter2.get(), boost: 2}];
+    doTest();
+    
+    // append
+    cfsQuery.filters({filter: termFilter2, boost: 5.5});
+    expected.custom_filters_score.filters.push({filter: termFilter2.get(), boost: 5.5});
     doTest();
     
     cfsQuery.filters([{filter: termFilter, script: 's'}, {filter: termFilter2, boost: 2.2}]);
@@ -307,6 +331,14 @@ exports.queries = {
     
     test.strictEqual(cfsQuery.toString(), JSON.stringify(expected));
 
+    test.throws(function () {
+      ejs.CustomFiltersScoreQuery('invalid', {filter: termFilter, boost: 1.2});
+    }, TypeError);
+    
+    test.throws(function () {
+      cfsQuery.query('junk');
+    }, TypeError);
+    
     test.done();
   },
   WildcardQuery: function (test) {
