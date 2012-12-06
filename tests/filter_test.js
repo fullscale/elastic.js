@@ -1472,9 +1472,9 @@ exports.filters = {
     test.done();
   },
   PrefixFilter: function (test) {
-    test.expect(4);
+    test.expect(9);
 
-    var prefixFilter = ejs.PrefixFilter('title').prefix('th'),
+    var prefixFilter = ejs.PrefixFilter('title'),
       expected,
       doTest = function () {
         test.deepEqual(prefixFilter.get(), expected);
@@ -1482,7 +1482,7 @@ exports.filters = {
 
     expected = {
       prefix: {
-        title: 'th'
+        title: ''
       }
     };
 
@@ -1490,6 +1490,30 @@ exports.filters = {
     test.ok(prefixFilter.get(), 'get() works');
     doTest();
 
+    prefixFilter.prefix('th');
+    expected.prefix.title = 'th';
+    doTest();
+    
+    prefixFilter.field('body');
+    expected = {
+      prefix: {
+        body: 'th'
+      }
+    };
+    doTest();
+    
+    prefixFilter.name('filter_name');
+    expected.prefix._name = 'filter_name';
+    doTest();
+    
+    prefixFilter.cache(true);
+    expected.prefix._cache = true;
+    doTest();
+    
+    prefixFilter.cacheKey('filter_cache_key');
+    expected.prefix._cache_key = 'filter_cache_key';
+    doTest();
+    
     test.strictEqual(prefixFilter.toString(), JSON.stringify(expected));
 
     test.done();
