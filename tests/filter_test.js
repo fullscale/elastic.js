@@ -798,11 +798,11 @@ exports.filters = {
     test.ok(geoBboxFilter.get(), 'get() works');
     doTest();
 
-    geoBboxFilter.topLeft(-122.396480, 37.7819288);
+    geoBboxFilter.topLeft(37.7819288, -122.396480);
     expected.geo_bounding_box.location.top_left = [-122.396480, 37.7819288];
     doTest(); 
     
-    geoBboxFilter.bottomRight(-122.396181, 37.7817289);
+    geoBboxFilter.bottomRight(37.7817289, -122.396181);
     expected.geo_bounding_box.location.bottom_right = [-122.396181, 37.7817289];
     doTest();
     

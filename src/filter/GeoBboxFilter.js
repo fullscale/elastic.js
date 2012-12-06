@@ -52,10 +52,11 @@
              Sets the top-left coordinate of the bounding box
 
              @member ejs.GeoBboxFilter
-             @param {Array} pointsArray the array of points that represent the polygon
+             @param {Number} lat the latitude coordinate
+             @param {Number} lon the longitude coordinate
              @returns {Object} returns <code>this</code> so that calls can be chained.
              */
-      topLeft: function (lon, lat) {
+      topLeft: function (lat, lon) {
         if (arguments.length === 0) {
           return filter.geo_bounding_box[fieldName].top_left;
         }
@@ -65,14 +66,14 @@
       },
 
       /**
-             * Sets the bottom-right coordinate of the bounding box
+             Sets the bottom-right coordinate of the bounding box
 
              @member ejs.GeoBboxFilter
-             @param {Number} lon the longitude coordinate
              @param {Number} lat the latitude coordinate
+             @param {Number} lon the longitude coordinate
              @returns {Object} returns <code>this</code> so that calls can be chained.
              */
-      bottomRight: function (lon, lat) {
+      bottomRight: function (lat, lon) {
         if (arguments.length === 0) {
           return filter.geo_bounding_box[fieldName].bottom_right;
         }
