@@ -206,7 +206,7 @@
              Sets the point of origin in which distance will be measured from
 
              @member ejs.GeoDistanceRangeFilter
-             @param {GeoPoint} A valid GeoPoint object.
+             @param {GeoPoint} p A valid GeoPoint object.
              @returns {Object} returns <code>this</code> so that calls can be chained.
              */
       point: function (p) {
