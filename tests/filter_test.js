@@ -511,7 +511,7 @@ exports.filters = {
     test.done();
   },
   IdsFilter: function (test) {
-    test.expect(11);
+    test.expect(14);
 
     var idsFilter = ejs.IdsFilter('id1'),
       expected,
@@ -559,6 +559,18 @@ exports.filters = {
     
     test.strictEqual(idsFilter.toString(), JSON.stringify(expected));
 
+    test.throws(function () {
+      idsFilter.values(2);
+    }, TypeError);
+    
+    test.throws(function () {
+      idsFilter.type(3);
+    }, TypeError);
+    
+    test.throws(function () {
+      ejs.IdsFilter(4);
+    }, TypeError);
+    
     test.done();
   },
   BoolFilter: function (test) {

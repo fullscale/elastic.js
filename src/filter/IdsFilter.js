@@ -22,10 +22,12 @@
       ids: {}
     };
   
-    if (typeof ids === 'string') {
+    if (isString(ids)) {
       filter.ids.values = [ids];
-    } else {
+    } else if (isArray(ids)) {
       filter.ids.values = ids;
+    } else {
+      throw new TypeError('Argument must be a string or an array');
     }
 
     return {
@@ -44,10 +46,12 @@
           return filter.ids.values;
         }
   
-        if (typeof val === 'string') {
+        if (isString(val)) {
           filter.ids.values.push(val);
-        } else {
+        } else if (isArray(val)) {
           filter.ids.values = val;
+        } else {
+          throw new TypeError('Argument must be a string or an array');
         }
       
         return this;
@@ -72,10 +76,12 @@
           return filter.ids.type;
         }
       
-        if (typeof type === 'string') {
+        if (isString(type)) {
           filter.ids.type.push(type);
-        } else {
+        } else if (isArray(type)) {
           filter.ids.type = type;
+        } else {
+          throw new TypeError('Argument must be a string or an array');
         }
       
         return this;
