@@ -748,12 +748,14 @@ exports.filters = {
     test.done();
   },
   GeoPolygonFilter: function (test) {
-    test.expect(4);
+    test.expect(14);
 
-    var geoPolygonFilter = ejs.GeoPolygonFilter('location').points([
-      [-122.396480, 37.7819288],
-      [-122.396181, 37.7817289]
-    ]),
+    var geoPolygonFilter = ejs.GeoPolygonFilter('location'),
+      point1 = ejs.GeoPoint([37.7819288, -122.396480]),
+      point2 = ejs.GeoPoint().properties({lat: 37.7817289, lon: -122.396181}),
+      point3 = ejs.GeoPoint().string("37.7819288,-122.396480"),
+      point4 = ejs.GeoPoint().geohash('drn5x1g8cu2y'),
+      point5 = ejs.GeoPoint().array([37.7817289, -122.396181]),
       expected,
       doTest = function () {
         test.deepEqual(geoPolygonFilter.get(), expected);
@@ -761,11 +763,8 @@ exports.filters = {
 
     expected = {
       geo_polygon: {
-        'location': {
-          "points": [
-            [-122.396480, 37.7819288],
-            [-122.396181, 37.7817289]
-          ]
+        location: {
+          points: []
         }
       }
     };
@@ -774,8 +773,55 @@ exports.filters = {
     test.ok(geoPolygonFilter.get(), 'get() works');
     doTest();
 
+    geoPolygonFilter.points(point1);
+    expected.geo_polygon.location.points.push(point1.get());
+    doTest();
+    
+    geoPolygonFilter.points(point2).points(point3);
+    expected.geo_polygon.location.points.push(point2.get());
+    expected.geo_polygon.location.points.push(point3.get());
+    doTest();
+    
+    geoPolygonFilter.points([point4, point5]);
+    expected.geo_polygon.location.points = [point4.get(), point5.get()];
+    doTest();
+    
+    geoPolygonFilter.field('location2');
+    expected = {
+      geo_polygon: {
+        location2: {
+          points: [point4.get(), point5.get()]
+        }
+      }
+    };
+    doTest();
+    
+    geoPolygonFilter.normalize(true);
+    expected.geo_polygon.normalize = true;
+    doTest();
+    
+    geoPolygonFilter.name('filter_name');
+    expected.geo_polygon._name = 'filter_name';
+    doTest();
+    
+    geoPolygonFilter.cache(true);
+    expected.geo_polygon._cache = true;
+    doTest();
+    
+    geoPolygonFilter.cacheKey('filter_cache_key');
+    expected.geo_polygon._cache_key = 'filter_cache_key';
+    doTest();
+    
     test.strictEqual(geoPolygonFilter.toString(), JSON.stringify(expected));
 
+    test.throws(function () {
+      geoPolygonFilter.points('invalid');
+    }, TypeError);
+    
+    test.throws(function () {
+      geoPolygonFilter.points([point1, 'invalid']);
+    }, TypeError);
+    
     test.done();
   },
   GeoBboxFilter: function (test) {

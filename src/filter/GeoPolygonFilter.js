@@ -22,50 +22,140 @@
          @property {Object} filter
          */
     var filter = {
-      "geo_polygon": {}
+      geo_polygon: {}
     };
 
-    filter.geo_polygon[fieldName] = {};
+    filter.geo_polygon[fieldName] = {
+      points: []
+    };
 
     return {
 
       /**
-             * Sets a series of points that represent a polygon
+           Sets the fields to filter against.
+
+           @member ejs.GeoPolygonFilter
+           @param {String} f A valid field name.
+           @returns {Object} returns <code>this</code> so that calls can be chained.
+           */
+      field: function (f) {
+        var oldValue = filter.geo_polygon[fieldName];
+
+        if (f == null) {
+          return fieldName;
+        }
+
+        delete filter.geo_polygon[fieldName];
+        fieldName = f;
+        filter.geo_polygon[f] = oldValue;
+
+        return this;
+      },
+       
+      /**
+             Sets a series of points that represent a polygon.  If passed a 
+             single <code>GeoPoint</code> object, it is added to the current 
+             list of points.  If passed an array of <code>GeoPoint</code> 
+             objects it replaces all current values. 
 
              @member ejs.GeoPolygonFilter
              @param {Array} pointsArray the array of points that represent the polygon
              @returns {Object} returns <code>this</code> so that calls can be chained.
              */
-      points: function (pointsArray) {
-        if (pointsArray == null) {
+      points: function (p) {
+        var i, len;
+        
+        if (p == null) {
           return filter.geo_polygon[fieldName].points;
         }
       
-        filter.geo_polygon[fieldName].points = pointsArray;
+        if (isEJSObject(p)) {
+          filter.geo_polygon[fieldName].points.push(p.get());
+        } else if (isArray(p)) {
+          filter.geo_polygon[fieldName].points = [];
+          for (i = 0, len = p.length; i < len; i++) {
+            if (!isEJSObject(p[i])) {
+              throw new TypeError('Argument must be Array of GeoPoints');
+            }
+            
+            filter.geo_polygon[fieldName].points.push(p[i].get());
+          }
+        } else {
+          throw new TypeError('Argument must be a GeoPoint or Array of GeoPoints');
+        }
+        
         return this;
       },
 
       /**
-             * Adds a point in the polygon
+            If the lat/long points should be normalized to lie within their
+            respective normalized ranges.
+            
+            Normalized ranges are:
+            lon = -180 (exclusive) to 180 (inclusive) range
+            lat = -90 to 90 (both inclusive) range
 
-             @member ejs.GeoPolygonFilter
-             @param {Number} lon the longitude coordinate
-             @param {Number} lat the latitude coordinate
-             @returns {Object} returns <code>this</code> so that calls can be chained.
-             */
-      point: function (lon, lat) {
-        if (filter.geo_polygon[fieldName].points == null) {
-          filter.geo_polygon[fieldName].points = [];
+            @member ejs.GeoPolygonFilter
+            @param {String} trueFalse True if the coordinates should be normalized. False otherwise.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      normalize: function (trueFalse) {
+        if (trueFalse == null) {
+          return filter.geo_polygon.normalize;
         }
+
+        filter.geo_polygon.normalize = trueFalse;
+        return this;
+      },
       
-        if (arguments.length === 0) {
-          return filter.geo_polygon[fieldName].points;
+      /**
+            Sets the filter name.
+
+            @member ejs.GeoPolygonFilter
+            @param {String} name A name for the filter.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      name: function (name) {
+        if (name == null) {
+          return filter.geo_polygon._name;
         }
-      
-        filter.geo_polygon[fieldName].points.push([lon, lat]);
+
+        filter.geo_polygon._name = name;
         return this;
       },
 
+      /**
+            Enable or disable caching of the filter
+
+            @member ejs.GeoPolygonFilter
+            @param {Boolean} trueFalse True to cache the filter, false otherwise.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      cache: function (trueFalse) {
+        if (trueFalse == null) {
+          return filter.geo_polygon._cache;
+        }
+
+        filter.geo_polygon._cache = trueFalse;
+        return this;
+      },
+    
+      /**
+            Sets the cache key.
+
+            @member ejs.GeoPolygonFilter
+            @param {String} key the cache key as a string.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      cacheKey: function (key) {
+        if (key == null) {
+          return filter.geo_polygon._cache_key;
+        }
+
+        filter.geo_polygon._cache_key = key;
+        return this;
+      },
+      
       /**
              Returns the filter container as a JSON string
 
