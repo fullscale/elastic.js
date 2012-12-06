@@ -1092,7 +1092,7 @@ exports.queries = {
     test.done();
   },
   CustomScoreQuery: function (test) {
-    test.expect(10);
+    test.expect(12);
 
     var termQuery = ejs.TermQuery('t1', 'v1'),
       termQuery2 = ejs.TermQuery('t2', 'v2'),
@@ -1139,6 +1139,14 @@ exports.queries = {
     
     test.strictEqual(customScoreQuery.toString(), JSON.stringify(expected));
 
+    test.throws(function () {
+      ejs.CustomScoreQuery('invalid', 's');
+    }, TypeError);
+    
+    test.throws(function () {
+      customScoreQuery.query('invalid');
+    }, TypeError);
+    
     test.done();
   },
   IdsQuery: function (test) {

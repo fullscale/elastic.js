@@ -14,6 +14,10 @@
     */
   ejs.CustomScoreQuery = function (qry, script) {
 
+    if (!isEJSObject(qry)) {
+      throw new TypeError('Argument must be a Query');
+    }
+    
     /**
          The internal query object. <code>Use get()</code>
          @member ejs.CustomScoreQuery
@@ -40,6 +44,10 @@
           return query.custom_score.query;
         }
       
+        if (!isEJSObject(q)) {
+          throw new TypeError('Argument must be a Query');
+        }
+        
         query.custom_score.query = q.get();
         return this;
       },
