@@ -992,7 +992,7 @@ exports.filters = {
     test.done();
   },
   ExistsFilter: function (test) {
-    test.expect(4);
+    test.expect(6);
 
     var existsFilter = ejs.ExistsFilter('title'),
       expected,
@@ -1010,6 +1010,14 @@ exports.filters = {
     test.ok(existsFilter.get(), 'get() works');
     doTest();
 
+    existsFilter.field('body');
+    expected.exists.field = 'body';
+    doTest();
+    
+    existsFilter.name('filter_name');
+    expected.exists._name = 'filter_name';
+    doTest();
+    
     test.strictEqual(existsFilter.toString(), JSON.stringify(expected));
 
     test.done();

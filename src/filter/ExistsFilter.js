@@ -19,13 +19,45 @@
          @property {Object} filter
          */
     var filter = {
-      "exists": {
-        "field": fieldName
+      exists: {
+        field: fieldName
       }
     };
 
     return {
 
+      /**
+            Sets the field to check for missing values.
+
+            @member ejs.ExistsFilter
+            @param {String} name A name of the field.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      field: function (name) {
+        if (name == null) {
+          return filter.exists.field;
+        }
+
+        filter.exists.field = name;
+        return this;
+      },
+      
+      /**
+            Sets the filter name.
+
+            @member ejs.ExistsFilter
+            @param {String} name A name for the filter.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      name: function (name) {
+        if (name == null) {
+          return filter.exists._name;
+        }
+
+        filter.exists._name = name;
+        return this;
+      },
+      
       /**
              Returns the filter container as a JSON string
 
