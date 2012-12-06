@@ -1534,31 +1534,69 @@ exports.filters = {
     test.done();
   },
   OrFilter: function (test) {
-    test.expect(5);
+    test.expect(14);
 
     var termFilter1 = ejs.TermFilter('t1', 'v1'),
       termFilter2 = ejs.TermFilter('t2', 'v2'),
       termFilter3 = ejs.TermFilter('t3', 'v3'),
-      orFilter = ejs.OrFilter([termFilter1, termFilter2]),
+      orFilter = ejs.OrFilter(termFilter1),
       expected,
       doTest = function () {
         test.deepEqual(orFilter.get(), expected);
       };
 
     expected = {
-      or: [termFilter1.get(), termFilter2.get()]
+      or: {
+        filters: [termFilter1.get()]
+      }
     };
 
     test.ok(orFilter, 'OrFilter exists');
     test.ok(orFilter.get(), 'get() works');
     doTest();
 
-    orFilter.add(termFilter3);
-    expected.or.push(termFilter3.get());
+    orFilter.filters(termFilter2);
+    expected.or.filters.push(termFilter2.get());
     doTest();
 
+    orFilter.filters([termFilter1, termFilter3]);
+    expected.or.filters = [termFilter1.get(), termFilter3.get()];
+    doTest();
+    
+    orFilter = ejs.OrFilter([termFilter2, termFilter3]);
+    expected.or.filters = [termFilter2.get(), termFilter3.get()];
+    doTest();
+    
+    orFilter.name('filter_name');
+    expected.or._name = 'filter_name';
+    doTest();
+    
+    orFilter.cache(true);
+    expected.or._cache = true;
+    doTest();
+    
+    orFilter.cacheKey('filter_cache_key');
+    expected.or._cache_key = 'filter_cache_key';
+    doTest();
+    
     test.strictEqual(orFilter.toString(), JSON.stringify(expected));
 
+    test.throws(function () {
+      ejs.OrFilter('invalid');
+    }, TypeError);
+    
+    test.throws(function () {
+      ejs.OrFilter([termFilter1, 'invalid']);
+    }, TypeError);
+    
+    test.throws(function () {
+      orFilter.filters('invalid');
+    }, TypeError);
+    
+    test.throws(function () {
+      orFilter.filters([termFilter1, 'invalid']);
+    }, TypeError);
+    
     test.done();
   }
 };

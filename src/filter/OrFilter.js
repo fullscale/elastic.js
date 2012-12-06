@@ -7,9 +7,9 @@
     @desc
     A container Filter that allows Boolean OR composition of filters.
 
-    @param {Array} filterArray A javascript array of valid Filter objects such as termFilter, etc.
+    @param {Filter || Array} filters A valid Filter or array of Filters.
     */
-  ejs.OrFilter = function (filterArray) {
+  ejs.OrFilter = function (filters) {
 
     /**
          The internal filter object. Use <code>get()</code>
@@ -20,31 +20,109 @@
     var filter, i, len;
 
     filter = {
-      "or": []
+      or: {
+        filters: []
+      }
     };
 
-    for (i = 0, len = filterArray.length; i < len; i++) {
-      filter.or.push(filterArray[i].get());
+    if (isEJSObject(filters)) {
+      filter.or.filters.push(filters.get());
+    } else if (isArray(filters)) {
+      for (i = 0, len = filters.length; i < len; i++) {
+        if (!isEJSObject(filters[i])) {
+          throw new TypeError('Argument must be array of Filters');
+        }
+        
+        filter.or.filters.push(filters[i].get());
+      }
+    } else {
+      throw new TypeError('Argument must be a Filter or array of Filters');
     }
 
     return {
 
       /**
-             * Adds a new filter to the filter container
+             Updates the filters.  If passed a single Filter it is added to 
+             the existing filters.  If passed an array of Filters, they 
+             replace all existing Filters.
 
              @member ejs.OrFilter
-             @param {Object} fltr A valid filter object such as a termFilter, etc.
+             @param {Filter || Array} fltr A Filter or array of Filters
              @returns {Object} returns <code>this</code> so that calls can be chained.
              */
-      add: function (fltr) {
+      filters: function (fltr) {
+        var i, len;
+        
         if (fltr == null) {
-          return filter.or;
+          return filter.or.filters;
         }
       
-        filter.or.push(fltr.get());
+        if (isEJSObject(fltr)) {
+          filter.or.filters.push(fltr.get());
+        } else if (isArray(fltr)) {
+          filter.or.filters = [];
+          for (i = 0, len = fltr.length; i < len; i++) {
+            if (!isEJSObject(fltr[i])) {
+              throw new TypeError('Argument must be an array of Filters');
+            }
+            
+            filter.or.filters.push(fltr[i].get());
+          }
+        } else {
+          throw new TypeError('Argument must be a Filter or array of Filters');
+        }
+        
         return this;
       },
 
+      /**
+            Sets the filter name.
+
+            @member ejs.OrFilter
+            @param {String} name A name for the filter.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      name: function (name) {
+        if (name == null) {
+          return filter.or._name;
+        }
+
+        filter.or._name = name;
+        return this;
+      },
+
+      /**
+            Enable or disable caching of the filter
+
+            @member ejs.OrFilter
+            @param {Boolean} trueFalse True to cache the filter, false otherwise.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      cache: function (trueFalse) {
+        if (trueFalse == null) {
+          return filter.or._cache;
+        }
+
+        filter.or._cache = trueFalse;
+        return this;
+      },
+
+      /**
+            Sets the cache key.
+
+            @member ejs.OrFilter
+            @param {String} key the cache key as a string.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      cacheKey: function (key) {
+        if (key == null) {
+          return filter.or._cache_key;
+        }
+
+        filter.or._cache_key = key;
+        return this;
+      },
+      
       /**
              Returns the filter container as a JSON string
 
