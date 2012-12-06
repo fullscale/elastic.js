@@ -66,6 +66,10 @@
           return filter.geo_distance.distance;
         }
       
+        if (!isNumber(numericDistance)) {
+          throw new TypeError('Argument must be a numeric value');
+        }
+        
         filter.geo_distance.distance = numericDistance;
         return this;
       },
