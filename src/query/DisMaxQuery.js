@@ -26,21 +26,38 @@
     return {
 
       /**
-            Adds the given sub query.
+            Updates the queries.  If passed a single Query, it is added to the
+            list of existing queries.  If passed an array of Queries, it 
+            replaces all existing values.
 
             @member ejs.DisMaxQuery
-            @param {Object} subQuery A <code>Query</code> object.
+            @param {Query || Array} qs A single Query or an array of Queries
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
-      add: function (subQuery) {
-        if (subQuery == null) {
+      queries: function (qs) {
+        var i, len;
+        
+        if (qs == null) {
           return query.dis_max.queries;
         }
       
-        if (typeof query.dis_max.queries !== "undefined") {
-          query.dis_max.queries.push(subQuery.get());
+        if (query.dis_max.queries == null) {
+          query.dis_max.queries = [];
+        }
+        
+        if (isEJSObject(qs)) {
+          query.dis_max.queries.push(qs.get());
+        } else if (isArray(qs)) {
+          query.dis_max.queries = [];
+          for (i = 0, len = qs.length; i < len; i++) {
+            if (!isEJSObject(qs[i])) {
+              throw new TypeError('Argument must be array of Queries');
+            }
+            
+            query.dis_max.queries.push(qs[i].get());
+          }
         } else {
-          query.dis_max.queries = [subQuery.get()];
+          throw new TypeError('Argument must be a Query or array of Queries');
         }
 
         return this;

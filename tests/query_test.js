@@ -1651,12 +1651,12 @@ exports.queries = {
     test.done();
   },
   DisMaxQuery: function (test) {
-    test.expect(8);
+    test.expect(11);
 
     var disMaxQuery = ejs.DisMaxQuery(),
-      termQuery1 = ejs.TermQuery('t1', 'v1'),
+      termQuery1 = ejs.TermQuery('t1', 'v1').boost(1.5),
       fieldQuery1 = ejs.FieldQuery('f1', 'v1'),
-      boolQuery1 = ejs.BoolQuery(),
+      boolQuery1 = ejs.BoolQuery().must(termQuery1).boost(2),
       expected,
       doTest = function () {
         test.deepEqual(disMaxQuery.get(), expected);
@@ -1665,22 +1665,23 @@ exports.queries = {
     expected = {
       dis_max: {}
     };
-    termQuery1.boost(1.5);
-    boolQuery1.must(termQuery1)
-      .boost(2);
 
     test.ok(disMaxQuery, 'DisMaxQuery exists');
     test.ok(disMaxQuery.get(), 'get() works');
     doTest();
 
-    disMaxQuery.add(fieldQuery1);
+    disMaxQuery.queries(fieldQuery1);
     expected.dis_max.queries = [fieldQuery1.get()];
     doTest();
 
-    disMaxQuery.add(boolQuery1);
+    disMaxQuery.queries(boolQuery1);
     expected.dis_max.queries.push(boolQuery1.get());
     doTest();
 
+    disMaxQuery.queries([termQuery1, boolQuery1]);
+    expected.dis_max.queries = [termQuery1.get(), boolQuery1.get()];
+    doTest();
+    
     disMaxQuery.boost(3);
     expected.dis_max.boost = 3;
     doTest();
@@ -1691,6 +1692,14 @@ exports.queries = {
 
     test.strictEqual(disMaxQuery.toString(), JSON.stringify(expected));
 
+    test.throws(function () {
+      disMaxQuery.queries('invalid');
+    }, TypeError);
+    
+    test.throws(function () {
+      disMaxQuery.queries([termQuery1, 'invalid']);
+    }, TypeError);
+    
     test.done();
   },
   QueryStringQuery: function (test) {
