@@ -5,7 +5,7 @@
 
     <p><strong>Note:</strong> This module contains a related code example.&nbsp;
     <a target="_blank" class="btn c9" href="https://gist.github.com/1903734">View Code Example</a></p>
-
+    
     @name ejs.GeoDistanceFilter
 
     @desc
@@ -23,15 +23,39 @@
          @property {Object} filter
          */
     var filter = {
-      "geo_distance": {
-        "distance_unit": "mi"
+      geo_distance: {
       }
     };
 
+    filter.geo_distance[fieldName] = {};
+    
     return {
 
       /**
-             * Sets the numeric distance to be used
+            Sets the fields to filter against.
+
+            @member ejs.GeoDistanceFilter
+            @param {String} f A valid field name.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      field: function (f) {
+        var oldValue = filter.geo_distance[fieldName];
+    
+        if (f == null) {
+          return fieldName;
+        }
+
+        delete filter.geo_distance[fieldName];
+        fieldName = f;
+        filter.geo_distance[f] = oldValue;
+    
+        return this;
+      },
+      
+      /**
+             Sets the numeric distance to be used.  The distance can be a 
+             numeric value, and then the unit (either mi or km can be set) 
+             controlling the unit. Or a single string with the unit as well.
 
              @member ejs.GeoDistanceFilter
              @param {Number} numericDistance the numeric distance
@@ -47,38 +71,158 @@
       },
 
       /**
-             * Sets the distance unit
+             Sets the distance unit.  Valid values are "mi" for miles or "km"
+             for kilometers. Defaults to "km".
 
              @member ejs.GeoDistanceFilter
-             @param {Number} unit the unit of distance measure. Can be either <code>mi</code> or <code>km</code>. Defaults to <code>mi</code>.
+             @param {Number} unit the unit of distance measure.
              @returns {Object} returns <code>this</code> so that calls can be chained.
              */
-      distanceUnit: function (unit) {
+      unit: function (unit) {
         if (unit == null) {
-          return filter.geo_distance.distance_unit;
+          return filter.geo_distance.unit;
         }
       
-        filter.geo_distance.distance_unit = unit;
+        unit = unit.toLowerCase();
+        if (unit === 'mi' || unit === 'km') {
+          filter.geo_distance.unit = unit;
+        }
+        
         return this;
       },
 
       /**
-             * Sets the point of origin in which distance will be measured from
+             Sets the point of origin in which distance will be measured from
 
              @member ejs.GeoDistanceFilter
-             @param {Number} lon the longitude coordinate
              @param {Number} lat the latitude coordinate
+             @param {Number} lon the longitude coordinate
              @returns {Object} returns <code>this</code> so that calls can be chained.
              */
-      point: function (lon, lat) {
+      point: function (lat, lon) {
         if (arguments.length === 0) {
           return filter.geo_distance[fieldName];
         }
       
-        filter.geo_distance[fieldName] = [lon, lat];
+        filter.geo_distance[fieldName].lat = lat;
+        filter.geo_distance[fieldName].lon = lon;
         return this;
       },
 
+
+      /**
+            How to compute the distance. Can either be arc (better precision) 
+            or plane (faster). Defaults to arc.
+
+            @member ejs.GeoDistanceFilter
+            @param {String} type The execution type as a string.  
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      distanceType: function (type) {
+        if (type == null) {
+          return filter.geo_distance.distance_type;
+        }
+
+        type = type.toLowerCase();
+        if (type === 'arc' || type === 'plane') {
+          filter.geo_distance.distance_type = type;
+        }
+        
+        return this;
+      },
+      
+      /**
+            If the lat/long points should be normalized to lie within their
+            respective normalized ranges.
+            
+            Normalized ranges are:
+            lon = -180 (exclusive) to 180 (inclusive) range
+            lat = -90 to 90 (both inclusive) range
+
+            @member ejs.GeoDistanceFilter
+            @param {String} trueFalse True if the coordinates should be normalized. False otherwise.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      normalize: function (trueFalse) {
+        if (trueFalse == null) {
+          return filter.geo_distance.normalize;
+        }
+
+        filter.geo_distance.normalize = trueFalse;
+        return this;
+      },
+      
+      /**
+            Will an optimization of using first a bounding box check will be 
+            used. Defaults to memory which will do in memory checks. Can also 
+            have values of indexed to use indexed value check, or none which 
+            disables bounding box optimization.
+
+            @member ejs.GeoDistanceFilter
+            @param {String} t optimization type of memory, indexed, or none.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      optimizeBbox: function (t) {
+        if (t == null) {
+          return filter.geo_distance.optimize_bbox;
+        }
+
+        t = t.toLowerCase();
+        if (t === 'memory' || t === 'indexed' || t === 'none') {
+          filter.geo_distance.optimize_bbox = t;
+        }
+        
+        return this;
+      },
+      
+      /**
+            Sets the filter name.
+
+            @member ejs.GeoDistanceFilter
+            @param {String} name A name for the filter.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      name: function (name) {
+        if (name == null) {
+          return filter.geo_distance._name;
+        }
+
+        filter.geo_distance._name = name;
+        return this;
+      },
+
+      /**
+            Enable or disable caching of the filter
+
+            @member ejs.GeoDistanceFilter
+            @param {Boolean} trueFalse True to cache the filter, false otherwise.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      cache: function (trueFalse) {
+        if (trueFalse == null) {
+          return filter.geo_distance._cache;
+        }
+
+        filter.geo_distance._cache = trueFalse;
+        return this;
+      },
+    
+      /**
+            Sets the cache key.
+
+            @member ejs.GeoDistanceFilter
+            @param {String} key the cache key as a string.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      cacheKey: function (key) {
+        if (key == null) {
+          return filter.geo_distance._cache_key;
+        }
+
+        filter.geo_distance._cache_key = key;
+        return this;
+      },
+      
       /**
              Returns the filter container as a JSON string
 

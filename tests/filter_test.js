@@ -850,11 +850,9 @@ exports.filters = {
     test.done();
   },
   GeoDistanceFilter: function (test) {
-    test.expect(4);
+    test.expect(21);
 
-    var geoDistanceFilter = ejs.GeoDistanceFilter('location')
-      .distance(10)
-      .point(-122.396480, 37.7819288),
+    var geoDistanceFilter = ejs.GeoDistanceFilter('location'),
       expected,
       doTest = function () {
         test.deepEqual(geoDistanceFilter.get(), expected);
@@ -862,16 +860,88 @@ exports.filters = {
 
     expected = {
       geo_distance: {
-        "distance_unit": "mi",
-        "distance": 10,
-        "location": [-122.396480, 37.7819288]
+        location: {}
       }
     };
-
+    
     test.ok(geoDistanceFilter, 'GeoDistanceFilter exists');
     test.ok(geoDistanceFilter.get(), 'get() works');
     doTest();
 
+    geoDistanceFilter.distance(10);
+    expected.geo_distance.distance = 10;
+    doTest();
+    
+    geoDistanceFilter.point(37.7819288, -122.396480),
+    expected.geo_distance.location.lat = 37.7819288;
+    expected.geo_distance.location.lon = -122.396480;
+    doTest();
+    
+    geoDistanceFilter.field('location2');
+    expected = {
+      geo_distance: {
+        distance: 10,
+        location2: {
+          lat: 37.7819288,
+          lon: -122.396480
+        }
+      }
+    };
+    doTest();
+    
+    geoDistanceFilter.unit('mi');
+    expected.geo_distance.unit = 'mi';
+    doTest();
+    
+    geoDistanceFilter.unit('INVALID');
+    doTest();
+    
+    geoDistanceFilter.unit('Km');
+    expected.geo_distance.unit = 'km';
+    doTest();
+    
+    geoDistanceFilter.distanceType('arc');
+    expected.geo_distance.distance_type = 'arc';
+    doTest();
+    
+    geoDistanceFilter.distanceType('INVALID');
+    doTest();
+    
+    geoDistanceFilter.distanceType('Plane');
+    expected.geo_distance.distance_type = 'plane';
+    doTest();
+    
+    geoDistanceFilter.normalize(true);
+    expected.geo_distance.normalize = true;
+    doTest();
+    
+    geoDistanceFilter.optimizeBbox('memory');
+    expected.geo_distance.optimize_bbox = 'memory';
+    doTest();
+    
+    geoDistanceFilter.optimizeBbox('INVALID');
+    doTest();
+    
+    geoDistanceFilter.optimizeBbox('Indexed');
+    expected.geo_distance.optimize_bbox = 'indexed';
+    doTest();
+    
+    geoDistanceFilter.optimizeBbox('none');
+    expected.geo_distance.optimize_bbox = 'none';
+    doTest();
+    
+    geoDistanceFilter.name('filter_name');
+    expected.geo_distance._name = 'filter_name';
+    doTest();
+    
+    geoDistanceFilter.cache(true);
+    expected.geo_distance._cache = true;
+    doTest();
+    
+    geoDistanceFilter.cacheKey('filter_cache_key');
+    expected.geo_distance._cache_key = 'filter_cache_key';
+    doTest();
+    
     test.strictEqual(geoDistanceFilter.toString(), JSON.stringify(expected));
 
     test.done();
