@@ -574,7 +574,7 @@ exports.filters = {
     test.done();
   },
   BoolFilter: function (test) {
-    test.expect(14);
+    test.expect(20);
 
     var termFilter = ejs.TermFilter('t1', 'v1'),
       termFilter2 = ejs.TermFilter('t2', 'v2'),
@@ -598,10 +598,18 @@ exports.filters = {
     expected.bool.must = [termFilter.get()];
     doTest();
 
+    boolFilter.must([termFilter2, termFilter3]);
+    expected.bool.must = [termFilter2.get(), termFilter3.get()];
+    doTest();
+    
     boolFilter.mustNot(termFilter2);
     expected.bool.must_not = [termFilter2.get()];
     doTest();
 
+    boolFilter.mustNot([termFilter3, termFilter4]);
+    expected.bool.must_not = [termFilter3.get(), termFilter4.get()];
+    doTest();
+    
     boolFilter.should(termFilter3);
     expected.bool.should = [termFilter3.get()];
     doTest();
@@ -610,6 +618,10 @@ exports.filters = {
     expected.bool.should.push(termFilter4.get());
     doTest();
 
+    boolFilter.should([termFilter, termFilter2]);
+    expected.bool.should = [termFilter.get(), termFilter2.get()];
+    doTest();
+    
     boolFilter.name('boolfilter');
     expected.bool._name = 'boolfilter';
     doTest();
@@ -629,11 +641,23 @@ exports.filters = {
     }, TypeError);
     
     test.throws(function () {
+      boolFilter.must([termFilter, 'junk']);
+    }, TypeError);
+    
+    test.throws(function () {
       boolFilter.mustNot('junk');
     }, TypeError);
     
     test.throws(function () {
+      boolFilter.mustNot([termFilter, 'junk']);
+    }, TypeError);
+    
+    test.throws(function () {
       boolFilter.should('junk');
+    }, TypeError);
+    
+    test.throws(function () {
+      boolFilter.should([termFilter, 'junk']);
     }, TypeError);
     
     test.done();
