@@ -44,8 +44,8 @@
           return field;
         }
 
+        delete filter.geo_shape[field];
         field = f;
-        filter.geo_shape = {};
         filter.geo_shape[f] = oldValue;
   
         return this;
