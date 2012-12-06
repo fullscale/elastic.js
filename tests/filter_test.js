@@ -1191,7 +1191,7 @@ exports.filters = {
     test.done();
   },
   NotFilter: function (test) {
-    test.expect(5);
+    test.expect(10);
 
     var termFilter1 = ejs.TermFilter('t1', 'v1'),
       termFilter2 = ejs.TermFilter('t2', 'v2'),
@@ -1213,8 +1213,28 @@ exports.filters = {
     expected.not = termFilter2.get();
     doTest();
 
+    notFilter.name('filter_name');
+    expected.not._name = 'filter_name';
+    doTest();
+    
+    notFilter.cache(true);
+    expected.not._cache = true;
+    doTest();
+    
+    notFilter.cacheKey('filter_cache_key');
+    expected.not._cache_key = 'filter_cache_key';
+    doTest();
+    
     test.strictEqual(notFilter.toString(), JSON.stringify(expected));
 
+    test.throws(function () {
+      ejs.NotFilter('invalid');
+    }, TypeError);
+    
+    test.throws(function () {
+      notFilter.filter('invalid');
+    }, TypeError);
+    
     test.done();
   },
   AndFilter: function (test) {
