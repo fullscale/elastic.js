@@ -13,6 +13,10 @@
     */
   ejs.HasParentFilter = function (qry, parentType) {
 
+    if (!isEJSObject(qry)) {
+      throw new TypeError('No Query object found');
+    }
+    
     /**
          The internal filter object. <code>Use get()</code>
          @member ejs.HasParentFilter
@@ -39,6 +43,10 @@
           return filter.has_parent.query;
         }
 
+        if (!isEJSObject(q)) {
+          throw new TypeError('Argument must be a Query object');
+        }
+        
         filter.has_parent.query = q.get();
         return this;
       },
