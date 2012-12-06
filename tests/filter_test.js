@@ -768,7 +768,7 @@ exports.filters = {
     test.done();
   },
   TermFilter: function (test) {
-    test.expect(6);
+    test.expect(11);
 
     var termFilter = ejs.TermFilter('t1', 'v1'),
       expected,
@@ -784,10 +784,34 @@ exports.filters = {
 
     test.ok(termFilter, 'TermFilter exists');
     test.ok(termFilter.get(), 'get() works');
-    test.strictEqual(termFilter.key(), 't1');
-    test.strictEqual(termFilter.value(), 'v1');
+    test.strictEqual(termFilter.field(), 't1');
+    test.strictEqual(termFilter.term(), 'v1');
     doTest();
 
+    termFilter.field('t2');
+    expected = {
+      term: {
+        t2: 'v1'
+      }
+    };
+    doTest();
+    
+    termFilter.term('v2');
+    expected.term.t2 = 'v2';
+    doTest();
+    
+    termFilter.name('filter_name');
+    expected.term._name = 'filter_name';
+    doTest();
+    
+    termFilter.cache(true);
+    expected.term._cache = true;
+    doTest();
+    
+    termFilter.cacheKey('filter_cache_key');
+    expected.term._cache_key = 'filter_cache_key';
+    doTest();
+    
     test.strictEqual(termFilter.toString(), JSON.stringify(expected));
 
     test.done();
