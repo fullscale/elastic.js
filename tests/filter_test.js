@@ -779,11 +779,9 @@ exports.filters = {
     test.done();
   },
   GeoBboxFilter: function (test) {
-    test.expect(4);
+    test.expect(14);
 
-    var geoBboxFilter = ejs.GeoBboxFilter('location')
-      .topLeft(-122.396480, 37.7819288)
-      .bottomRight(-122.396181, 37.7817289),
+    var geoBboxFilter = ejs.GeoBboxFilter('location'),
       expected,
       doTest = function () {
         test.deepEqual(geoBboxFilter.get(), expected);
@@ -792,8 +790,6 @@ exports.filters = {
     expected = {
       geo_bounding_box: {
         'location': {
-          "top_left": [-122.396480, 37.7819288],
-          "bottom_right": [-122.396181, 37.7817289]
         }
       }
     };
@@ -802,8 +798,55 @@ exports.filters = {
     test.ok(geoBboxFilter.get(), 'get() works');
     doTest();
 
+    geoBboxFilter.topLeft(-122.396480, 37.7819288);
+    expected.geo_bounding_box.location.top_left = [-122.396480, 37.7819288];
+    doTest(); 
+    
+    geoBboxFilter.bottomRight(-122.396181, 37.7817289);
+    expected.geo_bounding_box.location.bottom_right = [-122.396181, 37.7817289];
+    doTest();
+    
+    geoBboxFilter.type('memory');
+    expected.geo_bounding_box.type = 'memory';
+    doTest();
+    
+    geoBboxFilter.type('INVALID');
+    doTest();
+    
+    geoBboxFilter.type('Indexed');
+    expected.geo_bounding_box.type = 'indexed';
+    doTest();
+    
+    geoBboxFilter.field('location2');
+    expected = {
+      geo_bounding_box: {
+        type: 'indexed',
+        location2: {
+          top_left: [-122.396480, 37.7819288],
+          bottom_right: [-122.396181, 37.7817289]
+        }
+      }
+    };
+    doTest();
+    
+    geoBboxFilter.normalize(true);
+    expected.geo_bounding_box.normalize = true;
+    doTest();
+    
+    geoBboxFilter.name('filter_name');
+    expected.geo_bounding_box._name = 'filter_name';
+    doTest();
+    
+    geoBboxFilter.cache(true);
+    expected.geo_bounding_box._cache = true;
+    doTest();
+    
+    geoBboxFilter.cacheKey('filter_cache_key');
+    expected.geo_bounding_box._cache_key = 'filter_cache_key';
+    doTest();
+    
     test.strictEqual(geoBboxFilter.toString(), JSON.stringify(expected));
-
+    
     test.done();
   },
   GeoDistanceFilter: function (test) {
