@@ -35,15 +35,31 @@
              @returns {Object} returns <code>this</code> so that calls can be chained.
              */
       must: function (oQuery) {
+        var i, len;
+        
         if (query.bool.must == null) {
           query.bool.must = [];
         }
-      
+    
         if (oQuery == null) {
           return query.bool.must;
         }
 
-        query.bool.must.push(oQuery.get());
+        if (isEJSObject(oQuery)) {
+          query.bool.must.push(oQuery.get());
+        } else if (isArray(oQuery)) {
+          query.bool.must = [];
+          for (i = 0, len = oQuery.length; i < len; i++) {
+            if (!isEJSObject(oQuery[i])) {
+              throw new TypeError('Argument must be an array of Queries');
+            }
+            
+            query.bool.must.push(oQuery[i].get());
+          }
+        } else {
+          throw new TypeError('Argument must be a Query or array of Queries');
+        }
+        
         return this;
       },
 
@@ -55,15 +71,31 @@
              @returns {Object} returns <code>this</code> so that calls can be chained.
              */
       mustNot: function (oQuery) {
-        if (query.bool.mustNot == null) {
-          query.bool.mustNot = [];
+        var i, len;
+        
+        if (query.bool.must_not == null) {
+          query.bool.must_not = [];
         }
 
         if (oQuery == null) {
-          return query.bool.mustNot;
+          return query.bool.must_not;
         }
-      
-        query.bool.mustNot.push(oQuery.get());
+    
+        if (isEJSObject(oQuery)) {
+          query.bool.must_not.push(oQuery.get());
+        } else if (isArray(oQuery)) {
+          query.bool.must_not = [];
+          for (i = 0, len = oQuery.length; i < len; i++) {
+            if (!isEJSObject(oQuery[i])) {
+              throw new TypeError('Argument must be an array of Queries');
+            }
+            
+            query.bool.must_not.push(oQuery[i].get());
+          }
+        } else {
+          throw new TypeError('Argument must be a Query or array of Queries');
+        }
+        
         return this;
       },
 
@@ -75,6 +107,8 @@
              @returns {Object} returns <code>this</code> so that calls can be chained.
              */
       should: function (oQuery) {
+        var i, len;
+        
         if (query.bool.should == null) {
           query.bool.should = [];
         }
@@ -82,8 +116,22 @@
         if (oQuery == null) {
           return query.bool.should;
         }
-      
-        query.bool.should.push(oQuery.get());
+    
+        if (isEJSObject(oQuery)) {
+          query.bool.should.push(oQuery.get());
+        } else if (isArray(oQuery)) {
+          query.bool.should = [];
+          for (i = 0, len = oQuery.length; i < len; i++) {
+            if (!isEJSObject(oQuery[i])) {
+              throw new TypeError('Argument must be an array of Queries');
+            }
+            
+            query.bool.should.push(oQuery[i].get());
+          }
+        } else {
+          throw new TypeError('Argument must be a Query or array of Queries');
+        }
+        
         return this;
       },
 

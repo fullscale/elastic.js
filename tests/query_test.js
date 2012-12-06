@@ -1417,7 +1417,7 @@ exports.queries = {
     test.done();
   },
   BoolQuery: function (test) {
-    test.expect(11);
+    test.expect(20);
 
     var termQuery1 = ejs.TermQuery('t1', 'v1'),
       termQuery2 = ejs.TermQuery('t2', 'v2'),
@@ -1441,10 +1441,18 @@ exports.queries = {
     expected.bool.must = [termQuery1.get()];
     doTest();
 
+    boolQuery.must([termQuery2, termQuery3]);
+    expected.bool.must = [termQuery2.get(), termQuery3.get()];
+    doTest();
+    
     boolQuery.mustNot(termQuery2);
-    expected.bool.mustNot = [termQuery2.get()];
+    expected.bool.must_not = [termQuery2.get()];
     doTest();
 
+    boolQuery.mustNot([termQuery3, termQuery4]);
+    expected.bool.must_not = [termQuery3.get(), termQuery4.get()];
+    doTest();
+    
     boolQuery.should(termQuery3);
     expected.bool.should = [termQuery3.get()];
     doTest();
@@ -1453,6 +1461,10 @@ exports.queries = {
     expected.bool.should.push(termQuery4.get());
     doTest();
 
+    boolQuery.should([termQuery1, termQuery3]);
+    expected.bool.should = [termQuery1.get(), termQuery3.get()];
+    doTest();
+    
     boolQuery.boost(1.5);
     expected.bool.boost = 1.5;
     doTest();
@@ -1466,7 +1478,31 @@ exports.queries = {
     doTest();
 
     test.strictEqual(boolQuery.toString(), JSON.stringify(expected));
-
+    
+    test.throws(function () {
+      boolQuery.must('junk');
+    }, TypeError);
+    
+    test.throws(function () {
+      boolQuery.must([termQuery1, 'junk']);
+    }, TypeError);
+    
+    test.throws(function () {
+      boolQuery.mustNot('junk');
+    }, TypeError);
+    
+    test.throws(function () {
+      boolQuery.mustNot([termQuery1, 'junk']);
+    }, TypeError);
+    
+    test.throws(function () {
+      boolQuery.should('junk');
+    }, TypeError);
+    
+    test.throws(function () {
+      boolQuery.should([termQuery1, 'junk']);
+    }, TypeError);
+    
     test.done();
   },
   FieldQuery: function (test) {
