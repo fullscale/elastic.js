@@ -13,6 +13,10 @@
     */
   ejs.HasChildFilter = function (qry, type) {
 
+    if (!isEJSObject(qry)) {
+      throw new TypeError('No Query object found');
+    }
+    
     /**
          The internal query object. <code>Use get()</code>
          @member ejs.HasChildFilter
@@ -31,7 +35,7 @@
             Sets the query
 
             @member ejs.HasChildFilter
-            @param {Object} q A valid Query object
+            @param {Query} q A valid Query object
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       query: function (q) {
@@ -39,6 +43,10 @@
           return filter.has_child.query;
         }
   
+        if (!isEJSObject(q)) {
+          throw new TypeError('Argument must be a Query object');
+        }
+        
         filter.has_child.query = q.get();
         return this;
       },

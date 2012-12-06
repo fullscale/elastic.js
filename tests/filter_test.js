@@ -426,7 +426,7 @@ exports.filters = {
     test.done();
   },
   HasChildFilter: function (test) {
-    test.expect(8);
+    test.expect(10);
 
     var termFilter = ejs.TermFilter('t1', 'v1'),
       termFilter2 = ejs.TermFilter('t2', 'v2'),
@@ -465,6 +465,14 @@ exports.filters = {
     
     test.strictEqual(hasChildFilter.toString(), JSON.stringify(expected));
 
+    test.throws(function () {
+      hasChildFilter.query('invalid');
+    }, TypeError);
+    
+    test.throws(function () {
+      ejs.HasChildFilter('invalid', 't1');
+    }, TypeError);
+    
     test.done();
   },
   LimitFilter: function (test) {
