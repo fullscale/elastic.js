@@ -1153,7 +1153,7 @@ exports.queries = {
     test.done();
   },
   BoostingQuery: function (test) {
-    test.expect(8);
+    test.expect(12);
 
     var termQuery1 = ejs.TermQuery('t1', 'v1'),
       termQuery2 = ejs.TermQuery('t2', 'v2'),
@@ -1193,6 +1193,22 @@ exports.queries = {
     
     test.strictEqual(boostingQuery.toString(), JSON.stringify(expected));
 
+    test.throws(function () {
+      ejs.BoostingQuery('invalid', termQuery1, 0.2);
+    }, TypeError);
+    
+    test.throws(function () {
+      ejs.BoostingQuery(termQuery1, 'invalid', 0.2);
+    }, TypeError);
+    
+    test.throws(function () {
+      boostingQuery.positive('invalid');
+    }, TypeError);
+    
+    test.throws(function () {
+      boostingQuery.negative('invalid');
+    }, TypeError);
+    
     test.done();
   },
   MatchQuery: function (test) {

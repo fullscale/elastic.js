@@ -17,6 +17,10 @@
      */
   ejs.BoostingQuery = function (positiveQry, negativeQry, negativeBoost) {
 
+    if (!isEJSObject(positiveQry) || !isEJSObject(negativeQry)) {
+      throw new TypeError('Arguments must be Queries');
+    }
+    
     /**
          The internal Query object. Use <code>get()</code>.
          @member ejs.BoostingQuery
@@ -46,6 +50,10 @@
           return query.boosting.positive;
         }
     
+        if (!isEJSObject(oQuery)) {
+          throw new TypeError('Argument must be a Query');
+        }
+        
         query.boosting.positive = oQuery.get();
         return this;
       },
@@ -65,6 +73,10 @@
           return query.boosting.negative;
         }
     
+        if (!isEJSObject(oQuery)) {
+          throw new TypeError('Argument must be a Query');
+        }
+        
         query.boosting.negative = oQuery.get();
         return this;
       },
