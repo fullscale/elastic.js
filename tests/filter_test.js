@@ -492,7 +492,7 @@ exports.filters = {
     test.done();
   },
   LimitFilter: function (test) {
-    test.expect(5);
+    test.expect(6);
 
     var limitFilter = ejs.LimitFilter(100),
       expected,
@@ -516,6 +516,10 @@ exports.filters = {
 
     test.strictEqual(limitFilter.toString(), JSON.stringify(expected));
 
+    test.throws(function () {
+      limitFilter.value('invalid');
+    }, TypeError);
+    
     test.done();
   },
   IdsFilter: function (test) {

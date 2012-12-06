@@ -35,7 +35,11 @@
         if (val == null) {
           return filter.limit.value;
         }
-    
+
+        if (!isNumber(val)) {
+          throw new TypeError('Argument must be a numeric value');
+        }
+            
         filter.limit.value = val;
         return this;
       },
