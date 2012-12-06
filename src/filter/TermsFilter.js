@@ -9,9 +9,9 @@
     A Filter that matches documents containing provided terms. 
 
     @param {String} field the document field/key to filter against
-    @param {Array} tags an array of "terms" to match
+    @param {String || Array} terms a single term or an array of terms.
     */
-  ejs.TermsFilter = function (field, tags) {
+  ejs.TermsFilter = function (field, terms) {
 
     /**
          The internal filter object. <code>Use get()</code>
@@ -21,8 +21,12 @@
     var filter = {
       terms: {}
     };
-
-    filter.terms[field] = tags;
+   
+    if (isArray(terms)) {
+      filter.terms[field] = terms;
+    } else {
+      filter.terms[field] = [terms];
+    }
 
     return {
 
@@ -61,10 +65,10 @@
           return filter.terms[field];
         }
 
-        if (typeof t === 'string') {
-          filter.terms[field].push(t);
-        } else {
+        if (isArray(t)) {
           filter.terms[field] = t;
+        } else {
+          filter.terms[field].push(t);
         }
     
         return this;

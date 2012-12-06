@@ -59,7 +59,7 @@ exports.filters = {
     test.done();
   },
   TermsFilter: function (test) {
-    test.expect(18);
+    test.expect(19);
 
     var termsFilter = ejs.TermsFilter('f1', ['t1', 't2']),
       expected,
@@ -77,10 +77,14 @@ exports.filters = {
     test.ok(termsFilter.get(), 'get() works');
     doTest();
 
+    termsFilter = ejs.TermsFilter('f1', 't3');
+    expected.terms.f1 = ['t3'];
+    doTest();
+    
     termsFilter.field('f2');
     expected = {
       terms: {
-        f2: ['t1', 't2']
+        f2: ['t3']
       }
     };
     doTest();
