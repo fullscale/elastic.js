@@ -27,7 +27,7 @@
       }
     };
 
-    filter.geo_distance[fieldName] = {};
+    filter.geo_distance[fieldName] = [0, 0];
     
     return {
 
@@ -95,17 +95,20 @@
              Sets the point of origin in which distance will be measured from
 
              @member ejs.GeoDistanceFilter
-             @param {Number} lat the latitude coordinate
-             @param {Number} lon the longitude coordinate
+             @param {GeoPoint} p A valid GeoPoint object.
              @returns {Object} returns <code>this</code> so that calls can be chained.
              */
-      point: function (lat, lon) {
-        if (arguments.length === 0) {
+      point: function (p) {
+        if (p == null) {
           return filter.geo_distance[fieldName];
         }
       
-        filter.geo_distance[fieldName].lat = lat;
-        filter.geo_distance[fieldName].lon = lon;
+        if (isEJSObject(p)) {
+          filter.geo_distance[fieldName] = p.get();
+        } else {
+          throw new TypeError('Argument must be a GeoPoint');
+        }
+        
         return this;
       },
 

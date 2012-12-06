@@ -896,9 +896,10 @@ exports.filters = {
     test.done();
   },
   GeoDistanceFilter: function (test) {
-    test.expect(21);
+    test.expect(22);
 
     var geoDistanceFilter = ejs.GeoDistanceFilter('location'),
+      point1 = ejs.GeoPoint([37.7819288, -122.396480]),
       expected,
       doTest = function () {
         test.deepEqual(geoDistanceFilter.get(), expected);
@@ -906,7 +907,7 @@ exports.filters = {
 
     expected = {
       geo_distance: {
-        location: {}
+        location: [0, 0]
       }
     };
     
@@ -918,19 +919,15 @@ exports.filters = {
     expected.geo_distance.distance = 10;
     doTest();
     
-    geoDistanceFilter.point(37.7819288, -122.396480),
-    expected.geo_distance.location.lat = 37.7819288;
-    expected.geo_distance.location.lon = -122.396480;
+    geoDistanceFilter.point(point1),
+    expected.geo_distance.location = point1.get();
     doTest();
     
     geoDistanceFilter.field('location2');
     expected = {
       geo_distance: {
         distance: 10,
-        location2: {
-          lat: 37.7819288,
-          lon: -122.396480
-        }
+        location2: point1.get()
       }
     };
     doTest();
@@ -990,6 +987,10 @@ exports.filters = {
     
     test.strictEqual(geoDistanceFilter.toString(), JSON.stringify(expected));
 
+    test.throws(function () {
+      geoDistanceFilter.point('invalid');
+    }, TypeError);
+    
     test.done();
   },
   GeoDistanceRangeFilter: function (test) {
