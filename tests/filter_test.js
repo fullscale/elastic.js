@@ -1068,7 +1068,7 @@ exports.filters = {
     test.done();
   },
   GeoDistanceRangeFilter: function (test) {
-    test.expect(29);
+    test.expect(35);
 
     var geoDistanceRangeFilter = ejs.GeoDistanceRangeFilter('location'),
       point1 = ejs.GeoPoint([37.7819288, -122.396480]),
@@ -1190,6 +1190,30 @@ exports.filters = {
     
     test.throws(function () {
       geoDistanceRangeFilter.point('invalid');
+    }, TypeError);
+    
+    test.throws(function () {
+      geoDistanceRangeFilter.from('invalid');
+    }, TypeError);
+    
+    test.throws(function () {
+      geoDistanceRangeFilter.to('invalid');
+    }, TypeError);
+    
+    test.throws(function () {
+      geoDistanceRangeFilter.gt('invalid');
+    }, TypeError);
+    
+    test.throws(function () {
+      geoDistanceRangeFilter.gte('invalid');
+    }, TypeError);
+    
+    test.throws(function () {
+      geoDistanceRangeFilter.lt('invalid');
+    }, TypeError);
+    
+    test.throws(function () {
+      geoDistanceRangeFilter.lte('invalid');
     }, TypeError);
     
     test.done();

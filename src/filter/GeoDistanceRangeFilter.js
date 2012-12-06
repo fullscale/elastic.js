@@ -60,6 +60,10 @@
           return filter.geo_distance_range.from;
         }
       
+        if (!isNumber(numericDistance)) {
+          throw new TypeError('Argument must be a numeric value');
+        }
+        
         filter.geo_distance_range.from = numericDistance;
         return this;
       },
@@ -75,7 +79,11 @@
         if (numericDistance == null) {
           return filter.geo_distance_range.to;
         }
-      
+
+        if (!isNumber(numericDistance)) {
+          throw new TypeError('Argument must be a numeric value');
+        }
+            
         filter.geo_distance_range.to = numericDistance;
         return this;
       },
@@ -126,6 +134,10 @@
           return filter.geo_distance_range.gt;
         }
 
+        if (!isNumber(val)) {
+          throw new TypeError('Argument must be a numeric value');
+        }
+        
         filter.geo_distance_range.gt = val;
         return this;
       },
@@ -143,6 +155,10 @@
           return filter.geo_distance_range.gte;
         }
 
+        if (!isNumber(val)) {
+          throw new TypeError('Argument must be a numeric value');
+        }
+        
         filter.geo_distance_range.gte = val;
         return this;
       },
@@ -160,6 +176,10 @@
           return filter.geo_distance_range.lt;
         }
 
+        if (!isNumber(val)) {
+          throw new TypeError('Argument must be a numeric value');
+        }
+        
         filter.geo_distance_range.lt = val;
         return this;
       },
@@ -177,6 +197,10 @@
           return filter.geo_distance_range.lte;
         }
 
+        if (!isNumber(val)) {
+          throw new TypeError('Argument must be a numeric value');
+        }
+        
         filter.geo_distance_range.lte = val;
         return this;
       },
