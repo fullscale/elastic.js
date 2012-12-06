@@ -13,6 +13,10 @@
     */
   ejs.CustomBoostFactorQuery = function (qry) {
 
+    if (!isEJSObject(qry)) {
+      throw new TypeError('Argument must be a Query');
+    }
+    
     /**
          The internal query object. <code>Use get()</code>
          @member ejs.CustomBoostFactorQuery
@@ -38,6 +42,10 @@
           return query.custom_boost_factor.query;
         }
     
+        if (!isEJSObject(q)) {
+          throw new TypeError('Argument must be a Query');
+        }
+        
         query.custom_boost_factor.query = q.get();
         return this;
       },

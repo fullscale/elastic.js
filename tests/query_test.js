@@ -1015,7 +1015,7 @@ exports.queries = {
     test.done();
   },
   CustomBoostFactorQuery: function (test) {
-    test.expect(7);
+    test.expect(9);
 
     var termQuery = ejs.TermQuery('t1', 'v1'),
       termQuery2 = ejs.TermQuery('t2', 'v2'),
@@ -1049,6 +1049,14 @@ exports.queries = {
     
     test.strictEqual(cbfQuery.toString(), JSON.stringify(expected));
 
+    test.throws(function () {
+      ejs.CustomBoostFactorQuery('invalid');
+    }, TypeError);
+    
+    test.throws(function () {
+      cbfQuery.query('invalid');
+    }, TypeError);
+    
     test.done();
   },
   CustomScoreQuery: function (test) {
