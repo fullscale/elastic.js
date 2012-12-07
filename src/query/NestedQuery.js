@@ -65,6 +65,10 @@
           return query.nested.query;
         }
     
+        if (!isEJSObject(oQuery)) {
+          throw new TypeError('Argument must be a Query');
+        }
+        
         query.nested.query = oQuery.get();
         return this;
       },
@@ -82,6 +86,10 @@
           return query.nested.filter;
         }
     
+        if (!isEJSObject(oFilter)) {
+          throw new TypeError('Argument must be a Filter');
+        }
+        
         query.nested.filter = oFilter.get();
         return this;
       },
@@ -100,7 +108,9 @@
         }
       
         mode = mode.toLowerCase();
-        if (mode === 'avg' || mode === 'total' || mode === 'max' || mode === 'none') {
+        if (mode === 'avg' || mode === 'total' || mode === 'max' || 
+          mode === 'none') {
+            
           query.nested.score_mode = mode;
         }
         

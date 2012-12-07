@@ -2221,7 +2221,7 @@ exports.queries = {
     test.done();
   },
   NestedQuery: function (test) {
-    test.expect(16);
+    test.expect(18);
 
     var termQuery1 = ejs.TermQuery('t1', 'v1'),
       termQuery2 = ejs.TermQuery('t2', 'v2'),
@@ -2292,6 +2292,14 @@ exports.queries = {
 
     test.strictEqual(nestedQuery.toString(), JSON.stringify(expected));
 
+    test.throws(function () {
+      nestedQuery.query('invalid');
+    }, TypeError);
+    
+    test.throws(function () {
+      nestedQuery.filter('invalid');
+    }, TypeError);
+    
     test.done();
   },
   ConstantScoreQuery: function (test) {
