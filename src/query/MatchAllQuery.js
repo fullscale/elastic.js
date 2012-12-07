@@ -26,6 +26,22 @@
     return {
 
       /**
+            Sets the boost value of the <code>Query</code>.
+
+            @member ejs.MatchAllQuery
+            @param {Double} boost A positive <code>double</code> value.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      boost: function (boost) {
+        if (boost == null) {
+          return query.match_all.boost;
+        }
+
+        query.match_all.boost = boost;
+        return this;
+      },
+      
+      /**
              Serializes the internal <em>query</em> object as a JSON string.
              @member ejs.MatchAllQuery
              @returns {String} Returns a JSON representation of the Query object.

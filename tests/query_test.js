@@ -2188,7 +2188,7 @@ exports.queries = {
     test.done();
   },
   MatchAllQuery: function (test) {
-    test.expect(4);
+    test.expect(5);
 
     var matchAllQuery = ejs.MatchAllQuery(),
       expected,
@@ -2204,6 +2204,10 @@ exports.queries = {
     test.ok(matchAllQuery.get(), 'get() works');
     doTest();
 
+    matchAllQuery.boost(2.2);
+    expected.match_all.boost = 2.2;
+    doTest();
+    
     test.strictEqual(matchAllQuery.toString(), JSON.stringify(expected));
 
     test.done();
