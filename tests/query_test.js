@@ -1197,7 +1197,7 @@ exports.queries = {
     test.done();
   },
   IdsQuery: function (test) {
-    test.expect(11);
+    test.expect(14);
 
     var idsQuery = ejs.IdsQuery('id1'),
       expected,
@@ -1245,6 +1245,18 @@ exports.queries = {
     
     test.strictEqual(idsQuery.toString(), JSON.stringify(expected));
 
+    test.throws(function () {
+      ejs.IdsQuery(2);
+    }, TypeError);
+    
+    test.throws(function () {
+      idsQuery.values(5);
+    }, TypeError);
+    
+    test.throws(function () {
+      idsQuery.type(9);
+    }, TypeError);
+    
     test.done();
   },
   BoostingQuery: function (test) {

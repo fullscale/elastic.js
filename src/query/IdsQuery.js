@@ -22,10 +22,12 @@
       ids: {}
     };
     
-    if (typeof ids === 'string') {
+    if (isString(ids)) {
       query.ids.values = [ids];
-    } else {
+    } else if (isArray(ids)) {
       query.ids.values = ids;
+    } else {
+      throw new TypeError('Argument must be string or array');
     }
 
     return {
@@ -44,10 +46,12 @@
           return query.ids.values;
         }
     
-        if (typeof val === 'string') {
+        if (isString(val)) {
           query.ids.values.push(val);
-        } else {
+        } else if (isArray(val)) {
           query.ids.values = val;
+        } else {
+          throw new TypeError('Argument must be string or array');
         }
         
         return this;
@@ -72,10 +76,12 @@
           return query.ids.type;
         }
         
-        if (typeof type === 'string') {
+        if (isString(type)) {
           query.ids.type.push(type);
-        } else {
+        } else if (isArray(type)) {
           query.ids.type = type;
+        } else {
+          throw new TypeError('Argument must be string or array');
         }
         
         return this;
