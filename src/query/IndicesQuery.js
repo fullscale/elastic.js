@@ -16,6 +16,10 @@
     */
   ejs.IndicesQuery = function (qry, indices) {
 
+    if (!isEJSObject(qry)) {
+      throw new TypeError('Argument must be a Query');
+    }
+    
     /**
          The internal query object. <code>Use get()</code>
          @member ejs.IndicesQuery
@@ -27,10 +31,12 @@
       }
     };
 
-    if (typeof indices === 'string') {
+    if (isString(indices)) {
       query.indices.indices = [indices];
-    } else {
+    } else if (isArray(indices)) {
       query.indices.indices = indices;
+    } else {
+      throw new TypeError('Argument must be a string or array');
     }
   
     return {
@@ -49,10 +55,12 @@
           return query.indices.indices;
         }
   
-        if (typeof i === 'string') {
+        if (isString(i)) {
           query.indices.indices.push(i);
-        } else {
+        } else if (isArray(i)) {
           query.indices.indices = i;
+        } else {
+          throw new TypeError('Argument must be a string or array');
         }
 
         return this;
@@ -70,6 +78,10 @@
           return query.indices.query;
         }
   
+        if (!isEJSObject(q)) {
+          throw new TypeError('Argument must be a Query');
+        }
+        
         query.indices.query = q.get();
         return this;
       },
@@ -88,13 +100,15 @@
           return query.indices.no_match_query;
         }
   
-        if (typeof q === 'string') {
+        if (isString(q)) {
           q = q.toLowerCase();
           if (q === 'none' || q === 'all') {
             query.indices.no_match_query = q;
           }
-        } else {
+        } else if (isEJSObject(q)) {
           query.indices.no_match_query = q.get();
+        } else {
+          throw new TypeError('Argument must be string or Query');
         }
       
         return this;

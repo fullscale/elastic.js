@@ -146,7 +146,7 @@ exports.queries = {
     test.done();
   },
   IndicesQuery: function (test) {
-    test.expect(14);
+    test.expect(19);
 
     var termQuery = ejs.TermQuery('t1', 'v1'),
       termQuery2 = ejs.TermQuery('t2', 'v2'),
@@ -208,6 +208,26 @@ exports.queries = {
     doTest();
     
     test.strictEqual(indicesQuery.toString(), JSON.stringify(expected));
+
+    test.throws(function () {
+      ejs.IndicesQuery('invalid', 'index1');
+    }, TypeError);
+    
+    test.throws(function () {
+      ejs.IndicesQuery(termQuery2, 3);
+    }, TypeError);
+    
+    test.throws(function () {
+      indicesQuery.query('invalid');
+    }, TypeError);
+    
+    test.throws(function () {
+      indicesQuery.noMatchQuery(2);
+    }, TypeError);
+
+    test.throws(function () {
+      indicesQuery.indices(1);
+    }, TypeError);
 
     test.done();
   },
