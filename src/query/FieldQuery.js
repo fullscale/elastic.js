@@ -255,14 +255,32 @@
       },
 
       /**
-            Sets fuzzy rewrite method.  Valid values are: constant_score_auto,
-            scoring_boolean, constant_score_boolean, constant_score_filter.
+            Sets fuzzy rewrite method.  Valid values are: 
             
-            The following are also valid, replace N with an integer value.
-            top_terms_boost_N, top_terms_N
+            constant_score_auto - tries to pick the best constant-score rewrite 
+              method based on term and document counts from the query
+              
+            scoring_boolean - translates each term into boolean should and 
+              keeps the scores as computed by the query
+              
+            constant_score_boolean - same as scoring_boolean, expect no scores
+              are computed.
+              
+            constant_score_filter - first creates a private Filter, by visiting 
+              each term in sequence and marking all docs for that term
+              
+            top_terms_boost_N - first translates each term into boolean should
+              and scores are only computed as the boost using the top N
+              scoring terms.  Replace N with an integer value.
+              
+            top_terms_N -   first translates each term into boolean should
+                and keeps the scores as computed by the query. Only the top N
+                scoring terms are used.  Replace N with an integer value.
             
             Default is constant_score_auto.
 
+            This is an advanced option, use with care.
+            
             @member ejs.FieldQuery
             @param {String} m The rewrite method as a string.
             @returns {Object} returns <code>this</code> so that calls can be chained.
@@ -285,7 +303,31 @@
       },
 
       /**
-            Sets rewrite method.
+            Sets rewrite method.  Valid values are: 
+            
+            constant_score_auto - tries to pick the best constant-score rewrite 
+              method based on term and document counts from the query
+              
+            scoring_boolean - translates each term into boolean should and 
+              keeps the scores as computed by the query
+              
+            constant_score_boolean - same as scoring_boolean, expect no scores
+              are computed.
+              
+            constant_score_filter - first creates a private Filter, by visiting 
+              each term in sequence and marking all docs for that term
+              
+            top_terms_boost_N - first translates each term into boolean should
+              and scores are only computed as the boost using the top N
+              scoring terms.  Replace N with an integer value.
+              
+            top_terms_N -   first translates each term into boolean should
+                and keeps the scores as computed by the query. Only the top N
+                scoring terms are used.  Replace N with an integer value.
+            
+            Default is constant_score_auto.
+
+            This is an advanced option, use with care.
 
             @member ejs.FieldQuery
             @param {String} m The rewrite method as a string.
