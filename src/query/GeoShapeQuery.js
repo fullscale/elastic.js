@@ -44,8 +44,8 @@
           return field;
         }
 
+        delete query.geo_shape[field];
         field = f;
-        query.geo_shape = {};
         query.geo_shape[f] = oldValue;
     
         return this;
