@@ -820,7 +820,7 @@ exports.queries = {
     test.done();
   },
   HasChildQuery: function (test) {
-    test.expect(8);
+    test.expect(10);
 
     var termQuery = ejs.TermQuery('t1', 'v1'),
       termQuery2 = ejs.TermQuery('t2', 'v2'),
@@ -859,6 +859,14 @@ exports.queries = {
     
     test.strictEqual(hasChildQuery.toString(), JSON.stringify(expected));
 
+    test.throws(function () {
+      ejs.HasChildQuery('invalid', 'type');
+    }, TypeError);
+    
+    test.throws(function () {
+      hasChildQuery.query('invalid');
+    }, TypeError);
+    
     test.done();
   },
   FuzzyQuery: function (test) {

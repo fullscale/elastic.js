@@ -14,6 +14,10 @@
     */
   ejs.HasChildQuery = function (qry, type) {
 
+    if (!isEJSObject(qry)) {
+      throw new TypeError('Argument must be a valid Query');
+    }
+    
     /**
          The internal query object. <code>Use get()</code>
          @member ejs.HasChildQuery
@@ -40,6 +44,10 @@
           return query.has_child.query;
         }
     
+        if (!isEJSObject(q)) {
+          throw new TypeError('Argument must be a valid Query');
+        }
+        
         query.has_child.query = q.get();
         return this;
       },
