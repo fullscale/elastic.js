@@ -61,8 +61,8 @@
           return field;
         }
     
+        delete query.flt_field[field];
         field = f;
-        query.flt_field = {};
         query.flt_field[f] = oldValue;
     
         return this;
