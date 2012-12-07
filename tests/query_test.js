@@ -1339,7 +1339,7 @@ exports.queries = {
     test.done();
   },
   MatchQuery: function (test) {
-    test.expect(19);
+    test.expect(38);
 
     var matchQuery = ejs.MatchQuery('t1', 'v1'),
       expected,
@@ -1382,10 +1382,6 @@ exports.queries = {
     expected.match.t1.type = 'phrase_prefix';
     doTest();
 
-    matchQuery.type('phrasePrefix');
-    expected.match.t1.type = 'phrasePrefix';
-    doTest();
-
     matchQuery.fuzziness(0.5);
     expected.match.t1.fuzziness = 0.5;
     doTest();
@@ -1417,6 +1413,83 @@ exports.queries = {
     expected.match.t1.analyzer = 'the analyzer';
     doTest();
 
+    matchQuery.minimumShouldMatch(10);
+    expected.match.t1.minimum_should_match = 10;
+    doTest();
+    
+    matchQuery.fuzzyRewrite('constant_score_auto');
+    expected.match.t1.fuzzy_rewrite = 'constant_score_auto';
+    doTest();
+    
+    matchQuery.fuzzyRewrite('invalid');
+    doTest();
+    
+    matchQuery.fuzzyRewrite('scoring_boolean');
+    expected.match.t1.fuzzy_rewrite = 'scoring_boolean';
+    doTest();
+    
+    matchQuery.fuzzyRewrite('constant_score_boolean');
+    expected.match.t1.fuzzy_rewrite = 'constant_score_boolean';
+    doTest();
+    
+    matchQuery.fuzzyRewrite('constant_score_filter');
+    expected.match.t1.fuzzy_rewrite = 'constant_score_filter';
+    doTest();
+    
+    matchQuery.fuzzyRewrite('top_terms_boost_5');
+    expected.match.t1.fuzzy_rewrite = 'top_terms_boost_5';
+    doTest();
+    
+    matchQuery.fuzzyRewrite('top_terms_9');
+    expected.match.t1.fuzzy_rewrite = 'top_terms_9';
+    doTest();
+    
+    matchQuery.rewrite('constant_score_auto');
+    expected.match.t1.rewrite = 'constant_score_auto';
+    doTest();
+    
+    matchQuery.rewrite('invalid');
+    doTest();
+    
+    matchQuery.rewrite('scoring_boolean');
+    expected.match.t1.rewrite = 'scoring_boolean';
+    doTest();
+    
+    matchQuery.rewrite('constant_score_boolean');
+    expected.match.t1.rewrite = 'constant_score_boolean';
+    doTest();
+    
+    matchQuery.rewrite('constant_score_filter');
+    expected.match.t1.rewrite = 'constant_score_filter';
+    doTest();
+    
+    matchQuery.rewrite('top_terms_boost_5');
+    expected.match.t1.rewrite = 'top_terms_boost_5';
+    doTest();
+    
+    matchQuery.rewrite('top_terms_9');
+    expected.match.t1.rewrite = 'top_terms_9';
+    doTest();
+    
+    matchQuery.fuzzyTranspositions(true);
+    expected.match.t1.fuzzy_transpositions = true;
+    doTest();
+    
+    matchQuery.lenient(true);
+    expected.match.t1.lenient = true;
+    doTest();
+    
+    matchQuery.zeroTermsQuery('all');
+    expected.match.t1.zero_terms_query = 'all';
+    doTest();
+    
+    matchQuery.zeroTermsQuery('invalid');
+    doTest();
+    
+    matchQuery.zeroTermsQuery('NONE');
+    expected.match.t1.zero_terms_query = 'none';
+    doTest();
+    
     test.strictEqual(matchQuery.toString(), JSON.stringify(expected));
 
     test.done();

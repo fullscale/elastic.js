@@ -10,26 +10,22 @@
     A Query that appects text, analyzes it, generates internal query based
     on the MatchQuery type.
 
-    @param {String} key the document field/key to query against
-    @param {String} value the query string
+    @param {String} field the document field/field to query against
+    @param {String} qstr the query string
     */
-  ejs.MatchQuery = function (key, value) {
+  ejs.MatchQuery = function (field, qstr) {
 
     /**
          The internal query object. <code>Use get()</code>
          @member ejs.MatchQuery
          @property {Object} query
          */
-    var k,
-    v,
-    query = {
+    var query = {
       match: {}
     };
-
-    k = key;
-    v = value;
-    query.match[k] = {
-      query: v
+    
+    query.match[field] = {
+      query: qstr
     };
 
     return {
@@ -43,10 +39,10 @@
             */
       boost: function (boost) {
         if (boost == null) {
-          return query.match[k].boost;
+          return query.match[field].boost;
         }
 
-        query.match[k].boost = boost;
+        query.match[field].boost = boost;
         return this;
       },
 
@@ -59,28 +55,29 @@
             */
       query: function (qstr) {
         if (qstr == null) {
-          return query.match[k].query;
+          return query.match[field].query;
         }
 
-        query.match[k].query = qstr;
+        query.match[field].query = qstr;
         return this;
       },
 
       /**
             Sets the type of the <code>MatchQuery</code>.  Valid values are
-            boolean, phrase, and phrase_prefix or phrasePrefix.
+            boolean, phrase, and phrase_prefix.
 
             @member ejs.MatchQuery
-            @param {String} type Any of boolean, phrase, phrase_prefix or phrasePrefix.
+            @param {String} type Any of boolean, phrase, phrase_prefix.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       type: function (type) {
         if (type == null) {
-          return query.match[k].type;
+          return query.match[field].type;
         }
 
-        if (type === 'boolean' || type === 'phrase' || type === 'phrase_prefix' || type === 'phrasePrefix') {
-          query.match[k].type = type;
+        type = type.toLowerCase();
+        if (type === 'boolean' || type === 'phrase' || type === 'phrase_prefix') {
+          query.match[field].type = type;
         }
 
         return this;
@@ -95,10 +92,10 @@
             */
       fuzziness: function (fuzz) {
         if (fuzz == null) {
-          return query.match[k].fuzziness;
+          return query.match[field].fuzziness;
         }
 
-        query.match[k].fuzziness = fuzz;
+        query.match[field].fuzziness = fuzz;
         return this;
       },
 
@@ -111,10 +108,10 @@
             */
       prefixLength: function (l) {
         if (l == null) {
-          return query.match[k].prefix_length;
+          return query.match[field].prefix_length;
         }
 
-        query.match[k].prefix_length = l;
+        query.match[field].prefix_length = l;
         return this;
       },
 
@@ -127,10 +124,10 @@
             */
       maxExpansions: function (e) {
         if (e == null) {
-          return query.match[k].max_expansions;
+          return query.match[field].max_expansions;
         }
 
-        query.match[k].max_expansions = e;
+        query.match[field].max_expansions = e;
         return this;
       },
 
@@ -143,12 +140,12 @@
             */
       operator: function (op) {
         if (op == null) {
-          return query.match[k].operator;
+          return query.match[field].operator;
         }
 
         op = op.toLowerCase();
         if (op === 'and' || op === 'or') {
-          query.match[k].operator = op;
+          query.match[field].operator = op;
         }
 
         return this;
@@ -164,10 +161,10 @@
             */
       slop: function (slop) {
         if (slop == null) {
-          return query.match[k].slop;
+          return query.match[field].slop;
         }
 
-        query.match[k].slop = slop;
+        query.match[field].slop = slop;
         return this;
       },
 
@@ -180,13 +177,180 @@
             */
       analyzer: function (analyzer) {
         if (analyzer == null) {
-          return query.match[k].analyzer;
+          return query.match[field].analyzer;
         }
 
-        query.match[k].analyzer = analyzer;
+        query.match[field].analyzer = analyzer;
         return this;
       },
 
+      /**
+            Sets a percent value controlling how many "should" clauses in the
+            resulting <code>Query</code> should match.
+
+            @member ejs.MatchQuery
+            @param {Integer} minMatch An <code>integer</code> between 0 and 100.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      minimumShouldMatch: function (minMatch) {
+        if (minMatch == null) {
+          return query.match[field].minimum_should_match;
+        }
+
+        query.match[field].minimum_should_match = minMatch;
+        return this;
+      },
+      
+      /**
+            Sets rewrite method.  Valid values are: 
+            
+            constant_score_auto - tries to pick the best constant-score rewrite 
+              method based on term and document counts from the query
+              
+            scoring_boolean - translates each term into boolean should and 
+              keeps the scores as computed by the query
+              
+            constant_score_boolean - same as scoring_boolean, expect no scores
+              are computed.
+              
+            constant_score_filter - first creates a private Filter, by visiting 
+              each term in sequence and marking all docs for that term
+              
+            top_terms_boost_N - first translates each term into boolean should
+              and scores are only computed as the boost using the top N
+              scoring terms.  Replace N with an integer value.
+              
+            top_terms_N -   first translates each term into boolean should
+                and keeps the scores as computed by the query. Only the top N
+                scoring terms are used.  Replace N with an integer value.
+            
+            Default is constant_score_auto.
+
+            This is an advanced option, use with care.
+
+            @member ejs.MatchQuery
+            @param {String} m The rewrite method as a string.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      rewrite: function (m) {
+        if (m == null) {
+          return query.match[field].rewrite;
+        }
+        
+        m = m.toLowerCase();
+        if (m === 'constant_score_auto' || m === 'scoring_boolean' ||
+          m === 'constant_score_boolean' || m === 'constant_score_filter' ||
+          m.indexOf('top_terms_boost_') === 0 || 
+          m.indexOf('top_terms_') === 0) {
+            
+          query.match[field].rewrite = m;
+        }
+        
+        return this;
+      },
+      
+      /**
+            Sets fuzzy rewrite method.  Valid values are: 
+            
+            constant_score_auto - tries to pick the best constant-score rewrite 
+              method based on term and document counts from the query
+              
+            scoring_boolean - translates each term into boolean should and 
+              keeps the scores as computed by the query
+              
+            constant_score_boolean - same as scoring_boolean, expect no scores
+              are computed.
+              
+            constant_score_filter - first creates a private Filter, by visiting 
+              each term in sequence and marking all docs for that term
+              
+            top_terms_boost_N - first translates each term into boolean should
+              and scores are only computed as the boost using the top N
+              scoring terms.  Replace N with an integer value.
+              
+            top_terms_N -   first translates each term into boolean should
+                and keeps the scores as computed by the query. Only the top N
+                scoring terms are used.  Replace N with an integer value.
+            
+            Default is constant_score_auto.
+
+            This is an advanced option, use with care.
+            
+            @member ejs.MatchQuery
+            @param {String} m The rewrite method as a string.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      fuzzyRewrite: function (m) {
+        if (m == null) {
+          return query.match[field].fuzzy_rewrite;
+        }
+
+        m = m.toLowerCase();
+        if (m === 'constant_score_auto' || m === 'scoring_boolean' ||
+          m === 'constant_score_boolean' || m === 'constant_score_filter' ||
+          m.indexOf('top_terms_boost_') === 0 || 
+          m.indexOf('top_terms_') === 0) {
+            
+          query.match[field].fuzzy_rewrite = m;
+        }
+        
+        return this;
+      },
+      
+      /**
+            Set to false to use classic Levenshtein edit distance in the 
+            fuzzy query.
+
+            @member ejs.MatchQuery
+            @param {Boolean} trueFalse A boolean value
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      fuzzyTranspositions: function (trueFalse) {
+        if (trueFalse == null) {
+          return query.match[field].fuzzy_transpositions;
+        }
+
+        query.match[field].fuzzy_transpositions = trueFalse;
+        return this;
+      },
+
+      /**
+            Enables lenient parsing of the query string.
+
+            @member ejs.MatchQuery
+            @param {Boolean} trueFalse A boolean value
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      lenient: function (trueFalse) {
+        if (trueFalse == null) {
+          return query.match[field].lenient;
+        }
+
+        query.match[field].lenient = trueFalse;
+        return this;
+      },
+    
+      /**
+            Sets what happens when no terms match.  Valid values are
+            "all" or "none".  
+
+            @member ejs.MatchQuery
+            @param {String} q A valid analyzer name.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      zeroTermsQuery: function (q) {
+        if (q == null) {
+          return query.match[field].zero_terms_query;
+        }
+
+        q = q.toLowerCase();
+        if (q === 'all' || q === 'none') {
+          query.match[field].zero_terms_query = q;
+        }
+        
+        return this;
+      },
+              
       /**
             Allows you to serialize this object into a JSON encoded string.
 
