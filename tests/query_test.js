@@ -715,9 +715,9 @@ exports.queries = {
     test.done();
   },
   MoreLikeThisQuery: function (test) {
-    test.expect(19);
+    test.expect(21);
 
-    var mltQuery = ejs.MoreLikeThisQuery('like text'),
+    var mltQuery = ejs.MoreLikeThisQuery(['f', 'f2'], 'like text'),
       expected,
       doTest = function () {
         test.deepEqual(mltQuery.get(), expected);
@@ -725,7 +725,8 @@ exports.queries = {
 
     expected = {
       mlt: {
-        like_text: 'like text'
+        like_text: 'like text',
+        fields: ['f', 'f2']
       }
     };
 
@@ -733,8 +734,13 @@ exports.queries = {
     test.ok(mltQuery.get(), 'get() works');
     doTest();
     
-    mltQuery.fields('f1');
-    expected.mlt.fields = ['f1'];
+    mltQuery = ejs.MoreLikeThisQuery('f', 'like text');
+    expected = {
+      mlt: {
+        like_text: 'like text',
+        fields: ['f']
+      }
+    };
     doTest();
     
     mltQuery.fields('f2');
@@ -795,6 +801,14 @@ exports.queries = {
     
     test.strictEqual(mltQuery.toString(), JSON.stringify(expected));
 
+    test.throws(function () {
+      ejs.MoreLikeThisQuery(9, 'like');
+    }, TypeError);
+    
+    test.throws(function () {
+      mltQuery.fields(3);
+    }, TypeError);
+    
     test.done();
   },
   HasParentQuery: function (test) {

@@ -8,10 +8,11 @@
     @desc
     <p>Constructs a query where each documents returned are “like” provided text</p>
 
+    @param {String || Array} fields A single field or array of fields to run against.
     @param {String} likeText The text to find documents like it.
   
      */
-  ejs.MoreLikeThisQuery = function (likeText) {
+  ejs.MoreLikeThisQuery = function (fields, likeText) {
 
     /**
          The internal Query object. Use <code>get()</code>.
@@ -20,10 +21,19 @@
          */
     var query = {
       mlt: {
-        like_text: likeText
+        like_text: likeText,
+        fields: []
       }
     };
 
+    if (isString(fields)) {
+      query.mlt.fields.push(fields);
+    } else if (isArray(fields)) {
+      query.mlt.fields = fields;
+    } else {
+      throw new TypeError('Argument must be string or array');
+    }
+    
     return {
   
       /**
@@ -36,18 +46,16 @@
              @returns {Object} returns <code>this</code> so that calls can be chained.
              */
       fields: function (f) {
-        if (query.mlt.fields == null) {
-          query.mlt.fields = [];
-        }
-    
         if (f == null) {
           return query.mlt.fields;
         }
     
-        if (typeof f === 'string') {
+        if (isString(f)) {
           query.mlt.fields.push(f);
-        } else {
+        } else if (isArray(f)) {
           query.mlt.fields = f;
+        } else {
+          throw new TypeError('Argument must be a string or array');
         }
     
         return this;
