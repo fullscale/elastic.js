@@ -43,8 +43,8 @@
           return field;
         }
   
+        delete query.mlt_field[field];
         field = f;
-        query.mlt_field = {};
         query.mlt_field[f] = oldValue;
   
         return this;
