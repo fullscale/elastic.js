@@ -862,7 +862,7 @@ exports.queries = {
     test.done();
   },
   FuzzyQuery: function (test) {
-    test.expect(11);
+    test.expect(18);
 
     var fuzzyQuery = ejs.FuzzyQuery('f1', 'fuzz'),
       expected,
@@ -910,6 +910,33 @@ exports.queries = {
     
     fuzzyQuery.prefixLength(4);
     expected.fuzzy.f2.prefix_length = 4;
+    doTest();
+    
+    fuzzyQuery.rewrite('constant_score_auto');
+    expected.fuzzy.f2.rewrite = 'constant_score_auto';
+    doTest();
+    
+    fuzzyQuery.rewrite('invalid');
+    doTest();
+    
+    fuzzyQuery.rewrite('scoring_boolean');
+    expected.fuzzy.f2.rewrite = 'scoring_boolean';
+    doTest();
+    
+    fuzzyQuery.rewrite('constant_score_boolean');
+    expected.fuzzy.f2.rewrite = 'constant_score_boolean';
+    doTest();
+    
+    fuzzyQuery.rewrite('constant_score_filter');
+    expected.fuzzy.f2.rewrite = 'constant_score_filter';
+    doTest();
+    
+    fuzzyQuery.rewrite('top_terms_boost_5');
+    expected.fuzzy.f2.rewrite = 'top_terms_boost_5';
+    doTest();
+    
+    fuzzyQuery.rewrite('top_terms_9');
+    expected.fuzzy.f2.rewrite = 'top_terms_9';
     doTest();
     
     fuzzyQuery.boost(1.2);
