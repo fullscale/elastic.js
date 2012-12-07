@@ -1885,10 +1885,13 @@ exports.queries = {
     test.done();
   },
   FilteredQuery: function (test) {
-    test.expect(4);
+    test.expect(20);
 
     var termQuery1 = ejs.TermQuery('t1', 'v1'),
+      termQuery2 = ejs.TermQuery('t2', 'v2'),
+      termQuery3 = ejs.TermQuery('t3', 'v3'),
       termFilter1 = ejs.TermFilter('tf1', 'fv1'),
+      termFilter2 = ejs.TermFilter('tf2', 'fv2'),
       filterQuery = ejs.FilteredQuery(termQuery1, termFilter1),
       expected,
       doTest = function () {
@@ -1906,8 +1909,75 @@ exports.queries = {
     test.ok(filterQuery.get(), 'get() works');
     doTest();
 
+    filterQuery = ejs.FilteredQuery(termQuery2);
+    expected = {
+      filtered: {
+        query: termQuery2.get()
+      }
+    };
+    doTest();
+    
+    filterQuery.filter(termFilter2);
+    expected.filtered.filter = termFilter2.get();
+    doTest();
+    
+    filterQuery.query(termQuery3);
+    expected.filtered.query = termQuery3.get();
+    doTest();
+    
+    filterQuery.strategy('query_filter');
+    expected.filtered.strategy = 'query_filter';
+    doTest();
+    
+    filterQuery.strategy('INVALID');
+    doTest();
+    
+    filterQuery.strategy('random_access_random');
+    expected.filtered.strategy = 'random_access_random';
+    doTest();
+    
+    filterQuery.strategy('LEAP_FROG');
+    expected.filtered.strategy = 'leap_frog';
+    doTest();
+    
+    filterQuery.strategy('leap_frog_filter_first');
+    expected.filtered.strategy = 'leap_frog_filter_first';
+    doTest();
+    
+    filterQuery.strategy('random_access_5');
+    expected.filtered.strategy = 'random_access_5';
+    doTest();
+    
+    filterQuery.cache(true);
+    expected.filtered._cache = true;
+    doTest();
+    
+    filterQuery.cacheKey('filter_cache_key');
+    expected.filtered._cache_key = 'filter_cache_key';
+    doTest();
+    
+    filterQuery.boost(2.6);
+    expected.filtered.boost = 2.6;
+    doTest();
+    
     test.strictEqual(filterQuery.toString(), JSON.stringify(expected));
 
+    test.throws(function () {
+      ejs.FilteredQuery('invalid', termFilter1);
+    }, TypeError);
+    
+    test.throws(function () {
+      ejs.FilteredQuery(termQuery1, 'invalid');
+    }, TypeError);
+    
+    test.throws(function () {
+      filterQuery.query('invalid');
+    }, TypeError);
+    
+    test.throws(function () {
+      filterQuery.filter('invalid');
+    }, TypeError);
+    
     test.done();
   },
   NestedQuery: function (test) {
