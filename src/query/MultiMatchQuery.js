@@ -12,10 +12,10 @@
     A Query that allow to more easily build a MatchQuery 
     over multiple fields
 
-    @param {Array} fields the list of fields to search across
-    @param {String} value the query string
+    @param {String || Array} fields the single field or array of fields to search across
+    @param {String} qstr the query string
     */
-  ejs.MultiMatchQuery = function (fields, value) {
+  ejs.MultiMatchQuery = function (fields, qstr) {
 
     /**
          The internal query object. <code>Use get()</code>
@@ -24,18 +24,29 @@
          */
     var query = {
       multi_match: {
-        query: value,
-        fields: fields
+        query: qstr,
+        fields: []
       }
     };
 
+    if (isString(fields)) {
+      query.multi_match.fields.push(fields);
+    } else if (isArray(fields)) {
+      query.multi_match.fields = fields;
+    } else {
+      throw new TypeError('Argument must be string or array');
+    }
+    
     return {
 
       /**
-            Sets the fields to search across.
+            Sets the fields to search across.  If passed a single value it is
+            added to the existing list of fields.  If passed an array of 
+            values, they overwite all existing values.
 
             @member ejs.MultiMatchQuery
-            @param {Array} f A list of fields names to search across.
+            @param {String || Array} f A single field or list of fields names to 
+              search across.
             @returns {Object} returns <code>this</code> so that calls can be 
               chained. Returns {Array} current value if `f` not specified.
             */
@@ -44,7 +55,14 @@
           return query.multi_match.fields;
         }
 
-        query.multi_match.fields = f;
+        if (isString(f)) {
+          query.multi_match.fields.push(f);
+        } else if (isArray(f)) {
+          query.multi_match.fields = f;
+        } else {
+          throw new TypeError('Argument must be string or array');
+        }
+        
         return this;
       },
 
@@ -85,7 +103,136 @@
         query.multi_match.tie_breaker = tieBreaker;
         return this;
       },
-                
+
+      /**
+            Sets a percent value controlling how many "should" clauses in the
+            resulting <code>Query</code> should match.
+
+            @member ejs.MultiMatchQuery
+            @param {Integer} minMatch An <code>integer</code> between 0 and 100.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      minimumShouldMatch: function (minMatch) {
+        if (minMatch == null) {
+          return query.multi_match.minimum_should_match;
+        }
+
+        query.multi_match.minimum_should_match = minMatch;
+        return this;
+      },
+      
+      /**
+            Sets rewrite method.  Valid values are: 
+            
+            constant_score_auto - tries to pick the best constant-score rewrite 
+              method based on term and document counts from the query
+              
+            scoring_boolean - translates each term into boolean should and 
+              keeps the scores as computed by the query
+              
+            constant_score_boolean - same as scoring_boolean, expect no scores
+              are computed.
+              
+            constant_score_filter - first creates a private Filter, by visiting 
+              each term in sequence and marking all docs for that term
+              
+            top_terms_boost_N - first translates each term into boolean should
+              and scores are only computed as the boost using the top N
+              scoring terms.  Replace N with an integer value.
+              
+            top_terms_N -   first translates each term into boolean should
+                and keeps the scores as computed by the query. Only the top N
+                scoring terms are used.  Replace N with an integer value.
+            
+            Default is constant_score_auto.
+
+            This is an advanced option, use with care.
+
+            @member ejs.MultiMatchQuery
+            @param {String} m The rewrite method as a string.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      rewrite: function (m) {
+        if (m == null) {
+          return query.multi_match.rewrite;
+        }
+        
+        m = m.toLowerCase();
+        if (m === 'constant_score_auto' || m === 'scoring_boolean' ||
+          m === 'constant_score_boolean' || m === 'constant_score_filter' ||
+          m.indexOf('top_terms_boost_') === 0 || 
+          m.indexOf('top_terms_') === 0) {
+            
+          query.multi_match.rewrite = m;
+        }
+        
+        return this;
+      },
+      
+      /**
+            Sets fuzzy rewrite method.  Valid values are: 
+            
+            constant_score_auto - tries to pick the best constant-score rewrite 
+              method based on term and document counts from the query
+              
+            scoring_boolean - translates each term into boolean should and 
+              keeps the scores as computed by the query
+              
+            constant_score_boolean - same as scoring_boolean, expect no scores
+              are computed.
+              
+            constant_score_filter - first creates a private Filter, by visiting 
+              each term in sequence and marking all docs for that term
+              
+            top_terms_boost_N - first translates each term into boolean should
+              and scores are only computed as the boost using the top N
+              scoring terms.  Replace N with an integer value.
+              
+            top_terms_N -   first translates each term into boolean should
+                and keeps the scores as computed by the query. Only the top N
+                scoring terms are used.  Replace N with an integer value.
+            
+            Default is constant_score_auto.
+
+            This is an advanced option, use with care.
+            
+            @member ejs.MultiMatchQuery
+            @param {String} m The rewrite method as a string.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      fuzzyRewrite: function (m) {
+        if (m == null) {
+          return query.multi_match.fuzzy_rewrite;
+        }
+
+        m = m.toLowerCase();
+        if (m === 'constant_score_auto' || m === 'scoring_boolean' ||
+          m === 'constant_score_boolean' || m === 'constant_score_filter' ||
+          m.indexOf('top_terms_boost_') === 0 || 
+          m.indexOf('top_terms_') === 0) {
+            
+          query.multi_match.fuzzy_rewrite = m;
+        }
+        
+        return this;
+      },
+
+      /**
+            Enables lenient parsing of the query string.
+
+            @member ejs.MultiMatchQuery
+            @param {Boolean} trueFalse A boolean value
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      lenient: function (trueFalse) {
+        if (trueFalse == null) {
+          return query.multi_match.lenient;
+        }
+
+        query.multi_match.lenient = trueFalse;
+        return this;
+      },
+                 
       /**
             Sets the boost value for documents matching the <code>Query</code>.
 
@@ -131,7 +278,8 @@
           return query.multi_match.type;
         }
 
-        if (type === 'boolean' || type === 'phrase' || type === 'phrase_prefix' || type === 'phrasePrefix') {
+        type = type.toLowerCase();
+        if (type === 'boolean' || type === 'phrase' || type === 'phrase_prefix') {
           query.multi_match.type = type;
         }
 
