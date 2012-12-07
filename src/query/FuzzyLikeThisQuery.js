@@ -59,10 +59,12 @@
           return query.flt.fields;
         }
       
-        if (typeof f === 'string') {
+        if (isString(f)) {
           query.flt.fields.push(f);
-        } else {
+        } else if (isArray(f)) {
           query.flt.fields = f;
+        } else {
+          throw new TypeError('Argument must be a string or array');
         }
       
         return this;

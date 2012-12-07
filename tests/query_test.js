@@ -984,7 +984,7 @@ exports.queries = {
     test.done();
   },
   FuzzyLikeThisQuery: function (test) {
-    test.expect(14);
+    test.expect(15);
 
     var fltQuery = ejs.FuzzyLikeThisQuery('like text'),
       expected,
@@ -1044,6 +1044,10 @@ exports.queries = {
     
     test.strictEqual(fltQuery.toString(), JSON.stringify(expected));
 
+    test.throws(function () {
+      fltQuery.fields(2);
+    }, TypeError);
+    
     test.done();
   },
   CustomBoostFactorQuery: function (test) {
