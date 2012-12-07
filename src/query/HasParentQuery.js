@@ -14,6 +14,10 @@
     */
   ejs.HasParentQuery = function (qry, parentType) {
 
+    if (!isEJSObject(qry)) {
+      throw new TypeError('Argument must be a Query');
+    }
+    
     /**
          The internal query object. <code>Use get()</code>
          @member ejs.HasParentQuery
@@ -40,6 +44,10 @@
           return query.has_parent.query;
         }
   
+        if (!isEJSObject(q)) {
+          throw new TypeError('Argument must be a Query');
+        }
+        
         query.has_parent.query = q.get();
         return this;
       },

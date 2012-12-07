@@ -778,7 +778,7 @@ exports.queries = {
     test.done();
   },
   HasParentQuery: function (test) {
-    test.expect(8);
+    test.expect(10);
 
     var termQuery = ejs.TermQuery('t1', 'v1'),
       termQuery2 = ejs.TermQuery('t2', 'v2'),
@@ -817,6 +817,14 @@ exports.queries = {
     
     test.strictEqual(hasParentQuery.toString(), JSON.stringify(expected));
 
+    test.throws(function () {
+      ejs.HasParentQuery('invalid', 'type');
+    }, TypeError);
+    
+    test.throws(function () {
+      hasParentQuery.query('invalid');
+    }, TypeError);
+    
     test.done();
   },
   HasChildQuery: function (test) {
