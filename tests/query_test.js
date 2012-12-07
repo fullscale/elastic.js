@@ -1570,9 +1570,9 @@ exports.queries = {
     test.done();
   },
   FieldQuery: function (test) {
-    test.expect(18);
+    test.expect(38);
 
-    var fieldQuery = ejs.FieldQuery('f1', 'v1'),
+    var fieldQuery = ejs.FieldQuery('f', 'v1'),
       expected,
       doTest = function () {
         test.deepEqual(fieldQuery.get(), expected);
@@ -1580,7 +1580,9 @@ exports.queries = {
 
     expected = {
       field: {
-        f1: 'v1'
+        f: {
+          query: 'v1'
+        }
       }
     };
 
@@ -1588,10 +1590,21 @@ exports.queries = {
     test.ok(fieldQuery.get(), 'get() works');
     doTest();
 
-    fieldQuery.defaultOperator('and');
-    expected.field.f1 = {
-      query: 'v1'
+    fieldQuery.field('f1');
+    expected = {
+      field: {
+        f1: {
+          query: 'v1'
+        }
+      }
     };
+    doTest();
+    
+    fieldQuery.query('v2');
+    expected.field.f1.query = 'v2';
+    doTest();
+    
+    fieldQuery.defaultOperator('and');
     expected.field.f1.default_operator = 'AND';
     doTest();
 
@@ -1606,6 +1619,10 @@ exports.queries = {
     expected.field.f1.analyzer = 'someAnalyzer';
     doTest();
 
+    fieldQuery.quoteAnalyzer('qAnalyzer');
+    expected.field.f1.quote_analyzer = 'qAnalyzer';
+    doTest();
+    
     fieldQuery.autoGeneratePhraseQueries(false);
     expected.field.f1.auto_generate_phrase_queries = false;
     doTest();
@@ -1634,6 +1651,72 @@ exports.queries = {
     expected.field.f1.fuzzy_prefix_length = 4;
     doTest();
 
+    fieldQuery.fuzzyMaxExpansions(6);
+    expected.field.f1.fuzzy_max_expansions = 6;
+    doTest();
+    
+    fieldQuery.fuzzyRewrite('constant_score_auto');
+    expected.field.f1.fuzzy_rewrite = 'constant_score_auto';
+    doTest();
+    
+    fieldQuery.fuzzyRewrite('invalid');
+    doTest();
+    
+    fieldQuery.fuzzyRewrite('scoring_boolean');
+    expected.field.f1.fuzzy_rewrite = 'scoring_boolean';
+    doTest();
+    
+    fieldQuery.fuzzyRewrite('constant_score_boolean');
+    expected.field.f1.fuzzy_rewrite = 'constant_score_boolean';
+    doTest();
+    
+    fieldQuery.fuzzyRewrite('constant_score_filter');
+    expected.field.f1.fuzzy_rewrite = 'constant_score_filter';
+    doTest();
+    
+    fieldQuery.fuzzyRewrite('top_terms_boost_5');
+    expected.field.f1.fuzzy_rewrite = 'top_terms_boost_5';
+    doTest();
+    
+    fieldQuery.fuzzyRewrite('top_terms_9');
+    expected.field.f1.fuzzy_rewrite = 'top_terms_9';
+    doTest();
+    
+    fieldQuery.rewrite('constant_score_auto');
+    expected.field.f1.rewrite = 'constant_score_auto';
+    doTest();
+    
+    fieldQuery.rewrite('invalid');
+    doTest();
+    
+    fieldQuery.rewrite('scoring_boolean');
+    expected.field.f1.rewrite = 'scoring_boolean';
+    doTest();
+    
+    fieldQuery.rewrite('constant_score_boolean');
+    expected.field.f1.rewrite = 'constant_score_boolean';
+    doTest();
+    
+    fieldQuery.rewrite('constant_score_filter');
+    expected.field.f1.rewrite = 'constant_score_filter';
+    doTest();
+    
+    fieldQuery.rewrite('top_terms_boost_5');
+    expected.field.f1.rewrite = 'top_terms_boost_5';
+    doTest();
+    
+    fieldQuery.rewrite('top_terms_9');
+    expected.field.f1.rewrite = 'top_terms_9';
+    doTest();
+    
+    fieldQuery.quoteFieldSuffix('s');
+    expected.field.f1.quote_field_suffix = 's';
+    doTest();
+    
+    fieldQuery.escape(true);
+    expected.field.f1.escape = true;
+    doTest();
+    
     fieldQuery.phraseSlop(2);
     expected.field.f1.phrase_slop = 2;
     doTest();
@@ -1646,6 +1729,7 @@ exports.queries = {
     expected.field.f1.minimum_should_match = 5;
     doTest();
 
+    
     test.strictEqual(fieldQuery.toString(), JSON.stringify(expected));
 
     test.done();
