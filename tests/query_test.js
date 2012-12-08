@@ -589,7 +589,7 @@ exports.queries = {
     test.done();
   },
   PrefixQuery: function (test) {
-    test.expect(7);
+    test.expect(14);
 
     var prefixQuery = ejs.PrefixQuery('f1', 'prefix'),
       expected,
@@ -625,6 +625,33 @@ exports.queries = {
     
     prefixQuery.boost(1.2);
     expected.prefix.f2.boost = 1.2;
+    doTest();
+    
+    prefixQuery.rewrite('constant_score_auto');
+    expected.prefix.f2.rewrite = 'constant_score_auto';
+    doTest();
+    
+    prefixQuery.rewrite('invalid');
+    doTest();
+    
+    prefixQuery.rewrite('scoring_boolean');
+    expected.prefix.f2.rewrite = 'scoring_boolean';
+    doTest();
+    
+    prefixQuery.rewrite('constant_score_boolean');
+    expected.prefix.f2.rewrite = 'constant_score_boolean';
+    doTest();
+    
+    prefixQuery.rewrite('constant_score_filter');
+    expected.prefix.f2.rewrite = 'constant_score_filter';
+    doTest();
+    
+    prefixQuery.rewrite('top_terms_boost_5');
+    expected.prefix.f2.rewrite = 'top_terms_boost_5';
+    doTest();
+    
+    prefixQuery.rewrite('top_terms_9');
+    expected.prefix.f2.rewrite = 'top_terms_9';
     doTest();
     
     test.strictEqual(prefixQuery.toString(), JSON.stringify(expected));

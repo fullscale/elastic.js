@@ -42,8 +42,8 @@
           return field;
         }
 
+        delete query.prefix[field];
         field = f;
-        query.prefix = {};
         query.prefix[f] = oldValue;
 
         return this;
@@ -65,6 +65,54 @@
         return this;
       },
 
+      /**
+            Sets rewrite method.  Valid values are: 
+            
+            constant_score_auto - tries to pick the best constant-score rewrite 
+              method based on term and document counts from the query
+              
+            scoring_boolean - translates each term into boolean should and 
+              keeps the scores as computed by the query
+              
+            constant_score_boolean - same as scoring_boolean, expect no scores
+              are computed.
+              
+            constant_score_filter - first creates a private Filter, by visiting 
+              each term in sequence and marking all docs for that term
+              
+            top_terms_boost_N - first translates each term into boolean should
+              and scores are only computed as the boost using the top N
+              scoring terms.  Replace N with an integer value.
+              
+            top_terms_N -   first translates each term into boolean should
+                and keeps the scores as computed by the query. Only the top N
+                scoring terms are used.  Replace N with an integer value.
+            
+            Default is constant_score_auto.
+
+            This is an advanced option, use with care.
+
+            @member ejs.PrefixQuery
+            @param {String} m The rewrite method as a string.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      rewrite: function (m) {
+        if (m == null) {
+          return query.prefix[field].rewrite;
+        }
+        
+        m = m.toLowerCase();
+        if (m === 'constant_score_auto' || m === 'scoring_boolean' ||
+          m === 'constant_score_boolean' || m === 'constant_score_filter' ||
+          m.indexOf('top_terms_boost_') === 0 || 
+          m.indexOf('top_terms_') === 0) {
+            
+          query.prefix[field].rewrite = m;
+        }
+        
+        return this;
+      },
+      
       /**
             Sets the boost value of the <code>Query</code>.
 
