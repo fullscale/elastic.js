@@ -11,16 +11,26 @@
     @desc
     Removes matches which overlap with another span query.
 
+    @param {Query} includeQry a valid SpanQuery whose matching docs will be returned.
+    @param {Query} excludeQry a valid SpanQuery whose matching docs will not be returned
+    
     */
-  ejs.SpanNotQuery = function () {
+  ejs.SpanNotQuery = function (includeQry, excludeQry) {
 
+    if (!isEJSObject(includeQry) || !isEJSObject(excludeQry)) {
+      throw new TypeError('Argument must be a SpanQuery');
+    }
+    
     /**
          The internal query object. <code>Use get()</code>
          @member ejs.SpanNotQuery
          @property {Object} query
          */
     var query = {
-      span_not: {}
+      span_not: {
+        include: includeQry.get(),
+        exclude: excludeQry.get()
+      }
     };
 
     return {
@@ -37,6 +47,10 @@
           return query.span_not.include;
         }
       
+        if (!isEJSObject(spanQuery)) {
+          throw new TypeError('Argument must be a SpanQuery');
+        }
+        
         query.span_not.include = spanQuery.get();
         return this;
       },
@@ -53,10 +67,30 @@
           return query.span_not.exclude;
         }
       
+        if (!isEJSObject(spanQuery)) {
+          throw new TypeError('Argument must be a SpanQuery');
+        }
+        
         query.span_not.exclude = spanQuery.get();
         return this;
       },
 
+      /**
+            Sets the boost value of the <code>Query</code>.
+
+            @member ejs.SpanNotQuery
+            @param {Double} boost A positive <code>double</code> value.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      boost: function (boost) {
+        if (boost == null) {
+          return query.span_not.boost;
+        }
+
+        query.span_not.boost = boost;
+        return this;
+      },
+      
       /**
             Allows you to serialize this object into a JSON encoded string.
 

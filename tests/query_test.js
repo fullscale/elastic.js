@@ -2598,42 +2598,59 @@ exports.queries = {
     test.done();
   },
   SpanNotQuery: function (test) {
-    test.expect(6);
+    test.expect(11);
 
     var spanTermQuery1 = ejs.SpanTermQuery('t1', 'v1'),
       spanTermQuery2 = ejs.SpanTermQuery('t2', 'v2'),
-      spanNotQuery = ejs.SpanNotQuery(),
+      spanTermQuery3 = ejs.SpanTermQuery('t3', 'v3'),
+      spanTermQuery4 = ejs.SpanTermQuery('t4', 'v4'),
+      spanNotQuery = ejs.SpanNotQuery(spanTermQuery1, spanTermQuery2),
       expected,
       doTest = function () {
         test.deepEqual(spanNotQuery.get(), expected);
       };
 
     expected = {
-      span_not: {}
+      span_not: {
+        include: spanTermQuery1.get(),
+        exclude: spanTermQuery2.get()
+      }
     };
 
     test.ok(spanNotQuery, 'SpanNotQuery exists');
     test.ok(spanNotQuery.get(), 'get() works');
     doTest();
 
-    spanNotQuery.include(spanTermQuery1);
-    expected.span_not.include = {
-      span_term: {
-        t1: 'v1'
-      }
-    };
+    spanNotQuery.include(spanTermQuery3);
+    expected.span_not.include = spanTermQuery3.get();
     doTest();
 
-    spanNotQuery.exclude(spanTermQuery2);
-    expected.span_not.exclude = {
-      span_term: {
-        t2: 'v2'
-      }
-    };
+    spanNotQuery.exclude(spanTermQuery4);
+    expected.span_not.exclude = spanTermQuery4.get();
     doTest();
 
+    spanNotQuery.boost(4.1);
+    expected.span_not.boost = 4.1;
+    doTest();
+    
     test.strictEqual(spanNotQuery.toString(), JSON.stringify(expected));
 
+    test.throws(function () {
+      ejs.SpanNotQuery('invalid', spanTermQuery1);
+    }, TypeError);
+    
+    test.throws(function () {
+      ejs.SpanNotQuery(spanTermQuery1, 'invalid');
+    }, TypeError);
+    
+    test.throws(function () {
+      spanNotQuery.include('invalid');
+    }, TypeError);
+    
+    test.throws(function () {
+      spanNotQuery.exclude('invalid');
+    }, TypeError);
+    
     test.done();
   },
   SpanOrQuery: function (test) {
