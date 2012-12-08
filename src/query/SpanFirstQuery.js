@@ -9,6 +9,9 @@
     @desc
     Matches spans near the beginning of a field.
 
+    @param {Query} spanQry A valid SpanQuery
+    @param {Integer} end the maximum end position in a match.
+    
     */
   ejs.SpanFirstQuery = function (spanQry, end) {
 
