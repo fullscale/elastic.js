@@ -11,67 +11,72 @@
     @desc
     Matches spans which are near one another.
 
-    @param {Object} aSpanQuery An optional array of valid span type queries.
+    @param {Query || Array} clauses A single SpanQuery or array of SpanQueries
+    @param {Integer} slop The number of intervening unmatched positions
 
     */
-  ejs.SpanNearQuery = function (aSpanQuery) {
-
-    aSpanQuery = aSpanQuery || [];
+  ejs.SpanNearQuery = function (clauses, slop) {
 
     /**
          The internal query object. <code>Use get()</code>
          @member ejs.SpanNearQuery
          @property {Object} query
          */
-    var query = {
-      span_near: {
-        clauses: []
+    var i, len,
+      query = {
+        span_near: {
+          clauses: [],
+          slop: slop
+        }
+      };
+    
+    if (isEJSObject(clauses)) {
+      query.span_near.clauses.push(clauses.get());
+    } else if (isArray(clauses)) {
+      for (i = 0, len = clauses.length; i < len; i++) {
+        if (!isEJSObject(clauses[i])) {
+          throw new TypeError('Argument must be array of SpanQueries');
+        }
+        
+        query.span_near.clauses.push(clauses[i].get());
       }
-    },
-
-    len = aSpanQuery.length,
-    i = 0;
-
-    for (; i < len; i++) {
-      query.span_near.clauses.push(aSpanQuery[i].get());
+    } else {
+      throw new TypeError('Argument must be SpanQuery or array of SpanQueries');
     }
 
     return {
 
       /**
-            Adds a new span query clause.
+            Sets the clauses used.  If passed a single SpanQuery, it is added
+            to the existing list of clauses.  If passed an array of
+            SpanQueries, they replace any existing clauses.
 
             @member ejs.SpanNearQuery
-            @param {Object} spanQuery Any valid span type query.
+            @param {Query || Array} clauses A SpanQuery or array of SpanQueries.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
-      addClause: function (spanQuery) {
-        if (spanQuery == null) {
+      clauses: function (clauses) {
+        var i, len;
+        
+        if (clauses == null) {
           return query.span_near.clauses;
         }
       
-        query.span_near.clauses.push(spanQuery.get());
-        return this;
-      },
+        if (isEJSObject(clauses)) {
+          query.span_near.clauses.push(clauses.get());
+        } else if (isArray(clauses)) {
+          query.span_near.clauses = [];
+          for (i = 0, len = clauses.length; i < len; i++) {
+            if (!isEJSObject(clauses[i])) {
+              throw new TypeError('Argument must be array of SpanQueries');
+            }
 
-      /**
-            Allows you to add an array of span query clause. Clears any existing clauses.
-
-            @member ejs.SpanNearQuery
-            @param {Array} aSpanQuery An array of valid span type queries.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      clauses: function (aSpanQuery) {
-        if (aSpanQuery == null) {
-          return query.span_near.clauses;
+            query.span_near.clauses.push(clauses[i].get());
+          }
+        } else {
+          throw new TypeError('Argument must be SpanQuery or array of SpanQueries');
         }
-      
-        query.span_near.clauses = [];
-        var len = aSpanQuery.length,
-          i = 0;
-        for (; i < len; i++) {
-          this.addClause(aSpanQuery[i]);
-        }
+        
         return this;
       },
 
@@ -124,6 +129,22 @@
         return this;
       },
 
+      /**
+            Sets the boost value of the <code>Query</code>.
+
+            @member ejs.SpanNearQuery
+            @param {Double} boost A positive <code>double</code> value.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      boost: function (boost) {
+        if (boost == null) {
+          return query.span_near.boost;
+        }
+
+        query.span_near.boost = boost;
+        return this;
+      },
+      
       /**
             Allows you to serialize this object into a JSON encoded string.
 

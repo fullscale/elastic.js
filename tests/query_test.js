@@ -2521,13 +2521,13 @@ exports.queries = {
     test.done();
   },
   SpanNearQuery: function (test) {
-    test.expect(10);
+    test.expect(15);
 
     var spanTermQuery1 = ejs.SpanTermQuery('t1', 'v1'),
       spanTermQuery2 = ejs.SpanTermQuery('t2', 'v2'),
       spanTermQuery3 = ejs.SpanTermQuery('t3', 'v3'),
       spanTermQuery4 = ejs.SpanTermQuery('t4', 'v4'),
-      spanNearQuery = ejs.SpanNearQuery([spanTermQuery3, spanTermQuery4]),
+      spanNearQuery = ejs.SpanNearQuery(spanTermQuery1, 4),
       expected,
       doTest = function () {
         test.deepEqual(spanNearQuery.get(), expected);
@@ -2535,15 +2535,8 @@ exports.queries = {
 
     expected = {
       span_near: {
-        clauses: [{
-          span_term: {
-            t3: 'v3'
-          }
-        }, {
-          span_term: {
-            t4: 'v4'
-          }
-        }]
+        clauses: [spanTermQuery1.get()],
+        slop: 4
       }
     };
 
@@ -2551,22 +2544,23 @@ exports.queries = {
     test.ok(spanNearQuery.get(), 'get() works');
     doTest();
 
-    spanNearQuery.addClause(spanTermQuery1);
-    expected.span_near.clauses.push({
-      span_term: {
-        t1: 'v1'
-      }
-    });
+    spanNearQuery.clauses(spanTermQuery2);
+    expected.span_near.clauses.push(spanTermQuery2.get());
     doTest();
 
-    spanNearQuery.addClause(spanTermQuery2);
-    expected.span_near.clauses.push({
-      span_term: {
-        t2: 'v2'
-      }
-    });
+    spanNearQuery.clauses([spanTermQuery1, spanTermQuery3]);
+    expected.span_near.clauses = [spanTermQuery1.get(), spanTermQuery3.get()];
     doTest();
 
+    spanNearQuery = ejs.SpanNearQuery([spanTermQuery4, spanTermQuery2], 10);
+    expected = {
+      span_near: {
+        clauses: [spanTermQuery4.get(), spanTermQuery2.get()],
+        slop: 10
+      }
+    };
+    doTest();
+    
     spanNearQuery.slop(3);
     expected.span_near.slop = 3;
     doTest();
@@ -2579,22 +2573,28 @@ exports.queries = {
     expected.span_near.collect_payloads = false;
     doTest();
 
-    spanNearQuery.clauses([spanTermQuery3, spanTermQuery4]);
-    expected.span_near.clauses = [];
-    expected.span_near.clauses.push({
-      span_term: {
-        t3: 'v3'
-      }
-    });
-    expected.span_near.clauses.push({
-      span_term: {
-        t4: 'v4'
-      }
-    });
+    spanNearQuery.boost(4.1);
+    expected.span_near.boost = 4.1;
     doTest();
 
     test.strictEqual(spanNearQuery.toString(), JSON.stringify(expected));
 
+    test.throws(function () {
+      ejs.SpanNearQuery('invalid', 2);
+    }, TypeError);
+    
+    test.throws(function () {
+      ejs.SpanNearQuery([spanTermQuery1, 'invalid'], 4);
+    }, TypeError);
+    
+    test.throws(function () {
+      spanNearQuery.clauses('invalid');
+    }, TypeError);
+    
+    test.throws(function () {
+      spanNearQuery.clauses([spanTermQuery2, 'invalid']);
+    }, TypeError);
+    
     test.done();
   },
   SpanNotQuery: function (test) {
