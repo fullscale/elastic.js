@@ -2654,14 +2654,14 @@ exports.queries = {
     test.done();
   },
   SpanOrQuery: function (test) {
-    test.expect(6);
+    test.expect(12);
 
     var spanTermQuery1 = ejs.SpanTermQuery('t1', 'v1'),
       spanTermQuery2 = ejs.SpanTermQuery('t2', 'v2'),
       spanTermQuery3 = ejs.SpanTermQuery('t3', 'v3'),
       spanTermQuery4 = ejs.SpanTermQuery('t4', 'v4'),
       spanTermQuery5 = ejs.SpanTermQuery('t5', 'v5'),
-      spanOrQuery = ejs.SpanOrQuery([spanTermQuery4, spanTermQuery5]),
+      spanOrQuery = ejs.SpanOrQuery(spanTermQuery1),
       expected,
       doTest = function () {
         test.deepEqual(spanOrQuery.get(), expected);
@@ -2669,46 +2669,48 @@ exports.queries = {
 
     expected = {
       span_or: {
-        clauses: [{
-          span_term: {
-            t4: 'v4'
-          }
-        }, {
-          span_term: {
-            t5: 'v5'
-          }
-        }]
+        clauses: [spanTermQuery1.get()]
       }
     };
 
     test.ok(spanOrQuery, 'SpanOrQuery exists');
     test.ok(spanOrQuery.get(), 'get() works');
     doTest();
-
-    spanOrQuery.addClause(spanTermQuery3);
-    expected.span_or.clauses.push({
-      span_term: {
-        t3: 'v3'
-      }
-    });
+    
+    spanOrQuery = ejs.SpanOrQuery([spanTermQuery2, spanTermQuery3]);
+    expected.span_or.clauses = [spanTermQuery2.get(), spanTermQuery3.get()];
     doTest();
 
-    spanOrQuery.clauses([spanTermQuery1, spanTermQuery2]);
-    expected.span_or.clauses = [];
-    expected.span_or.clauses.push({
-      span_term: {
-        t1: 'v1'
-      }
-    });
-    expected.span_or.clauses.push({
-      span_term: {
-        t2: 'v2'
-      }
-    });
+    spanOrQuery.clauses(spanTermQuery4);
+    expected.span_or.clauses.push(spanTermQuery4.get());
     doTest();
 
+    spanOrQuery.clauses([spanTermQuery1, spanTermQuery5]);
+    expected.span_or.clauses = [spanTermQuery1.get(), spanTermQuery5.get()];
+    doTest();
+
+    spanOrQuery.boost(1.1);
+    expected.span_or.boost = 1.1;
+    doTest();
+    
     test.strictEqual(spanOrQuery.toString(), JSON.stringify(expected));
 
+    test.throws(function () {
+      ejs.SpanOrQuery('invalid');
+    }, TypeError);
+    
+    test.throws(function () {
+      ejs.SpanOrQuery([spanTermQuery1, 'invalid']);
+    }, TypeError);
+    
+    test.throws(function () {
+      spanOrQuery.clauses('invalid');
+    }, TypeError);
+    
+    test.throws(function () {
+      spanOrQuery.clauses([spanTermQuery1, 'invalid']);
+    }, TypeError);
+    
     test.done();
   },
   SpanFirstQuery: function (test) {

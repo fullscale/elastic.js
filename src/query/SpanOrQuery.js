@@ -8,70 +8,90 @@
     @desc
     Matches the union of its span clauses.
 
-    @param {Object} aSpanQuery An optional array of valid span type queries.
+    @param {Object} clauses A single SpanQuery or array of SpanQueries.
 
     */
-  ejs.SpanOrQuery = function (aSpanQuery) {
-
-    aSpanQuery = aSpanQuery || [];
+  ejs.SpanOrQuery = function (clauses) {
 
     /**
          The internal query object. <code>Use get()</code>
          @member ejs.SpanOrQuery
          @property {Object} query
          */
-    var query = {
-      span_or: {
-        clauses: []
+    var i, 
+      len,
+      query = {
+        span_or: {
+          clauses: []
+        }
+      };
+
+    if (isEJSObject(clauses)) {
+      query.span_or.clauses.push(clauses.get());
+    } else if (isArray(clauses)) {
+      for (i = 0, len = clauses.length; i < len; i++) {
+        if (!isEJSObject(clauses[i])) {
+          throw new TypeError('Argument must be array of SpanQueries');
+        }
+        
+        query.span_or.clauses.push(clauses[i].get());
       }
-    },
-
-    len = aSpanQuery.length,
-    i = 0;
-
-    for (; i < len; i++) {
-      query.span_or.clauses.push(aSpanQuery[i].get());
+    } else {
+      throw new TypeError('Argument must be SpanQuery or array of SpanQueries');
     }
 
     return {
 
       /**
-            Adds a new span query clause.
+            Sets the clauses used.  If passed a single SpanQuery, it is added
+            to the existing list of clauses.  If passed an array of
+            SpanQueries, they replace any existing clauses.
 
             @member ejs.SpanOrQuery
-            @param {Object} spanQuery Any valid span type query.
+            @param {Query || Array} clauses A SpanQuery or array of SpanQueries.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
-      addClause: function (spanQuery) {
-        if (spanQuery == null) {
+      clauses: function (clauses) {
+        var i, len;
+        
+        if (clauses == null) {
           return query.span_or.clauses;
         }
       
-        query.span_or.clauses.push(spanQuery.get());
+        if (isEJSObject(clauses)) {
+          query.span_or.clauses.push(clauses.get());
+        } else if (isArray(clauses)) {
+          query.span_or.clauses = [];
+          for (i = 0, len = clauses.length; i < len; i++) {
+            if (!isEJSObject(clauses[i])) {
+              throw new TypeError('Argument must be array of SpanQueries');
+            }
+
+            query.span_or.clauses.push(clauses[i].get());
+          }
+        } else {
+          throw new TypeError('Argument must be SpanQuery or array of SpanQueries');
+        }
+        
         return this;
       },
 
       /**
-            Allows you to add an array of span query clause. Clears any existing clauses.
+            Sets the boost value of the <code>Query</code>.
 
             @member ejs.SpanOrQuery
-            @param {Array} aSpanQuery An array of valid span type queries.
+            @param {Double} boost A positive <code>double</code> value.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
-      clauses: function (aSpanQuery) {
-        if (aSpanQuery == null) {
-          return query.span_or.clauses;
+      boost: function (boost) {
+        if (boost == null) {
+          return query.span_or.boost;
         }
-      
-        query.span_or.clauses = [];
-        var len = aSpanQuery.length,
-          i = 0;
-        for (; i < len; i++) {
-          this.addClause(aSpanQuery[i]);
-        }
+
+        query.span_or.boost = boost;
         return this;
       },
-
+      
       /**
             Allows you to serialize this object into a JSON encoded string.
 
