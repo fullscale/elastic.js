@@ -41,8 +41,8 @@
           return field;
         }
 
+        delete query.range[field];
         field = f;
-        query.range = {};
         query.range[f] = oldValue;
 
         return this;
