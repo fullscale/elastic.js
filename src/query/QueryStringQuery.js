@@ -15,9 +15,9 @@
     @desc
     A query that is parsed using Lucene's default query parser.
 
-    @param {String} queryStr A valid Lucene query string.
+    @param {String} qstr A valid Lucene query string.
     */
-  ejs.QueryStringQuery = function (queryStr) {
+  ejs.QueryStringQuery = function (qstr) {
 
     /**
          The internal Query object. Use <code>get()</code>.
@@ -28,7 +28,7 @@
       query_string: {}
     };
 
-    query.query_string.query = queryStr;
+    query.query_string.query = qstr;
 
     return {
 
@@ -36,15 +36,15 @@
             Sets the query string on this <code>Query</code> object.
 
             @member ejs.QueryStringQuery
-            @param {String} queryStr A valid Lucene query string.
+            @param {String} qstr A valid Lucene query string.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
-      query: function (queryStr) {
-        if (queryStr == null) {
+      query: function (qstr) {
+        if (qstr == null) {
           return query.query_string.query;
         }
 
-        query.query_string.query = queryStr;
+        query.query_string.query = qstr;
         return this;
       },
 
@@ -65,22 +65,34 @@
       },
 
       /**
-            A set of fields/properties this query should execute against. The query will be
-            run against each field using Lucene's
-            <a href="http://lucene.apache.org/java/3_0_0/api/core/org/apache/lucene/search/DisjunctionMaxQuery.html">
-            DisjunctionMaxQuery</a> (if <code>dismax</code> is set to <code>true</code>) or
-            <code>boolQuery</code> if <code>dismax</code> is set to <code>false</code>.
+            A set of fields/properties this query should execute against.  
+            Pass a single value to add to the existing list of fields and 
+            pass an array to overwrite all existing fields.  For each field, 
+            you can apply a field specific boost by appending a ^boost to the 
+            field name.  For example, title^10, to give the title field a
+            boost of 10.
 
             @member ejs.QueryStringQuery
             @param {Array} fieldNames A list of document fields/properties.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       fields: function (fieldNames) {
+        if (query.query_string.fields == null) {
+          query.query_string.fields = [];
+        }
+        
         if (fieldNames == null) {
           return query.query_string.fields;
         }
       
-        query.query_string.fields = fieldNames;
+        if (isString(fieldNames)) {
+          query.query_string.fields.push(fieldNames);
+        } else if (isArray(fieldNames)) {
+          query.query_string.fields = fieldNames;
+        } else {
+          throw new TypeError('Argument must be a string or array');
+        }
+        
         return this;
       },
 
@@ -108,7 +120,7 @@
             Defaults to <code>OR</code> (<em>same as Google</em>).
 
             @member ejs.QueryStringQuery
-            @param {String} op The boost value to apply.
+            @param {String} op The operator to use, AND or OR.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       defaultOperator: function (op) {
@@ -120,6 +132,7 @@
         if (op === 'AND' || op === 'OR') {
           query.query_string.default_operator = op;
         }
+        
         return this;
       },
 
@@ -139,6 +152,23 @@
         return this;
       },
 
+      /**
+            Sets the quote analyzer name used to analyze the <code>query</code>
+            when in quoted text.
+
+            @member ejs.QueryStringQuery
+            @param {String} analyzer A valid analyzer name.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      quoteAnalyzer: function (analyzer) {
+        if (analyzer == null) {
+          return query.query_string.quote_analyzer;
+        }
+
+        query.query_string.quote_analyzer = analyzer;
+        return this;
+      },
+      
       /**
             Sets whether or not wildcard characters (* and ?) are allowed as the
             first character of the <code>Query</code>.  Default: true.
@@ -330,6 +360,167 @@
         return this;
       },
 
+      /**
+            If they query string should be escaped or not.
+
+            @member ejs.QueryStringQuery
+            @param {Boolean} trueFalse A <code>true/false</code> value.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      escape: function (trueFalse) {
+        if (trueFalse == null) {
+          return query.query_string.escape;
+        }
+
+        query.query_string.escape = trueFalse;
+        return this;
+      },
+
+      /**
+            Sets the max number of term expansions for fuzzy queries.  
+
+            @member ejs.QueryStringQuery
+            @param {Integer} max A positive <code>integer</code> value.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      fuzzyMaxExpansions: function (max) {
+        if (max == null) {
+          return query.query_string.fuzzy_max_expansions;
+        }
+
+        query.query_string.fuzzy_max_expansions = max;
+        return this;
+      },
+
+      /**
+            Sets fuzzy rewrite method.  Valid values are: 
+            
+            constant_score_auto - tries to pick the best constant-score rewrite 
+              method based on term and document counts from the query
+              
+            scoring_boolean - translates each term into boolean should and 
+              keeps the scores as computed by the query
+              
+            constant_score_boolean - same as scoring_boolean, expect no scores
+              are computed.
+              
+            constant_score_filter - first creates a private Filter, by visiting 
+              each term in sequence and marking all docs for that term
+              
+            top_terms_boost_N - first translates each term into boolean should
+              and scores are only computed as the boost using the top N
+              scoring terms.  Replace N with an integer value.
+              
+            top_terms_N -   first translates each term into boolean should
+                and keeps the scores as computed by the query. Only the top N
+                scoring terms are used.  Replace N with an integer value.
+            
+            Default is constant_score_auto.
+
+            This is an advanced option, use with care.
+            
+            @member ejs.QueryStringQuery
+            @param {String} m The rewrite method as a string.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      fuzzyRewrite: function (m) {
+        if (m == null) {
+          return query.query_string.fuzzy_rewrite;
+        }
+
+        m = m.toLowerCase();
+        if (m === 'constant_score_auto' || m === 'scoring_boolean' ||
+          m === 'constant_score_boolean' || m === 'constant_score_filter' ||
+          m.indexOf('top_terms_boost_') === 0 || 
+          m.indexOf('top_terms_') === 0) {
+            
+          query.query_string.fuzzy_rewrite = m;
+        }
+        
+        return this;
+      },
+
+      /**
+            Sets rewrite method.  Valid values are: 
+            
+            constant_score_auto - tries to pick the best constant-score rewrite 
+              method based on term and document counts from the query
+              
+            scoring_boolean - translates each term into boolean should and 
+              keeps the scores as computed by the query
+              
+            constant_score_boolean - same as scoring_boolean, expect no scores
+              are computed.
+              
+            constant_score_filter - first creates a private Filter, by visiting 
+              each term in sequence and marking all docs for that term
+              
+            top_terms_boost_N - first translates each term into boolean should
+              and scores are only computed as the boost using the top N
+              scoring terms.  Replace N with an integer value.
+              
+            top_terms_N -   first translates each term into boolean should
+                and keeps the scores as computed by the query. Only the top N
+                scoring terms are used.  Replace N with an integer value.
+            
+            Default is constant_score_auto.
+
+            This is an advanced option, use with care.
+
+            @member ejs.QueryStringQuery
+            @param {String} m The rewrite method as a string.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      rewrite: function (m) {
+        if (m == null) {
+          return query.query_string.rewrite;
+        }
+        
+        m = m.toLowerCase();
+        if (m === 'constant_score_auto' || m === 'scoring_boolean' ||
+          m === 'constant_score_boolean' || m === 'constant_score_filter' ||
+          m.indexOf('top_terms_boost_') === 0 || 
+          m.indexOf('top_terms_') === 0) {
+            
+          query.query_string.rewrite = m;
+        }
+        
+        return this;
+      },
+
+      /**
+            Sets the suffix to automatically add to the field name when 
+            performing a quoted search.
+
+            @member ejs.QueryStringQuery
+            @param {String} s The suffix as a string.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      quoteFieldSuffix: function (s) {
+        if (s == null) {
+          return query.query_string.quote_field_suffix;
+        }
+
+        query.query_string.quote_field_suffix = s;
+        return this;
+      },
+      
+      /**
+            Enables lenient parsing of the query string.
+
+            @member ejs.QueryStringQuery
+            @param {Boolean} trueFalse A boolean value
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      lenient: function (trueFalse) {
+        if (trueFalse == null) {
+          return query.query_string.lenient;
+        }
+
+        query.query_string.lenient = trueFalse;
+        return this;
+      },
+      
       /**
             Allows you to serialize this object into a JSON encoded string.
 

@@ -2054,7 +2054,7 @@ exports.queries = {
     test.done();
   },
   QueryStringQuery: function (test) {
-    test.expect(23);
+    test.expect(44);
 
     var queryString = ejs.QueryStringQuery('this AND that'),
       expected,
@@ -2084,6 +2084,10 @@ exports.queries = {
     expected.query_string.fields = ['field1', 'field2'];
     doTest();
 
+    queryString.fields('field3');
+    expected.query_string.fields.push('field3');
+    doTest();
+    
     queryString.useDisMax(true);
     expected.query_string.use_dis_max = true;
     doTest();
@@ -2147,8 +2151,86 @@ exports.queries = {
     expected.query_string.tie_breaker = 1.1;
     doTest();
 
+    queryString.fuzzyMaxExpansions(6);
+    expected.query_string.fuzzy_max_expansions = 6;
+    doTest();
+    
+    queryString.fuzzyRewrite('constant_score_auto');
+    expected.query_string.fuzzy_rewrite = 'constant_score_auto';
+    doTest();
+    
+    queryString.fuzzyRewrite('invalid');
+    doTest();
+    
+    queryString.fuzzyRewrite('scoring_boolean');
+    expected.query_string.fuzzy_rewrite = 'scoring_boolean';
+    doTest();
+    
+    queryString.fuzzyRewrite('constant_score_boolean');
+    expected.query_string.fuzzy_rewrite = 'constant_score_boolean';
+    doTest();
+    
+    queryString.fuzzyRewrite('constant_score_filter');
+    expected.query_string.fuzzy_rewrite = 'constant_score_filter';
+    doTest();
+    
+    queryString.fuzzyRewrite('top_terms_boost_5');
+    expected.query_string.fuzzy_rewrite = 'top_terms_boost_5';
+    doTest();
+    
+    queryString.fuzzyRewrite('top_terms_9');
+    expected.query_string.fuzzy_rewrite = 'top_terms_9';
+    doTest();
+    
+    queryString.rewrite('constant_score_auto');
+    expected.query_string.rewrite = 'constant_score_auto';
+    doTest();
+    
+    queryString.rewrite('invalid');
+    doTest();
+    
+    queryString.rewrite('scoring_boolean');
+    expected.query_string.rewrite = 'scoring_boolean';
+    doTest();
+    
+    queryString.rewrite('constant_score_boolean');
+    expected.query_string.rewrite = 'constant_score_boolean';
+    doTest();
+    
+    queryString.rewrite('constant_score_filter');
+    expected.query_string.rewrite = 'constant_score_filter';
+    doTest();
+    
+    queryString.rewrite('top_terms_boost_5');
+    expected.query_string.rewrite = 'top_terms_boost_5';
+    doTest();
+    
+    queryString.rewrite('top_terms_9');
+    expected.query_string.rewrite = 'top_terms_9';
+    doTest();
+    
+    queryString.quoteFieldSuffix('s');
+    expected.query_string.quote_field_suffix = 's';
+    doTest();
+    
+    queryString.escape(true);
+    expected.query_string.escape = true;
+    doTest();
+    
+    queryString.quoteAnalyzer('qAnalyzer');
+    expected.query_string.quote_analyzer = 'qAnalyzer';
+    doTest();
+    
+    queryString.lenient(true);
+    expected.query_string.lenient = true;
+    doTest();
+    
     test.strictEqual(queryString.toString(), JSON.stringify(expected));
 
+    test.throws(function () {
+      queryString.fields(2);
+    }, TypeError);
+    
     test.done();
   },
   FilteredQuery: function (test) {
