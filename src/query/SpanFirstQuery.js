@@ -10,15 +10,22 @@
     Matches spans near the beginning of a field.
 
     */
-  ejs.SpanFirstQuery = function () {
+  ejs.SpanFirstQuery = function (spanQry, end) {
 
+    if (!isEJSObject(spanQry)) {
+      throw new TypeError('Argument must be a SpanQuery');
+    }
+    
     /**
          The internal query object. <code>Use get()</code>
          @member ejs.SpanFirstQuery
          @property {Object} query
          */
     var query = {
-      span_first: {}
+      span_first: {
+        match: spanQry.get(),
+        end: end
+      }
     };
 
     return {
@@ -35,6 +42,10 @@
           return query.span_first.match;
         }
       
+        if (!isEJSObject(spanQuery)) {
+          throw new TypeError('Argument must be a SpanQuery');
+        }
+        
         query.span_first.match = spanQuery.get();
         return this;
       },
@@ -55,6 +66,22 @@
         return this;
       },
 
+      /**
+            Sets the boost value of the <code>Query</code>.
+
+            @member ejs.SpanFirstQuery
+            @param {Double} boost A positive <code>double</code> value.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      boost: function (boost) {
+        if (boost == null) {
+          return query.span_first.boost;
+        }
+
+        query.span_first.boost = boost;
+        return this;
+      },
+      
       /**
             Allows you to serialize this object into a JSON encoded string.
 

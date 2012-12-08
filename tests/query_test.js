@@ -2695,37 +2695,49 @@ exports.queries = {
     test.done();
   },
   SpanFirstQuery: function (test) {
-    test.expect(6);
+    test.expect(9);
 
     var spanTermQuery1 = ejs.SpanTermQuery('t1', 'v1'),
-      spanFirstQuery = ejs.SpanFirstQuery(),
+      spanTermQuery2 = ejs.SpanTermQuery('t2', 'v2'),
+      spanFirstQuery = ejs.SpanFirstQuery(spanTermQuery1, 10),
       expected,
       doTest = function () {
         test.deepEqual(spanFirstQuery.get(), expected);
       };
 
     expected = {
-      span_first: {}
+      span_first: {
+        match: spanTermQuery1.get(),
+        end: 10
+      }
     };
 
     test.ok(spanFirstQuery, 'SpanFirstQuery exists');
     test.ok(spanFirstQuery.get(), 'get() works');
     doTest();
 
-    spanFirstQuery.match(spanTermQuery1);
-    expected.span_first.match = {
-      span_term: {
-        t1: 'v1'
-      }
-    };
+    spanFirstQuery.match(spanTermQuery2);
+    expected.span_first.match = spanTermQuery2.get();
     doTest();
 
     spanFirstQuery.end(5);
     expected.span_first.end = 5;
     doTest();
 
+    spanFirstQuery.boost(3.1);
+    expected.span_first.boost = 3.1;
+    doTest();
+    
     test.strictEqual(spanFirstQuery.toString(), JSON.stringify(expected));
 
+    test.throws(function () {
+      ejs.SpanFirstQuery('invalid', 3);
+    }, TypeError);
+    
+    test.throws(function () {
+      spanFirstQuery.match('invalid');
+    }, TypeError);
+    
     test.done();
   }
 };
