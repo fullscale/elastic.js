@@ -10,9 +10,9 @@
     A Query that matches documents containing provided terms. 
 
     @param {String} field the document field/key to query against
-    @param {Array} tags an array of "terms" to match
+    @param {String || Array} terms a single term or array of "terms" to match
     */
-  ejs.TermsQuery = function (field, tags) {
+  ejs.TermsQuery = function (field, terms) {
 
     /**
          The internal query object. <code>Use get()</code>
@@ -22,9 +22,15 @@
     var query = {
       terms: {}
     };
-
-    query.terms[field] = tags;
-
+    
+    if (isString(terms)) {
+      query.terms[field] = [terms];
+    } else if (isArray(terms)) {
+      query.terms[field] = terms;
+    } else {
+      throw new TypeError('Argument must be string or array');
+    }
+    
     return {
 
       /**
@@ -62,28 +68,48 @@
           return query.terms[field];
         }
 
-        if (typeof t === 'string') {
+        if (isString(t)) {
           query.terms[field].push(t);
-        } else {
+        } else if (isArray(t)) {
           query.terms[field] = t;
+        } else {
+          throw new TypeError('Argument must be string or array');
         }
       
         return this;
       },
 
       /**
-            Sets the number of terms that need to match the query.
+            Sets the minimum number of terms that need to match in a document
+            before that document is returned in the results.
 
             @member ejs.TermsQuery
             @param {Integer} min A positive integer.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
-      minimumMatch: function (min) {
+      minimumShouldMatch: function (min) {
         if (min == null) {
-          return query.terms.minimum_match;
+          return query.terms.minimum_should_match;
         }
       
-        query.terms.minimum_match = min;
+        query.terms.minimum_should_match = min;
+        return this;
+      },
+      
+      /**
+            Enables or disables similarity coordinate scoring of documents
+            matching the <code>Query</code>. Default: false.
+
+            @member ejs.TermsQuery
+            @param {String} trueFalse A <code>true/false</code value.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      disableCoord: function (trueFalse) {
+        if (trueFalse == null) {
+          return query.terms.disable_coord;
+        }
+
+        query.terms.disable_coord = trueFalse;
         return this;
       },
             

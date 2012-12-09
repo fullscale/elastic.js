@@ -471,7 +471,7 @@ exports.queries = {
     test.done();
   },
   TermsQuery: function (test) {
-    test.expect(9);
+    test.expect(13);
 
     var termsQuery = ejs.TermsQuery('f1', ['t1', 't2']),
       expected,
@@ -489,34 +489,54 @@ exports.queries = {
     test.ok(termsQuery.get(), 'get() works');
     doTest();
 
+    termsQuery = ejs.TermsQuery('f1', 't3');
+    expected = {
+      terms: {
+        f1: ['t3']
+      }
+    };
+    doTest();
+    
     termsQuery.boost(1.5);
     expected.terms.boost = 1.5;
     doTest();
 
-    termsQuery.minimumMatch(2);
-    expected.terms.minimum_match = 2;
+    termsQuery.minimumShouldMatch(2);
+    expected.terms.minimum_should_match = 2;
     doTest();
     
     termsQuery.field('f2');
     expected = {
       terms: {
         boost: 1.5,
-        minimum_match: 2,
-        f2: ['t1', 't2']
+        minimum_should_match: 2,
+        f2: ['t3']
       }
     };
     doTest();
     
-    termsQuery.terms('t3');
-    expected.terms.f2.push('t3');
+    termsQuery.terms('t4');
+    expected.terms.f2.push('t4');
     doTest();
     
-    termsQuery.terms(['t4']);
-    expected.terms.f2 = ['t4'];
+    termsQuery.terms(['t5', 't6']);
+    expected.terms.f2 = ['t5', 't6'];
+    doTest();
+    
+    termsQuery.disableCoord(true);
+    expected.terms.disable_coord = true;
     doTest();
     
     test.strictEqual(termsQuery.toString(), JSON.stringify(expected));
 
+    test.throws(function () {
+      ejs.TermsQuery('f1', 3);
+    }, TypeError);
+    
+    test.throws(function () {
+      termsQuery.terms(2);
+    }, TypeError);
+    
     test.done();
   },
   RangeQuery: function (test) {
