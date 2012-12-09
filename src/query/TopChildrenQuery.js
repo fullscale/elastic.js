@@ -18,6 +18,10 @@
     */
   ejs.TopChildrenQuery = function (qry, type) {
 
+    if (!isEJSObject(qry)) {
+      throw new TypeError('Argument must be a Query');
+    }
+    
     /**
          The internal query object. <code>Use get()</code>
          @member ejs.TopChildrenQuery
@@ -44,6 +48,10 @@
           return query.top_children.query;
         }
   
+        if (!isEJSObject(q)) {
+          throw new TypeError('Argument must be a Query');
+        }
+        
         query.top_children.query = q.get();
         return this;
       },

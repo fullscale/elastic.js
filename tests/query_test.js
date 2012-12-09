@@ -406,7 +406,7 @@ exports.queries = {
     test.done();
   },
   TopChildrenQuery: function (test) {
-    test.expect(14);
+    test.expect(16);
 
     var termQuery = ejs.TermQuery('t1', 'v1'),
       termQuery2 = ejs.TermQuery('t2', 'v2'),
@@ -468,6 +468,14 @@ exports.queries = {
     
     test.strictEqual(topChildren.toString(), JSON.stringify(expected));
 
+    test.throws(function () {
+      ejs.TopChildrenQuery('invalid', 'type');
+    }, TypeError);
+    
+    test.throws(function () {
+      topChildren.query('invalid');
+    }, TypeError);
+    
     test.done();
   },
   TermsQuery: function (test) {
