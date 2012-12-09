@@ -28,11 +28,16 @@ exports.search = {
     done();
   },
   exists: function (test) {
-    test.expect(2);
+    test.expect(5);
 
     test.ok(ejs.Request, 'Request');
     test.ok(ejs.ComputedProperty, 'ComputedProperty');
-
+    test.ok(ejs.GeoPoint, 'GeoPoint');
+    test.ok(ejs.IndexedShape, 'IndexedShape');
+    test.ok(ejs.Shape, 'Shape');
+    
+    test.done();
+  },
   ComputedProperty: function (test) {
     test.expect(7);
     
