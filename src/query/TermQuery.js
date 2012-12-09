@@ -48,8 +48,8 @@
           return field;
         }
 
+        delete query.term[field];
         field = f;
-        query.term = {};
         query.term[f] = oldValue;
       
         return this;
