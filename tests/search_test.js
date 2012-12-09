@@ -38,6 +38,47 @@ exports.search = {
     
     test.done();
   },
+  GeoPoint: function (test) {
+    test.expect(9);
+    
+    var geoPoint = ejs.GeoPoint(),
+      expected,
+      doTest = function () {
+        test.deepEqual(geoPoint.get(), expected);
+      };
+    
+    expected = [0, 0];
+    
+    test.ok(geoPoint, 'GeoPoint exists');
+    test.ok(geoPoint.get(), 'get() works');
+    doTest();
+    
+    // [lat, lon] constructor converted to GeoJSON [lon, lat]
+    geoPoint = ejs.GeoPoint([37.7819288, -122.396480]);
+    expected = [-122.396480, 37.7819288];
+    doTest();
+    
+    geoPoint.properties({lat: 37.7817289, lon: -122.396181});
+    expected = {lat: 37.7817289, lon: -122.396181};
+    doTest();
+    
+    geoPoint.string("37.7819288,-122.396480");
+    expected = "37.7819288,-122.396480";
+    doTest();
+    
+    geoPoint.geohash('drn5x1g8cu2y');
+    expected = 'drn5x1g8cu2y';
+    doTest();
+    
+    // [lat, lon] array converted to GeoJSON [lon, lat]
+    geoPoint.array([37.7817289, -122.396181]);
+    expected = [-122.396181, 37.7817289];
+    doTest();
+    
+    test.strictEqual(geoPoint.toString(), JSON.stringify(expected));
+    
+    test.done();
+  },
   ComputedProperty: function (test) {
     test.expect(7);
     
