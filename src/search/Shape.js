@@ -28,6 +28,7 @@
         return valid;
       };
     
+    type = type.toLowerCase();
     if (validType(type)) {
       shape.type = type;
       shape.coordinates = coords;
@@ -48,6 +49,7 @@
           return shape.type;
         }
       
+        t = t.toLowerCase();
         if (validType(t)) {
           shape.type = t;
         }
