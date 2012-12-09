@@ -33,6 +33,37 @@ exports.search = {
     test.ok(ejs.Request, 'Request');
     test.ok(ejs.ComputedProperty, 'ComputedProperty');
 
+  ComputedProperty: function (test) {
+    test.expect(7);
+    
+    var cp = ejs.ComputedProperty('f'),
+      expected,
+      doTest = function () {
+        test.deepEqual(cp.get(), expected);
+      };
+    
+    expected = {
+      f: {}
+    };  
+    
+    test.ok(cp, 'ComputedProperty exists');
+    test.ok(cp.get(), 'get() works');
+    doTest();
+    
+    cp.lang('mvel');
+    expected.f.lang = 'mvel';
+    doTest();
+    
+    cp.script('script src');
+    expected.f.script = 'script src';
+    doTest();
+    
+    cp.params({param1: 'p1', param2: 2});
+    expected.f.params = {param1: 'p1', param2: 2};
+    doTest();
+    
+    test.strictEqual(cp.toString(), JSON.stringify(expected));
+    
     test.done();
   },
   Request: function (test) {
