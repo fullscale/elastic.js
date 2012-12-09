@@ -28,8 +28,9 @@ exports.filters = {
     done();
   },
   exists: function (test) {
-    test.expect(25);
+    test.expect(26);
 
+    test.ok(ejs.IndicesFilter, 'IndicesFilter');
     test.ok(ejs.TermsFilter, 'TermsFilter');
     test.ok(ejs.NestedFilter, 'NestedFilter');
     test.ok(ejs.ScriptFilter, 'ScriptFilter');
@@ -55,6 +56,88 @@ exports.filters = {
     test.ok(ejs.PrefixFilter, 'PrefixFilter');
     test.ok(ejs.MissingFilter, 'MissingFilter');
     test.ok(ejs.OrFilter, 'OrFilter');
+
+    test.done();
+  },
+  IndicesFilter: function (test) {
+    test.expect(18);
+
+    var termFilter = ejs.TermFilter('t1', 'v1'),
+      termFilter2 = ejs.TermFilter('t2', 'v2'),
+      termFilter3 = ejs.TermFilter('t3', 'v3'),
+      indicesFilter = ejs.IndicesFilter(termFilter, 'i1'),
+      expected,
+      doTest = function () {
+        test.deepEqual(indicesFilter.get(), expected);
+      };
+
+    expected = {
+      indices: {
+        filter: termFilter.get(),
+        indices: ['i1']
+      }
+    };
+
+    test.ok(indicesFilter, 'IndicesFilter exists');
+    test.ok(indicesFilter.get(), 'get() works');
+    doTest();
+
+    indicesFilter = ejs.IndicesFilter(termFilter, ['i2', 'i3']);
+    expected.indices.indices = ['i2', 'i3'];
+    doTest();
+    
+    indicesFilter.indices('i4');
+    expected.indices.indices.push('i4');
+    doTest();
+    
+    indicesFilter.indices(['i5']);
+    expected.indices.indices = ['i5'];
+    doTest();
+    
+    indicesFilter.filter(termFilter2);
+    expected.indices.filter = termFilter2.get();
+    doTest();
+    
+    indicesFilter.noMatchFilter('invalid');
+    doTest();
+    
+    indicesFilter.noMatchFilter('none');
+    expected.indices.no_match_filter = 'none';
+    doTest();
+    
+    indicesFilter.noMatchFilter('ALL');
+    expected.indices.no_match_filter = 'all';
+    doTest();
+    
+    indicesFilter.noMatchFilter(termFilter3);
+    expected.indices.no_match_filter = termFilter3.get();
+    doTest();
+    
+    indicesFilter.filter(termFilter2);
+    expected.indices.filter = termFilter2.get();
+    doTest();
+    
+    test.strictEqual(indicesFilter.toString(), JSON.stringify(expected));
+
+    test.throws(function () {
+      ejs.IndicesFilter('invalid', 'index1');
+    }, TypeError);
+    
+    test.throws(function () {
+      ejs.IndicesFilter(termFilter2, 3);
+    }, TypeError);
+    
+    test.throws(function () {
+      indicesFilter.filter('invalid');
+    }, TypeError);
+    
+    test.throws(function () {
+      indicesFilter.noMatchFilter(2);
+    }, TypeError);
+
+    test.throws(function () {
+      indicesFilter.indices(1);
+    }, TypeError);
 
     test.done();
   },
