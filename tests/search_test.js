@@ -38,6 +38,44 @@ exports.search = {
     
     test.done();
   },
+  IndexedShape: function (test) {
+    test.expect(8);
+    
+    var indexedShape = ejs.IndexedShape('countries', 'New Zealand'),
+      expected,
+      doTest = function () {
+        test.deepEqual(indexedShape.get(), expected);
+      };
+    
+    expected = {
+      type: 'countries',
+      id: 'New Zealand'
+    };  
+    
+    test.ok(indexedShape, 'IndexedShape exists');
+    test.ok(indexedShape.get(), 'get() works');
+    doTest();
+    
+    indexedShape.type('state');
+    expected.type = 'state';
+    doTest();
+    
+    indexedShape.id('CA');
+    expected.id = 'CA';
+    doTest();
+    
+    indexedShape.index('states');
+    expected.index = 'states';
+    doTest();
+    
+    indexedShape.shapeFieldName('stateshape');
+    expected.shape_field_name = 'stateshape';
+    doTest();
+    
+    test.strictEqual(indexedShape.toString(), JSON.stringify(expected));
+    
+    test.done();
+  },
   GeoPoint: function (test) {
     test.expect(9);
     
