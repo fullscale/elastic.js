@@ -28,7 +28,7 @@ exports.queries = {
     done();
   },
   exists: function (test) {
-    test.expect(35);
+    test.expect(36);
     
     test.ok(ejs.GeoShapeQuery, 'GeoShapeQuery');
     test.ok(ejs.IndicesQuery, 'IndicesQuery');
@@ -65,6 +65,7 @@ exports.queries = {
     test.ok(ejs.SpanNotQuery, 'SpanNotQuery');
     test.ok(ejs.SpanOrQuery, 'SpanOrQuery');
     test.ok(ejs.SpanFirstQuery, 'SpanFirstQuery');
+    test.ok(ejs.FieldMaskingSpanQuery, 'FieldMaskingSpanQuery');
 
     test.done();
   },
