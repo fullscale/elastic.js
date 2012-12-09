@@ -38,6 +38,61 @@ exports.search = {
     
     test.done();
   },
+  Shape: function (test) {
+    test.expect(12);
+    
+    var shape = ejs.Shape('envelope', [[-45.0, 45.0], [45.0, -45.0]]),
+      expected,
+      doTest = function () {
+        test.deepEqual(shape.get(), expected);
+      };
+    
+    expected = {
+      type: 'envelope',
+      coordinates: [[-45.0, 45.0], [45.0, -45.0]]
+    };  
+    
+    test.ok(shape, 'Shape exists');
+    test.ok(shape.get(), 'get() works');
+    doTest();
+    
+    shape.type('point');
+    expected.type = 'point';
+    doTest();
+    
+    shape.type('INVALID');
+    doTest();
+    
+    shape.type('LINESTRING');
+    expected.type = 'linestring';
+    doTest();
+    
+    shape.type('multipoint');
+    expected.type = 'multipoint';
+    doTest();
+    
+    shape.type('envelope');
+    expected.type = 'envelope';
+    doTest();
+    
+    shape.type('multiPolygon');
+    expected.type = 'multipolygon';
+    doTest();
+    
+    shape.type('polygon');
+    expected.type = 'polygon';
+    doTest();
+    
+    shape.coordinates([[-180.0, 10.0], [20.0, 90.0], [180.0, -5.0], 
+      [-30.0, -90.0]]);
+    expected.coordinates = [[-180.0, 10.0], [20.0, 90.0], [180.0, -5.0], 
+      [-30.0, -90.0]];
+    doTest();
+    
+    test.strictEqual(shape.toString(), JSON.stringify(expected));
+    
+    test.done();
+  },
   IndexedShape: function (test) {
     test.expect(8);
     
