@@ -2827,5 +2827,51 @@ exports.queries = {
     }, TypeError);
     
     test.done();
+  },
+  FieldMaskingSpanQuery: function (test) {
+    test.expect(9);
+
+    var spanTermQuery1 = ejs.SpanTermQuery('t1', 'v1'),
+      spanTermQuery2 = ejs.SpanTermQuery('t2', 'v2'),
+      fieldMaskingSpanQuery = ejs.FieldMaskingSpanQuery(spanTermQuery1, 'mf1'),
+      expected,
+      doTest = function () {
+        test.deepEqual(fieldMaskingSpanQuery.get(), expected);
+      };
+
+    expected = {
+      field_masking_span: {
+        query: spanTermQuery1.get(),
+        field: 'mf1'
+      }
+    };
+
+    test.ok(fieldMaskingSpanQuery, 'FieldMaskingSpanQuery exists');
+    test.ok(fieldMaskingSpanQuery.get(), 'get() works');
+    doTest();
+
+    fieldMaskingSpanQuery.query(spanTermQuery2);
+    expected.field_masking_span.query = spanTermQuery2.get();
+    doTest();
+
+    fieldMaskingSpanQuery.field('mf2');
+    expected.field_masking_span.field = 'mf2';
+    doTest();
+
+    fieldMaskingSpanQuery.boost(5.1);
+    expected.field_masking_span.boost = 5.1;
+    doTest();
+    
+    test.strictEqual(fieldMaskingSpanQuery.toString(), JSON.stringify(expected));
+
+    test.throws(function () {
+      ejs.FieldMaskingSpanQuery('invalid', 'mf');
+    }, TypeError);
+    
+    test.throws(function () {
+      fieldMaskingSpanQuery.query('invalid');
+    }, TypeError);
+    
+    test.done();
   }
 };
