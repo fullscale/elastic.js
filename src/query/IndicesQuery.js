@@ -67,7 +67,7 @@
       },
     
       /**
-            Sets the query to be apply the custom boost to.
+            Sets the query to be executed against the indices specified.
 
             @member ejs.IndicesQuery
             @param {Object} q A valid Query object
