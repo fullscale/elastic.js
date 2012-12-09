@@ -362,7 +362,7 @@ exports.queries = {
     test.done();
   },
   WildcardQuery: function (test) {
-    test.expect(7);
+    test.expect(14);
 
     var wildcardQuery = ejs.WildcardQuery('f1', 'wild*card'),
       expected,
@@ -386,12 +386,40 @@ exports.queries = {
     expected.wildcard.f1.boost = 1.5;
     doTest();
 
+    wildcardQuery.rewrite('constant_score_auto');
+    expected.wildcard.f1.rewrite = 'constant_score_auto';
+    doTest();
+    
+    wildcardQuery.rewrite('invalid');
+    doTest();
+    
+    wildcardQuery.rewrite('scoring_boolean');
+    expected.wildcard.f1.rewrite = 'scoring_boolean';
+    doTest();
+    
+    wildcardQuery.rewrite('constant_score_boolean');
+    expected.wildcard.f1.rewrite = 'constant_score_boolean';
+    doTest();
+    
+    wildcardQuery.rewrite('constant_score_filter');
+    expected.wildcard.f1.rewrite = 'constant_score_filter';
+    doTest();
+    
+    wildcardQuery.rewrite('top_terms_boost_5');
+    expected.wildcard.f1.rewrite = 'top_terms_boost_5';
+    doTest();
+    
+    wildcardQuery.rewrite('top_terms_9');
+    expected.wildcard.f1.rewrite = 'top_terms_9';
+    doTest();
+    
     wildcardQuery.field('f2');
     expected = {
       wildcard: {
         f2: {
           value: 'wild*card',
-          boost: 1.5
+          boost: 1.5,
+          rewrite: 'top_terms_9'
         }
       }
     };
