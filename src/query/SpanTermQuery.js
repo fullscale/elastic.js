@@ -12,28 +12,63 @@
     @desc
     Matches spans containing a term
 
-    @param {String} key the document field/key to query against
+    @param {String} field the document field/field to query against
     @param {String} value the literal value to be matched
     */
-  ejs.SpanTermQuery = function (key, value) {
+  ejs.SpanTermQuery = function (field, value) {
 
     /**
          The internal query object. <code>Use get()</code>
          @member ejs.SpanTermQuery
          @property {Object} query
          */
-    var k,
-    v,
-    query = {
+    var query = {
       span_term: {}
     };
 
-    k = key;
-    v = value;
-    query.span_term[k] = v;
+    query.span_term[field] = {
+      term: value
+    };
 
     return {
 
+      /**
+            Sets the field to query against.
+
+            @member ejs.SpanTermQuery
+            @param {String} f A valid field name.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      field: function (f) {
+        var oldValue = query.span_term[field];
+      
+        if (f == null) {
+          return field;
+        }
+
+        delete query.span_term[field];
+        field = f;
+        query.span_term[f] = oldValue;
+      
+        return this;
+      },
+    
+      /**
+            Sets the term.
+
+            @member ejs.SpanTermQuery
+            @param {String} t A single term.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      term: function (t) {
+        if (t == null) {
+          return query.span_term[field].term;
+        }
+
+        query.span_term[field].term = t;
+        return this;
+      },
+      
       /**
             Sets the boost value for documents matching the <code>Query</code>.
 
@@ -43,13 +78,10 @@
             */
       boost: function (boost) {
         if (boost == null) {
-          return query.span_term[k].boost;
+          return query.span_term[field].boost;
         }
 
-        query.span_term[k] = {
-          value: v,
-          boost: boost
-        };
+        query.span_term[field].boost = boost;
         return this;
       },
 

@@ -2491,7 +2491,7 @@ exports.queries = {
     test.done();
   },
   SpanTermQuery: function (test) {
-    test.expect(5);
+    test.expect(7);
 
     var spanTermQuery = ejs.SpanTermQuery('t1', 'v1'),
       expected,
@@ -2501,7 +2501,9 @@ exports.queries = {
 
     expected = {
       span_term: {
-        t1: 'v1'
+        t1: {
+          term: 'v1'
+        }
       }
     };
 
@@ -2509,11 +2511,22 @@ exports.queries = {
     test.ok(spanTermQuery.get(), 'get() works');
     doTest();
 
-    spanTermQuery.boost(1.5);
-    expected.span_term.t1 = {
-      value: 'v1',
-      boost: 1.5
+    spanTermQuery.field('t2');
+    expected = {
+      span_term: {
+        t2: {
+          term: 'v1'
+        }
+      }
     };
+    doTest();
+    
+    spanTermQuery.term('v2');
+    expected.span_term.t2.term = 'v2';
+    doTest();
+    
+    spanTermQuery.boost(1.5);
+    expected.span_term.t2.boost = 1.5;
     doTest();
 
     test.strictEqual(spanTermQuery.toString(), JSON.stringify(expected));
