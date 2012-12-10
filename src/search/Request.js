@@ -35,7 +35,7 @@
     // check if we are searching across any specific indeices        
     if (conf.collections == null) {
       indices = [];
-    } else if (typeof conf.collections === "string") {
+    } else if (isString(conf.collections)) {
       indices = [conf.collections];
     } else {
       indices = conf.collections;
@@ -44,7 +44,7 @@
     // check if we are searching across any specific types
     if (conf.types == null) {
       types = [];
-    } else if (typeof conf.types === "string") {
+    } else if (isString(conf.types)) {
       types = [conf.types];
     } else {
       types = conf.types;
