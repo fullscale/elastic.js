@@ -206,14 +206,23 @@ exports.search = {
     test.done();
   },
   Request: function (test) {
-    test.expect(17);
+    test.expect(42);
 
-    var req = ejs.Request({
-      collections: ['index1'],
-      types: ['type1']
-    }),
-      expected;
+    var req = ejs.Request({collections: ['index1'], types: ['type1']}),
+      expected,
+      expectedPath = '',
+      doTest = function (path, data, cb) {
+        if (expectedPath !== '') {
+          test.deepEqual(path, expectedPath);
+          expectedPath = '';
+        }
+        
+        test.deepEqual(JSON.parse(data), expected);
+      };
 
+    // setup fake client to call doTest
+    ejs.client = {post: doTest};
+    
     expected = {
       size: 10,
       from: 0
@@ -221,47 +230,75 @@ exports.search = {
 
     test.deepEqual(req.collections(), ['index1']);
     test.deepEqual(req.types(), ['type1']);
+    expectedPath = '/index1/type1/_search';
+    req.get();
 
     req.collections([]);
     test.deepEqual(req.collections(), ['_all']);
+    expectedPath = '/_all/type1/_search';
+    req.get();
 
     req.types([]);
     test.deepEqual(req.types(), []);
+    expectedPath = '/_all/_search';
+    req.get();
 
     req.collections([]);
     test.deepEqual(req.collections(), []);
+    expectedPath = '/_search';
+    req.get();
 
     req.collections(['index1', 'index2']);
     test.deepEqual(req.collections(), ['index1', 'index2']);
+    expectedPath = '/index1,index2/_search';
+    req.get();
 
     req.types(['type1', 'type2']);
     test.deepEqual(req.types(), ['type1', 'type2']);
+    expectedPath = '/index1,index2/type1,type2/_search';
+    req.get();
 
     req = ejs.Request({});
     test.deepEqual(req.collections(), []);
     test.deepEqual(req.types(), []);
-
+    expectedPath = '/_search';
+    req.get();
+    
     req = ejs.Request({
       collections: 'index1',
       types: 'type1'
     });
     test.deepEqual(req.collections(), ['index1']);
     test.deepEqual(req.types(), ['type1']);
+    expectedPath = '/index1/type1/_search';
+    req.get();
 
     req = ejs.Request({
       types: 'type1'
     });
     test.deepEqual(req.collections(), ['_all']);
     test.deepEqual(req.types(), ['type1']);
+    expectedPath = '/_all/type1/_search';
+    req.get();
 
     req = ejs.Request({routing: 'route1'});
     test.deepEqual(req.routing(), 'route1');
+    expectedPath = '/_search?routing=route1';
+    req.get();
     
     req.routing('');
     test.deepEqual(req.routing(), '');
+    expectedPath = '/_search';
+    req.get();
     
     req.routing('route2,route3');
     test.deepEqual(req.routing(), 'route2,route3');
+    expectedPath = '/_search?routing=route2%2Croute3';
+    req.get();
+    
+    req.timeout(5000);
+    expected.timeout = 5000;
+    req.get();
     
     test.strictEqual(req.toString(), JSON.stringify(expected));
 

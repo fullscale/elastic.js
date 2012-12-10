@@ -107,7 +107,25 @@
         query.size = s;
         return this;
       },
-            
+
+      /**
+            A search timeout, bounding the search request to be executed 
+            within the specified time value and bail with the hits accumulated 
+            up to that point when expired. Defaults to no timeout.
+
+            @member ejs.Request
+            @param {Long} t The timeout value in milliseconds.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      timeout: function (t) {
+        if (t == null) {
+          return query.timeout;
+        }
+      
+        query.timeout = t;
+        return this;
+      },
+                  
       /**
             Sets the shard routing parameter.  Only shards matching routing
             values will be searched.  Set to an empty string to disable routing.
