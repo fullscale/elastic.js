@@ -19,7 +19,7 @@
     */
   ejs.Request = function (conf) {
 
-    var query, indices, types;
+    var query, indices, types, routing;
 
     /**
         The internal query object.
@@ -56,6 +56,12 @@
       indices = ["_all"];
     }
 
+    if (conf.routing != null) {
+      routing = conf.routing;
+    } else {
+      routing = '';
+    }
+    
     return {
 
       /**
@@ -85,6 +91,7 @@
         return this;
       },
 
+
       /**
             Sets the number of results/documents to be returned. This is set on a per page basis.
 
@@ -98,6 +105,24 @@
         }
       
         query.size = s;
+        return this;
+      },
+            
+      /**
+            Sets the shard routing parameter.  Only shards matching routing
+            values will be searched.  Set to an empty string to disable routing.
+            Disabled by default.
+
+            @member ejs.Request
+            @param {String} route The routing values as a comma-separated string.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      routing: function (route) {
+        if (route == null) {
+          return routing;
+        }
+      
+        routing = route;
         return this;
       },
 
@@ -565,6 +590,11 @@
         }
         
         searchUrl = searchUrl + '/_search';
+        
+        if (routing !== '') {
+          searchUrl = searchUrl + '?routing=' + encodeURIComponent(routing);
+        }
+        
         return ejs.client.post(searchUrl, queryData, fnCallBack);
       }
     };

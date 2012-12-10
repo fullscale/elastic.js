@@ -206,7 +206,7 @@ exports.search = {
     test.done();
   },
   Request: function (test) {
-    test.expect(14);
+    test.expect(17);
 
     var req = ejs.Request({
       collections: ['index1'],
@@ -254,6 +254,15 @@ exports.search = {
     test.deepEqual(req.collections(), ['_all']);
     test.deepEqual(req.types(), ['type1']);
 
+    req = ejs.Request({routing: 'route1'});
+    test.deepEqual(req.routing(), 'route1');
+    
+    req.routing('');
+    test.deepEqual(req.routing(), '');
+    
+    req.routing('route2,route3');
+    test.deepEqual(req.routing(), 'route2,route3');
+    
     test.strictEqual(req.toString(), JSON.stringify(expected));
 
     test.done();
