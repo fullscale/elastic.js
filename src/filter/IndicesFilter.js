@@ -16,18 +16,18 @@
     */
   ejs.IndicesFilter = function (fltr, indices) {
 
-    if (!isEJSObject(fltr)) {
+    if (!isFilter(fltr)) {
       throw new TypeError('Argument must be a Filter');
     }
   
     /**
-         The internal filter object. <code>Use get()</code>
+         The internal filter object. <code>Use _self()</code>
          @member ejs.IndicesFilter
          @property {Object} filter
          */
     var filter = {
       indices: {
-        filter: fltr.get()
+        filter: fltr._self()
       }
     };
 
@@ -79,11 +79,11 @@
           return filter.indices.filter;
         }
 
-        if (!isEJSObject(f)) {
+        if (!isFilter(f)) {
           throw new TypeError('Argument must be a Filter');
         }
       
-        filter.indices.filter = f.get();
+        filter.indices.filter = f._self();
         return this;
       },
 
@@ -106,8 +106,8 @@
           if (f === 'none' || f === 'all') {
             filter.indices.no_match_filter = f;
           }
-        } else if (isEJSObject(f)) {
-          filter.indices.no_match_filter = f.get();
+        } else if (isFilter(f)) {
+          filter.indices.no_match_filter = f._self();
         } else {
           throw new TypeError('Argument must be string or Filter');
         }
@@ -126,13 +126,23 @@
       },
 
       /**
+            The type of ejs object.  For internal use only.
+            
+            @member ejs.IndicesFilter
+            @returns {String} the type of object
+            */
+      _type: function () {
+        return 'filter';
+      },
+      
+      /**
             Retrieves the internal <code>filter</code> object. This is typically used by
             internal API functions so use with caution.
 
             @member ejs.IndicesFilter
             @returns {String} returns this object's internal <code>filter</code> property.
             */
-      get: function () {
+      _self: function () {
         return filter;
       }
     };

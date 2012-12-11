@@ -398,13 +398,23 @@
       },
 
       /**
+            The type of ejs object.  For internal use only.
+            
+            @member ejs.MultiMatchQuery
+            @returns {String} the type of object
+            */
+      _type: function () {
+        return 'query';
+      },
+      
+      /**
             Retrieves the internal <code>Query</code> object. This is typically used by
             internal API functions so use with caution.
 
             @member ejs.MultiMatchQuery
             @returns {String} returns this object's internal <code>query</code> property.
             */
-      get: function () {
+      _self: function () {
         return query;
       }
     };

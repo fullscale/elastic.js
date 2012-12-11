@@ -100,12 +100,22 @@
       },
 
       /**
+            The type of ejs object.  For internal use only.
+            
+            @member ejs.MissingFilter
+            @returns {String} the type of object
+            */
+      _type: function () {
+        return 'filter';
+      },
+      
+      /**
              Returns the filter object.
 
              @member ejs.MissingFilter
              @returns {Object} filter object
              */
-      get: function () {
+      _self: function () {
         return filter;
       }
     };

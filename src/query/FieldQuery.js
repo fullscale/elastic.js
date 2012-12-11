@@ -446,13 +446,23 @@
       },
 
       /**
+            The type of ejs object.  For internal use only.
+            
+            @member ejs.FieldQuery
+            @returns {String} the type of object
+            */
+      _type: function () {
+        return 'query';
+      },
+      
+      /**
             Retrieves the internal <code>query</code> object. This is typically used by
             internal API functions so use with caution.
 
             @member ejs.FieldQuery
             @returns {String} returns this object's internal <code>query</code> property.
             */
-      get: function () {
+      _self: function () {
         return query;
       }
     };

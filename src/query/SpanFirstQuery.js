@@ -15,18 +15,18 @@
     */
   ejs.SpanFirstQuery = function (spanQry, end) {
 
-    if (!isEJSObject(spanQry)) {
+    if (!isQuery(spanQry)) {
       throw new TypeError('Argument must be a SpanQuery');
     }
     
     /**
-         The internal query object. <code>Use get()</code>
+         The internal query object. <code>Use _self()</code>
          @member ejs.SpanFirstQuery
          @property {Object} query
          */
     var query = {
       span_first: {
-        match: spanQry.get(),
+        match: spanQry._self(),
         end: end
       }
     };
@@ -45,11 +45,11 @@
           return query.span_first.match;
         }
       
-        if (!isEJSObject(spanQuery)) {
+        if (!isQuery(spanQuery)) {
           throw new TypeError('Argument must be a SpanQuery');
         }
         
-        query.span_first.match = spanQuery.get();
+        query.span_first.match = spanQuery._self();
         return this;
       },
 
@@ -96,13 +96,23 @@
       },
 
       /**
+            The type of ejs object.  For internal use only.
+            
+            @member ejs.SpanFirstQuery
+            @returns {String} the type of object
+            */
+      _type: function () {
+        return 'query';
+      },
+      
+      /**
             Retrieves the internal <code>query</code> object. This is typically used by
             internal API functions so use with caution.
 
             @member ejs.SpanFirstQuery
             @returns {String} returns this object's internal <code>query</code> property.
             */
-      get: function () {
+      _self: function () {
         return query;
       }
     };

@@ -86,13 +86,23 @@
       },
 
       /**
+            The type of ejs object.  For internal use only.
+            
+            @member ejs.Shape
+            @returns {String} the type of object
+            */
+      _type: function () {
+        return 'shape';
+      },
+      
+      /**
             Retrieves the internal <code>script</code> object. This is typically used by
             internal API functions so use with caution.
 
             @member ejs.Shape
             @returns {String} returns this object's internal object representation.
             */
-      get: function () {
+      _self: function () {
         return shape;
       }
     };

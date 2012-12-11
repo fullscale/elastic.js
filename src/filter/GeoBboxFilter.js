@@ -14,7 +14,7 @@
   ejs.GeoBboxFilter = function (fieldName) {
 
     /**
-         The internal filter object. Use <code>get()</code>
+         The internal filter object. Use <code>_self()</code>
 
          @member ejs.GeoBboxFilter
          @property {Object} filter
@@ -60,8 +60,8 @@
           return filter.geo_bounding_box[fieldName].top_left;
         }
       
-        if (isEJSObject(p)) {
-          filter.geo_bounding_box[fieldName].top_left = p.get();
+        if (isGeoPoint(p)) {
+          filter.geo_bounding_box[fieldName].top_left = p._self();
         } else {
           throw new TypeError('Argument must be a GeoPoint');
         }
@@ -81,8 +81,8 @@
           return filter.geo_bounding_box[fieldName].bottom_right;
         }
       
-        if (isEJSObject(p)) {
-          filter.geo_bounding_box[fieldName].bottom_right = p.get();
+        if (isGeoPoint(p)) {
+          filter.geo_bounding_box[fieldName].bottom_right = p._self();
         } else {
           throw new TypeError('Argument must be a GeoPoint');
         }
@@ -191,12 +191,22 @@
       },
 
       /**
+            The type of ejs object.  For internal use only.
+            
+            @member ejs.GeoBboxFilter
+            @returns {String} the type of object
+            */
+      _type: function () {
+        return 'filter';
+      },
+      
+      /**
              Returns the filter object.
 
              @member ejs.GeoBboxFilter
              @returns {Object} filter object
              */
-      get: function () {
+      _self: function () {
         return filter;
       }
     };

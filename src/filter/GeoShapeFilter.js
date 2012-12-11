@@ -18,7 +18,7 @@
   ejs.GeoShapeFilter = function (field) {
 
     /**
-         The internal filter object. <code>Use get()</code>
+         The internal filter object. <code>Use _self()</code>
          @member ejs.GeoShapeFilter
          @property {Object} GeoShapeFilter
          */
@@ -67,7 +67,7 @@
           delete filter.geo_shape[field].indexed_shape;
         }
       
-        filter.geo_shape[field].shape = shape.get();
+        filter.geo_shape[field].shape = shape._self();
         return this;
       },
 
@@ -88,7 +88,7 @@
           delete filter.geo_shape[field].shape;
         }
       
-        filter.geo_shape[field].indexed_shape = indexedShape.get();
+        filter.geo_shape[field].indexed_shape = indexedShape._self();
         return this;
       },
 
@@ -174,13 +174,23 @@
       },
 
       /**
+            The type of ejs object.  For internal use only.
+            
+            @member ejs.GeoShapeFilter
+            @returns {String} the type of object
+            */
+      _type: function () {
+        return 'filter';
+      },
+      
+      /**
             Retrieves the internal <code>filter</code> object. This is typically used by
             internal API functions so use with caution.
 
             @member ejs.GeoShapeFilter
             @returns {String} returns this object's internal <code>filter</code> property.
             */
-      get: function () {
+      _self: function () {
         return filter;
       }
     };

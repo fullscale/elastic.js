@@ -32,12 +32,22 @@
       },
 
       /**
+            The type of ejs object.  For internal use only.
+            
+            @member ejs.MatchAllFilter
+            @returns {String} the type of object
+            */
+      _type: function () {
+        return 'filter';
+      },
+      
+      /**
             This method is used to retrieve the raw filter object. It's designed
             for internal use when composing and serializing queries.
             @member ejs.MatchAllFilter
             @returns {Object} Returns the object's <em>filter</em> property.
             */
-      get: function () {
+      _self: function () {
         return filter;
       }
     };

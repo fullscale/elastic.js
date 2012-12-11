@@ -15,7 +15,7 @@
   ejs.BoolFilter = function () {
 
     /**
-         The internal filter object. <code>Use get()</code>
+         The internal filter object. <code>Use _self()</code>
          @member ejs.BoolFilter
          @property {Object} filter
          */
@@ -47,16 +47,16 @@
           return filter.bool.must;
         }
 
-        if (isEJSObject(oFilter)) {
-          filter.bool.must.push(oFilter.get());
+        if (isFilter(oFilter)) {
+          filter.bool.must.push(oFilter._self());
         } else if (isArray(oFilter)) {
           filter.bool.must = [];
           for (i = 0, len = oFilter.length; i < len; i++) {
-            if (!isEJSObject(oFilter[i])) {
+            if (!isFilter(oFilter[i])) {
               throw new TypeError('Argument must be an array of Filters');
             }
             
-            filter.bool.must.push(oFilter[i].get());
+            filter.bool.must.push(oFilter[i]._self());
           }
         } else {
           throw new TypeError('Argument must be a Filter or array of Filters');
@@ -87,16 +87,16 @@
           return filter.bool.must_not;
         }
     
-        if (isEJSObject(oFilter)) {
-          filter.bool.must_not.push(oFilter.get());
+        if (isFilter(oFilter)) {
+          filter.bool.must_not.push(oFilter._self());
         } else if (isArray(oFilter)) {
           filter.bool.must_not = [];
           for (i = 0, len = oFilter.length; i < len; i++) {
-            if (!isEJSObject(oFilter[i])) {
+            if (!isFilter(oFilter[i])) {
               throw new TypeError('Argument must be an array of Filters');
             }
             
-            filter.bool.must_not.push(oFilter[i].get());
+            filter.bool.must_not.push(oFilter[i]._self());
           }
         } else {
           throw new TypeError('Argument must be a Filter or array of Filters');
@@ -127,16 +127,16 @@
           return filter.bool.should;
         }
     
-        if (isEJSObject(oFilter)) {
-          filter.bool.should.push(oFilter.get());
+        if (isFilter(oFilter)) {
+          filter.bool.should.push(oFilter._self());
         } else if (isArray(oFilter)) {
           filter.bool.should = [];
           for (i = 0, len = oFilter.length; i < len; i++) {
-            if (!isEJSObject(oFilter[i])) {
+            if (!isFilter(oFilter[i])) {
               throw new TypeError('Argument must be an array of Filters');
             }
             
-            filter.bool.should.push(oFilter[i].get());
+            filter.bool.should.push(oFilter[i]._self());
           }
         } else {
           throw new TypeError('Argument must be a Filter or array of Filters');
@@ -204,13 +204,23 @@
       },
 
       /**
+            The type of ejs object.  For internal use only.
+            
+            @member ejs.BoolFilter
+            @returns {String} the type of object
+            */
+      _type: function () {
+        return 'filter';
+      },
+      
+      /**
             Retrieves the internal <code>filter</code> object. This is typically used by
             internal API functions so use with caution.
 
             @member ejs.BoolFilter
             @returns {String} returns this object's internal <code>filter</code> property.
             */
-      get: function () {
+      _self: function () {
         return filter;
       }
     };

@@ -16,18 +16,18 @@
     */
   ejs.IndicesQuery = function (qry, indices) {
 
-    if (!isEJSObject(qry)) {
+    if (!isQuery(qry)) {
       throw new TypeError('Argument must be a Query');
     }
     
     /**
-         The internal query object. <code>Use get()</code>
+         The internal query object. <code>Use _self()</code>
          @member ejs.IndicesQuery
          @property {Object} query
          */
     var query = {
       indices: {
-        query: qry.get()
+        query: qry._self()
       }
     };
 
@@ -78,11 +78,11 @@
           return query.indices.query;
         }
   
-        if (!isEJSObject(q)) {
+        if (!isQuery(q)) {
           throw new TypeError('Argument must be a Query');
         }
         
-        query.indices.query = q.get();
+        query.indices.query = q._self();
         return this;
       },
 
@@ -105,8 +105,8 @@
           if (q === 'none' || q === 'all') {
             query.indices.no_match_query = q;
           }
-        } else if (isEJSObject(q)) {
-          query.indices.no_match_query = q.get();
+        } else if (isQuery(q)) {
+          query.indices.no_match_query = q._self();
         } else {
           throw new TypeError('Argument must be string or Query');
         }
@@ -141,13 +141,23 @@
       },
 
       /**
+            The type of ejs object.  For internal use only.
+            
+            @member ejs.IndicesQuery
+            @returns {String} the type of object
+            */
+      _type: function () {
+        return 'query';
+      },
+      
+      /**
             Retrieves the internal <code>query</code> object. This is typically used by
             internal API functions so use with caution.
 
             @member ejs.IndicesQuery
             @returns {String} returns this object's internal <code>query</code> property.
             */
-      get: function () {
+      _self: function () {
         return query;
       }
     };

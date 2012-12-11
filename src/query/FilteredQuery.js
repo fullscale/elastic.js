@@ -22,27 +22,27 @@
      */
   ejs.FilteredQuery = function (someQuery, someFilter) {
 
-    if (!isEJSObject(someQuery)) {
+    if (!isQuery(someQuery)) {
       throw new TypeError('Argument must be a Query');
     }
     
-    if (someFilter != null && !isEJSObject(someFilter)) {
+    if (someFilter != null && !isFilter(someFilter)) {
       throw new TypeError('Argument must be a Filter');
     }
     
     /**
-         The internal query object. Use <code>get()</code>
+         The internal query object. Use <code>_self()</code>
          @member ejs.FilteredQuery
          @property {Object} query
          */
     var query = {
       filtered: {
-        query: someQuery.get()
+        query: someQuery._self()
       }
     };
 
     if (someFilter != null) {
-      query.filtered.filter = someFilter.get();
+      query.filtered.filter = someFilter._self();
     }
     
     return {
@@ -59,11 +59,11 @@
           return query.filtered.query;
         }
       
-        if (!isEJSObject(oQuery)) {
+        if (!isQuery(oQuery)) {
           throw new TypeError('Argument must be a Query');
         }
         
-        query.filtered.query = oQuery.get();
+        query.filtered.query = oQuery._self();
         return this;
       },
 
@@ -79,11 +79,11 @@
           return query.filtered.filter;
         }
       
-        if (!isEJSObject(oFilter)) {
+        if (!isFilter(oFilter)) {
           throw new TypeError('Argument must be a Filter');
         }
         
-        query.filtered.filter = oFilter.get();
+        query.filtered.filter = oFilter._self();
         return this;
       },
 
@@ -178,11 +178,21 @@
       },
 
       /**
+            The type of ejs object.  For internal use only.
+            
+            @member ejs.FilteredQuery
+            @returns {String} the type of object
+            */
+      _type: function () {
+        return 'query';
+      },
+      
+      /**
              returns the query object.
              @member ejs.FilteredQuery
              @returns {Object} query object
              */
-      get: function () {
+      _self: function () {
         return query;
       }
     };

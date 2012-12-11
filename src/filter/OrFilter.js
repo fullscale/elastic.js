@@ -12,7 +12,7 @@
   ejs.OrFilter = function (filters) {
 
     /**
-         The internal filter object. Use <code>get()</code>
+         The internal filter object. Use <code>_self()</code>
 
          @member ejs.OrFilter
          @property {Object} filter
@@ -25,15 +25,15 @@
       }
     };
 
-    if (isEJSObject(filters)) {
-      filter.or.filters.push(filters.get());
+    if (isFilter(filters)) {
+      filter.or.filters.push(filters._self());
     } else if (isArray(filters)) {
       for (i = 0, len = filters.length; i < len; i++) {
-        if (!isEJSObject(filters[i])) {
+        if (!isFilter(filters[i])) {
           throw new TypeError('Argument must be array of Filters');
         }
         
-        filter.or.filters.push(filters[i].get());
+        filter.or.filters.push(filters[i]._self());
       }
     } else {
       throw new TypeError('Argument must be a Filter or array of Filters');
@@ -57,16 +57,16 @@
           return filter.or.filters;
         }
       
-        if (isEJSObject(fltr)) {
-          filter.or.filters.push(fltr.get());
+        if (isFilter(fltr)) {
+          filter.or.filters.push(fltr._self());
         } else if (isArray(fltr)) {
           filter.or.filters = [];
           for (i = 0, len = fltr.length; i < len; i++) {
-            if (!isEJSObject(fltr[i])) {
+            if (!isFilter(fltr[i])) {
               throw new TypeError('Argument must be an array of Filters');
             }
             
-            filter.or.filters.push(fltr[i].get());
+            filter.or.filters.push(fltr[i]._self());
           }
         } else {
           throw new TypeError('Argument must be a Filter or array of Filters');
@@ -134,12 +134,22 @@
       },
 
       /**
+            The type of ejs object.  For internal use only.
+            
+            @member ejs.OrFilter
+            @returns {String} the type of object
+            */
+      _type: function () {
+        return 'filter';
+      },
+      
+      /**
              Returns the filter object.
 
              @member ejs.OrFilter
              @returns {Object} filter object
              */
-      get: function () {
+      _self: function () {
         return filter;
       }
     };

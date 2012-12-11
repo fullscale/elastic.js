@@ -182,7 +182,7 @@
 
       /**
             Allows you to set the specified query on this search object. This is the
-            query that will be used when the search is executed using <code>get()</code>.
+            query that will be used when the search is executed using <code>_self()</code>.
 
             @member ejs.Request
             @param {Query} someQuery Any valid Cloud9 <code>Query</code> object.
@@ -193,13 +193,13 @@
           return query.query;
         }
       
-        query.query = someQuery.get();
+        query.query = someQuery._self();
         return this;
       },
 
       /**
             Allows you to set the specified collections on this request object. This is the
-            set of collections that will be used when the search is executed using <code>get()</code>.
+            set of collections that will be used when the search is executed using <code>_self()</code>.
 
             @member ejs.Request
             @param {Array} indexArray An array of collection names.
@@ -225,7 +225,7 @@
 
       /**
             Allows you to set the specified content-types on this request object. This is the
-            set of collections that will be used when the search is executed using <code>get()</code>.
+            set of collections that will be used when the search is executed using <code>_self()</code>.
 
             @member ejs.Request
             @param {Array} typeArray An array of content-type names.
@@ -251,7 +251,7 @@
 
       /**
             Allows you to set the specified facet on this request object. Multiple facets can
-            be set, all of which will be returned when the search is executed using <code>get()</code>.
+            be set, all of which will be returned when the search is executed using <code>_self()</code>.
 
             @member ejs.Request
             @param {Facet} facet Any valid Cloud9 <code>Facet</code> object.
@@ -266,7 +266,7 @@
           query.facets = {};
         }
       
-        extend(query.facets, facet.get());
+        extend(query.facets, facet._self());
 
         return this;
       },
@@ -283,7 +283,7 @@
           return query.filter;
         }
       
-        query.filter = filter.get();
+        query.filter = filter._self();
         return this;
       },
 
@@ -474,7 +474,7 @@
         }
       
       
-        extend(query.script_fields, oComputedProperty.get());
+        extend(query.script_fields, oComputedProperty._self());
         return this;
       },
 
@@ -581,6 +581,27 @@
       },
 
       /**
+            The type of ejs object.  For internal use only.
+            
+            @member ejs.Request
+            @returns {String} the type of object
+            */
+      _type: function () {
+        return 'request';
+      },
+      
+      /**
+            Retrieves the internal <code>query</code> object. This is typically used by
+            internal API functions so use with caution.
+
+            @member ejs.Request
+            @returns {String} returns this object's internal object representation.
+            */
+      _self: function () {
+        return query;
+      },
+      
+      /**
             Executes the search. This call runs synchronously when used on the server side.
             The callback is still executed and the function returns the return value of the callback.
 
@@ -588,7 +609,7 @@
             @param {Function} fnCallBack A callback function that handles the search response.
             @returns {void} Returns the value of the callback when executing on the server.
             */
-      get: function (fnCallBack) {
+      search: function (fnCallBack) {
         var 
           queryData = JSON.stringify(query),
           searchUrl = '';

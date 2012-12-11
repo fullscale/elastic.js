@@ -18,7 +18,7 @@
   ejs.SpanNearQuery = function (clauses, slop) {
 
     /**
-         The internal query object. <code>Use get()</code>
+         The internal query object. <code>Use _self()</code>
          @member ejs.SpanNearQuery
          @property {Object} query
          */
@@ -30,15 +30,15 @@
         }
       };
     
-    if (isEJSObject(clauses)) {
-      query.span_near.clauses.push(clauses.get());
+    if (isQuery(clauses)) {
+      query.span_near.clauses.push(clauses._self());
     } else if (isArray(clauses)) {
       for (i = 0, len = clauses.length; i < len; i++) {
-        if (!isEJSObject(clauses[i])) {
+        if (!isQuery(clauses[i])) {
           throw new TypeError('Argument must be array of SpanQueries');
         }
         
-        query.span_near.clauses.push(clauses[i].get());
+        query.span_near.clauses.push(clauses[i]._self());
       }
     } else {
       throw new TypeError('Argument must be SpanQuery or array of SpanQueries');
@@ -62,16 +62,16 @@
           return query.span_near.clauses;
         }
       
-        if (isEJSObject(clauses)) {
-          query.span_near.clauses.push(clauses.get());
+        if (isQuery(clauses)) {
+          query.span_near.clauses.push(clauses._self());
         } else if (isArray(clauses)) {
           query.span_near.clauses = [];
           for (i = 0, len = clauses.length; i < len; i++) {
-            if (!isEJSObject(clauses[i])) {
+            if (!isQuery(clauses[i])) {
               throw new TypeError('Argument must be array of SpanQueries');
             }
 
-            query.span_near.clauses.push(clauses[i].get());
+            query.span_near.clauses.push(clauses[i]._self());
           }
         } else {
           throw new TypeError('Argument must be SpanQuery or array of SpanQueries');
@@ -156,13 +156,23 @@
       },
 
       /**
+            The type of ejs object.  For internal use only.
+            
+            @member ejs.SpanNearQuery
+            @returns {String} the type of object
+            */
+      _type: function () {
+        return 'query';
+      },
+      
+      /**
             Retrieves the internal <code>query</code> object. This is typically used by
             internal API functions so use with caution.
 
             @member ejs.SpanNearQuery
             @returns {String} returns this object's internal <code>query</code> property.
             */
-      get: function () {
+      _self: function () {
         return query;
       }
     };

@@ -44,7 +44,7 @@ exports.search = {
     var shape = ejs.Shape('envelope', [[-45.0, 45.0], [45.0, -45.0]]),
       expected,
       doTest = function () {
-        test.deepEqual(shape.get(), expected);
+        test.deepEqual(shape._self(), expected);
       };
     
     expected = {
@@ -53,7 +53,7 @@ exports.search = {
     };  
     
     test.ok(shape, 'Shape exists');
-    test.ok(shape.get(), 'get() works');
+    test.ok(shape._self(), '_self() works');
     doTest();
     
     shape.type('point');
@@ -99,7 +99,7 @@ exports.search = {
     var indexedShape = ejs.IndexedShape('countries', 'New Zealand'),
       expected,
       doTest = function () {
-        test.deepEqual(indexedShape.get(), expected);
+        test.deepEqual(indexedShape._self(), expected);
       };
     
     expected = {
@@ -108,7 +108,7 @@ exports.search = {
     };  
     
     test.ok(indexedShape, 'IndexedShape exists');
-    test.ok(indexedShape.get(), 'get() works');
+    test.ok(indexedShape._self(), '_self() works');
     doTest();
     
     indexedShape.type('state');
@@ -137,13 +137,13 @@ exports.search = {
     var geoPoint = ejs.GeoPoint(),
       expected,
       doTest = function () {
-        test.deepEqual(geoPoint.get(), expected);
+        test.deepEqual(geoPoint._self(), expected);
       };
     
     expected = [0, 0];
     
     test.ok(geoPoint, 'GeoPoint exists');
-    test.ok(geoPoint.get(), 'get() works');
+    test.ok(geoPoint._self(), '_self() works');
     doTest();
     
     // [lat, lon] constructor converted to GeoJSON [lon, lat]
@@ -178,7 +178,7 @@ exports.search = {
     var cp = ejs.ComputedProperty('f'),
       expected,
       doTest = function () {
-        test.deepEqual(cp.get(), expected);
+        test.deepEqual(cp._self(), expected);
       };
     
     expected = {
@@ -186,7 +186,7 @@ exports.search = {
     };  
     
     test.ok(cp, 'ComputedProperty exists');
-    test.ok(cp.get(), 'get() works');
+    test.ok(cp._self(), '_self() works');
     doTest();
     
     cp.lang('mvel');
@@ -231,38 +231,38 @@ exports.search = {
     test.deepEqual(req.collections(), ['index1']);
     test.deepEqual(req.types(), ['type1']);
     expectedPath = '/index1/type1/_search';
-    req.get();
+    req.search();
 
     req.collections([]);
     test.deepEqual(req.collections(), ['_all']);
     expectedPath = '/_all/type1/_search';
-    req.get();
+    req.search();
 
     req.types([]);
     test.deepEqual(req.types(), []);
     expectedPath = '/_all/_search';
-    req.get();
+    req.search();
 
     req.collections([]);
     test.deepEqual(req.collections(), []);
     expectedPath = '/_search';
-    req.get();
+    req.search();
 
     req.collections(['index1', 'index2']);
     test.deepEqual(req.collections(), ['index1', 'index2']);
     expectedPath = '/index1,index2/_search';
-    req.get();
+    req.search();
 
     req.types(['type1', 'type2']);
     test.deepEqual(req.types(), ['type1', 'type2']);
     expectedPath = '/index1,index2/type1,type2/_search';
-    req.get();
+    req.search();
 
     req = ejs.Request({});
     test.deepEqual(req.collections(), []);
     test.deepEqual(req.types(), []);
     expectedPath = '/_search';
-    req.get();
+    req.search();
     
     req = ejs.Request({
       collections: 'index1',
@@ -271,7 +271,7 @@ exports.search = {
     test.deepEqual(req.collections(), ['index1']);
     test.deepEqual(req.types(), ['type1']);
     expectedPath = '/index1/type1/_search';
-    req.get();
+    req.search();
 
     req = ejs.Request({
       types: 'type1'
@@ -279,26 +279,26 @@ exports.search = {
     test.deepEqual(req.collections(), ['_all']);
     test.deepEqual(req.types(), ['type1']);
     expectedPath = '/_all/type1/_search';
-    req.get();
+    req.search();
 
     req = ejs.Request({routing: 'route1'});
     test.deepEqual(req.routing(), 'route1');
     expectedPath = '/_search?routing=route1';
-    req.get();
+    req.search();
     
     req.routing('');
     test.deepEqual(req.routing(), '');
     expectedPath = '/_search';
-    req.get();
+    req.search();
     
     req.routing('route2,route3');
     test.deepEqual(req.routing(), 'route2,route3');
     expectedPath = '/_search?routing=route2%2Croute3';
-    req.get();
+    req.search();
     
     req.timeout(5000);
     expected.timeout = 5000;
-    req.get();
+    req.search();
     
     test.strictEqual(req.toString(), JSON.stringify(expected));
 

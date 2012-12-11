@@ -21,7 +21,7 @@
   ejs.NestedFilter = function (path) {
 
     /**
-         The internal Filter object. Use <code>get()</code>.
+         The internal Filter object. Use <code>_self()</code>.
          @member ejs.NestedFilter
          @property {Object} filter
          */
@@ -59,11 +59,11 @@
           return filter.nested.query;
         }
     
-        if (!isEJSObject(oQuery)) {
+        if (!isQuery(oQuery)) {
           throw new TypeError('Argument must be a Query object');
         }
         
-        filter.nested.query = oQuery.get();
+        filter.nested.query = oQuery._self();
         return this;
       },
 
@@ -79,11 +79,11 @@
           return filter.nested.filter;
         }
     
-        if (!isEJSObject(oFilter)) {
+        if (!isFilter(oFilter)) {
           throw new TypeError('Argument must be a Filter object');
         }
         
-        filter.nested.filter = oFilter.get();
+        filter.nested.filter = oFilter._self();
         return this;
       },
 
@@ -178,12 +178,23 @@
       },
 
       /**
+            The type of ejs object.  For internal use only.
+            
+            @member ejs.NestedFilter
+            @returns {String} the type of object
+            */
+      _type: function () {
+        return 'filter';
+      },
+      
+      /**
             This method is used to retrieve the raw filter object. It's designed
             for internal use when composing and serializing filters.
+            
             @member ejs.NestedFilter
             @returns {Object} Returns the object's <em>filter</em> property.
             */
-      get: function () {
+      _self: function () {
         return filter;
       }
     };

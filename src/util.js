@@ -76,8 +76,39 @@
   }
   
   // Is a given value an ejs object?
-  // Yes if it is an object and has "get" and "toString" properties
+  // Yes if object and has "_type", "_self", and "toString" properties
   isEJSObject = function (obj) {
-    return (isObject(obj) && has(obj, 'get') && has(obj, 'toString'));
+    return (isObject(obj) &&
+      has(obj, '_type') &&
+      has(obj, '_self') && 
+      has(obj, 'toString'));
+  },
+  
+  isQuery = function (obj) {
+    return (isEJSObject(obj) && obj._type() === 'query');
+  },
+  
+  isFilter = function (obj) {
+    return (isEJSObject(obj) && obj._type() === 'filter');
+  },
+  
+  isFacet = function (obj) {
+    return (isEJSObject(obj) && obj._type() === 'facet');
+  },
+  
+  isComputedProperty = function (obj) {
+    return (isEJSObject(obj) && obj._type() === 'computed property');
+  },
+  
+  isGeoPoint = function (obj) {
+    return (isEJSObject(obj) && obj._type() === 'geo point');
+  },
+  
+  isIndexedShape = function (obj) {
+    return (isEJSObject(obj) && obj._type() === 'indexed shape');
+  },
+  
+  isShape = function (obj) {
+    return (isEJSObject(obj) && obj._type() === 'shape');
   };
   

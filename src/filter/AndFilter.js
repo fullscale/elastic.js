@@ -13,7 +13,7 @@
   ejs.AndFilter = function (f) {
 
     /**
-         The internal filter object. Use <code>get()</code>
+         The internal filter object. Use <code>_self()</code>
 
          @member ejs.AndFilter
          @property {Object} filter
@@ -26,15 +26,15 @@
         }
       };
 
-    if (isEJSObject(f)) {
-      filter.and.filters.push(f.get());
+    if (isFilter(f)) {
+      filter.and.filters.push(f._self());
     } else if (isArray(f)) {
       for (i = 0, len = f.length; i < len; i++) {
-        if (!isEJSObject(f[i])) {
+        if (!isFilter(f[i])) {
           throw new TypeError('Array must contain only Filter objects');
         }
         
-        filter.and.filters.push(f[i].get());
+        filter.and.filters.push(f[i]._self());
       }
     } else {
       throw new TypeError('Argument must be a Filter or Array of Filters');
@@ -59,16 +59,16 @@
           return filter.and.filters;
         }
       
-        if (isEJSObject(fltr)) {
-          filter.and.filters.push(fltr.get());
+        if (isFilter(fltr)) {
+          filter.and.filters.push(fltr._self());
         } else if (isArray(fltr)) {
           filter.and.filters = [];
           for (i = 0, len = fltr.length; i < len; i++) {
-            if (!isEJSObject(fltr[i])) {
+            if (!isFilter(fltr[i])) {
               throw new TypeError('Array must contain only Filter objects');
             }
             
-            filter.and.filters.push(fltr[i].get());
+            filter.and.filters.push(fltr[i]._self());
           }
         } else {
           throw new TypeError('Argument must be a Filter or an Array of Filters');
@@ -136,12 +136,22 @@
       },
 
       /**
+            The type of ejs object.  For internal use only.
+            
+            @member ejs.AndFilter
+            @returns {String} the type of object
+            */
+      _type: function () {
+        return 'filter';
+      },
+      
+      /**
              Returns the filter object.
 
              @member ejs.AndFilter
              @returns {Object} filter object
              */
-      get: function () {
+      _self: function () {
         return filter;
       }
     };

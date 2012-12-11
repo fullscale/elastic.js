@@ -82,7 +82,7 @@ exports.queries = {
         .shapeFieldName('stateShape'),
       expected,
       doTest = function () {
-        test.deepEqual(geoShapeQuery.get(), expected);
+        test.deepEqual(geoShapeQuery._self(), expected);
       };
 
     expected = {
@@ -92,25 +92,25 @@ exports.queries = {
     };
 
     test.ok(geoShapeQuery, 'GeoShapeQuery exists');
-    test.ok(geoShapeQuery.get(), 'get() works');
+    test.ok(geoShapeQuery._self(), '_self() works');
     doTest();
 
     geoShapeQuery.shape(shape1);
-    expected.geo_shape.f1.shape = shape1.get();
+    expected.geo_shape.f1.shape = shape1._self();
     doTest();
     
     geoShapeQuery.field('f2');
     expected = {
       geo_shape: {
         f2: {
-          shape: shape1.get()
+          shape: shape1._self()
         }
       }
     };
     doTest();
     
     geoShapeQuery.shape(shape2);
-    expected.geo_shape.f2.shape = shape2.get();
+    expected.geo_shape.f2.shape = shape2._self();
     doTest();
     
     geoShapeQuery.relation('intersects');
@@ -130,11 +130,11 @@ exports.queries = {
     
     geoShapeQuery.indexedShape(iShape1);
     delete expected.geo_shape.f2.shape;
-    expected.geo_shape.f2.indexed_shape = iShape1.get();
+    expected.geo_shape.f2.indexed_shape = iShape1._self();
     doTest();
     
     geoShapeQuery.indexedShape(iShape2);
-    expected.geo_shape.f2.indexed_shape = iShape2.get();
+    expected.geo_shape.f2.indexed_shape = iShape2._self();
     doTest();
     
     
@@ -155,18 +155,18 @@ exports.queries = {
       indicesQuery = ejs.IndicesQuery(termQuery, 'i1'),
       expected,
       doTest = function () {
-        test.deepEqual(indicesQuery.get(), expected);
+        test.deepEqual(indicesQuery._self(), expected);
       };
 
     expected = {
       indices: {
-        query: termQuery.get(),
+        query: termQuery._self(),
         indices: ['i1']
       }
     };
 
     test.ok(indicesQuery, 'IndicesQuery exists');
-    test.ok(indicesQuery.get(), 'get() works');
+    test.ok(indicesQuery._self(), '_self() works');
     doTest();
 
     indicesQuery = ejs.IndicesQuery(termQuery, ['i2', 'i3']);
@@ -182,7 +182,7 @@ exports.queries = {
     doTest();
     
     indicesQuery.query(termQuery2);
-    expected.indices.query = termQuery2.get();
+    expected.indices.query = termQuery2._self();
     doTest();
     
     indicesQuery.noMatchQuery('invalid');
@@ -197,7 +197,7 @@ exports.queries = {
     doTest();
     
     indicesQuery.noMatchQuery(termQuery3);
-    expected.indices.no_match_query = termQuery3.get();
+    expected.indices.no_match_query = termQuery3._self();
     doTest();
      
     indicesQuery.boost(1.5);
@@ -205,7 +205,7 @@ exports.queries = {
     doTest();
     
     indicesQuery.query(termQuery2);
-    expected.indices.query = termQuery2.get();
+    expected.indices.query = termQuery2._self();
     doTest();
     
     test.strictEqual(indicesQuery.toString(), JSON.stringify(expected));
@@ -245,32 +245,32 @@ exports.queries = {
       ]),
       expected,
       doTest = function () {
-        test.deepEqual(cfsQuery.get(), expected);
+        test.deepEqual(cfsQuery._self(), expected);
       };
 
     expected = {
       custom_filters_score: {
-        query: termQuery.get(),
+        query: termQuery._self(),
         filters: [{
-          filter: termFilter.get(),
+          filter: termFilter._self(),
           boost: 1.2
         }, {
-          filter: termFilter2.get(),
+          filter: termFilter2._self(),
           script: 's'
         }]
       }
     };
 
     test.ok(cfsQuery, 'CustomFiltersScoreQuery exists');
-    test.ok(cfsQuery.get(), 'get() works');
+    test.ok(cfsQuery._self(), '_self() works');
     doTest();
 
     cfsQuery = ejs.CustomFiltersScoreQuery(termQuery, {filter: termFilter, boost: 1.2});
     expected = {
       custom_filters_score: {
-        query: termQuery.get(),
+        query: termQuery._self(),
         filters: [{
-          filter: termFilter.get(),
+          filter: termFilter._self(),
           boost: 1.2
         }]
       }
@@ -282,7 +282,7 @@ exports.queries = {
     doTest();
     
     cfsQuery.query(termQuery2);
-    expected.custom_filters_score.query = termQuery2.get();
+    expected.custom_filters_score.query = termQuery2._self();
     doTest();
     
     // invalid filter because no boost or script, results in empty filters.
@@ -292,22 +292,22 @@ exports.queries = {
     
     // overwrite existing
     cfsQuery.filters([{filter: termFilter, script: 's'}]);
-    expected.custom_filters_score.filters = [{filter: termFilter.get(), script: 's'}];
+    expected.custom_filters_score.filters = [{filter: termFilter._self(), script: 's'}];
     doTest();
     
     cfsQuery.filters([{filter: termFilter, invalid: true}, {filter: termFilter2, boost: 2}]);
-    expected.custom_filters_score.filters = [{filter: termFilter2.get(), boost: 2}];
+    expected.custom_filters_score.filters = [{filter: termFilter2._self(), boost: 2}];
     doTest();
     
     // append
     cfsQuery.filters({filter: termFilter2, boost: 5.5});
-    expected.custom_filters_score.filters.push({filter: termFilter2.get(), boost: 5.5});
+    expected.custom_filters_score.filters.push({filter: termFilter2._self(), boost: 5.5});
     doTest();
     
     cfsQuery.filters([{filter: termFilter, script: 's'}, {filter: termFilter2, boost: 2.2}]);
     expected.custom_filters_score.filters = [
-      {filter: termFilter.get(), script: 's'}, 
-      {filter: termFilter2.get(), boost: 2.2}
+      {filter: termFilter._self(), script: 's'}, 
+      {filter: termFilter2._self(), boost: 2.2}
     ];
     doTest();
     
@@ -368,7 +368,7 @@ exports.queries = {
     var wildcardQuery = ejs.WildcardQuery('f1', 'wild*card'),
       expected,
       doTest = function () {
-        test.deepEqual(wildcardQuery.get(), expected);
+        test.deepEqual(wildcardQuery._self(), expected);
       };
 
     expected = {
@@ -380,7 +380,7 @@ exports.queries = {
     };
 
     test.ok(wildcardQuery, 'WildcardQuery exists');
-    test.ok(wildcardQuery.get(), 'get() works');
+    test.ok(wildcardQuery._self(), '_self() works');
     doTest();
 
     wildcardQuery.boost(1.5);
@@ -442,22 +442,22 @@ exports.queries = {
       topChildren = ejs.TopChildrenQuery(termQuery, 't1'),
       expected,
       doTest = function () {
-        test.deepEqual(topChildren.get(), expected);
+        test.deepEqual(topChildren._self(), expected);
       };
 
     expected = {
       top_children: {
-        query: termQuery.get(),
+        query: termQuery._self(),
         type: 't1'
       }
     };
 
     test.ok(topChildren, 'TopChildrenQuery exists');
-    test.ok(topChildren.get(), 'get() works');
+    test.ok(topChildren._self(), '_self() works');
     doTest();
     
     topChildren.query(termQuery2);
-    expected.top_children.query = termQuery2.get();
+    expected.top_children.query = termQuery2._self();
     doTest();
     
     topChildren.type('t2');
@@ -513,7 +513,7 @@ exports.queries = {
     var termsQuery = ejs.TermsQuery('f1', ['t1', 't2']),
       expected,
       doTest = function () {
-        test.deepEqual(termsQuery.get(), expected);
+        test.deepEqual(termsQuery._self(), expected);
       };
 
     expected = {
@@ -523,7 +523,7 @@ exports.queries = {
     };
 
     test.ok(termsQuery, 'TermsQuery exists');
-    test.ok(termsQuery.get(), 'get() works');
+    test.ok(termsQuery._self(), '_self() works');
     doTest();
 
     termsQuery = ejs.TermsQuery('f1', 't3');
@@ -582,7 +582,7 @@ exports.queries = {
     var rangeQuery = ejs.RangeQuery('f1'),
       expected,
       doTest = function () {
-        test.deepEqual(rangeQuery.get(), expected);
+        test.deepEqual(rangeQuery._self(), expected);
       };
 
     expected = {
@@ -592,7 +592,7 @@ exports.queries = {
     };
 
     test.ok(rangeQuery, 'RangeQuery exists');
-    test.ok(rangeQuery.get(), 'get() works');
+    test.ok(rangeQuery._self(), '_self() works');
     doTest();
     
     rangeQuery.from(1);
@@ -651,7 +651,7 @@ exports.queries = {
     var prefixQuery = ejs.PrefixQuery('f1', 'prefix'),
       expected,
       doTest = function () {
-        test.deepEqual(prefixQuery.get(), expected);
+        test.deepEqual(prefixQuery._self(), expected);
       };
 
     expected = {
@@ -663,7 +663,7 @@ exports.queries = {
     };
 
     test.ok(prefixQuery, 'PrefixQuery exists');
-    test.ok(prefixQuery.get(), 'get() works');
+    test.ok(prefixQuery._self(), '_self() works');
     doTest();
     
     prefixQuery.value('prefix2');
@@ -721,7 +721,7 @@ exports.queries = {
     var mltQuery = ejs.MoreLikeThisFieldQuery('f1', 'like text'),
       expected,
       doTest = function () {
-        test.deepEqual(mltQuery.get(), expected);
+        test.deepEqual(mltQuery._self(), expected);
       };
 
     expected = {
@@ -733,7 +733,7 @@ exports.queries = {
     };
 
     test.ok(mltQuery, 'MoreLikeThisFieldQuery exists');
-    test.ok(mltQuery.get(), 'get() works');
+    test.ok(mltQuery._self(), '_self() works');
     doTest();
     
     mltQuery.likeText('like text 2');
@@ -804,7 +804,7 @@ exports.queries = {
     var mltQuery = ejs.MoreLikeThisQuery(['f', 'f2'], 'like text'),
       expected,
       doTest = function () {
-        test.deepEqual(mltQuery.get(), expected);
+        test.deepEqual(mltQuery._self(), expected);
       };
 
     expected = {
@@ -815,7 +815,7 @@ exports.queries = {
     };
 
     test.ok(mltQuery, 'MoreLikeThisQuery exists');
-    test.ok(mltQuery.get(), 'get() works');
+    test.ok(mltQuery._self(), '_self() works');
     doTest();
     
     mltQuery = ejs.MoreLikeThisQuery('f', 'like text');
@@ -903,22 +903,22 @@ exports.queries = {
       hasParentQuery = ejs.HasParentQuery(termQuery, 't1'),
       expected,
       doTest = function () {
-        test.deepEqual(hasParentQuery.get(), expected);
+        test.deepEqual(hasParentQuery._self(), expected);
       };
 
     expected = {
       has_parent: {
-        query: termQuery.get(),
+        query: termQuery._self(),
         parent_type: 't1'
       }
     };
 
     test.ok(hasParentQuery, 'HasParentQuery exists');
-    test.ok(hasParentQuery.get(), 'get() works');
+    test.ok(hasParentQuery._self(), '_self() works');
     doTest();
     
     hasParentQuery.query(termQuery2);
-    expected.has_parent.query = termQuery2.get();
+    expected.has_parent.query = termQuery2._self();
     doTest();
     
     hasParentQuery.parentType('t2');
@@ -953,22 +953,22 @@ exports.queries = {
       hasChildQuery = ejs.HasChildQuery(termQuery, 't1'),
       expected,
       doTest = function () {
-        test.deepEqual(hasChildQuery.get(), expected);
+        test.deepEqual(hasChildQuery._self(), expected);
       };
 
     expected = {
       has_child: {
-        query: termQuery.get(),
+        query: termQuery._self(),
         type: 't1'
       }
     };
 
     test.ok(hasChildQuery, 'HasChildQuery exists');
-    test.ok(hasChildQuery.get(), 'get() works');
+    test.ok(hasChildQuery._self(), '_self() works');
     doTest();
     
     hasChildQuery.query(termQuery2);
-    expected.has_child.query = termQuery2.get();
+    expected.has_child.query = termQuery2._self();
     doTest();
     
     hasChildQuery.type('t2');
@@ -1001,7 +1001,7 @@ exports.queries = {
     var fuzzyQuery = ejs.FuzzyQuery('f1', 'fuzz'),
       expected,
       doTest = function () {
-        test.deepEqual(fuzzyQuery.get(), expected);
+        test.deepEqual(fuzzyQuery._self(), expected);
       };
 
     expected = {
@@ -1013,7 +1013,7 @@ exports.queries = {
     };
 
     test.ok(fuzzyQuery, 'FuzzyQuery exists');
-    test.ok(fuzzyQuery.get(), 'get() works');
+    test.ok(fuzzyQuery._self(), '_self() works');
     doTest();
     
     fuzzyQuery.value('fuzz2');
@@ -1087,7 +1087,7 @@ exports.queries = {
     var fltQuery = ejs.FuzzyLikeThisFieldQuery('f1', 'like text'),
       expected,
       doTest = function () {
-        test.deepEqual(fltQuery.get(), expected);
+        test.deepEqual(fltQuery._self(), expected);
       };
 
     expected = {
@@ -1099,7 +1099,7 @@ exports.queries = {
     };
 
     test.ok(fltQuery, 'FuzzyLikeThisFieldQuery exists');
-    test.ok(fltQuery.get(), 'get() works');
+    test.ok(fltQuery._self(), '_self() works');
     doTest();
     
     fltQuery.likeText('like text 2');
@@ -1150,7 +1150,7 @@ exports.queries = {
     var fltQuery = ejs.FuzzyLikeThisQuery('like text'),
       expected,
       doTest = function () {
-        test.deepEqual(fltQuery.get(), expected);
+        test.deepEqual(fltQuery._self(), expected);
       };
 
     expected = {
@@ -1160,7 +1160,7 @@ exports.queries = {
     };
 
     test.ok(fltQuery, 'FuzzyLikeThisQuery exists');
-    test.ok(fltQuery.get(), 'get() works');
+    test.ok(fltQuery._self(), '_self() works');
     doTest();
     
     fltQuery.fields('f1');
@@ -1219,21 +1219,21 @@ exports.queries = {
       cbfQuery = ejs.CustomBoostFactorQuery(termQuery),
       expected,
       doTest = function () {
-        test.deepEqual(cbfQuery.get(), expected);
+        test.deepEqual(cbfQuery._self(), expected);
       };
 
     expected = {
       custom_boost_factor: {
-        query: termQuery.get()
+        query: termQuery._self()
       }
     };
 
     test.ok(cbfQuery, 'CustomScoreQuery exists');
-    test.ok(cbfQuery.get(), 'get() works');
+    test.ok(cbfQuery._self(), '_self() works');
     doTest();
     
     cbfQuery.query(termQuery2);
-    expected.custom_boost_factor.query = termQuery2.get();
+    expected.custom_boost_factor.query = termQuery2._self();
     doTest();
     
     cbfQuery.boostFactor(5.1);
@@ -1264,22 +1264,22 @@ exports.queries = {
       customScoreQuery = ejs.CustomScoreQuery(termQuery, 's1'),
       expected,
       doTest = function () {
-        test.deepEqual(customScoreQuery.get(), expected);
+        test.deepEqual(customScoreQuery._self(), expected);
       };
 
     expected = {
       custom_score: {
-        query: termQuery.get(),
+        query: termQuery._self(),
         script: 's1'
       }
     };
 
     test.ok(customScoreQuery, 'CustomScoreQuery exists');
-    test.ok(customScoreQuery.get(), 'get() works');
+    test.ok(customScoreQuery._self(), '_self() works');
     doTest();
     
     customScoreQuery.query(termQuery2);
-    expected.custom_score.query = termQuery2.get();
+    expected.custom_score.query = termQuery2._self();
     doTest();
     
     customScoreQuery.script('s2');
@@ -1320,7 +1320,7 @@ exports.queries = {
     var idsQuery = ejs.IdsQuery('id1'),
       expected,
       doTest = function () {
-        test.deepEqual(idsQuery.get(), expected);
+        test.deepEqual(idsQuery._self(), expected);
       };
 
     expected = {
@@ -1330,7 +1330,7 @@ exports.queries = {
     };
 
     test.ok(idsQuery, 'IdsQuery exists');
-    test.ok(idsQuery.get(), 'get() works');
+    test.ok(idsQuery._self(), '_self() works');
     doTest();
     
     idsQuery = ejs.IdsQuery(['id2', 'id3']);
@@ -1385,27 +1385,27 @@ exports.queries = {
       boostingQuery = ejs.BoostingQuery(termQuery1, termQuery2, 0.2),
       expected,
       doTest = function () {
-        test.deepEqual(boostingQuery.get(), expected);
+        test.deepEqual(boostingQuery._self(), expected);
       };
 
     expected = {
       boosting: {
-        positive: termQuery1.get(),
-        negative: termQuery2.get(),
+        positive: termQuery1._self(),
+        negative: termQuery2._self(),
         negative_boost: 0.2
       }
     };
 
     test.ok(boostingQuery, 'BoostingQuery exists');
-    test.ok(boostingQuery.get(), 'get() works');
+    test.ok(boostingQuery._self(), '_self() works');
     doTest();
 
     boostingQuery.positive(termQuery2);
-    expected.boosting.positive = termQuery2.get();
+    expected.boosting.positive = termQuery2._self();
     doTest();
     
     boostingQuery.negative(termQuery1);
-    expected.boosting.negative = termQuery1.get();
+    expected.boosting.negative = termQuery1._self();
     doTest();
     
     boostingQuery.negativeBoost(0.6);
@@ -1442,7 +1442,7 @@ exports.queries = {
     var matchQuery = ejs.MatchQuery('t1', 'v1'),
       expected,
       doTest = function () {
-        test.deepEqual(matchQuery.get(), expected);
+        test.deepEqual(matchQuery._self(), expected);
       };
 
     expected = {
@@ -1454,7 +1454,7 @@ exports.queries = {
     };
 
     test.ok(matchQuery, 'MatchQuery exists');
-    test.ok(matchQuery.get(), 'get() works');
+    test.ok(matchQuery._self(), '_self() works');
     doTest();
 
     matchQuery.boost(1.5);
@@ -1598,7 +1598,7 @@ exports.queries = {
     var mmQuery = ejs.MultiMatchQuery('t', 'v1'),
       expected,
       doTest = function () {
-        test.deepEqual(mmQuery.get(), expected);
+        test.deepEqual(mmQuery._self(), expected);
       };
 
     expected = {
@@ -1613,7 +1613,7 @@ exports.queries = {
     doTest();
     
     test.ok(mmQuery, 'MultiMatchQuery exists');
-    test.ok(mmQuery.get(), 'get() works');
+    test.ok(mmQuery._self(), '_self() works');
     doTest();
 
     mmQuery.boost(1.5);
@@ -1766,7 +1766,7 @@ exports.queries = {
     var termQuery = ejs.TermQuery('f1', 't1'),
       expected,
       doTest = function () {
-        test.deepEqual(termQuery.get(), expected);
+        test.deepEqual(termQuery._self(), expected);
       };
 
     expected = {
@@ -1778,7 +1778,7 @@ exports.queries = {
     };
 
     test.ok(termQuery, 'TermQuery exists');
-    test.ok(termQuery.get(), 'get() works');
+    test.ok(termQuery._self(), '_self() works');
     doTest();
 
     termQuery.boost(1.5);
@@ -1814,7 +1814,7 @@ exports.queries = {
       boolQuery = ejs.BoolQuery(),
       expected,
       doTest = function () {
-        test.deepEqual(boolQuery.get(), expected);
+        test.deepEqual(boolQuery._self(), expected);
       };
 
     expected = {
@@ -1822,35 +1822,35 @@ exports.queries = {
     };
 
     test.ok(boolQuery, 'BoolQuery exists');
-    test.ok(boolQuery.get(), 'get() works');
+    test.ok(boolQuery._self(), '_self() works');
     doTest();
 
     boolQuery.must(termQuery1);
-    expected.bool.must = [termQuery1.get()];
+    expected.bool.must = [termQuery1._self()];
     doTest();
 
     boolQuery.must([termQuery2, termQuery3]);
-    expected.bool.must = [termQuery2.get(), termQuery3.get()];
+    expected.bool.must = [termQuery2._self(), termQuery3._self()];
     doTest();
     
     boolQuery.mustNot(termQuery2);
-    expected.bool.must_not = [termQuery2.get()];
+    expected.bool.must_not = [termQuery2._self()];
     doTest();
 
     boolQuery.mustNot([termQuery3, termQuery4]);
-    expected.bool.must_not = [termQuery3.get(), termQuery4.get()];
+    expected.bool.must_not = [termQuery3._self(), termQuery4._self()];
     doTest();
     
     boolQuery.should(termQuery3);
-    expected.bool.should = [termQuery3.get()];
+    expected.bool.should = [termQuery3._self()];
     doTest();
 
     boolQuery.should(termQuery4);
-    expected.bool.should.push(termQuery4.get());
+    expected.bool.should.push(termQuery4._self());
     doTest();
 
     boolQuery.should([termQuery1, termQuery3]);
-    expected.bool.should = [termQuery1.get(), termQuery3.get()];
+    expected.bool.should = [termQuery1._self(), termQuery3._self()];
     doTest();
     
     boolQuery.boost(1.5);
@@ -1899,7 +1899,7 @@ exports.queries = {
     var fieldQuery = ejs.FieldQuery('f', 'v1'),
       expected,
       doTest = function () {
-        test.deepEqual(fieldQuery.get(), expected);
+        test.deepEqual(fieldQuery._self(), expected);
       };
 
     expected = {
@@ -1911,7 +1911,7 @@ exports.queries = {
     };
 
     test.ok(fieldQuery, 'FieldQuery exists');
-    test.ok(fieldQuery.get(), 'get() works');
+    test.ok(fieldQuery._self(), '_self() works');
     doTest();
 
     fieldQuery.field('f1');
@@ -2067,7 +2067,7 @@ exports.queries = {
       boolQuery1 = ejs.BoolQuery().must(termQuery1).boost(2),
       expected,
       doTest = function () {
-        test.deepEqual(disMaxQuery.get(), expected);
+        test.deepEqual(disMaxQuery._self(), expected);
       };
 
     expected = {
@@ -2075,19 +2075,19 @@ exports.queries = {
     };
 
     test.ok(disMaxQuery, 'DisMaxQuery exists');
-    test.ok(disMaxQuery.get(), 'get() works');
+    test.ok(disMaxQuery._self(), '_self() works');
     doTest();
 
     disMaxQuery.queries(fieldQuery1);
-    expected.dis_max.queries = [fieldQuery1.get()];
+    expected.dis_max.queries = [fieldQuery1._self()];
     doTest();
 
     disMaxQuery.queries(boolQuery1);
-    expected.dis_max.queries.push(boolQuery1.get());
+    expected.dis_max.queries.push(boolQuery1._self());
     doTest();
 
     disMaxQuery.queries([termQuery1, boolQuery1]);
-    expected.dis_max.queries = [termQuery1.get(), boolQuery1.get()];
+    expected.dis_max.queries = [termQuery1._self(), boolQuery1._self()];
     doTest();
     
     disMaxQuery.boost(3);
@@ -2116,7 +2116,7 @@ exports.queries = {
     var queryString = ejs.QueryStringQuery('this AND that'),
       expected,
       doTest = function () {
-        test.deepEqual(queryString.get(), expected);
+        test.deepEqual(queryString._self(), expected);
       };
 
     expected = {
@@ -2126,7 +2126,7 @@ exports.queries = {
     };
 
     test.ok(queryString, 'QueryString exists');
-    test.ok(queryString, 'get() works');
+    test.ok(queryString, '_self() works');
     doTest();
 
     queryString.query('that OR this');
@@ -2301,34 +2301,34 @@ exports.queries = {
       filterQuery = ejs.FilteredQuery(termQuery1, termFilter1),
       expected,
       doTest = function () {
-        test.deepEqual(filterQuery.get(), expected);
+        test.deepEqual(filterQuery._self(), expected);
       };
 
     expected = {
       filtered: {
-        query: termQuery1.get(),
-        filter: termFilter1.get()
+        query: termQuery1._self(),
+        filter: termFilter1._self()
       }
     };
 
     test.ok(filterQuery, 'FilteredQuery exists');
-    test.ok(filterQuery.get(), 'get() works');
+    test.ok(filterQuery._self(), '_self() works');
     doTest();
 
     filterQuery = ejs.FilteredQuery(termQuery2);
     expected = {
       filtered: {
-        query: termQuery2.get()
+        query: termQuery2._self()
       }
     };
     doTest();
     
     filterQuery.filter(termFilter2);
-    expected.filtered.filter = termFilter2.get();
+    expected.filtered.filter = termFilter2._self();
     doTest();
     
     filterQuery.query(termQuery3);
-    expected.filtered.query = termQuery3.get();
+    expected.filtered.query = termQuery3._self();
     doTest();
     
     filterQuery.strategy('query_filter');
@@ -2396,7 +2396,7 @@ exports.queries = {
       nestedQuery = ejs.NestedQuery('root'),
       expected,
       doTest = function () {
-        test.deepEqual(nestedQuery.get(), expected);
+        test.deepEqual(nestedQuery._self(), expected);
       };
 
     expected = {
@@ -2406,7 +2406,7 @@ exports.queries = {
     };
 
     test.ok(nestedQuery, 'NestedQuery exists');
-    test.ok(nestedQuery.get(), 'get() works');
+    test.ok(nestedQuery._self(), '_self() works');
     doTest();
 
     nestedQuery.path('root/path');
@@ -2414,19 +2414,19 @@ exports.queries = {
     doTest();
 
     nestedQuery.query(termQuery1);
-    expected.nested.query = termQuery1.get();
+    expected.nested.query = termQuery1._self();
     doTest();
     
     nestedQuery.filter(termFilter1);
-    expected.nested.filter = termFilter1.get();
+    expected.nested.filter = termFilter1._self();
     doTest();
     
     nestedQuery.query(termQuery2);
-    expected.nested.query = termQuery2.get();
+    expected.nested.query = termQuery2._self();
     doTest();
     
     nestedQuery.filter(termFilter2);
-    expected.nested.filter = termFilter2.get();
+    expected.nested.filter = termFilter2._self();
     doTest();
     
     nestedQuery.scoreMode('avg');
@@ -2476,7 +2476,7 @@ exports.queries = {
       constantScoreQuery = ejs.ConstantScoreQuery(),
       expected,
       doTest = function () {
-        test.deepEqual(constantScoreQuery.get(), expected);
+        test.deepEqual(constantScoreQuery._self(), expected);
       };
 
     expected = {
@@ -2484,11 +2484,11 @@ exports.queries = {
     };
 
     test.ok(constantScoreQuery, 'ConstantScoreQuery exists');
-    test.ok(constantScoreQuery.get(), 'get() works');
+    test.ok(constantScoreQuery._self(), '_self() works');
     doTest();
 
     constantScoreQuery.query(termQuery1);
-    expected.constant_score.query = termQuery1.get();
+    expected.constant_score.query = termQuery1._self();
     doTest();
 
     test.strictEqual(constantScoreQuery.toString(), JSON.stringify(expected));
@@ -2497,7 +2497,7 @@ exports.queries = {
     constantScoreQuery.filter(termFilter1);
     expected = {
       constant_score: {
-        filter: termFilter1.get()
+        filter: termFilter1._self()
       }
     };
     doTest();
@@ -2528,7 +2528,7 @@ exports.queries = {
     var matchAllQuery = ejs.MatchAllQuery(),
       expected,
       doTest = function () {
-        test.deepEqual(matchAllQuery.get(), expected);
+        test.deepEqual(matchAllQuery._self(), expected);
       };
 
     expected = {
@@ -2536,7 +2536,7 @@ exports.queries = {
     };
 
     test.ok(matchAllQuery, 'MatchAllQuery exists');
-    test.ok(matchAllQuery.get(), 'get() works');
+    test.ok(matchAllQuery._self(), '_self() works');
     doTest();
 
     matchAllQuery.boost(2.2);
@@ -2553,7 +2553,7 @@ exports.queries = {
     var spanTermQuery = ejs.SpanTermQuery('t1', 'v1'),
       expected,
       doTest = function () {
-        test.deepEqual(spanTermQuery.get(), expected);
+        test.deepEqual(spanTermQuery._self(), expected);
       };
 
     expected = {
@@ -2565,7 +2565,7 @@ exports.queries = {
     };
 
     test.ok(spanTermQuery, 'SpanTermQuery exists');
-    test.ok(spanTermQuery.get(), 'get() works');
+    test.ok(spanTermQuery._self(), '_self() works');
     doTest();
 
     spanTermQuery.field('t2');
@@ -2600,32 +2600,32 @@ exports.queries = {
       spanNearQuery = ejs.SpanNearQuery(spanTermQuery1, 4),
       expected,
       doTest = function () {
-        test.deepEqual(spanNearQuery.get(), expected);
+        test.deepEqual(spanNearQuery._self(), expected);
       };
 
     expected = {
       span_near: {
-        clauses: [spanTermQuery1.get()],
+        clauses: [spanTermQuery1._self()],
         slop: 4
       }
     };
 
     test.ok(spanNearQuery, 'SpanNearQuery exists');
-    test.ok(spanNearQuery.get(), 'get() works');
+    test.ok(spanNearQuery._self(), '_self() works');
     doTest();
 
     spanNearQuery.clauses(spanTermQuery2);
-    expected.span_near.clauses.push(spanTermQuery2.get());
+    expected.span_near.clauses.push(spanTermQuery2._self());
     doTest();
 
     spanNearQuery.clauses([spanTermQuery1, spanTermQuery3]);
-    expected.span_near.clauses = [spanTermQuery1.get(), spanTermQuery3.get()];
+    expected.span_near.clauses = [spanTermQuery1._self(), spanTermQuery3._self()];
     doTest();
 
     spanNearQuery = ejs.SpanNearQuery([spanTermQuery4, spanTermQuery2], 10);
     expected = {
       span_near: {
-        clauses: [spanTermQuery4.get(), spanTermQuery2.get()],
+        clauses: [spanTermQuery4._self(), spanTermQuery2._self()],
         slop: 10
       }
     };
@@ -2677,26 +2677,26 @@ exports.queries = {
       spanNotQuery = ejs.SpanNotQuery(spanTermQuery1, spanTermQuery2),
       expected,
       doTest = function () {
-        test.deepEqual(spanNotQuery.get(), expected);
+        test.deepEqual(spanNotQuery._self(), expected);
       };
 
     expected = {
       span_not: {
-        include: spanTermQuery1.get(),
-        exclude: spanTermQuery2.get()
+        include: spanTermQuery1._self(),
+        exclude: spanTermQuery2._self()
       }
     };
 
     test.ok(spanNotQuery, 'SpanNotQuery exists');
-    test.ok(spanNotQuery.get(), 'get() works');
+    test.ok(spanNotQuery._self(), '_self() works');
     doTest();
 
     spanNotQuery.include(spanTermQuery3);
-    expected.span_not.include = spanTermQuery3.get();
+    expected.span_not.include = spanTermQuery3._self();
     doTest();
 
     spanNotQuery.exclude(spanTermQuery4);
-    expected.span_not.exclude = spanTermQuery4.get();
+    expected.span_not.exclude = spanTermQuery4._self();
     doTest();
 
     spanNotQuery.boost(4.1);
@@ -2734,29 +2734,29 @@ exports.queries = {
       spanOrQuery = ejs.SpanOrQuery(spanTermQuery1),
       expected,
       doTest = function () {
-        test.deepEqual(spanOrQuery.get(), expected);
+        test.deepEqual(spanOrQuery._self(), expected);
       };
 
     expected = {
       span_or: {
-        clauses: [spanTermQuery1.get()]
+        clauses: [spanTermQuery1._self()]
       }
     };
 
     test.ok(spanOrQuery, 'SpanOrQuery exists');
-    test.ok(spanOrQuery.get(), 'get() works');
+    test.ok(spanOrQuery._self(), '_self() works');
     doTest();
     
     spanOrQuery = ejs.SpanOrQuery([spanTermQuery2, spanTermQuery3]);
-    expected.span_or.clauses = [spanTermQuery2.get(), spanTermQuery3.get()];
+    expected.span_or.clauses = [spanTermQuery2._self(), spanTermQuery3._self()];
     doTest();
 
     spanOrQuery.clauses(spanTermQuery4);
-    expected.span_or.clauses.push(spanTermQuery4.get());
+    expected.span_or.clauses.push(spanTermQuery4._self());
     doTest();
 
     spanOrQuery.clauses([spanTermQuery1, spanTermQuery5]);
-    expected.span_or.clauses = [spanTermQuery1.get(), spanTermQuery5.get()];
+    expected.span_or.clauses = [spanTermQuery1._self(), spanTermQuery5._self()];
     doTest();
 
     spanOrQuery.boost(1.1);
@@ -2791,22 +2791,22 @@ exports.queries = {
       spanFirstQuery = ejs.SpanFirstQuery(spanTermQuery1, 10),
       expected,
       doTest = function () {
-        test.deepEqual(spanFirstQuery.get(), expected);
+        test.deepEqual(spanFirstQuery._self(), expected);
       };
 
     expected = {
       span_first: {
-        match: spanTermQuery1.get(),
+        match: spanTermQuery1._self(),
         end: 10
       }
     };
 
     test.ok(spanFirstQuery, 'SpanFirstQuery exists');
-    test.ok(spanFirstQuery.get(), 'get() works');
+    test.ok(spanFirstQuery._self(), '_self() works');
     doTest();
 
     spanFirstQuery.match(spanTermQuery2);
-    expected.span_first.match = spanTermQuery2.get();
+    expected.span_first.match = spanTermQuery2._self();
     doTest();
 
     spanFirstQuery.end(5);
@@ -2837,22 +2837,22 @@ exports.queries = {
       fieldMaskingSpanQuery = ejs.FieldMaskingSpanQuery(spanTermQuery1, 'mf1'),
       expected,
       doTest = function () {
-        test.deepEqual(fieldMaskingSpanQuery.get(), expected);
+        test.deepEqual(fieldMaskingSpanQuery._self(), expected);
       };
 
     expected = {
       field_masking_span: {
-        query: spanTermQuery1.get(),
+        query: spanTermQuery1._self(),
         field: 'mf1'
       }
     };
 
     test.ok(fieldMaskingSpanQuery, 'FieldMaskingSpanQuery exists');
-    test.ok(fieldMaskingSpanQuery.get(), 'get() works');
+    test.ok(fieldMaskingSpanQuery._self(), '_self() works');
     doTest();
 
     fieldMaskingSpanQuery.query(spanTermQuery2);
-    expected.field_masking_span.query = spanTermQuery2.get();
+    expected.field_masking_span.query = spanTermQuery2._self();
     doTest();
 
     fieldMaskingSpanQuery.field('mf2');

@@ -17,18 +17,18 @@
     */
   ejs.FieldMaskingSpanQuery = function (spanQry, field) {
 
-    if (!isEJSObject(spanQry)) {
+    if (!isQuery(spanQry)) {
       throw new TypeError('Argument must be a SpanQuery');
     }
   
     /**
-         The internal query object. <code>Use get()</code>
+         The internal query object. <code>Use _self()</code>
          @member ejs.FieldMaskingSpanQuery
          @property {Object} query
          */
     var query = {
       field_masking_span: {
-        query: spanQry.get(),
+        query: spanQry._self(),
         field: field
       }
     };
@@ -47,11 +47,11 @@
           return query.field_masking_span.query;
         }
     
-        if (!isEJSObject(spanQuery)) {
+        if (!isQuery(spanQuery)) {
           throw new TypeError('Argument must be a SpanQuery');
         }
       
-        query.field_masking_span.query = spanQuery.get();
+        query.field_masking_span.query = spanQuery._self();
         return this;
       },
 
@@ -98,13 +98,23 @@
       },
 
       /**
+            The type of ejs object.  For internal use only.
+            
+            @member ejs.FieldMaskingSpanQuery
+            @returns {String} the type of object
+            */
+      _type: function () {
+        return 'query';
+      },
+      
+      /**
             Retrieves the internal <code>query</code> object. This is typically used by
             internal API functions so use with caution.
 
             @member ejs.FieldMaskingSpanQuery
             @returns {String} returns this object's internal <code>query</code> property.
             */
-      get: function () {
+      _self: function () {
         return query;
       }
     };

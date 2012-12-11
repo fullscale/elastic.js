@@ -69,12 +69,22 @@
       },
 
       /**
+            The type of ejs object.  For internal use only.
+            
+            @member ejs.ExistsFilter
+            @returns {String} the type of object
+            */
+      _type: function () {
+        return 'filter';
+      },
+      
+      /**
              Returns the filter object.
 
              @member ejs.ExistsFilter
              @returns {Object} filter object
              */
-      get: function () {
+      _self: function () {
         return filter;
       }
     };

@@ -114,13 +114,23 @@
       },
 
       /**
+            The type of ejs object.  For internal use only.
+            
+            @member ejs.IdsFilter
+            @returns {String} the type of object
+            */
+      _type: function () {
+        return 'filter';
+      },
+      
+      /**
             Retrieves the internal <code>filter</code> object. This is typically used by
             internal API functions so use with caution.
 
             @member ejs.IdsFilter
             @returns {String} returns this object's internal <code>filter</code> property.
             */
-      get: function () {
+      _self: function () {
         return filter;
       }
     };

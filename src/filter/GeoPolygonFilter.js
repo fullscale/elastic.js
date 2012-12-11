@@ -16,7 +16,7 @@
   ejs.GeoPolygonFilter = function (fieldName) {
 
     /**
-         The internal filter object. Use <code>get()</code>
+         The internal filter object. Use <code>_self()</code>
 
          @member ejs.GeoPolygonFilter
          @property {Object} filter
@@ -69,16 +69,16 @@
           return filter.geo_polygon[fieldName].points;
         }
       
-        if (isEJSObject(p)) {
-          filter.geo_polygon[fieldName].points.push(p.get());
+        if (isGeoPoint(p)) {
+          filter.geo_polygon[fieldName].points.push(p._self());
         } else if (isArray(p)) {
           filter.geo_polygon[fieldName].points = [];
           for (i = 0, len = p.length; i < len; i++) {
-            if (!isEJSObject(p[i])) {
+            if (!isGeoPoint(p[i])) {
               throw new TypeError('Argument must be Array of GeoPoints');
             }
             
-            filter.geo_polygon[fieldName].points.push(p[i].get());
+            filter.geo_polygon[fieldName].points.push(p[i]._self());
           }
         } else {
           throw new TypeError('Argument must be a GeoPoint or Array of GeoPoints');
@@ -167,12 +167,22 @@
       },
 
       /**
+            The type of ejs object.  For internal use only.
+            
+            @member ejs.GeoPolygonFilter
+            @returns {String} the type of object
+            */
+      _type: function () {
+        return 'filter';
+      },
+      
+      /**
              Returns the filter object.
 
              @member ejs.GeoPolygonFilter
              @returns {Object} filter object
              */
-      get: function () {
+      _self: function () {
         return filter;
       }
     };

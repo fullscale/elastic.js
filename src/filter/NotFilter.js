@@ -12,18 +12,18 @@
     */
   ejs.NotFilter = function (oFilter) {
 
-    if (!isEJSObject(oFilter)) {
+    if (!isFilter(oFilter)) {
       throw new TypeError('Argument must be a Filter');
     }
     
     /**
-         The internal filter object. Use <code>get()</code>
+         The internal filter object. Use <code>_self()</code>
 
          @member ejs.NotFilter
          @property {Object} filter
          */
     var filter = {
-      not: oFilter.get()
+      not: oFilter._self()
     };
 
     return {
@@ -40,11 +40,11 @@
           return filter.not;
         }
       
-        if (!isEJSObject(fltr)) {
+        if (!isFilter(fltr)) {
           throw new TypeError('Argument must be a Filter');
         }
         
-        filter.not = fltr.get();
+        filter.not = fltr._self();
         return this;
       },
 
@@ -107,12 +107,22 @@
       },
 
       /**
+            The type of ejs object.  For internal use only.
+            
+            @member ejs.NotFilter
+            @returns {String} the type of object
+            */
+      _type: function () {
+        return 'filter';
+      },
+      
+      /**
              Returns the filter object.
 
              @member ejs.NotFilter
              @returns {Object} filter object
              */
-      get: function () {
+      _self: function () {
         return filter;
       }
     };

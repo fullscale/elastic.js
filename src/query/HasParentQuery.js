@@ -14,18 +14,18 @@
     */
   ejs.HasParentQuery = function (qry, parentType) {
 
-    if (!isEJSObject(qry)) {
+    if (!isQuery(qry)) {
       throw new TypeError('Argument must be a Query');
     }
     
     /**
-         The internal query object. <code>Use get()</code>
+         The internal query object. <code>Use _self()</code>
          @member ejs.HasParentQuery
          @property {Object} query
          */
     var query = {
       has_parent: {
-        query: qry.get(),
+        query: qry._self(),
         parent_type: parentType
       }
     };
@@ -44,11 +44,11 @@
           return query.has_parent.query;
         }
   
-        if (!isEJSObject(q)) {
+        if (!isQuery(q)) {
           throw new TypeError('Argument must be a Query');
         }
         
-        query.has_parent.query = q.get();
+        query.has_parent.query = q._self();
         return this;
       },
 
@@ -112,13 +112,23 @@
       },
 
       /**
+            The type of ejs object.  For internal use only.
+            
+            @member ejs.HasParentQuery
+            @returns {String} the type of object
+            */
+      _type: function () {
+        return 'query';
+      },
+      
+      /**
             Retrieves the internal <code>query</code> object. This is typically used by
             internal API functions so use with caution.
 
             @member ejs.HasParentQuery
             @returns {String} returns this object's internal <code>query</code> property.
             */
-      get: function () {
+      _self: function () {
         return query;
       }
     };

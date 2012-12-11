@@ -68,18 +68,18 @@ exports.filters = {
       indicesFilter = ejs.IndicesFilter(termFilter, 'i1'),
       expected,
       doTest = function () {
-        test.deepEqual(indicesFilter.get(), expected);
+        test.deepEqual(indicesFilter._self(), expected);
       };
 
     expected = {
       indices: {
-        filter: termFilter.get(),
+        filter: termFilter._self(),
         indices: ['i1']
       }
     };
 
     test.ok(indicesFilter, 'IndicesFilter exists');
-    test.ok(indicesFilter.get(), 'get() works');
+    test.ok(indicesFilter._self(), '_self() works');
     doTest();
 
     indicesFilter = ejs.IndicesFilter(termFilter, ['i2', 'i3']);
@@ -95,7 +95,7 @@ exports.filters = {
     doTest();
     
     indicesFilter.filter(termFilter2);
-    expected.indices.filter = termFilter2.get();
+    expected.indices.filter = termFilter2._self();
     doTest();
     
     indicesFilter.noMatchFilter('invalid');
@@ -110,11 +110,11 @@ exports.filters = {
     doTest();
     
     indicesFilter.noMatchFilter(termFilter3);
-    expected.indices.no_match_filter = termFilter3.get();
+    expected.indices.no_match_filter = termFilter3._self();
     doTest();
     
     indicesFilter.filter(termFilter2);
-    expected.indices.filter = termFilter2.get();
+    expected.indices.filter = termFilter2._self();
     doTest();
     
     test.strictEqual(indicesFilter.toString(), JSON.stringify(expected));
@@ -147,7 +147,7 @@ exports.filters = {
     var termsFilter = ejs.TermsFilter('f1', ['t1', 't2']),
       expected,
       doTest = function () {
-        test.deepEqual(termsFilter.get(), expected);
+        test.deepEqual(termsFilter._self(), expected);
       };
 
     expected = {
@@ -157,7 +157,7 @@ exports.filters = {
     };
 
     test.ok(termsFilter, 'TermsFilter exists');
-    test.ok(termsFilter.get(), 'get() works');
+    test.ok(termsFilter._self(), '_self() works');
     doTest();
 
     termsFilter = ejs.TermsFilter('f1', 't3');
@@ -235,7 +235,7 @@ exports.filters = {
       nestedFilter = ejs.NestedFilter('root'),
       expected,
       doTest = function () {
-        test.deepEqual(nestedFilter.get(), expected);
+        test.deepEqual(nestedFilter._self(), expected);
       };
 
     expected = {
@@ -245,7 +245,7 @@ exports.filters = {
     };
 
     test.ok(nestedFilter, 'NestedFilter exists');
-    test.ok(nestedFilter.get(), 'get() works');
+    test.ok(nestedFilter._self(), '_self() works');
     doTest();
 
     nestedFilter.path('new.root');
@@ -253,11 +253,11 @@ exports.filters = {
     doTest();
     
     nestedFilter.query(termQuery);
-    expected.nested.query = termQuery.get();
+    expected.nested.query = termQuery._self();
     doTest();
     
     nestedFilter.filter(termFilter);
-    expected.nested.filter = termFilter.get();
+    expected.nested.filter = termFilter._self();
     doTest();
     
     nestedFilter.scope('my_scope');
@@ -298,7 +298,7 @@ exports.filters = {
     var scriptFilter = ejs.ScriptFilter('the script'),
       expected,
       doTest = function () {
-        test.deepEqual(scriptFilter.get(), expected);
+        test.deepEqual(scriptFilter._self(), expected);
       };
 
     expected = {
@@ -308,7 +308,7 @@ exports.filters = {
     };
 
     test.ok(scriptFilter, 'ScriptFilter exists');
-    test.ok(scriptFilter.get(), 'get() works');
+    test.ok(scriptFilter._self(), '_self() works');
     doTest();
 
     scriptFilter.params({param1: 1});
@@ -345,7 +345,7 @@ exports.filters = {
     var rangeFilter = ejs.RangeFilter('f1'),
       expected,
       doTest = function () {
-        test.deepEqual(rangeFilter.get(), expected);
+        test.deepEqual(rangeFilter._self(), expected);
       };
 
     expected = {
@@ -355,7 +355,7 @@ exports.filters = {
     };
 
     test.ok(rangeFilter, 'RangeFilter exists');
-    test.ok(rangeFilter.get(), 'get() works');
+    test.ok(rangeFilter._self(), '_self() works');
     doTest();
     
     rangeFilter.from(1);
@@ -424,21 +424,21 @@ exports.filters = {
       queryFilter = ejs.QueryFilter(termQuery),
       expected,
       doTest = function () {
-        test.deepEqual(queryFilter.get(), expected);
+        test.deepEqual(queryFilter._self(), expected);
       };
 
     expected = {
       fquery: {
-        query: termQuery.get()
+        query: termQuery._self()
       }
     };
 
     test.ok(queryFilter, 'QueryFilter exists');
-    test.ok(queryFilter.get(), 'get() works');
+    test.ok(queryFilter._self(), '_self() works');
     doTest();
     
     queryFilter.query(termQuery2);
-    expected.fquery.query = termQuery2.get();
+    expected.fquery.query = termQuery2._self();
     doTest();
     
     queryFilter.name('fquery');
@@ -471,7 +471,7 @@ exports.filters = {
     var matchAllFilter = ejs.MatchAllFilter(),
       expected,
       doTest = function () {
-        test.deepEqual(matchAllFilter.get(), expected);
+        test.deepEqual(matchAllFilter._self(), expected);
       };
 
     expected = {
@@ -479,7 +479,7 @@ exports.filters = {
     };
 
     test.ok(matchAllFilter, 'MatchAllFilter exists');
-    test.ok(matchAllFilter.get(), 'get() works');
+    test.ok(matchAllFilter._self(), '_self() works');
     doTest();
 
     test.strictEqual(matchAllFilter.toString(), JSON.stringify(expected));
@@ -489,27 +489,27 @@ exports.filters = {
   HasParentFilter: function (test) {
     test.expect(10);
 
-    var termFilter = ejs.TermFilter('t1', 'v1'),
-      termFilter2 = ejs.TermFilter('t2', 'v2'),
-      hasParentFilter = ejs.HasParentFilter(termFilter, 't1'),
+    var termQuery = ejs.TermQuery('t1', 'v1'),
+      termQuery2 = ejs.TermQuery('t2', 'v2'),
+      hasParentFilter = ejs.HasParentFilter(termQuery, 't1'),
       expected,
       doTest = function () {
-        test.deepEqual(hasParentFilter.get(), expected);
+        test.deepEqual(hasParentFilter._self(), expected);
       };
 
     expected = {
       has_parent: {
-        query: termFilter.get(),
+        query: termQuery._self(),
         parent_type: 't1'
       }
     };
 
     test.ok(hasParentFilter, 'HasParentFilter exists');
-    test.ok(hasParentFilter.get(), 'get() works');
+    test.ok(hasParentFilter._self(), '_self() works');
     doTest();
     
-    hasParentFilter.query(termFilter2);
-    expected.has_parent.query = termFilter2.get();
+    hasParentFilter.query(termQuery2);
+    expected.has_parent.query = termQuery2._self();
     doTest();
     
     hasParentFilter.parentType('t2');
@@ -539,27 +539,27 @@ exports.filters = {
   HasChildFilter: function (test) {
     test.expect(10);
 
-    var termFilter = ejs.TermFilter('t1', 'v1'),
-      termFilter2 = ejs.TermFilter('t2', 'v2'),
-      hasChildFilter = ejs.HasChildFilter(termFilter, 't1'),
+    var termQuery = ejs.TermQuery('t1', 'v1'),
+      termQuery2 = ejs.TermQuery('t2', 'v2'),
+      hasChildFilter = ejs.HasChildFilter(termQuery, 't1'),
       expected,
       doTest = function () {
-        test.deepEqual(hasChildFilter.get(), expected);
+        test.deepEqual(hasChildFilter._self(), expected);
       };
 
     expected = {
       has_child: {
-        query: termFilter.get(),
+        query: termQuery._self(),
         type: 't1'
       }
     };
 
     test.ok(hasChildFilter, 'HasChildFilter exists');
-    test.ok(hasChildFilter.get(), 'get() works');
+    test.ok(hasChildFilter._self(), '_self() works');
     doTest();
     
-    hasChildFilter.query(termFilter2);
-    expected.has_child.query = termFilter2.get();
+    hasChildFilter.query(termQuery2);
+    expected.has_child.query = termQuery2._self();
     doTest();
     
     hasChildFilter.type('t2');
@@ -592,7 +592,7 @@ exports.filters = {
     var limitFilter = ejs.LimitFilter(100),
       expected,
       doTest = function () {
-        test.deepEqual(limitFilter.get(), expected);
+        test.deepEqual(limitFilter._self(), expected);
       };
 
     expected = {
@@ -602,7 +602,7 @@ exports.filters = {
     };
 
     test.ok(limitFilter, 'LimitFilter exists');
-    test.ok(limitFilter.get(), 'get() works');
+    test.ok(limitFilter._self(), '_self() works');
     doTest();
     
     limitFilter.value(1000);
@@ -623,7 +623,7 @@ exports.filters = {
     var idsFilter = ejs.IdsFilter('id1'),
       expected,
       doTest = function () {
-        test.deepEqual(idsFilter.get(), expected);
+        test.deepEqual(idsFilter._self(), expected);
       };
 
     expected = {
@@ -633,7 +633,7 @@ exports.filters = {
     };
 
     test.ok(idsFilter, 'IdsFilter exists');
-    test.ok(idsFilter.get(), 'get() works');
+    test.ok(idsFilter._self(), '_self() works');
     doTest();
     
     idsFilter = ejs.IdsFilter(['id2', 'id3']);
@@ -690,7 +690,7 @@ exports.filters = {
       boolFilter = ejs.BoolFilter(),
       expected,
       doTest = function () {
-        test.deepEqual(boolFilter.get(), expected);
+        test.deepEqual(boolFilter._self(), expected);
       };
 
     expected = {
@@ -698,35 +698,35 @@ exports.filters = {
     };
 
     test.ok(boolFilter, 'BoolFilter exists');
-    test.ok(boolFilter.get(), 'get() works');
+    test.ok(boolFilter._self(), '_self() works');
     doTest();
 
     boolFilter.must(termFilter);
-    expected.bool.must = [termFilter.get()];
+    expected.bool.must = [termFilter._self()];
     doTest();
 
     boolFilter.must([termFilter2, termFilter3]);
-    expected.bool.must = [termFilter2.get(), termFilter3.get()];
+    expected.bool.must = [termFilter2._self(), termFilter3._self()];
     doTest();
     
     boolFilter.mustNot(termFilter2);
-    expected.bool.must_not = [termFilter2.get()];
+    expected.bool.must_not = [termFilter2._self()];
     doTest();
 
     boolFilter.mustNot([termFilter3, termFilter4]);
-    expected.bool.must_not = [termFilter3.get(), termFilter4.get()];
+    expected.bool.must_not = [termFilter3._self(), termFilter4._self()];
     doTest();
     
     boolFilter.should(termFilter3);
-    expected.bool.should = [termFilter3.get()];
+    expected.bool.should = [termFilter3._self()];
     doTest();
 
     boolFilter.should(termFilter4);
-    expected.bool.should.push(termFilter4.get());
+    expected.bool.should.push(termFilter4._self());
     doTest();
 
     boolFilter.should([termFilter, termFilter2]);
-    expected.bool.should = [termFilter.get(), termFilter2.get()];
+    expected.bool.should = [termFilter._self(), termFilter2._self()];
     doTest();
     
     boolFilter.name('boolfilter');
@@ -782,7 +782,7 @@ exports.filters = {
         .shapeFieldName('stateShape'),
       expected,
       doTest = function () {
-        test.deepEqual(geoShapeFilter.get(), expected);
+        test.deepEqual(geoShapeFilter._self(), expected);
       };
 
     expected = {
@@ -792,25 +792,25 @@ exports.filters = {
     };
 
     test.ok(geoShapeFilter, 'GeoShapeFilter exists');
-    test.ok(geoShapeFilter.get(), 'get() works');
+    test.ok(geoShapeFilter._self(), '_self() works');
     doTest();
 
     geoShapeFilter.shape(shape1);
-    expected.geo_shape.f1.shape = shape1.get();
+    expected.geo_shape.f1.shape = shape1._self();
     doTest();
     
     geoShapeFilter.field('f2');
     expected = {
       geo_shape: {
         f2: {
-          shape: shape1.get()
+          shape: shape1._self()
         }
       }
     };
     doTest();
     
     geoShapeFilter.shape(shape2);
-    expected.geo_shape.f2.shape = shape2.get();
+    expected.geo_shape.f2.shape = shape2._self();
     doTest();
     
     geoShapeFilter.relation('intersects');
@@ -830,11 +830,11 @@ exports.filters = {
     
     geoShapeFilter.indexedShape(iShape1);
     delete expected.geo_shape.f2.shape;
-    expected.geo_shape.f2.indexed_shape = iShape1.get();
+    expected.geo_shape.f2.indexed_shape = iShape1._self();
     doTest();
     
     geoShapeFilter.indexedShape(iShape2);
-    expected.geo_shape.f2.indexed_shape = iShape2.get();
+    expected.geo_shape.f2.indexed_shape = iShape2._self();
     doTest();
     
     
@@ -860,7 +860,7 @@ exports.filters = {
     var termFilter = ejs.TermFilter('t1', 'v1'),
       expected,
       doTest = function () {
-        test.deepEqual(termFilter.get(), expected);
+        test.deepEqual(termFilter._self(), expected);
       };
 
     expected = {
@@ -870,7 +870,7 @@ exports.filters = {
     };
 
     test.ok(termFilter, 'TermFilter exists');
-    test.ok(termFilter.get(), 'get() works');
+    test.ok(termFilter._self(), '_self() works');
     test.strictEqual(termFilter.field(), 't1');
     test.strictEqual(termFilter.term(), 'v1');
     doTest();
@@ -909,7 +909,7 @@ exports.filters = {
     var typeFilter = ejs.TypeFilter('type1'),
       expected,
       doTest = function () {
-        test.deepEqual(typeFilter.get(), expected);
+        test.deepEqual(typeFilter._self(), expected);
       };
 
     expected = {
@@ -919,7 +919,7 @@ exports.filters = {
     };
 
     test.ok(typeFilter, 'TypeFilter exists');
-    test.ok(typeFilter.get(), 'get() works');
+    test.ok(typeFilter._self(), '_self() works');
     doTest();
 
     typeFilter.type('type2');
@@ -941,7 +941,7 @@ exports.filters = {
       point5 = ejs.GeoPoint().array([37.7817289, -122.396181]),
       expected,
       doTest = function () {
-        test.deepEqual(geoPolygonFilter.get(), expected);
+        test.deepEqual(geoPolygonFilter._self(), expected);
       };
 
     expected = {
@@ -953,27 +953,27 @@ exports.filters = {
     };
 
     test.ok(geoPolygonFilter, 'GeoPolygonFilter exists');
-    test.ok(geoPolygonFilter.get(), 'get() works');
+    test.ok(geoPolygonFilter._self(), '_self() works');
     doTest();
 
     geoPolygonFilter.points(point1);
-    expected.geo_polygon.location.points.push(point1.get());
+    expected.geo_polygon.location.points.push(point1._self());
     doTest();
     
     geoPolygonFilter.points(point2).points(point3);
-    expected.geo_polygon.location.points.push(point2.get());
-    expected.geo_polygon.location.points.push(point3.get());
+    expected.geo_polygon.location.points.push(point2._self());
+    expected.geo_polygon.location.points.push(point3._self());
     doTest();
     
     geoPolygonFilter.points([point4, point5]);
-    expected.geo_polygon.location.points = [point4.get(), point5.get()];
+    expected.geo_polygon.location.points = [point4._self(), point5._self()];
     doTest();
     
     geoPolygonFilter.field('location2');
     expected = {
       geo_polygon: {
         location2: {
-          points: [point4.get(), point5.get()]
+          points: [point4._self(), point5._self()]
         }
       }
     };
@@ -1015,7 +1015,7 @@ exports.filters = {
       point2 = ejs.GeoPoint([37.7817289, -122.396181]),
       expected,
       doTest = function () {
-        test.deepEqual(geoBboxFilter.get(), expected);
+        test.deepEqual(geoBboxFilter._self(), expected);
       };
 
     expected = {
@@ -1026,15 +1026,15 @@ exports.filters = {
     };
 
     test.ok(geoBboxFilter, 'GeoBboxFilter exists');
-    test.ok(geoBboxFilter.get(), 'get() works');
+    test.ok(geoBboxFilter._self(), '_self() works');
     doTest();
 
     geoBboxFilter.topLeft(point1);
-    expected.geo_bounding_box.location.top_left = point1.get();
+    expected.geo_bounding_box.location.top_left = point1._self();
     doTest(); 
     
     geoBboxFilter.bottomRight(point2);
-    expected.geo_bounding_box.location.bottom_right = point2.get();
+    expected.geo_bounding_box.location.bottom_right = point2._self();
     doTest();
     
     geoBboxFilter.type('memory');
@@ -1053,8 +1053,8 @@ exports.filters = {
       geo_bounding_box: {
         type: 'indexed',
         location2: {
-          top_left: point1.get(),
-          bottom_right: point2.get()
+          top_left: point1._self(),
+          bottom_right: point2._self()
         }
       }
     };
@@ -1095,7 +1095,7 @@ exports.filters = {
       point1 = ejs.GeoPoint([37.7819288, -122.396480]),
       expected,
       doTest = function () {
-        test.deepEqual(geoDistanceFilter.get(), expected);
+        test.deepEqual(geoDistanceFilter._self(), expected);
       };
 
     expected = {
@@ -1105,7 +1105,7 @@ exports.filters = {
     };
     
     test.ok(geoDistanceFilter, 'GeoDistanceFilter exists');
-    test.ok(geoDistanceFilter.get(), 'get() works');
+    test.ok(geoDistanceFilter._self(), '_self() works');
     doTest();
 
     geoDistanceFilter.distance(10);
@@ -1113,14 +1113,14 @@ exports.filters = {
     doTest();
     
     geoDistanceFilter.point(point1),
-    expected.geo_distance.location = point1.get();
+    expected.geo_distance.location = point1._self();
     doTest();
     
     geoDistanceFilter.field('location2');
     expected = {
       geo_distance: {
         distance: 10,
-        location2: point1.get()
+        location2: point1._self()
       }
     };
     doTest();
@@ -1197,7 +1197,7 @@ exports.filters = {
       point1 = ejs.GeoPoint([37.7819288, -122.396480]),
       expected,
       doTest = function () {
-        test.deepEqual(geoDistanceRangeFilter.get(), expected);
+        test.deepEqual(geoDistanceRangeFilter._self(), expected);
       };
 
     expected = {
@@ -1207,7 +1207,7 @@ exports.filters = {
     };
     
     test.ok(geoDistanceRangeFilter, 'GeoDistanceRangeFilter exists');
-    test.ok(geoDistanceRangeFilter.get(), 'get() works');
+    test.ok(geoDistanceRangeFilter._self(), '_self() works');
     doTest();
 
     geoDistanceRangeFilter.from(10);
@@ -1219,7 +1219,7 @@ exports.filters = {
     doTest();
     
     geoDistanceRangeFilter.point(point1),
-    expected.geo_distance_range.location = point1.get();
+    expected.geo_distance_range.location = point1._self();
     doTest();
     
     geoDistanceRangeFilter.field('location2');
@@ -1227,7 +1227,7 @@ exports.filters = {
       geo_distance_range: {
         from: 10,
         to: 30,
-        location2: point1.get()
+        location2: point1._self()
       }
     };
     doTest();
@@ -1349,19 +1349,19 @@ exports.filters = {
       notFilter = ejs.NotFilter(termFilter1),
       expected,
       doTest = function () {
-        test.deepEqual(notFilter.get(), expected);
+        test.deepEqual(notFilter._self(), expected);
       };
 
     expected = {
-      not: termFilter1.get()
+      not: termFilter1._self()
     };
 
     test.ok(notFilter, 'NotFilter exists');
-    test.ok(notFilter.get(), 'get() works');
+    test.ok(notFilter._self(), '_self() works');
     doTest();
 
     notFilter.filter(termFilter2);
-    expected.not = termFilter2.get();
+    expected.not = termFilter2._self();
     doTest();
 
     notFilter.name('filter_name');
@@ -1398,25 +1398,25 @@ exports.filters = {
       andFilter = ejs.AndFilter(termFilter1),
       expected,
       doTest = function () {
-        test.deepEqual(andFilter.get(), expected);
+        test.deepEqual(andFilter._self(), expected);
       };
 
     expected = {
       and: {
-        filters: [termFilter1.get()]
+        filters: [termFilter1._self()]
       }
     };
 
     test.ok(andFilter, 'AndFilter exists');
-    test.ok(andFilter.get(), 'get() works');
+    test.ok(andFilter._self(), '_self() works');
     doTest();
 
     andFilter.filters(termFilter2);
-    expected.and.filters.push(termFilter2.get());
+    expected.and.filters.push(termFilter2._self());
     doTest();
 
     andFilter.filters([termFilter3, termFilter4]);
-    expected.and.filters = [termFilter3.get(), termFilter4.get()];
+    expected.and.filters = [termFilter3._self(), termFilter4._self()];
     doTest();
     
     andFilter.name('filter_name');
@@ -1459,7 +1459,7 @@ exports.filters = {
       start = new Date(1230768000000),
       end = new Date(start.getTime()),
       doTest = function () {
-        test.deepEqual(numericRangeFilter.get(), expected);
+        test.deepEqual(numericRangeFilter._self(), expected);
       };
 
     expected = {
@@ -1470,7 +1470,7 @@ exports.filters = {
     end.setFullYear(start.getFullYear() + 1);
 
     test.ok(numericRangeFilter, 'NumericRangeFilter exists');
-    test.ok(numericRangeFilter.get(), 'get() works');
+    test.ok(numericRangeFilter._self(), '_self() works');
     test.strictEqual(numericRangeFilter.field(), 'f1');
     doTest();
 
@@ -1565,7 +1565,7 @@ exports.filters = {
     var existsFilter = ejs.ExistsFilter('title'),
       expected,
       doTest = function () {
-        test.deepEqual(existsFilter.get(), expected);
+        test.deepEqual(existsFilter._self(), expected);
       };
 
     expected = {
@@ -1575,7 +1575,7 @@ exports.filters = {
     };
 
     test.ok(existsFilter, 'ExistsFilter exists');
-    test.ok(existsFilter.get(), 'get() works');
+    test.ok(existsFilter._self(), '_self() works');
     doTest();
 
     existsFilter.field('body');
@@ -1596,7 +1596,7 @@ exports.filters = {
     var prefixFilter = ejs.PrefixFilter('title'),
       expected,
       doTest = function () {
-        test.deepEqual(prefixFilter.get(), expected);
+        test.deepEqual(prefixFilter._self(), expected);
       };
 
     expected = {
@@ -1606,7 +1606,7 @@ exports.filters = {
     };
 
     test.ok(prefixFilter, 'PrefixFilter exists');
-    test.ok(prefixFilter.get(), 'get() works');
+    test.ok(prefixFilter._self(), '_self() works');
     doTest();
 
     prefixFilter.prefix('th');
@@ -1643,7 +1643,7 @@ exports.filters = {
     var missingFilter = ejs.MissingFilter('title'),
       expected,
       doTest = function () {
-        test.deepEqual(missingFilter.get(), expected);
+        test.deepEqual(missingFilter._self(), expected);
       };
 
     expected = {
@@ -1653,7 +1653,7 @@ exports.filters = {
     };
 
     test.ok(missingFilter, 'MissingFilter exists');
-    test.ok(missingFilter.get(), 'get() works');
+    test.ok(missingFilter._self(), '_self() works');
     doTest();
 
     missingFilter.field('body');
@@ -1685,29 +1685,29 @@ exports.filters = {
       orFilter = ejs.OrFilter(termFilter1),
       expected,
       doTest = function () {
-        test.deepEqual(orFilter.get(), expected);
+        test.deepEqual(orFilter._self(), expected);
       };
 
     expected = {
       or: {
-        filters: [termFilter1.get()]
+        filters: [termFilter1._self()]
       }
     };
 
     test.ok(orFilter, 'OrFilter exists');
-    test.ok(orFilter.get(), 'get() works');
+    test.ok(orFilter._self(), '_self() works');
     doTest();
 
     orFilter.filters(termFilter2);
-    expected.or.filters.push(termFilter2.get());
+    expected.or.filters.push(termFilter2._self());
     doTest();
 
     orFilter.filters([termFilter1, termFilter3]);
-    expected.or.filters = [termFilter1.get(), termFilter3.get()];
+    expected.or.filters = [termFilter1._self(), termFilter3._self()];
     doTest();
     
     orFilter = ejs.OrFilter([termFilter2, termFilter3]);
-    expected.or.filters = [termFilter2.get(), termFilter3.get()];
+    expected.or.filters = [termFilter2._self(), termFilter3._self()];
     doTest();
     
     orFilter.name('filter_name');

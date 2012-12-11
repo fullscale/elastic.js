@@ -13,18 +13,18 @@
     */
   ejs.CustomBoostFactorQuery = function (qry) {
 
-    if (!isEJSObject(qry)) {
+    if (!isQuery(qry)) {
       throw new TypeError('Argument must be a Query');
     }
     
     /**
-         The internal query object. <code>Use get()</code>
+         The internal query object. <code>Use _self()</code>
          @member ejs.CustomBoostFactorQuery
          @property {Object} query
          */
     var query = {
       custom_boost_factor: {
-        query: qry.get()
+        query: qry._self()
       }
     };
 
@@ -42,11 +42,11 @@
           return query.custom_boost_factor.query;
         }
     
-        if (!isEJSObject(q)) {
+        if (!isQuery(q)) {
           throw new TypeError('Argument must be a Query');
         }
         
-        query.custom_boost_factor.query = q.get();
+        query.custom_boost_factor.query = q._self();
         return this;
       },
   
@@ -93,13 +93,23 @@
       },
 
       /**
+            The type of ejs object.  For internal use only.
+            
+            @member ejs.CustomBoostFactorQuery
+            @returns {String} the type of object
+            */
+      _type: function () {
+        return 'query';
+      },
+      
+      /**
             Retrieves the internal <code>query</code> object. This is typically used by
             internal API functions so use with caution.
 
             @member ejs.CustomBoostFactorQuery
             @returns {String} returns this object's internal <code>query</code> property.
             */
-      get: function () {
+      _self: function () {
         return query;
       }
     };

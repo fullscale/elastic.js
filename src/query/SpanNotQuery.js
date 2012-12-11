@@ -17,19 +17,19 @@
     */
   ejs.SpanNotQuery = function (includeQry, excludeQry) {
 
-    if (!isEJSObject(includeQry) || !isEJSObject(excludeQry)) {
+    if (!isQuery(includeQry) || !isQuery(excludeQry)) {
       throw new TypeError('Argument must be a SpanQuery');
     }
     
     /**
-         The internal query object. <code>Use get()</code>
+         The internal query object. <code>Use _self()</code>
          @member ejs.SpanNotQuery
          @property {Object} query
          */
     var query = {
       span_not: {
-        include: includeQry.get(),
-        exclude: excludeQry.get()
+        include: includeQry._self(),
+        exclude: excludeQry._self()
       }
     };
 
@@ -47,11 +47,11 @@
           return query.span_not.include;
         }
       
-        if (!isEJSObject(spanQuery)) {
+        if (!isQuery(spanQuery)) {
           throw new TypeError('Argument must be a SpanQuery');
         }
         
-        query.span_not.include = spanQuery.get();
+        query.span_not.include = spanQuery._self();
         return this;
       },
 
@@ -67,11 +67,11 @@
           return query.span_not.exclude;
         }
       
-        if (!isEJSObject(spanQuery)) {
+        if (!isQuery(spanQuery)) {
           throw new TypeError('Argument must be a SpanQuery');
         }
         
-        query.span_not.exclude = spanQuery.get();
+        query.span_not.exclude = spanQuery._self();
         return this;
       },
 
@@ -102,13 +102,23 @@
       },
 
       /**
+            The type of ejs object.  For internal use only.
+            
+            @member ejs.SpanNotQuery
+            @returns {String} the type of object
+            */
+      _type: function () {
+        return 'query';
+      },
+      
+      /**
             Retrieves the internal <code>query</code> object. This is typically used by
             internal API functions so use with caution.
 
             @member ejs.SpanNotQuery
             @returns {String} returns this object's internal <code>query</code> property.
             */
-      get: function () {
+      _self: function () {
         return query;
       }
     };

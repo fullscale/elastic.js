@@ -17,19 +17,19 @@
      */
   ejs.BoostingQuery = function (positiveQry, negativeQry, negativeBoost) {
 
-    if (!isEJSObject(positiveQry) || !isEJSObject(negativeQry)) {
+    if (!isQuery(positiveQry) || !isQuery(negativeQry)) {
       throw new TypeError('Arguments must be Queries');
     }
     
     /**
-         The internal Query object. Use <code>get()</code>.
+         The internal Query object. Use <code>_self()</code>.
          @member ejs.BoostingQuery
          @property {Object} BoostingQuery
          */
     var query = {
       boosting: {
-        positive: positiveQry.get(),
-        negative: negativeQry.get(),
+        positive: positiveQry._self(),
+        negative: negativeQry._self(),
         negative_boost: negativeBoost
       }
     };
@@ -50,11 +50,11 @@
           return query.boosting.positive;
         }
     
-        if (!isEJSObject(oQuery)) {
+        if (!isQuery(oQuery)) {
           throw new TypeError('Argument must be a Query');
         }
         
-        query.boosting.positive = oQuery.get();
+        query.boosting.positive = oQuery._self();
         return this;
       },
 
@@ -73,11 +73,11 @@
           return query.boosting.negative;
         }
     
-        if (!isEJSObject(oQuery)) {
+        if (!isQuery(oQuery)) {
           throw new TypeError('Argument must be a Query');
         }
         
-        query.boosting.negative = oQuery.get();
+        query.boosting.negative = oQuery._self();
         return this;
       },
    
@@ -123,12 +123,23 @@
       },
 
       /**
+            The type of ejs object.  For internal use only.
+            
+            @member ejs.BoostingQuery
+            @returns {String} the type of object
+            */
+      _type: function () {
+        return 'query';
+      },
+      
+      /**
             This method is used to retrieve the raw query object. It's designed
             for internal use when composing and serializing queries.
+            
             @member ejs.BoostingQuery
             @returns {Object} Returns the object's <em>query</em> property.
             */
-      get: function () {
+      _self: function () {
         return query;
       }
     };

@@ -212,12 +212,22 @@
       },
 
       /**
+            The type of ejs object.  For internal use only.
+            
+            @member ejs.FuzzyQuery
+            @returns {String} the type of object
+            */
+      _type: function () {
+        return 'query';
+      },
+      
+      /**
             This method is used to retrieve the raw query object. It's designed
             for internal use when composing and serializing queries.
             @member ejs.FuzzyQuery
             @returns {Object} Returns the object's <em>query</em> property.
             */
-      get: function () {
+      _self: function () {
         return query;
       }
     };

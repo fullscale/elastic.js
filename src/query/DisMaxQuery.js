@@ -15,7 +15,7 @@
   ejs.DisMaxQuery = function () {
 
     /**
-         The internal query object. <code>Use get()</code>
+         The internal query object. <code>Use _self()</code>
          @member ejs.DisMaxQuery
          @property {Object} query
          */
@@ -45,16 +45,16 @@
           query.dis_max.queries = [];
         }
         
-        if (isEJSObject(qs)) {
-          query.dis_max.queries.push(qs.get());
+        if (isQuery(qs)) {
+          query.dis_max.queries.push(qs._self());
         } else if (isArray(qs)) {
           query.dis_max.queries = [];
           for (i = 0, len = qs.length; i < len; i++) {
-            if (!isEJSObject(qs[i])) {
+            if (!isQuery(qs[i])) {
               throw new TypeError('Argument must be array of Queries');
             }
             
-            query.dis_max.queries.push(qs[i].get());
+            query.dis_max.queries.push(qs[i]._self());
           }
         } else {
           throw new TypeError('Argument must be a Query or array of Queries');
@@ -111,13 +111,23 @@
       },
 
       /**
+            The type of ejs object.  For internal use only.
+            
+            @member ejs.DisMaxQuery
+            @returns {String} the type of object
+            */
+      _type: function () {
+        return 'query';
+      },
+      
+      /**
             Retrieves the internal <code>query</code> object. This is typically used by
             internal API functions so use with caution.
 
             @member ejs.DisMaxQuery
             @returns {String} returns this object's internal <code>query</code> property.
             */
-      get: function () {
+      _self: function () {
         return query;
       }
     };

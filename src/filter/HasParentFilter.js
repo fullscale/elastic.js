@@ -13,18 +13,18 @@
     */
   ejs.HasParentFilter = function (qry, parentType) {
 
-    if (!isEJSObject(qry)) {
+    if (!isQuery(qry)) {
       throw new TypeError('No Query object found');
     }
     
     /**
-         The internal filter object. <code>Use get()</code>
+         The internal filter object. <code>Use _self()</code>
          @member ejs.HasParentFilter
          @property {Object} query
          */
     var filter = {
       has_parent: {
-        query: qry.get(),
+        query: qry._self(),
         parent_type: parentType
       }
     };
@@ -43,11 +43,11 @@
           return filter.has_parent.query;
         }
 
-        if (!isEJSObject(q)) {
+        if (!isQuery(q)) {
           throw new TypeError('Argument must be a Query object');
         }
         
-        filter.has_parent.query = q.get();
+        filter.has_parent.query = q._self();
         return this;
       },
 
@@ -111,13 +111,23 @@
       },
 
       /**
+            The type of ejs object.  For internal use only.
+            
+            @member ejs.HasParentFilter
+            @returns {String} the type of object
+            */
+      _type: function () {
+        return 'filter';
+      },
+      
+      /**
             Retrieves the internal <code>filter</code> object. This is typically used by
             internal API functions so use with caution.
 
             @member ejs.HasParentFilter
             @returns {String} returns this object's internal <code>filter</code> property.
             */
-      get: function () {
+      _self: function () {
         return filter;
       }
     };

@@ -21,7 +21,7 @@
   ejs.ConstantScoreQuery = function () {
 
     /**
-         The internal Query object. Use <code>get()</code>.
+         The internal Query object. Use <code>_self()</code>.
          @member ejs.ConstantScoreQuery
          @property {Object} query
          */
@@ -42,11 +42,11 @@
           return query.constant_score.query;
         }
       
-        if (!isEJSObject(oQuery)) {
+        if (!isQuery(oQuery)) {
           throw new TypeError('Argument must be a Query');
         }
         
-        query.constant_score.query = oQuery.get();
+        query.constant_score.query = oQuery._self();
         return this;
       },
 
@@ -62,11 +62,11 @@
           return query.constant_score.filter;
         }
       
-        if (!isEJSObject(oFilter)) {
+        if (!isFilter(oFilter)) {
           throw new TypeError('Argument must be a Filter');
         }
         
-        query.constant_score.filter = oFilter.get();
+        query.constant_score.filter = oFilter._self();
         return this;
       },
 
@@ -128,12 +128,23 @@
       },
 
       /**
+            The type of ejs object.  For internal use only.
+            
+            @member ejs.ConstantScoreQuery
+            @returns {String} the type of object
+            */
+      _type: function () {
+        return 'query';
+      },
+      
+      /**
             This method is used to retrieve the raw query object. It's designed
             for internal use when composing and serializing queries.
+            
             @member ejs.ConstantScoreQuery
             @returns {Object} Returns the object's <em>query</em> property.
             */
-      get: function () {
+      _self: function () {
         return query;
       }
     };

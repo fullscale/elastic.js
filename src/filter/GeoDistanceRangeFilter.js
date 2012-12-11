@@ -14,7 +14,7 @@
   ejs.GeoDistanceRangeFilter = function (fieldName) {
 
     /**
-         The internal filter object. Use <code>get()</code>
+         The internal filter object. Use <code>_self()</code>
 
          @member ejs.GeoDistanceRangeFilter
          @property {Object} filter
@@ -238,8 +238,8 @@
           return filter.geo_distance_range[fieldName];
         }
       
-        if (isEJSObject(p)) {
-          filter.geo_distance_range[fieldName] = p.get();
+        if (isGeoPoint(p)) {
+          filter.geo_distance_range[fieldName] = p._self();
         } else {
           throw new TypeError('Argument must be a GeoPoint');
         }
@@ -371,12 +371,22 @@
       },
 
       /**
+            The type of ejs object.  For internal use only.
+            
+            @member ejs.GeoDistanceRangeFilter
+            @returns {String} the type of object
+            */
+      _type: function () {
+        return 'filter';
+      },
+      
+      /**
              Returns the filter object.
 
              @member ejs.GeoDistanceRangeFilter
              @returns {Object} filter object
              */
-      get: function () {
+      _self: function () {
         return filter;
       }
     };

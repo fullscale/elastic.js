@@ -171,7 +171,7 @@
           return facet[name].facet_filter;
         }
       
-        facet[name].facet_filter = oFilter.get();
+        facet[name].facet_filter = oFilter._self();
         return this;
       },
 
@@ -186,13 +186,23 @@
       },
 
       /**
+            The type of ejs object.  For internal use only.
+            
+            @member ejs.HistogramFacet
+            @returns {String} the type of object
+            */
+      _type: function () {
+        return 'facet';
+      },
+      
+      /**
             <p>Retrieves the internal <code>facet</code> object. This is typically used by
                internal API functions so use with caution.</p>
 
             @member ejs.HistogramFacet
             @returns {String} returns this object's internal <code>facet</code> property.
             */
-      get: function () {
+      _self: function () {
         return facet;
       }
     };

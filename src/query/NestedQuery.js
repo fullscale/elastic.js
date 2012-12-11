@@ -24,7 +24,7 @@
   ejs.NestedQuery = function (path) {
 
     /**
-         The internal Query object. Use <code>get()</code>.
+         The internal Query object. Use <code>_self()</code>.
          
          @member ejs.NestedQuery
          @property {Object} query
@@ -65,11 +65,11 @@
           return query.nested.query;
         }
     
-        if (!isEJSObject(oQuery)) {
+        if (!isQuery(oQuery)) {
           throw new TypeError('Argument must be a Query');
         }
         
-        query.nested.query = oQuery.get();
+        query.nested.query = oQuery._self();
         return this;
       },
 
@@ -86,11 +86,11 @@
           return query.nested.filter;
         }
     
-        if (!isEJSObject(oFilter)) {
+        if (!isFilter(oFilter)) {
           throw new TypeError('Argument must be a Filter');
         }
         
-        query.nested.filter = oFilter.get();
+        query.nested.filter = oFilter._self();
         return this;
       },
 
@@ -161,13 +161,23 @@
       },
 
       /**
+            The type of ejs object.  For internal use only.
+            
+            @member ejs.NestedQuery
+            @returns {String} the type of object
+            */
+      _type: function () {
+        return 'query';
+      },
+      
+      /**
             This method is used to retrieve the raw query object. It's designed
             for internal use when composing and serializing queries.
             
             @member ejs.NestedQuery
             @returns {Object} Returns the object's <em>query</em> property.
             */
-      get: function () {
+      _self: function () {
         return query;
       }
     };

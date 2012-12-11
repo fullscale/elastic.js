@@ -35,7 +35,14 @@
     isNumber,
     isFunction,
     isEJSObject, // checks if valid ejs object
-
+    isQuery, // checks valid ejs Query object
+    isFilter, // checks valid ejs Filter object
+    isFacet, // checks valid ejs Facet object
+    isComputedProperty, // checks valid ejs ComputedProperty object
+    isGeoPoint, // checks valid ejs GeoPoint object
+    isIndexedShape, // checks valid ejs IndexedShape object
+    isShape, // checks valid ejs Shape object
+    
     // create ejs object
     ejs;
     
