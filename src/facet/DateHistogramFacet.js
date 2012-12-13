@@ -80,7 +80,7 @@
       },
 
       /**
-            By default, time values in Cloud9 are stored in UTC format. This method allows users
+            By default, time values are stored in UTC format. This method allows users
             to set a time zone value that is then used to compute intervals.
 
             @member ejs.DateHistogramFacet

@@ -1,9 +1,7 @@
   /**
     @class
-    <p>The <code>Request</code> object provides methods for performing searches
-       against data stored in Cloud9. Search is an inherent part of Cloud9 and
-       fundemental to how documents are actually stored on disk. With that said,
-       the mere act of storing a document means it's a searchable entity.</p>
+    <p>The <code>Request</code> object provides methods generating and 
+    executing search requests.</p>
 
     <p><strong>Note:</strong> This module contains a related code example.&nbsp;
     <a target="_blank" class="btn c9" href="https://gist.github.com/1895052">View Code Example</a></p>
@@ -11,11 +9,13 @@
     @name ejs.Request
 
     @desc
-    <p>Provides methods for searching data stored in Cloud9.</p>
+    <p>Provides methods for executing search requests</p>
 
-    @param {Object} conf A configuration object containing the index and type to search
-    against. Both object properties expect <code>Array</code> values and allow users to
-    specify multiple values for each. See example below.<br>
+    @param {Object} conf A configuration object containing the initilization
+      parameters.  The following parameters can be set in the conf object:
+        collections - single collection name or array of collections to search
+        types - single type name or array of types to search
+        routing - the shard routing value
     */
   ejs.Request = function (conf) {
 
@@ -185,7 +185,7 @@
             query that will be used when the search is executed using <code>_self()</code>.
 
             @member ejs.Request
-            @param {Query} someQuery Any valid Cloud9 <code>Query</code> object.
+            @param {Query} someQuery Any valid <code>Query</code> object.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       query: function (someQuery) {
@@ -254,7 +254,7 @@
             be set, all of which will be returned when the search is executed using <code>_self()</code>.
 
             @member ejs.Request
-            @param {Facet} facet Any valid Cloud9 <code>Facet</code> object.
+            @param {Facet} facet Any valid <code>Facet</code> object.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       facet: function (facet) {
@@ -461,7 +461,7 @@
             Computes a document property dynamically based on the supplied <code>ComputedProperty</code>.
 
             @member ejs.Request
-            @param {ComputedProperty} oComputedProperty A valid Cloud9 <code>ComputedProperty</code>.
+            @param {ComputedProperty} oComputedProperty A valid <code>ComputedProperty</code>.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       computedProperty: function (oComputedProperty) {
