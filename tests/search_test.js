@@ -231,38 +231,38 @@ exports.search = {
     test.deepEqual(req.indices(), ['index1']);
     test.deepEqual(req.types(), ['type1']);
     expectedPath = '/index1/type1/_search';
-    req.search();
+    req.doSearch();
 
     req.indices([]);
     test.deepEqual(req.indices(), ['_all']);
     expectedPath = '/_all/type1/_search';
-    req.search();
+    req.doSearch();
 
     req.types([]);
     test.deepEqual(req.types(), []);
     expectedPath = '/_all/_search';
-    req.search();
+    req.doSearch();
 
     req.indices([]);
     test.deepEqual(req.indices(), []);
     expectedPath = '/_search';
-    req.search();
+    req.doSearch();
 
     req.indices(['index1', 'index2']);
     test.deepEqual(req.indices(), ['index1', 'index2']);
     expectedPath = '/index1,index2/_search';
-    req.search();
+    req.doSearch();
 
     req.types(['type1', 'type2']);
     test.deepEqual(req.types(), ['type1', 'type2']);
     expectedPath = '/index1,index2/type1,type2/_search';
-    req.search();
+    req.doSearch();
 
     req = ejs.Request({});
     test.deepEqual(req.indices(), []);
     test.deepEqual(req.types(), []);
     expectedPath = '/_search';
-    req.search();
+    req.doSearch();
     
     req = ejs.Request({
       indices: 'index1',
@@ -271,7 +271,7 @@ exports.search = {
     test.deepEqual(req.indices(), ['index1']);
     test.deepEqual(req.types(), ['type1']);
     expectedPath = '/index1/type1/_search';
-    req.search();
+    req.doSearch();
 
     req = ejs.Request({
       types: 'type1'
@@ -279,26 +279,26 @@ exports.search = {
     test.deepEqual(req.indices(), ['_all']);
     test.deepEqual(req.types(), ['type1']);
     expectedPath = '/_all/type1/_search';
-    req.search();
+    req.doSearch();
 
     req = ejs.Request({routing: 'route1'});
     test.deepEqual(req.routing(), 'route1');
     expectedPath = '/_search?routing=route1';
-    req.search();
+    req.doSearch();
     
     req.routing('');
     test.deepEqual(req.routing(), '');
     expectedPath = '/_search';
-    req.search();
+    req.doSearch();
     
     req.routing('route2,route3');
     test.deepEqual(req.routing(), 'route2,route3');
     expectedPath = '/_search?routing=route2%2Croute3';
-    req.search();
+    req.doSearch();
     
     req.timeout(5000);
     expected.timeout = 5000;
-    req.search();
+    req.doSearch();
     
     test.strictEqual(req.toString(), JSON.stringify(expected));
 

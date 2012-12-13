@@ -609,7 +609,7 @@
             @param {Function} fnCallBack A callback function that handles the search response.
             @returns {void} Returns the value of the callback when executing on the server.
             */
-      search: function (fnCallBack) {
+      doSearch: function (fnCallBack) {
         var 
           queryData = JSON.stringify(query),
           searchUrl = '';
