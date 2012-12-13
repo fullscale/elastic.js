@@ -13,8 +13,8 @@
 
     @param {Object} conf A configuration object containing the initilization
       parameters.  The following parameters can be set in the conf object:
-        collections - single collection name or array of collections to search
-        types - single type name or array of types to search
+        indices - single index name or array of index names
+        types - single type name or array of types
         routing - the shard routing value
     */
   ejs.Request = function (conf) {
@@ -33,12 +33,12 @@
 
     conf = conf || {};
     // check if we are searching across any specific indeices        
-    if (conf.collections == null) {
+    if (conf.indices == null) {
       indices = [];
-    } else if (isString(conf.collections)) {
-      indices = [conf.collections];
+    } else if (isString(conf.indices)) {
+      indices = [conf.indices];
     } else {
-      indices = conf.collections;
+      indices = conf.indices;
     }
 
     // check if we are searching across any specific types
@@ -182,7 +182,7 @@
 
       /**
             Allows you to set the specified query on this search object. This is the
-            query that will be used when the search is executed using <code>_self()</code>.
+            query that will be used when the search is executed.
 
             @member ejs.Request
             @param {Query} someQuery Any valid <code>Query</code> object.
@@ -198,14 +198,14 @@
       },
 
       /**
-            Allows you to set the specified collections on this request object. This is the
-            set of collections that will be used when the search is executed using <code>_self()</code>.
+            Allows you to set the specified indices on this request object. This is the
+            set of indices that will be used when the search is executed.
 
             @member ejs.Request
             @param {Array} indexArray An array of collection names.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
-      collections: function (indexArray) {
+      indices: function (indexArray) {
         if (indexArray == null) {
           return indices;
         } else if (typeof indexArray === "string") {
@@ -225,7 +225,7 @@
 
       /**
             Allows you to set the specified content-types on this request object. This is the
-            set of collections that will be used when the search is executed using <code>_self()</code>.
+            set of indices that will be used when the search is executed.
 
             @member ejs.Request
             @param {Array} typeArray An array of content-type names.
@@ -251,7 +251,7 @@
 
       /**
             Allows you to set the specified facet on this request object. Multiple facets can
-            be set, all of which will be returned when the search is executed using <code>_self()</code>.
+            be set, all of which will be returned when the search is executed.
 
             @member ejs.Request
             @param {Facet} facet Any valid <code>Facet</code> object.
