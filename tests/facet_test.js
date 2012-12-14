@@ -232,7 +232,7 @@ exports.facets = {
     test.done();
   },
   DateHistogramFacet: function (test) {
-    test.expect(7);
+    test.expect(24);
 
     var dateHistogramFacet = ejs.DateHistogramFacet('somename'),
       termFilter = ejs.TermFilter('t1', 'v1'),
@@ -243,7 +243,7 @@ exports.facets = {
 
     expected = {
       somename: {
-        'date_histogram': {}
+        date_histogram: {}
       }
     };
 
@@ -259,7 +259,7 @@ exports.facets = {
     expected.somename.date_histogram.interval = 'year';
     doTest();
 
-    dateHistogramFacet.filter(termFilter);
+    dateHistogramFacet.facetFilter(termFilter);
     expected.somename.facet_filter = termFilter._self();
     doTest();
 
@@ -267,6 +267,68 @@ exports.facets = {
     expected.somename.date_histogram.time_zone = 5;
     doTest();
 
+    dateHistogramFacet.keyField('pubdatekeys');
+    expected.somename.date_histogram.key_field = 'pubdatekeys';
+    doTest();
+    
+    dateHistogramFacet.valueField('pubdatevalues');
+    expected.somename.date_histogram.value_field = 'pubdatevalues';
+    doTest();
+    
+    dateHistogramFacet.preZone(-8);
+    expected.somename.date_histogram.pre_zone = -8;
+    doTest();
+    
+    dateHistogramFacet.preZoneAdjustLargeInterval(true);
+    expected.somename.date_histogram.pre_zone_adjust_large_interval = true;
+    doTest();
+    
+    dateHistogramFacet.postZone(-5);
+    expected.somename.date_histogram.post_zone = -5;
+    doTest();
+    
+    dateHistogramFacet.preOffset('1h');
+    expected.somename.date_histogram.pre_offset = '1h';
+    doTest();
+    
+    dateHistogramFacet.postOffset('2d');
+    expected.somename.date_histogram.post_offset = '2d';
+    doTest();
+    
+    dateHistogramFacet.factor(1000);
+    expected.somename.date_histogram.factor = 1000;
+    doTest();
+    
+    dateHistogramFacet.valueScript('script');
+    expected.somename.date_histogram.value_script = 'script';
+    doTest();
+    
+    dateHistogramFacet.order('time');
+    expected.somename.date_histogram.order = 'time';
+    doTest();
+    
+    dateHistogramFacet.order('INVALID');
+    doTest();
+    
+    dateHistogramFacet.order('COUNT');
+    expected.somename.date_histogram.order = 'count';
+    doTest();
+    
+    dateHistogramFacet.order('Total');
+    expected.somename.date_histogram.order = 'total';
+    doTest();
+    
+    dateHistogramFacet.lang('mvel');
+    expected.somename.date_histogram.lang = 'mvel';
+    doTest();
+    
+    test.strictEqual(dateHistogramFacet._type(), 'facet');
+    test.strictEqual(dateHistogramFacet.toString(), JSON.stringify(expected));
+    
+    test.throws(function () {
+      dateHistogramFacet.facetFilter('invalid');
+    }, TypeError);
+    
     test.done();
   },
   QueryFacet: function (test) {

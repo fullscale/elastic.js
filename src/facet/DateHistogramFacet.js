@@ -64,6 +64,38 @@
       },
 
       /**
+            Allows you to specify a different key field to be used to group intervals.
+
+            @member ejs.DateHistogramFacet
+            @param {String} fieldName The name of the field to be used.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      keyField: function (fieldName) {
+        if (fieldName == null) {
+          return facet[name].date_histogram.key_field;
+        }
+      
+        facet[name].date_histogram.key_field = fieldName;
+        return this;
+      },
+      
+      /**
+            Allows you to specify a different value field to aggrerate over.
+
+            @member ejs.DateHistogramFacet
+            @param {String} fieldName The name of the field to be used.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      valueField: function (fieldName) {
+        if (fieldName == null) {
+          return facet[name].date_histogram.value_field;
+        }
+      
+        facet[name].date_histogram.value_field = fieldName;
+        return this;
+      },
+      
+      /**
             Sets the bucket interval used to calculate the distribution.
 
             @member ejs.DateHistogramFacet
@@ -81,10 +113,15 @@
 
       /**
             By default, time values are stored in UTC format. This method allows users
-            to set a time zone value that is then used to compute intervals.
+            to set a time zone value that is then used to compute intervals 
+            before rounding on the interval value.  Equalivent to 
+            <coe>preZone</code>.  Use <code>preZone</code> if possible.  The 
+            value is an offset from UTC.
+            
+            For example, to use EST you would set the value to <code>-5</code>.
 
             @member ejs.DateHistogramFacet
-            @param {Integer} tz An offset value from UTC. For example, <code>-5</code> would indicate EST.
+            @param {Integer} tz An offset value from UTC.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       timeZone: function (tz) {
@@ -97,37 +134,121 @@
       },
 
       /**
-            Allows you to specify a different value field to aggrerate over.
+            By default, time values are stored in UTC format. This method allows users
+            to set a time zone value that is then used to compute intervals 
+            before rounding on the interval value.  The value is an offset
+            from UTC.
+            
+            For example, to use EST you would set the value to <code>-5</code>.
 
             @member ejs.DateHistogramFacet
-            @param {String} fieldName The name of the field to be used.
+            @param {Integer} tz An offset value from UTC.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
-      valueField: function (fieldName) {
-        if (fieldName == null) {
-          return facet[name].date_histogram.value_field;
+      preZone: function (tz) {
+        if (tz == null) {
+          return facet[name].date_histogram.pre_zone;
         }
       
-        facet[name].date_histogram.value_field = fieldName;
+        facet[name].date_histogram.pre_zone = tz;
+        return this;
+      },
+      
+      /**
+            Enables large date interval conversions (day and up).  Set to 
+            true to enable and then set the <code>interval</code> to an 
+            interval greater than a day.
+            
+            @member ejs.DateHistogramFacet
+            @param {Boolean} trueFalse A valid boolean value.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      preZoneAdjustLargeInterval: function (trueFalse) {
+        if (trueFalse == null) {
+          return facet[name].date_histogram.pre_zone_adjust_large_interval;
+        }
+      
+        facet[name].date_histogram.pre_zone_adjust_large_interval = trueFalse;
+        return this;
+      },
+      
+      /**
+            By default, time values are stored in UTC format. This method allows users
+            to set a time zone value that is then used to compute intervals 
+            after rounding on the interval value.  The value is an offset
+            from UTC.  The tz offset value is simply added to the resulting 
+            bucket's date value.
+            
+            For example, to use EST you would set the value to <code>-5</code>.
+
+            @member ejs.DateHistogramFacet
+            @param {Integer} tz An offset value from UTC.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      postZone: function (tz) {
+        if (tz == null) {
+          return facet[name].date_histogram.post_zone;
+        }
+      
+        facet[name].date_histogram.post_zone = tz;
         return this;
       },
 
       /**
-            Allows you to specify a different key field to be used to group intervals.
+            Set's a specific pre-rounding offset.  Format is 1d, 1h, etc.
 
             @member ejs.DateHistogramFacet
-            @param {String} fieldName The name of the field to be used.
+            @param {String} offset The offset as a string (1d, 1h, etc)
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
-      keyField: function (fieldName) {
-        if (fieldName == null) {
-          return facet[name].date_histogram.key_field;
+      preOffset: function (offset) {
+        if (offset == null) {
+          return facet[name].date_histogram.pre_offset;
         }
       
-        facet[name].date_histogram.key_field = fieldName;
+        facet[name].date_histogram.pre_offset = offset;
         return this;
       },
+      
+      /**
+            Set's a specific post-rounding offset.  Format is 1d, 1h, etc.
 
+            @member ejs.DateHistogramFacet
+            @param {String} offset The offset as a string (1d, 1h, etc)
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      postOffset: function (offset) {
+        if (offset == null) {
+          return facet[name].date_histogram.post_offset;
+        }
+      
+        facet[name].date_histogram.post_offset = offset;
+        return this;
+      },
+      
+      /**
+            The date histogram works on numeric values (since time is stored 
+            in milliseconds since the epoch in UTC). But, sometimes, systems 
+            will store a different resolution (like seconds since UTC) in a 
+            numeric field. The factor parameter can be used to change the 
+            value in the field to milliseconds to actual do the relevant 
+            rounding, and then be applied again to get to the original unit. 
+            For example, when storing in a numeric field seconds resolution, 
+            the factor can be set to 1000.
+
+            @member ejs.DateHistogramFacet
+            @param {Integer} f The conversion factor.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      factor: function (f) {
+        if (f == null) {
+          return facet[name].date_histogram.factor;
+        }
+      
+        facet[name].date_histogram.factor = f;
+        return this;
+      },
+      
       /**
             Allows you modify the <code>value</code> field using a script. The modified value
             is then used to compute the statistical data.
@@ -145,6 +266,31 @@
         return this;
       },
 
+      /**
+            Sets the type of ordering that will be performed on the date
+            buckets.  Valid values are:
+            
+            time - the default, sort by the buckets start time in milliseconds.
+            count - sort by the number of items in the bucket
+            total - sort by the sum/total of the items in the bucket
+            
+            @member ejs.DateHistogramFacet
+            @param {String} o The ordering method: time, count, or total.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      order: function (o) {
+        if (o == null) {
+          return facet[name].date_histogram.order;
+        }
+      
+        o = o.toLowerCase();
+        if (o === 'time' || o === 'count' || o === 'total') {
+          facet[name].date_histogram.order = o;
+        }
+        
+        return this;
+      },
+      
       /**
             The script language being used. Currently supported values are
             <code>javascript</code>, <code>groovy</code>, and <code>mvel</code>.
@@ -169,11 +315,15 @@
             @param {Object} oFilter A valid <code>Filter</code> object.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
-      filter: function (oFilter) {
+      facetFilter: function (oFilter) {
         if (oFilter == null) {
           return facet[name].facet_filter;
         }
       
+        if (!isFilter(oFilter)) {
+          throw new TypeError('Argument must be a Filter');
+        }
+        
         facet[name].facet_filter = oFilter._self();
         return this;
       },
