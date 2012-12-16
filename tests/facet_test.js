@@ -361,7 +361,7 @@ exports.facets = {
     test.done();
   },
   FilterFacet: function (test) {
-    test.expect(5);
+    test.expect(8);
 
     var filterFacet = ejs.FilterFacet('somename'),
       termFilter1 = ejs.TermFilter('t1', 'v1'),
@@ -387,6 +387,16 @@ exports.facets = {
     expected.somename.facet_filter = termFilter2._self();
     doTest();
 
+    test.strictEqual(filterFacet.toString(), JSON.stringify(expected));
+    
+    test.throws(function () {
+      filterFacet.filter('invalid');
+    }, TypeError);
+    
+    test.throws(function () {
+      filterFacet.facetFilter('invalid');
+    }, TypeError);
+    
     test.done();
   },
   HistogramFacet: function (test) {
