@@ -309,6 +309,24 @@
       },
 
       /**
+            Sets parameters that will be applied to the script.  Overwrites 
+            any existing params.
+
+            @member ejs.DateHistogramFacet
+            @param {Object} p An object where the keys are the parameter name and 
+              values are the parameter value.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      params: function (p) {
+        if (p == null) {
+          return facet[name].date_histogram.params;
+        }
+    
+        facet[name].date_histogram.params = p;
+        return this;
+      },
+      
+      /**
             <p>Allows you to reduce the documents used for computing facet results.</p>
 
             @member ejs.DateHistogramFacet

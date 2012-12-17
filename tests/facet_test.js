@@ -292,7 +292,7 @@ exports.facets = {
     test.done();
   },
   DateHistogramFacet: function (test) {
-    test.expect(24);
+    test.expect(25);
 
     var dateHistogramFacet = ejs.DateHistogramFacet('somename'),
       termFilter = ejs.TermFilter('t1', 'v1'),
@@ -380,6 +380,10 @@ exports.facets = {
     
     dateHistogramFacet.lang('mvel');
     expected.somename.date_histogram.lang = 'mvel';
+    doTest();
+    
+    dateHistogramFacet.params({p1: 'v1', p2: false});
+    expected.somename.date_histogram.params = {p1: 'v1', p2: false};
     doTest();
     
     test.strictEqual(dateHistogramFacet._type(), 'facet');
