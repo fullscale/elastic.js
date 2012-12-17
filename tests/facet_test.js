@@ -464,7 +464,7 @@ exports.facets = {
     test.done();
   },
   HistogramFacet: function (test) {
-    test.expect(6);
+    test.expect(21);
 
     var histogramFacet = ejs.HistogramFacet('somename'),
       termFilter = ejs.TermFilter('t1', 'v1'),
@@ -491,10 +491,67 @@ exports.facets = {
     expected.somename.histogram.interval = 100;
     doTest();
 
-    histogramFacet.filter(termFilter);
+    histogramFacet.timeInterval('1d');
+    expected.somename.histogram.time_interval = '1d';
+    doTest();
+    
+    histogramFacet.from(100);
+    expected.somename.histogram.from = 100;
+    doTest();
+    
+    histogramFacet.to(600);
+    expected.somename.histogram.to = 600;
+    doTest();
+    
+    histogramFacet.order('key');
+    expected.somename.histogram.order = 'key';
+    doTest();
+    
+    histogramFacet.order('INVALID');
+    doTest();
+    
+    histogramFacet.order('COUNT');
+    expected.somename.histogram.order = 'count';
+    doTest();
+    
+    histogramFacet.order('Total');
+    expected.somename.histogram.order = 'total';
+    doTest();
+    
+    histogramFacet.valueField('pricevals');
+    expected.somename.histogram.value_field = 'pricevals';
+    doTest();
+    
+    histogramFacet.keyField('pricekeys');
+    expected.somename.histogram.key_field = 'pricekeys';
+    doTest();
+    
+    histogramFacet.valueScript('script');
+    expected.somename.histogram.value_script = 'script';
+    doTest();
+    
+    histogramFacet.keyScript('script2');
+    expected.somename.histogram.key_script = 'script2';
+    doTest();
+    
+    histogramFacet.lang('mvel');
+    expected.somename.histogram.lang = 'mvel';
+    doTest();
+    
+    histogramFacet.params({p1: 'v1', p2: false});
+    expected.somename.histogram.params = {p1: 'v1', p2: false};
+    doTest();
+    
+    histogramFacet.facetFilter(termFilter);
     expected.somename.facet_filter = termFilter._self();
     doTest();
 
+    test.strictEqual(histogramFacet.toString(), JSON.stringify(expected));
+    
+    test.throws(function () {
+      histogramFacet.facetFilter('invalid');
+    }, TypeError);
+    
     test.done();
   },
   RangeFacet: function (test) {

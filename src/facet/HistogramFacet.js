@@ -77,6 +77,61 @@
       },
 
       /**
+            Sets the bucket interval used to calculate the distribution based
+            on a time value such as "1d", "1w", etc.
+
+            @member ejs.HistogramFacet
+            @param {Number} timeInterval The bucket interval in which to group values.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      timeInterval: function (timeInterval) {
+        if (timeInterval == null) {
+          return facet[name].histogram.time_interval;
+        }
+      
+        facet[name].histogram.time_interval = timeInterval;
+        return this;
+      },
+
+      /**
+            Sets the "from", "start", or lower bounds bucket.  For example if 
+            you have a value of 1023, an interval of 100, and a from value of 
+            1500, it will be placed into the 1500 bucket vs. the normal bucket 
+            of 1000.
+
+            @member ejs.HistogramFacet
+            @param {Number} from the lower bounds bucket value.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      from: function (from) {
+        if (from == null) {
+          return facet[name].histogram.from;
+        }
+      
+        facet[name].histogram.from = from;
+        return this;
+      },
+
+      /**
+            Sets the "to", "end", or upper bounds bucket.  For example if 
+            you have a value of 1023, an interval of 100, and a to value of 
+            900, it will be placed into the 900 bucket vs. the normal bucket 
+            of 1000.
+
+            @member ejs.HistogramFacet
+            @param {Number} to the upper bounds bucket value.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      to: function (to) {
+        if (to == null) {
+          return facet[name].histogram.to;
+        }
+      
+        facet[name].histogram.to = to;
+        return this;
+      },
+                  
+      /**
             Allows you to specify a different value field to aggrerate over.
 
             @member ejs.HistogramFacet
@@ -135,10 +190,10 @@
             */
       keyScript: function (scriptCode) {
         if (scriptCode == null) {
-          return facet[name].histogram.value_script;
+          return facet[name].histogram.key_script;
         }
       
-        facet[name].histogram.value_script = scriptCode;
+        facet[name].histogram.key_script = scriptCode;
         return this;
       },
 
@@ -160,17 +215,64 @@
       },
 
       /**
+            Sets parameters that will be applied to the script.  Overwrites 
+            any existing params.
+
+            @member ejs.HistogramFacet
+            @param {Object} p An object where the keys are the parameter name and 
+              values are the parameter value.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      params: function (p) {
+        if (p == null) {
+          return facet[name].histogram.params;
+        }
+    
+        facet[name].histogram.params = p;
+        return this;
+      },
+      
+      /**
+            Sets the type of ordering that will be performed on the date
+            buckets.  Valid values are:
+            
+            key - the default, sort by the bucket's key value
+            count - sort by the number of items in the bucket
+            total - sort by the sum/total of the items in the bucket
+            
+            @member ejs.HistogramFacet
+            @param {String} o The ordering method: time, count, or total.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      order: function (o) {
+        if (o == null) {
+          return facet[name].histogram.order;
+        }
+      
+        o = o.toLowerCase();
+        if (o === 'key' || o === 'count' || o === 'total') {
+          facet[name].histogram.order = o;
+        }
+        
+        return this;
+      },
+      
+      /**
             <p>Allows you to reduce the documents used for computing facet results.</p>
 
             @member ejs.HistogramFacet
             @param {Object} oFilter A valid <code>Filter</code> object.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
-      filter: function (oFilter) {
+      facetFilter: function (oFilter) {
         if (oFilter == null) {
           return facet[name].facet_filter;
         }
       
+        if (!isFilter(oFilter)) {
+          throw new TypeError('Argument must be a Filter');
+        }
+        
         facet[name].facet_filter = oFilter._self();
         return this;
       },
