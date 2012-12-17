@@ -85,10 +85,11 @@ exports.facets = {
     test.done();
   },
   GeoDistanceFacet: function (test) {
-    test.expect(10);
+    test.expect(24);
 
     var geoDistanceFacet = ejs.GeoDistanceFacet('somename'),
       termFilter = ejs.TermFilter('t1', 'v1'),
+      point1 = ejs.GeoPoint([40, -70]),
       expected,
       doTest = function () {
         test.deepEqual(geoDistanceFacet._self(), expected);
@@ -96,9 +97,9 @@ exports.facets = {
 
     expected = {
       somename: {
-        'geo_distance': {
-          'distance_unit': "mi",
-          'ranges': []
+        geo_distance: {
+          location: [0, 0],
+          ranges: []
         }
       }
     };
@@ -107,44 +108,103 @@ exports.facets = {
     test.ok(geoDistanceFacet._self(), '_self() works');
     doTest();
 
-    geoDistanceFacet.pointField('location');
-    expected.somename.geo_distance['location'] = [0, 0];
+    geoDistanceFacet.field('location2');
+    expected = {
+      somename: {
+        geo_distance: {
+          ranges: [],
+          location2: [0, 0]
+        }
+      }
+    };
     doTest();
 
-    geoDistanceFacet.point(40, - 70);
-    expected.somename.geo_distance['location'] = [40, - 70];
+    geoDistanceFacet.point(point1);
+    expected.somename.geo_distance.location2 = point1._self();
     doTest();
 
     geoDistanceFacet.addUnboundedTo(10);
     expected.somename.geo_distance.ranges.push({
-      "to": 10
+      to: 10
     });
     doTest();
 
     geoDistanceFacet.addRange(10, 20);
     expected.somename.geo_distance.ranges.push({
-      "from": 10,
-      "to": 20
+      from: 10,
+      to: 20
     });
     doTest();
 
     geoDistanceFacet.addRange(20, 30);
     expected.somename.geo_distance.ranges.push({
-      "from": 20,
-      "to": 30
+      from: 20,
+      to: 30
     });
-    doTest();
-
-    geoDistanceFacet.filter(termFilter);
-    expected.somename.facet_filter = termFilter._self();
     doTest();
 
     geoDistanceFacet.addUnboundedFrom(30);
     expected.somename.geo_distance.ranges.push({
-      "from": 30
+      from: 30
     });
     doTest();
 
+    geoDistanceFacet.unit('mi');
+    expected.somename.geo_distance.unit = 'mi';
+    doTest();
+    
+    geoDistanceFacet.unit('INVALID');
+    doTest();
+    
+    geoDistanceFacet.unit('Km');
+    expected.somename.geo_distance.unit = 'km';
+    doTest();
+    
+    geoDistanceFacet.distanceType('arc');
+    expected.somename.geo_distance.distance_type = 'arc';
+    doTest();
+    
+    geoDistanceFacet.distanceType('INVALID');
+    doTest();
+    
+    geoDistanceFacet.distanceType('Plane');
+    expected.somename.geo_distance.distance_type = 'plane';
+    doTest();
+    
+    geoDistanceFacet.normalize(true);
+    expected.somename.geo_distance.normalize = true;
+    doTest();
+    
+    geoDistanceFacet.valueField('locationvals');
+    expected.somename.geo_distance.value_field = 'locationvals';
+    doTest();
+    
+    geoDistanceFacet.valueScript('script');
+    expected.somename.geo_distance.value_script = 'script';
+    doTest();
+    
+    geoDistanceFacet.lang('mvel');
+    expected.somename.geo_distance.lang = 'mvel';
+    doTest();
+    
+    geoDistanceFacet.params({p1: 'v1', p2: false});
+    expected.somename.geo_distance.params = {p1: 'v1', p2: false};
+    doTest();
+    
+    geoDistanceFacet.facetFilter(termFilter);
+    expected.somename.facet_filter = termFilter._self();
+    doTest();
+    
+    test.strictEqual(geoDistanceFacet.toString(), JSON.stringify(expected));
+    
+    test.throws(function () {
+      geoDistanceFacet.point('invalid');
+    }, TypeError);
+    
+    test.throws(function () {
+      geoDistanceFacet.facetFilter('invalid');
+    }, TypeError);
+    
     test.done();
   },
   StatisticalFacet: function (test) {

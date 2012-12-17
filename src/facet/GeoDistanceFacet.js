@@ -39,32 +39,37 @@
         @property {Object} facet
         */
     var facet = {},
-      ranges = [],
-      geoCoordinate = [0, 0],
-      field = null;
+        point = ejs.GeoPoint([0, 0]),
+        field = 'location';
 
     facet[name] = {
       geo_distance: {
-        distance_unit: "mi"
+        location: point._self(),
+        ranges: []
       }
     };
 
     return {
 
       /**
-            Sets the document field containing the geo-coordinate to be used to calculate the distance.
+            Sets the document field containing the geo-coordinate to be used 
+            to calculate the distance.  Defaults to "location".
 
             @member ejs.GeoDistanceFacet
             @param {String} fieldName The field name whose data will be used to construct the facet.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
-      pointField: function (fieldName) {
+      field: function (fieldName) {
+        var oldValue = facet[name].geo_distance[field];
+        
         if (fieldName == null) {
           return field;
         }
-      
+
+        delete facet[name].geo_distance[field];
         field = fieldName;
-        //facet[name].geo_distance[field] = geoCoordinate;
+        facet[name].geo_distance[fieldName] = oldValue;
+        
         return this;
       },
 
@@ -72,16 +77,20 @@
             Sets the point of origin from where distances will be measured.
 
             @member ejs.GeoDistanceFacet
-            @param {Number} lon the longitude coordinate
-            @param {Number} lat the latitude coordinate
+            @param {GeoPoint} p A valid GeoPoint object
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
-      point: function (lon, lat) {
-        if (arguments.length === 0) {
-          return geoCoordinate;
+      point: function (p) {
+        if (p == null) {
+          return point;
         }
       
-        geoCoordinate = [lon, lat];
+        if (!isGeoPoint(p)) {
+          throw new TypeError('Argument must be a GeoPoint');
+        }
+        
+        point = p;
+        facet[name].geo_distance[field] = p._self();
         return this;
       },
 
@@ -95,13 +104,14 @@
             */
       addRange: function (from, to) {
         if (arguments.length === 0) {
-          return ranges;
+          return facet[name].geo_distance.ranges;
         }
       
-        ranges.push({
-          "from": from,
-          "to": to
+        facet[name].geo_distance.ranges.push({
+          from: from,
+          to: to
         });
+        
         return this;
       },
 
@@ -114,12 +124,13 @@
             */
       addUnboundedFrom: function (from) {
         if (from == null) {
-          return ranges;
+          return facet[name].geo_distance.ranges;
         }
       
-        ranges.push({
-          "from": from
+        facet[name].geo_distance.ranges.push({
+          from: from
         });
+        
         return this;
       },
 
@@ -132,47 +143,147 @@
             */
       addUnboundedTo: function (to) {
         if (to == null) {
-          return ranges;
+          return facet[name].geo_distance.ranges;
         }
       
-        ranges.push({
-          "to": to
+        facet[name].geo_distance.ranges.push({
+          to: to
         });
+        
         return this;
       },
 
       /**
-             * Sets the distance unit
+             Sets the distance unit.  Valid values are "mi" for miles or "km"
+             for kilometers. Defaults to "km".
 
              @member ejs.GeoDistanceFacet
-             @param {Number} unit the unit of distance measure. Can be either <code>mi</code> or <code>km</code>. Defaults to <code>mi</code>.
+             @param {Number} unit the unit of distance measure.
              @returns {Object} returns <code>this</code> so that calls can be chained.
              */
-      distanceUnit: function (unit) {
+      unit: function (unit) {
         if (unit == null) {
-          return facet[name].geo_distance.distance_unit;
+          return facet[name].geo_distance.unit;
         }
       
-        facet[name].geo_distance.distance_unit = unit;
+        unit = unit.toLowerCase();
+        if (unit === 'mi' || unit === 'km') {
+          facet[name].geo_distance.unit = unit;
+        }
+        
         return this;
       },
-
+      
       /**
-             * Sets the type of measurment used to calculate distance.
+            How to compute the distance. Can either be arc (better precision) 
+            or plane (faster). Defaults to arc.
 
-             @member ejs.GeoDistanceFacet
-             @param {Number} unit Determines how distance is calculated. Can be either <code>arc</code> (better precision) or <code>plane</code> (faster). Defaults to <code>arc</code>.
-             @returns {Object} returns <code>this</code> so that calls can be chained.
-             */
+            @member ejs.GeoDistanceFacet
+            @param {String} type The execution type as a string.  
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
       distanceType: function (type) {
         if (type == null) {
           return facet[name].geo_distance.distance_type;
         }
-      
-        facet[name].geo_distance.distance_type = type;
+
+        type = type.toLowerCase();
+        if (type === 'arc' || type === 'plane') {
+          facet[name].geo_distance.distance_type = type;
+        }
+        
         return this;
       },
 
+      /**
+            If the lat/long points should be normalized to lie within their
+            respective normalized ranges.
+            
+            Normalized ranges are:
+            lon = -180 (exclusive) to 180 (inclusive) range
+            lat = -90 to 90 (both inclusive) range
+
+            @member ejs.GeoDistanceFacet
+            @param {String} trueFalse True if the coordinates should be normalized. False otherwise.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      normalize: function (trueFalse) {
+        if (trueFalse == null) {
+          return facet[name].geo_distance.normalize;
+        }
+
+        facet[name].geo_distance.normalize = trueFalse;
+        return this;
+      },
+      
+      /**
+            Allows you to specify a different value field to aggrerate over.
+
+            @member ejs.GeoDistanceFacet
+            @param {String} fieldName The name of the field to be used.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      valueField: function (fieldName) {
+        if (fieldName == null) {
+          return facet[name].geo_distance.value_field;
+        }
+      
+        facet[name].geo_distance.value_field = fieldName;
+        return this;
+      },
+      
+      /**
+            Allows you modify the <code>value</code> field using a script. The modified value
+            is then used to compute the statistical data.
+
+            @member ejs.GeoDistanceFacet
+            @param {String} scriptCode A valid script string to execute.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      valueScript: function (scriptCode) {
+        if (scriptCode == null) {
+          return facet[name].geo_distance.value_script;
+        }
+      
+        facet[name].geo_distance.value_script = scriptCode;
+        return this;
+      },
+      
+      /**
+            The script language being used. Currently supported values are
+            <code>javascript</code>, <code>groovy</code>, and <code>mvel</code>.
+
+            @member ejs.GeoDistanceFacet
+            @param {String} language The language of the script.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      lang: function (language) {
+        if (language == null) {
+          return facet[name].geo_distance.lang;
+        }
+      
+        facet[name].geo_distance.lang = language;
+        return this;
+      },
+      
+      /**
+            Sets parameters that will be applied to the script.  Overwrites 
+            any existing params.
+
+            @member ejs.GeoDistanceFacet
+            @param {Object} p An object where the keys are the parameter name and 
+              values are the parameter value.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      params: function (p) {
+        if (p == null) {
+          return facet[name].geo_distance.params;
+        }
+    
+        facet[name].geo_distance.params = p;
+        return this;
+      },
+      
       /**
             <p>Allows you to reduce the documents used for computing facet results.</p>
 
@@ -180,11 +291,15 @@
             @param {Object} oFilter A valid <code>Filter</code> object.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
-      filter: function (oFilter) {
+      facetFilter: function (oFilter) {
         if (oFilter == null) {
           return facet[name].facet_filter;
         }
       
+        if (!isFilter(oFilter)) {
+          throw new TypeError('Argument must be a Filter');
+        }
+        
         facet[name].facet_filter = oFilter._self();
         return this;
       },
@@ -196,10 +311,6 @@
             @returns {String} returns this object as a serialized JSON string.
             */
       toString: function () {
-        facet[name].geo_distance.ranges = ranges;
-        if (field !== null) {
-          //facet[name].geo_distance[field] = geoCoordinate;
-        }
         return JSON.stringify(facet);
       },
 
@@ -221,10 +332,6 @@
             @returns {String} returns this object's internal <code>facet</code> property.
             */
       _self: function () {
-        facet[name].geo_distance.ranges = ranges;
-        if (field !== null) {
-          facet[name].geo_distance[field] = geoCoordinate;
-        }
         return facet;
       }
     };
