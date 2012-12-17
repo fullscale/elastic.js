@@ -51,6 +51,10 @@
           return facet[name].query;
         }
       
+        if (!isQuery(oQuery)) {
+          throw new TypeError('Argument must be a Query');
+        }
+        
         facet[name].query = oQuery._self();
         return this;
       },
@@ -62,11 +66,15 @@
             @param {Object} oFilter A valid <code>Filter</code> object.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
-      filter: function (oFilter) {
+      facetFilter: function (oFilter) {
         if (oFilter == null) {
           return facet[name].facet_filter;
         }
       
+        if (!isFilter(oFilter)) {
+          throw new TypeError('Argumnet must be a Filter');
+        }
+        
         facet[name].facet_filter = oFilter._self();
         return this;
       },

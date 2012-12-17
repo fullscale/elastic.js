@@ -396,7 +396,7 @@ exports.facets = {
     test.done();
   },
   QueryFacet: function (test) {
-    test.expect(5);
+    test.expect(7);
 
     var queryFacet = ejs.QueryFacet('somename'),
       termFilter = ejs.TermFilter('t1', 'v1'),
@@ -418,10 +418,18 @@ exports.facets = {
     expected.somename.query = termQuery._self();
     doTest();
 
-    queryFacet.filter(termFilter);
+    queryFacet.facetFilter(termFilter);
     expected.somename.facet_filter = termFilter._self();
     doTest();
 
+    test.throws(function () {
+      queryFacet.query('invalid');
+    }, TypeError);
+    
+    test.throws(function () {
+      queryFacet.facetFilter('invalid');
+    }, TypeError);
+    
     test.done();
   },
   FilterFacet: function (test) {
