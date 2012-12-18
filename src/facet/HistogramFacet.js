@@ -241,7 +241,7 @@
             total - sort by the sum/total of the items in the bucket
             
             @member ejs.HistogramFacet
-            @param {String} o The ordering method: time, count, or total.
+            @param {String} o The ordering method: key, count, or total.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       order: function (o) {
