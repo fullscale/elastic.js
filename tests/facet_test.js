@@ -341,7 +341,7 @@ exports.facets = {
     test.done();
   },
   TermStatsFacet: function (test) {
-    test.expect(8);
+    test.expect(27);
 
     var termStatsFacet = ejs.TermStatsFacet('somename'),
       termFilter = ejs.TermFilter('t1', 'v1'),
@@ -368,11 +368,78 @@ exports.facets = {
     expected.somename.terms_stats.value_field = 'quantity';
     doTest();
 
+    termStatsFacet.scriptField('scriptField');
+    expected.somename.terms_stats.script_field = 'scriptField';
+    doTest();
+    
+    termStatsFacet.valueScript('valueScript');
+    expected.somename.terms_stats.value_script = 'valueScript';
+    doTest();
+    
+    termStatsFacet.allTerms(false);
+    expected.somename.terms_stats.all_terms = false;
+    doTest();
+    
+    termStatsFacet.lang('mvel');
+    expected.somename.terms_stats.lang = 'mvel';
+    doTest();
+    
+    termStatsFacet.params({p1: false});
+    expected.somename.terms_stats.params = {p1: false};
+    doTest();
+    
     termStatsFacet.order("total");
     expected.somename.terms_stats.order = "total";
     doTest();
 
-    termStatsFacet.filter(termFilter);
+    termStatsFacet.order('INVALID');
+    doTest();
+    
+    termStatsFacet.order('COUNT');
+    expected.somename.terms_stats.order = 'count';
+    doTest();
+    
+    termStatsFacet.order('reverse_total');
+    expected.somename.terms_stats.order = 'reverse_total';
+    doTest();
+    
+    termStatsFacet.order('REVERSE_count');
+    expected.somename.terms_stats.order = 'reverse_count';
+    doTest();
+    
+    termStatsFacet.order('term');
+    expected.somename.terms_stats.order = 'term';
+    doTest();
+    
+    termStatsFacet.order('reverse_term');
+    expected.somename.terms_stats.order = 'reverse_term';
+    doTest();
+    
+    termStatsFacet.order('min');
+    expected.somename.terms_stats.order = 'min';
+    doTest();
+    
+    termStatsFacet.order('reverse_min');
+    expected.somename.terms_stats.order = 'reverse_min';
+    doTest();
+    
+    termStatsFacet.order('max');
+    expected.somename.terms_stats.order = 'max';
+    doTest();
+    
+    termStatsFacet.order('reverse_max');
+    expected.somename.terms_stats.order = 'reverse_max';
+    doTest();
+    
+    termStatsFacet.order('mean');
+    expected.somename.terms_stats.order = 'mean';
+    doTest();
+    
+    termStatsFacet.order('reverse_mean');
+    expected.somename.terms_stats.order = 'reverse_mean';
+    doTest();
+    
+    termStatsFacet.facetFilter(termFilter);
     expected.somename.facet_filter = termFilter._self();
     doTest();
 
@@ -380,6 +447,12 @@ exports.facets = {
     expected.somename.terms_stats.size = 5;
     doTest();
 
+    test.strictEqual(termStatsFacet.toString(), JSON.stringify(expected));
+    
+    test.throws(function () {
+      termStatsFacet.facetFilter('invalid');
+    }, TypeError);
+    
     test.done();
   },
   DateHistogramFacet: function (test) {

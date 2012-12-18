@@ -78,6 +78,22 @@
       },
 
       /**
+            Sets a script that will provide the terms for a given document.
+
+            @member ejs.TermStatsFacet
+            @param {String} script The script code.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      scriptField: function (script) {
+        if (script == null) {
+          return facet[name].terms_stats.script_field;
+        }
+      
+        facet[name].terms_stats.script_field = script;
+        return this;
+      },
+      
+      /**
             Define a script to evaluate of which the result will be used to generate
             the statistical information.
 
@@ -94,6 +110,24 @@
         return this;
       },
 
+      /**
+            <p>Allows you to return all terms, even if the frequency count is 0. This should not be
+               used on fields that contain a large number of unique terms because it could cause
+               <em>out-of-memory</em> errors.</p>
+
+            @member ejs.TermStatsFacet
+            @param {String} trueFalse <code>true</code> or <code>false</code>
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      allTerms: function (trueFalse) {
+        if (trueFalse == null) {
+          return facet[name].terms_stats.all_terms;
+        }
+      
+        facet[name].terms_stats.all_terms = trueFalse;
+        return this;
+      },
+      
       /**
             The script language being used. Currently supported values are
             <code>javascript</code>, <code>groovy</code>, and <code>mvel</code>.
@@ -146,18 +180,40 @@
       },
 
       /**
-            Sets the order in which facets are returned.
-
+            Sets the type of ordering that will be performed on the date
+            buckets.  Valid values are:
+            
+            count - default, sort by the number of items in the bucket
+            term - sort by term value.
+            reverse_count - reverse sort of the number of items in the bucket
+            reverse_term - reverse sort of the term value.
+            total - sorts by the total value of the bucket contents
+            reverse_total - reverse sort of the total value of bucket contents
+            min - the minimum value in the bucket
+            reverse_min - the reverse sort of the minimum value
+            max - the maximum value in the bucket
+            reverse_max - the reverse sort of the maximum value
+            mean - the mean value of the bucket contents
+            reverse_mean - the reverse sort of the mean value of bucket contents.
+            
             @member ejs.TermStatsFacet
-            @param {String} ordering Valid options are <code>term, reverse_term, count, reverse_count, total, reverse_total, min, reverse_min, max, reverse_max</code>. Defaults to <code>term</code>.
+            @param {String} o The ordering method
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
-      order: function (ordering) {
-        if (ordering == null) {
+      order: function (o) {
+        if (o == null) {
           return facet[name].terms_stats.order;
         }
       
-        facet[name].terms_stats.order = ordering;
+        o = o.toLowerCase();
+        if (o === 'count' || o === 'term' || o === 'reverse_count' || 
+          o === 'reverse_term' || o === 'total' || o === 'reverse_total' || 
+          o === 'min' || o === 'reverse_min' || o === 'max' || 
+          o === 'reverse_max' || o === 'mean' || o === 'reverse_mean') {
+          
+          facet[name].terms_stats.order = o;
+        }
+        
         return this;
       },
 
@@ -168,11 +224,15 @@
             @param {Object} oFilter A valid <code>Filter</code> object.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
-      filter: function (oFilter) {
+      facetFilter: function (oFilter) {
         if (oFilter == null) {
           return facet[name].facet_filter;
         }
       
+        if (!isFilter(oFilter)) {
+          throw new TypeError('Argument must be a Filter');
+        }
+        
         facet[name].facet_filter = oFilter._self();
         return this;
       },
