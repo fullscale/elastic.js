@@ -210,22 +210,51 @@ exports.search = {
     test.done();
   },
   Request: function (test) {
-    test.expect(43);
+    test.expect(45);
 
     var req = ejs.Request({indices: ['index1'], types: ['type1']}),
       expected,
+      mockClient,
       expectedPath = '',
-      doTest = function (path, data, cb) {
+      expectedData = '',
+      expectedMethod = '',
+      doTest = function (method, path, data, cb) {
         if (expectedPath !== '') {
-          test.deepEqual(path, expectedPath);
+          test.strictEqual(path, expectedPath);
           expectedPath = '';
         }
         
-        test.deepEqual(JSON.parse(data), expected);
+        if (expectedData !== '') {
+          test.deepEqual(data, expectedData);
+          expectedData = '';
+        }
+        
+        if (expectedMethod !== '') {
+          test.strictEqual(method, expectedMethod);
+          expectedMethod = '';
+        }
+        
+        test.deepEqual(req._self(), expected);
       };
 
     // setup fake client to call doTest
-    ejs.client = {post: doTest};
+    ejs.client = mockClient = {
+      get: function (path, data, cb) {
+        doTest('get', path, data, cb);
+      },
+      post: function (path, data, cb) {
+        doTest('post', path, data, cb);
+      },
+      put: function (path, data, cb) {
+        doTest('put', path, data, cb);
+      },
+      del: function (path, data, cb) {
+        doTest('delete', path, data, cb);
+      },
+      head: function (path, data, cb) {
+        doTest('head', path, data, cb);
+      }
+    };
     
     expected = {
       size: 10,
@@ -234,7 +263,9 @@ exports.search = {
 
     test.deepEqual(req.indices(), ['index1']);
     test.deepEqual(req.types(), ['type1']);
+    expectedMethod = 'post';
     expectedPath = '/index1/type1/_search';
+    expectedData = JSON.stringify(expected);
     req.doSearch();
 
     req.indices([]);
