@@ -208,7 +208,7 @@ exports.facets = {
     test.done();
   },
   StatisticalFacet: function (test) {
-    test.expect(7);
+    test.expect(12);
 
     var statisticalFacet = ejs.StatisticalFacet('somename'),
       termFilter = ejs.TermFilter('t1', 'v1'),
@@ -227,6 +227,14 @@ exports.facets = {
     test.ok(statisticalFacet._self(), '_self() works');
     doTest();
 
+    statisticalFacet.field('field1');
+    expected.somename.statistical.field = 'field1';
+    doTest();
+    
+    statisticalFacet.fields(['field2', 'field3']);
+    expected.somename.statistical.fields = ['field2', 'field3'];
+    doTest();
+    
     statisticalFacet.lang('js');
     expected.somename.statistical.lang = 'js';
     doTest();
@@ -235,7 +243,7 @@ exports.facets = {
     expected.somename.statistical.script = '(_source.x + _source.y) * factor';
     doTest();
 
-    statisticalFacet.filter(termFilter);
+    statisticalFacet.facetFilter(termFilter);
     expected.somename.facet_filter = termFilter._self();
     doTest();
 
@@ -243,10 +251,20 @@ exports.facets = {
       factor: 5
     });
     expected.somename.statistical.params = {
-      "factor": 5
+      factor: 5
     };
     doTest();
 
+    test.strictEqual(statisticalFacet.toString(), JSON.stringify(expected));
+    
+    test.throws(function () {
+      statisticalFacet.facetFilter('invalid');
+    }, TypeError);
+    
+    test.throws(function () {
+      statisticalFacet.fields(2);
+    }, TypeError);
+    
     test.done();
   },
   TermStatsFacet: function (test) {
