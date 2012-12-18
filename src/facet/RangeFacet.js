@@ -34,11 +34,12 @@
         @member ejs.RangeFacet
         @property {Object} facet
         */
-    var facet = {},
-    ranges = [];
+    var facet = {};
 
     facet[name] = {
-      range: {}
+      range: {
+        ranges: []
+      }
     };
 
     return {
@@ -82,7 +83,7 @@
             @param {String} fieldName The field name whose data will be used to compute statistics.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
-      valuefield: function (fieldName) {
+      valueField: function (fieldName) {
         if (fieldName == null) {
           return facet[name].range.value_field;
         }
@@ -118,10 +119,10 @@
             */
       keyScript: function (scriptCode) {
         if (scriptCode == null) {
-          return facet[name].range.value_script;
+          return facet[name].range.key_script;
         }
       
-        facet[name].range.value_script = scriptCode;
+        facet[name].range.key_script = scriptCode;
         return this;
       },
 
@@ -143,6 +144,24 @@
       },
 
       /**
+            Sets parameters that will be applied to the script.  Overwrites 
+            any existing params.
+
+            @member ejs.RangeFacet
+            @param {Object} p An object where the keys are the parameter name and 
+              values are the parameter value.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      params: function (p) {
+        if (p == null) {
+          return facet[name].range.params;
+        }
+    
+        facet[name].range.params = p;
+        return this;
+      },
+      
+      /**
             Adds a new bounded range.
 
             @member ejs.RangeFacet
@@ -152,13 +171,14 @@
             */
       addRange: function (from, to) {
         if (arguments.length === 0) {
-          return ranges;
+          return facet[name].range.ranges;
         }
       
-        ranges.push({
-          "from": from,
-          "to": to
+        facet[name].range.ranges.push({
+          from: from,
+          to: to
         });
+        
         return this;
       },
 
@@ -171,12 +191,13 @@
             */
       addUnboundedFrom: function (from) {
         if (from == null) {
-          return ranges;
+          return facet[name].range.ranges;
         }
       
-        ranges.push({
-          "from": from
+        facet[name].range.ranges.push({
+          from: from
         });
+        
         return this;
       },
 
@@ -189,12 +210,13 @@
             */
       addUnboundedTo: function (to) {
         if (to == null) {
-          return ranges;
+          return facet[name].range.ranges;
         }
       
-        ranges.push({
-          "to": to
+        facet[name].range.ranges.push({
+          to: to
         });
+        
         return this;
       },
 
@@ -205,11 +227,15 @@
             @param {Object} oFilter A valid <code>Filter</code> object.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
-      filter: function (oFilter) {
+      facetFilter: function (oFilter) {
         if (oFilter == null) {
           return facet[name].facet_filter;
         }
       
+        if (!isFilter(oFilter)) {
+          throw new TypeError('Argument must be a Filter');
+        }
+        
         facet[name].facet_filter = oFilter._self();
         return this;
       },
@@ -221,7 +247,6 @@
             @returns {String} returns this object as a serialized JSON string.
             */
       toString: function () {
-        facet[name].range.ranges = ranges;
         return JSON.stringify(facet);
       },
 
@@ -243,7 +268,6 @@
             @returns {String} returns this object's internal <code>facet</code> property.
             */
       _self: function () {
-        facet[name].range.ranges = ranges;
         return facet;
       }
     };

@@ -563,7 +563,7 @@ exports.facets = {
     test.done();
   },
   RangeFacet: function (test) {
-    test.expect(9);
+    test.expect(17);
 
     var rangeFacet = ejs.RangeFacet('somename'),
       termFilter = ejs.TermFilter('t1', 'v1'),
@@ -574,8 +574,8 @@ exports.facets = {
 
     expected = {
       somename: {
-        'range': {
-          'ranges': []
+        range: {
+          ranges: []
         }
       }
     };
@@ -588,36 +588,66 @@ exports.facets = {
     expected.somename.range.field = 'price';
     doTest();
 
+    rangeFacet.keyField('pricekey');
+    expected.somename.range.key_field = 'pricekey';
+    doTest();
+    
+    rangeFacet.valueField('pricevalue');
+    expected.somename.range.value_field = 'pricevalue';
+    doTest();
+    
+    rangeFacet.keyScript('script');
+    expected.somename.range.key_script = 'script';
+    doTest();
+    
+    rangeFacet.valueScript('script2');
+    expected.somename.range.value_script = 'script2';
+    doTest();
+    
+    rangeFacet.lang('mvel');
+    expected.somename.range.lang = 'mvel';
+    doTest();
+    
+    rangeFacet.params({p1: true, p2: 'v2'});
+    expected.somename.range.params = {p1: true, p2: 'v2'};
+    doTest();
+    
     rangeFacet.addUnboundedTo(10);
     expected.somename.range.ranges.push({
-      "to": 10
+      to: 10
     });
     doTest();
 
     rangeFacet.addRange(10, 20);
     expected.somename.range.ranges.push({
-      "from": 10,
-      "to": 20
+      from: 10,
+      to: 20
     });
     doTest();
 
     rangeFacet.addRange(20, 30);
     expected.somename.range.ranges.push({
-      "from": 20,
-      "to": 30
+      from: 20,
+      to: 30
     });
     doTest();
 
-    rangeFacet.filter(termFilter);
+    rangeFacet.facetFilter(termFilter);
     expected.somename.facet_filter = termFilter._self();
     doTest();
 
     rangeFacet.addUnboundedFrom(30);
     expected.somename.range.ranges.push({
-      "from": 30
+      from: 30
     });
     doTest();
 
+    test.strictEqual(rangeFacet.toString(), JSON.stringify(expected));
+    
+    test.throws(function () {
+      rangeFacet.facetFilter('invalid');
+    }, TypeError);
+    
     test.done();
   }
 };
