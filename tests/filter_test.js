@@ -60,7 +60,7 @@ exports.filters = {
     test.done();
   },
   IndicesFilter: function (test) {
-    test.expect(18);
+    test.expect(19);
 
     var termFilter = ejs.TermFilter('t1', 'v1'),
       termFilter2 = ejs.TermFilter('t2', 'v2'),
@@ -117,6 +117,7 @@ exports.filters = {
     expected.indices.filter = termFilter2._self();
     doTest();
     
+    test.strictEqual(indicesFilter._type(), 'filter');
     test.strictEqual(indicesFilter.toString(), JSON.stringify(expected));
 
     test.throws(function () {
@@ -142,7 +143,7 @@ exports.filters = {
     test.done();
   },
   TermsFilter: function (test) {
-    test.expect(19);
+    test.expect(20);
 
     var termsFilter = ejs.TermsFilter('f1', ['t1', 't2']),
       expected,
@@ -223,12 +224,13 @@ exports.filters = {
     expected.terms._cache_key = 'filter_cache_key';
     doTest();
     
+    test.strictEqual(termsFilter._type(), 'filter');
     test.strictEqual(termsFilter.toString(), JSON.stringify(expected));
 
     test.done();
   },
   NestedFilter: function (test) {
-    test.expect(14);
+    test.expect(15);
 
     var termQuery = ejs.TermQuery('tq1', 'v1'),
       termFilter = ejs.TermFilter('tf1', 'v1'),
@@ -280,6 +282,7 @@ exports.filters = {
     expected.nested._cache_key = 'filter_cache_key';
     doTest();
     
+    test.strictEqual(nestedFilter._type(), 'filter');
     test.strictEqual(nestedFilter.toString(), JSON.stringify(expected));
 
     test.throws(function () {
@@ -293,7 +296,7 @@ exports.filters = {
     test.done();
   },
   ScriptFilter: function (test) {
-    test.expect(10);
+    test.expect(11);
 
     var scriptFilter = ejs.ScriptFilter('the script'),
       expected,
@@ -335,12 +338,13 @@ exports.filters = {
     expected.script._cache_key = 'script_filter_key';
     doTest();
     
+    test.strictEqual(scriptFilter._type(), 'filter');
     test.strictEqual(scriptFilter.toString(), JSON.stringify(expected));
 
     test.done();
   },
   RangeFilter: function (test) {
-    test.expect(16);
+    test.expect(17);
 
     var rangeFilter = ejs.RangeFilter('f1'),
       expected,
@@ -412,12 +416,13 @@ exports.filters = {
     expected.range._cache_key = 'range_filter_key';
     doTest();
     
+    test.strictEqual(rangeFilter._type(), 'filter');
     test.strictEqual(rangeFilter.toString(), JSON.stringify(expected));
 
     test.done();
   },
   QueryFilter: function (test) {
-    test.expect(10);
+    test.expect(11);
 
     var termQuery = ejs.TermQuery('t1', 'v1'),
       termQuery2 = ejs.TermQuery('t2', 'v2'),
@@ -453,6 +458,7 @@ exports.filters = {
     expected.fquery._cache_key = 'fquery_cached';
     doTest();
     
+    test.strictEqual(queryFilter._type(), 'filter');
     test.strictEqual(queryFilter.toString(), JSON.stringify(expected));
 
     test.throws(function () {
@@ -466,7 +472,7 @@ exports.filters = {
     test.done();
   },
   MatchAllFilter: function (test) {
-    test.expect(4);
+    test.expect(5);
 
     var matchAllFilter = ejs.MatchAllFilter(),
       expected,
@@ -482,12 +488,13 @@ exports.filters = {
     test.ok(matchAllFilter._self(), '_self() works');
     doTest();
 
+    test.strictEqual(matchAllFilter._type(), 'filter');
     test.strictEqual(matchAllFilter.toString(), JSON.stringify(expected));
 
     test.done();
   },
   HasParentFilter: function (test) {
-    test.expect(10);
+    test.expect(11);
 
     var termQuery = ejs.TermQuery('t1', 'v1'),
       termQuery2 = ejs.TermQuery('t2', 'v2'),
@@ -524,6 +531,7 @@ exports.filters = {
     expected.has_parent._name = 'has_parent';
     doTest();
     
+    test.strictEqual(hasParentFilter._type(), 'filter');
     test.strictEqual(hasParentFilter.toString(), JSON.stringify(expected));
 
     test.throws(function () {
@@ -537,7 +545,7 @@ exports.filters = {
     test.done();
   },
   HasChildFilter: function (test) {
-    test.expect(10);
+    test.expect(11);
 
     var termQuery = ejs.TermQuery('t1', 'v1'),
       termQuery2 = ejs.TermQuery('t2', 'v2'),
@@ -574,6 +582,7 @@ exports.filters = {
     expected.has_child._name = 'haschild';
     doTest();
     
+    test.strictEqual(hasChildFilter._type(), 'filter');
     test.strictEqual(hasChildFilter.toString(), JSON.stringify(expected));
 
     test.throws(function () {
@@ -587,7 +596,7 @@ exports.filters = {
     test.done();
   },
   LimitFilter: function (test) {
-    test.expect(6);
+    test.expect(7);
 
     var limitFilter = ejs.LimitFilter(100),
       expected,
@@ -609,6 +618,7 @@ exports.filters = {
     expected.limit.value = 1000;
     doTest();
 
+    test.strictEqual(limitFilter._type(), 'filter');
     test.strictEqual(limitFilter.toString(), JSON.stringify(expected));
 
     test.throws(function () {
@@ -618,7 +628,7 @@ exports.filters = {
     test.done();
   },
   IdsFilter: function (test) {
-    test.expect(14);
+    test.expect(15);
 
     var idsFilter = ejs.IdsFilter('id1'),
       expected,
@@ -664,6 +674,7 @@ exports.filters = {
     expected.ids._name = 'idsfilter';
     doTest();
     
+    test.strictEqual(idsFilter._type(), 'filter');
     test.strictEqual(idsFilter.toString(), JSON.stringify(expected));
 
     test.throws(function () {
@@ -681,7 +692,7 @@ exports.filters = {
     test.done();
   },
   BoolFilter: function (test) {
-    test.expect(20);
+    test.expect(21);
 
     var termFilter = ejs.TermFilter('t1', 'v1'),
       termFilter2 = ejs.TermFilter('t2', 'v2'),
@@ -741,6 +752,7 @@ exports.filters = {
     expected.bool._cache_key = 'testkey';
     doTest();
     
+    test.strictEqual(boolFilter._type(), 'filter');
     test.strictEqual(boolFilter.toString(), JSON.stringify(expected));
 
     test.throws(function () {
@@ -770,7 +782,7 @@ exports.filters = {
     test.done();
   },
   GeoShapeFilter: function (test) {
-    test.expect(16);
+    test.expect(17);
 
     var geoShapeFilter = ejs.GeoShapeFilter('f1'),
       shape1 = ejs.Shape('envelope', [[-45.0, 45.0], [45.0, -45.0]]),
@@ -850,12 +862,13 @@ exports.filters = {
     expected.geo_shape._cache_key = 'test_key';
     doTest();
     
+    test.strictEqual(geoShapeFilter._type(), 'filter');
     test.strictEqual(geoShapeFilter.toString(), JSON.stringify(expected));
     
     test.done();
   },
   TermFilter: function (test) {
-    test.expect(11);
+    test.expect(12);
 
     var termFilter = ejs.TermFilter('t1', 'v1'),
       expected,
@@ -899,12 +912,13 @@ exports.filters = {
     expected.term._cache_key = 'filter_cache_key';
     doTest();
     
+    test.strictEqual(termFilter._type(), 'filter');
     test.strictEqual(termFilter.toString(), JSON.stringify(expected));
 
     test.done();
   },
   TypeFilter: function (test) {
-    test.expect(5);
+    test.expect(6);
 
     var typeFilter = ejs.TypeFilter('type1'),
       expected,
@@ -926,12 +940,13 @@ exports.filters = {
     expected.type.value = 'type2';
     doTest();
 
+    test.strictEqual(typeFilter._type(), 'filter');
     test.strictEqual(typeFilter.toString(), JSON.stringify(expected));
 
     test.done();
   },
   GeoPolygonFilter: function (test) {
-    test.expect(14);
+    test.expect(15);
 
     var geoPolygonFilter = ejs.GeoPolygonFilter('location'),
       point1 = ejs.GeoPoint([37.7819288, -122.396480]),
@@ -995,6 +1010,7 @@ exports.filters = {
     expected.geo_polygon._cache_key = 'filter_cache_key';
     doTest();
     
+    test.strictEqual(geoPolygonFilter._type(), 'filter');
     test.strictEqual(geoPolygonFilter.toString(), JSON.stringify(expected));
 
     test.throws(function () {
@@ -1008,7 +1024,7 @@ exports.filters = {
     test.done();
   },
   GeoBboxFilter: function (test) {
-    test.expect(16);
+    test.expect(17);
 
     var geoBboxFilter = ejs.GeoBboxFilter('location'),
       point1 = ejs.GeoPoint([37.7819288, -122.396480]),
@@ -1076,6 +1092,7 @@ exports.filters = {
     expected.geo_bounding_box._cache_key = 'filter_cache_key';
     doTest();
     
+    test.strictEqual(geoBboxFilter._type(), 'filter');
     test.strictEqual(geoBboxFilter.toString(), JSON.stringify(expected));
     
     test.throws(function () {
@@ -1089,7 +1106,7 @@ exports.filters = {
     test.done();
   },
   GeoDistanceFilter: function (test) {
-    test.expect(23);
+    test.expect(24);
 
     var geoDistanceFilter = ejs.GeoDistanceFilter('location'),
       point1 = ejs.GeoPoint([37.7819288, -122.396480]),
@@ -1178,6 +1195,7 @@ exports.filters = {
     expected.geo_distance._cache_key = 'filter_cache_key';
     doTest();
     
+    test.strictEqual(geoDistanceFilter._type(), 'filter');
     test.strictEqual(geoDistanceFilter.toString(), JSON.stringify(expected));
 
     test.throws(function () {
@@ -1191,7 +1209,7 @@ exports.filters = {
     test.done();
   },
   GeoDistanceRangeFilter: function (test) {
-    test.expect(35);
+    test.expect(36);
 
     var geoDistanceRangeFilter = ejs.GeoDistanceRangeFilter('location'),
       point1 = ejs.GeoPoint([37.7819288, -122.396480]),
@@ -1309,6 +1327,7 @@ exports.filters = {
     expected.geo_distance_range._cache_key = 'filter_cache_key';
     doTest();
     
+    test.strictEqual(geoDistanceRangeFilter._type(), 'filter');
     test.strictEqual(geoDistanceRangeFilter.toString(), JSON.stringify(expected));
     
     test.throws(function () {
@@ -1342,7 +1361,7 @@ exports.filters = {
     test.done();
   },
   NotFilter: function (test) {
-    test.expect(10);
+    test.expect(11);
 
     var termFilter1 = ejs.TermFilter('t1', 'v1'),
       termFilter2 = ejs.TermFilter('t2', 'v2'),
@@ -1376,6 +1395,7 @@ exports.filters = {
     expected.not._cache_key = 'filter_cache_key';
     doTest();
     
+    test.strictEqual(notFilter._type(), 'filter');
     test.strictEqual(notFilter.toString(), JSON.stringify(expected));
 
     test.throws(function () {
@@ -1389,7 +1409,7 @@ exports.filters = {
     test.done();
   },
   AndFilter: function (test) {
-    test.expect(13);
+    test.expect(14);
 
     var termFilter1 = ejs.TermFilter('t1', 'v1'),
       termFilter2 = ejs.TermFilter('t2', 'v2'),
@@ -1431,6 +1451,7 @@ exports.filters = {
     expected.and._cache_key = 'filter_cache_key';
     doTest();
     
+    test.strictEqual(andFilter._type(), 'filter');
     test.strictEqual(andFilter.toString(), JSON.stringify(expected));
 
     test.throws(function () {
@@ -1452,7 +1473,7 @@ exports.filters = {
     test.done();
   },
   NumericRangeFilter: function (test) {
-    test.expect(25);
+    test.expect(26);
 
     var numericRangeFilter = ejs.NumericRangeFilter('f1'),
       expected,
@@ -1531,6 +1552,7 @@ exports.filters = {
     expected.numeric_range._cache_key = 'filter_cache_key';
     doTest();
     
+    test.strictEqual(numericRangeFilter._type(), 'filter');
     test.strictEqual(numericRangeFilter.toString(), JSON.stringify(expected));
 
     test.throws(function () {
@@ -1560,7 +1582,7 @@ exports.filters = {
     test.done();
   },
   ExistsFilter: function (test) {
-    test.expect(6);
+    test.expect(7);
 
     var existsFilter = ejs.ExistsFilter('title'),
       expected,
@@ -1586,12 +1608,13 @@ exports.filters = {
     expected.exists._name = 'filter_name';
     doTest();
     
+    test.strictEqual(existsFilter._type(), 'filter');
     test.strictEqual(existsFilter.toString(), JSON.stringify(expected));
 
     test.done();
   },
   PrefixFilter: function (test) {
-    test.expect(9);
+    test.expect(10);
 
     var prefixFilter = ejs.PrefixFilter('title'),
       expected,
@@ -1633,12 +1656,13 @@ exports.filters = {
     expected.prefix._cache_key = 'filter_cache_key';
     doTest();
     
+    test.strictEqual(prefixFilter._type(), 'filter');
     test.strictEqual(prefixFilter.toString(), JSON.stringify(expected));
 
     test.done();
   },
   MissingFilter: function (test) {
-    test.expect(8);
+    test.expect(9);
 
     var missingFilter = ejs.MissingFilter('title'),
       expected,
@@ -1672,12 +1696,13 @@ exports.filters = {
     expected.missing._name = 'missing_filter';
     doTest();
     
+    test.strictEqual(missingFilter._type(), 'filter');
     test.strictEqual(missingFilter.toString(), JSON.stringify(expected));
 
     test.done();
   },
   OrFilter: function (test) {
-    test.expect(14);
+    test.expect(15);
 
     var termFilter1 = ejs.TermFilter('t1', 'v1'),
       termFilter2 = ejs.TermFilter('t2', 'v2'),
@@ -1722,6 +1747,7 @@ exports.filters = {
     expected.or._cache_key = 'filter_cache_key';
     doTest();
     
+    test.strictEqual(orFilter._type(), 'filter');
     test.strictEqual(orFilter.toString(), JSON.stringify(expected));
 
     test.throws(function () {

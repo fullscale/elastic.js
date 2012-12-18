@@ -39,7 +39,7 @@ exports.search = {
     test.done();
   },
   Shape: function (test) {
-    test.expect(12);
+    test.expect(13);
     
     var shape = ejs.Shape('envelope', [[-45.0, 45.0], [45.0, -45.0]]),
       expected,
@@ -89,12 +89,13 @@ exports.search = {
       [-30.0, -90.0]];
     doTest();
     
+    test.strictEqual(shape._type(), 'shape');
     test.strictEqual(shape.toString(), JSON.stringify(expected));
     
     test.done();
   },
   IndexedShape: function (test) {
-    test.expect(8);
+    test.expect(9);
     
     var indexedShape = ejs.IndexedShape('countries', 'New Zealand'),
       expected,
@@ -127,12 +128,13 @@ exports.search = {
     expected.shape_field_name = 'stateshape';
     doTest();
     
+    test.strictEqual(indexedShape._type(), 'indexed shape');
     test.strictEqual(indexedShape.toString(), JSON.stringify(expected));
     
     test.done();
   },
   GeoPoint: function (test) {
-    test.expect(9);
+    test.expect(10);
     
     var geoPoint = ejs.GeoPoint(),
       expected,
@@ -168,12 +170,13 @@ exports.search = {
     expected = [-122.396181, 37.7817289];
     doTest();
     
+    test.strictEqual(geoPoint._type(), 'geo point');
     test.strictEqual(geoPoint.toString(), JSON.stringify(expected));
     
     test.done();
   },
   ComputedProperty: function (test) {
-    test.expect(7);
+    test.expect(8);
     
     var cp = ejs.ComputedProperty('f'),
       expected,
@@ -201,12 +204,13 @@ exports.search = {
     expected.f.params = {param1: 'p1', param2: 2};
     doTest();
     
+    test.strictEqual(cp._type(), 'computed property');
     test.strictEqual(cp.toString(), JSON.stringify(expected));
     
     test.done();
   },
   Request: function (test) {
-    test.expect(42);
+    test.expect(43);
 
     var req = ejs.Request({indices: ['index1'], types: ['type1']}),
       expected,
@@ -300,6 +304,7 @@ exports.search = {
     expected.timeout = 5000;
     req.doSearch();
     
+    test.strictEqual(req._type(), 'request');
     test.strictEqual(req.toString(), JSON.stringify(expected));
 
     test.done();

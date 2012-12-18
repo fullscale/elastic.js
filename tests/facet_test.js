@@ -43,7 +43,7 @@ exports.facets = {
     test.done();
   },
   TermsFacet: function (test) {
-    test.expect(27);
+    test.expect(28);
 
     var termFacet = ejs.TermsFacet('somename'),
       termFilter = ejs.TermFilter('t1', 'v1'),
@@ -141,6 +141,7 @@ exports.facets = {
     expected.somename.terms.all_terms = false;
     doTest();
 
+    test.strictEqual(termFacet._type(), 'facet');
     test.strictEqual(termFacet.toString(), JSON.stringify(expected));
     
     test.throws(function () {
@@ -158,7 +159,7 @@ exports.facets = {
     test.done();
   },
   GeoDistanceFacet: function (test) {
-    test.expect(24);
+    test.expect(25);
 
     var geoDistanceFacet = ejs.GeoDistanceFacet('somename'),
       termFilter = ejs.TermFilter('t1', 'v1'),
@@ -268,6 +269,7 @@ exports.facets = {
     expected.somename.facet_filter = termFilter._self();
     doTest();
     
+    test.strictEqual(geoDistanceFacet._type(), 'facet');
     test.strictEqual(geoDistanceFacet.toString(), JSON.stringify(expected));
     
     test.throws(function () {
@@ -281,7 +283,7 @@ exports.facets = {
     test.done();
   },
   StatisticalFacet: function (test) {
-    test.expect(12);
+    test.expect(13);
 
     var statisticalFacet = ejs.StatisticalFacet('somename'),
       termFilter = ejs.TermFilter('t1', 'v1'),
@@ -328,6 +330,7 @@ exports.facets = {
     };
     doTest();
 
+    test.strictEqual(statisticalFacet._type(), 'facet');
     test.strictEqual(statisticalFacet.toString(), JSON.stringify(expected));
     
     test.throws(function () {
@@ -341,7 +344,7 @@ exports.facets = {
     test.done();
   },
   TermStatsFacet: function (test) {
-    test.expect(27);
+    test.expect(28);
 
     var termStatsFacet = ejs.TermStatsFacet('somename'),
       termFilter = ejs.TermFilter('t1', 'v1'),
@@ -447,6 +450,7 @@ exports.facets = {
     expected.somename.terms_stats.size = 5;
     doTest();
 
+    test.strictEqual(termStatsFacet._type(), 'facet');
     test.strictEqual(termStatsFacet.toString(), JSON.stringify(expected));
     
     test.throws(function () {
@@ -560,7 +564,7 @@ exports.facets = {
     test.done();
   },
   QueryFacet: function (test) {
-    test.expect(7);
+    test.expect(9);
 
     var queryFacet = ejs.QueryFacet('somename'),
       termFilter = ejs.TermFilter('t1', 'v1'),
@@ -586,6 +590,9 @@ exports.facets = {
     expected.somename.facet_filter = termFilter._self();
     doTest();
 
+    test.strictEqual(queryFacet._type(), 'facet');
+    test.strictEqual(queryFacet.toString(), JSON.stringify(expected));
+    
     test.throws(function () {
       queryFacet.query('invalid');
     }, TypeError);
@@ -597,7 +604,7 @@ exports.facets = {
     test.done();
   },
   FilterFacet: function (test) {
-    test.expect(8);
+    test.expect(9);
 
     var filterFacet = ejs.FilterFacet('somename'),
       termFilter1 = ejs.TermFilter('t1', 'v1'),
@@ -623,6 +630,7 @@ exports.facets = {
     expected.somename.facet_filter = termFilter2._self();
     doTest();
 
+    test.strictEqual(filterFacet._type(), 'facet');
     test.strictEqual(filterFacet.toString(), JSON.stringify(expected));
     
     test.throws(function () {
@@ -636,7 +644,7 @@ exports.facets = {
     test.done();
   },
   HistogramFacet: function (test) {
-    test.expect(21);
+    test.expect(22);
 
     var histogramFacet = ejs.HistogramFacet('somename'),
       termFilter = ejs.TermFilter('t1', 'v1'),
@@ -718,6 +726,7 @@ exports.facets = {
     expected.somename.facet_filter = termFilter._self();
     doTest();
 
+    test.strictEqual(histogramFacet._type(), 'facet');
     test.strictEqual(histogramFacet.toString(), JSON.stringify(expected));
     
     test.throws(function () {
@@ -727,7 +736,7 @@ exports.facets = {
     test.done();
   },
   RangeFacet: function (test) {
-    test.expect(17);
+    test.expect(18);
 
     var rangeFacet = ejs.RangeFacet('somename'),
       termFilter = ejs.TermFilter('t1', 'v1'),
@@ -806,6 +815,7 @@ exports.facets = {
     });
     doTest();
 
+    test.strictEqual(rangeFacet._type(), 'facet');
     test.strictEqual(rangeFacet.toString(), JSON.stringify(expected));
     
     test.throws(function () {
