@@ -43,7 +43,7 @@ exports.facets = {
     test.done();
   },
   TermsFacet: function (test) {
-    test.expect(8);
+    test.expect(27);
 
     var termFacet = ejs.TermsFacet('somename'),
       termFilter = ejs.TermFilter('t1', 'v1'),
@@ -66,6 +66,14 @@ exports.facets = {
     expected.somename.terms.field = 'thefield';
     doTest();
 
+    termFacet.fields(['f2', 'f3']);
+    expected.somename.terms.fields = ['f2', 'f3'];
+    doTest();
+    
+    termFacet.scriptField('sfield');
+    expected.somename.terms.script_field = 'sfield';
+    doTest();
+    
     termFacet.size(2);
     expected.somename.terms.size = 2;
     doTest();
@@ -74,7 +82,58 @@ exports.facets = {
     expected.somename.terms.order = 'count';
     doTest();
 
-    termFacet.filter(termFilter);
+    termFacet.order('INVALID');
+    doTest();
+    
+    termFacet.order('TERM');
+    expected.somename.terms.order = 'term';
+    doTest();
+    
+    termFacet.order('REVERSE_Count');
+    expected.somename.terms.order = 'reverse_count';
+    doTest();
+    
+    termFacet.order('reverse_TERM');
+    expected.somename.terms.order = 'reverse_term';
+    doTest();
+    
+    termFacet.exclude('e1');
+    expected.somename.terms.exclude = ['e1'];
+    doTest();
+    
+    termFacet.exclude('e2');
+    expected.somename.terms.exclude.push('e2');
+    doTest();
+    
+    termFacet.exclude(['e3', 'e4']);
+    expected.somename.terms.exclude = ['e3', 'e4'];
+    doTest();
+    
+    termFacet.regex('r');
+    expected.somename.terms.regex = 'r';
+    doTest();
+    
+    termFacet.regexFlags('flag');
+    expected.somename.terms.regex_flags = 'flag';
+    doTest();
+    
+    termFacet.script('script');
+    expected.somename.terms.script = 'script';
+    doTest();
+    
+    termFacet.lang('mvel');
+    expected.somename.terms.lang = 'mvel';
+    doTest();
+    
+    termFacet.params({p1: 'v1'});
+    expected.somename.terms.params = {p1: 'v1'};
+    doTest();
+    
+    termFacet.executionHint('map');
+    expected.somename.terms.execution_hint = 'map';
+    doTest();
+    
+    termFacet.facetFilter(termFilter);
     expected.somename.facet_filter = termFilter._self();
     doTest();
 
@@ -82,6 +141,20 @@ exports.facets = {
     expected.somename.terms.all_terms = false;
     doTest();
 
+    test.strictEqual(termFacet.toString(), JSON.stringify(expected));
+    
+    test.throws(function () {
+      termFacet.facetFilter('invalid');
+    }, TypeError);
+    
+    test.throws(function () {
+      termFacet.exclude(1);
+    }, TypeError);
+    
+    test.throws(function () {
+      termFacet.fields('invalid');
+    }, TypeError);
+    
     test.done();
   },
   GeoDistanceFacet: function (test) {

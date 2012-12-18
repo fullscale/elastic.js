@@ -40,7 +40,9 @@
     return {
 
       /**
-            Sets the field to be used to construct the this facet.
+            Sets the field to be used to construct the this facet.  Set to
+            _index to return a facet count of hits per _index the search was 
+            executed on.
 
             @member ejs.TermsFacet
             @param {String} fieldName The field name whose data will be used to construct the facet.
@@ -55,6 +57,42 @@
         return this;
       },
 
+      /**
+            Aggregate statistical info across a set of fields.
+
+            @member ejs.TermsFacet
+            @param {Array} aFieldName An array of field names.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      fields: function (fields) {
+        if (fields == null) {
+          return facet[name].terms.fields;
+        }
+      
+        if (!isArray(fields)) {
+          throw new TypeError('Argument must be an array');
+        }
+        
+        facet[name].terms.fields = fields;
+        return this;
+      },
+
+      /**
+            Sets a script that will provide the terms for a given document.
+
+            @member ejs.TermsFacet
+            @param {String} script The script code.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      scriptField: function (script) {
+        if (script == null) {
+          return facet[name].terms.script_field;
+        }
+      
+        facet[name].terms.script_field = script;
+        return this;
+      },
+            
       /**
             Sets the number of facet entries that will be returned for this facet. For instance, you
             might ask for only the top 5 <code>authors</code> although there might be hundreds of
@@ -74,23 +112,30 @@
       },
 
       /**
-            <p>Allows you to define the ordering by which facets are returned. For example, you might
-            want facet entries order by their frequency <em>(i.e., count)</em> or you may need them
-            ordered alhpabetically.</p>
-
-            <p>Possible ordering is <code>count, term, reverse_count,</code> and <code>reverse_term</code>.
-            The default ordering is by <code>count</code>.</p>
-
+            Sets the type of ordering that will be performed on the date
+            buckets.  Valid values are:
+            
+            count - default, sort by the number of items in the bucket
+            term - sort by term value.
+            reverse_count - reverse sort of the number of items in the bucket
+            reverse_term - reverse sort of the term value.
+            
             @member ejs.TermsFacet
-            @param {String} sortOrder The numer of facet entries to be returned.
+            @param {String} o The ordering method
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
-      order: function (sortOrder) {
-        if (sortOrder == null) {
+      order: function (o) {
+        if (o == null) {
           return facet[name].terms.order;
         }
       
-        facet[name].terms.order = sortOrder;
+        o = o.toLowerCase();
+        if (o === 'count' || o === 'term' || 
+          o === 'reverse_count' || o === 'reverse_term') {
+          
+          facet[name].terms.order = o;
+        }
+        
         return this;
       },
 
@@ -113,21 +158,32 @@
       },
 
       /**
-            <p>Allows you to filter out unwanted facet entries.</p>
+            <p>Allows you to filter out unwanted facet entries. When passed
+            a single term, it is appended to the list of currently excluded
+            terms.  If passed an array, it overwrites all existing values.</p>
 
             @member ejs.TermsFacet
-            @param {String ...args} args A variable length ist of terms to exclude.
+            @param {String || Array} exclude A single term to exclude or an 
+              array of terms to exclude.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
-      exclude: function () {
-        if (arguments.length === 0) {
+      exclude: function (exclude) {
+        if (facet[name].terms.exclude == null) {
+          facet[name].terms.exclude = [];
+        }
+        
+        if (exclude == null) {
           return facet[name].terms.exclude;
         }
       
-        facet[name].terms.exclude = [];
-        for (var i = 0; i < arguments.length; i++) {
-          facet[name].terms.exclude.push(arguments[i]._self());
+        if (isString(exclude)) {
+          facet[name].terms.exclude.push(exclude);
+        } else if (isArray(exclude)) {
+          facet[name].terms.exclude = exclude;
+        } else {
+          throw new TypeError('Argument must be string or array');
         }
+        
         return this;
       },
 
@@ -136,25 +192,103 @@
 
             @member ejs.TermsFacet
             @param {String} exp A valid regular expression.
-            @param {String} flags A valid regex flag - see <a href="http://docs.oracle.com/javase/6/docs/api/java/util/regex/Pattern.html#field_summary">Java Pattern API</a>
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
-      regex: function (exp, flags) {
-        if (arguments.length === 0) {
-          return {
-            exp: facet[name].terms.regex,
-            flags: facet[name].terms.regex_flags
-          };
+      regex: function (exp) {
+        if (exp == null) {
+          return facet[name].terms.regex;
         }
       
         facet[name].terms.regex = exp;
-        if (flags != null) {
-          facet[name].terms.regex_flags = flags;
-        }
-      
         return this;
       },
 
+      /**
+            <p>Allows you to set the regular expression flags to be used
+            with the <code>regex</code></p>
+
+            @member ejs.TermsFacet
+            @param {String} flags A valid regex flag - see <a href="http://docs.oracle.com/javase/6/docs/api/java/util/regex/Pattern.html#field_summary">Java Pattern API</a>
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      regexFlags: function (flags) {
+        if (flags == null) {
+          return facet[name].terms.regex_flags;
+        }
+      
+        facet[name].terms.regex_flags = flags;
+        return this;
+      },
+
+      /**
+            Allows you modify the term using a script. The modified value
+            is then used in the facet collection.
+
+            @member ejs.TermsFacet
+            @param {String} scriptCode A valid script string to execute.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      script: function (scriptCode) {
+        if (scriptCode == null) {
+          return facet[name].terms.script;
+        }
+      
+        facet[name].terms.script = scriptCode;
+        return this;
+      },
+
+      /**
+            The script language being used. Currently supported values are
+            <code>javascript</code>, <code>groovy</code>, and <code>mvel</code>.
+
+            @member ejs.TermsFacet
+            @param {String} language The language of the script.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      lang: function (language) {
+        if (language == null) {
+          return facet[name].terms.lang;
+        }
+      
+        facet[name].terms.lang = language;
+        return this;
+      },
+
+      /**
+            Sets parameters that will be applied to the script.  Overwrites 
+            any existing params.
+
+            @member ejs.TermsFacet
+            @param {Object} p An object where the keys are the parameter name and 
+              values are the parameter value.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      params: function (p) {
+        if (p == null) {
+          return facet[name].terms.params;
+        }
+    
+        facet[name].terms.params = p;
+        return this;
+      },
+      
+      /**
+            Sets the execution hint determines how the facet is computed.  
+            Currently only supported value is "map".
+
+            @member ejs.TermsFacet
+            @param {Object} h The hint value as a string.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      executionHint: function (h) {
+        if (h == null) {
+          return facet[name].terms.execution_hint;
+        }
+    
+        facet[name].terms.execution_hint = h;
+        return this;
+      },
+      
       /**
             <p>Allows you to reduce the documents used for computing facet results.</p>
 
@@ -162,11 +296,15 @@
             @param {Object} oFilter A valid <code>Filter</code> object.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
-      filter: function (oFilter) {
+      facetFilter: function (oFilter) {
         if (oFilter == null) {
           return facet[name].facet_filter;
         }
       
+        if (!isFilter(oFilter)) {
+          throw new TypeError('Argument must be a Filter');
+        }
+        
         facet[name].facet_filter = oFilter._self();
         return this;
       },
