@@ -28,8 +28,9 @@ exports.queries = {
     done();
   },
   exists: function (test) {
-    test.expect(36);
+    test.expect(37);
     
+    test.ok(ejs.RegexpQuery, 'RegexpQuery');
     test.ok(ejs.GeoShapeQuery, 'GeoShapeQuery');
     test.ok(ejs.IndicesQuery, 'IndicesQuery');
     test.ok(ejs.CustomFiltersScoreQuery, 'CustomFiltersScoreQuery');
@@ -66,6 +67,85 @@ exports.queries = {
     test.ok(ejs.SpanOrQuery, 'SpanOrQuery');
     test.ok(ejs.SpanFirstQuery, 'SpanFirstQuery');
     test.ok(ejs.FieldMaskingSpanQuery, 'FieldMaskingSpanQuery');
+
+    test.done();
+  },
+  RegexpQuery: function (test) {
+    test.expect(17);
+
+    var regexQuery = ejs.RegexpQuery('f1', 'regex'),
+      expected,
+      doTest = function () {
+        test.deepEqual(regexQuery._self(), expected);
+      };
+
+    expected = {
+      regexp: {
+        f1: {
+          value: 'regex'
+        }
+      }
+    };
+
+    test.ok(regexQuery, 'RegexpQuery exists');
+    test.ok(regexQuery._self(), '_self() works');
+    doTest();
+    
+    regexQuery.value('regex2');
+    expected.regexp.f1.value = 'regex2';
+    doTest();
+    
+    regexQuery.field('f2');
+    expected = {
+      regexp: {
+        f2: {
+          value: 'regex2'
+        }
+      }
+    };
+    doTest();
+    
+    regexQuery.boost(1.2);
+    expected.regexp.f2.boost = 1.2;
+    doTest();
+    
+    regexQuery.rewrite('constant_score_auto');
+    expected.regexp.f2.rewrite = 'constant_score_auto';
+    doTest();
+    
+    regexQuery.rewrite('invalid');
+    doTest();
+    
+    regexQuery.rewrite('scoring_boolean');
+    expected.regexp.f2.rewrite = 'scoring_boolean';
+    doTest();
+    
+    regexQuery.rewrite('constant_score_boolean');
+    expected.regexp.f2.rewrite = 'constant_score_boolean';
+    doTest();
+    
+    regexQuery.rewrite('constant_score_filter');
+    expected.regexp.f2.rewrite = 'constant_score_filter';
+    doTest();
+    
+    regexQuery.rewrite('top_terms_boost_5');
+    expected.regexp.f2.rewrite = 'top_terms_boost_5';
+    doTest();
+    
+    regexQuery.rewrite('top_terms_9');
+    expected.regexp.f2.rewrite = 'top_terms_9';
+    doTest();
+    
+    regexQuery.flags('INTERSECTION|EMPTY');
+    expected.regexp.f2.flags = 'INTERSECTION|EMPTY';
+    doTest();
+    
+    regexQuery.flagsValue(-1);
+    expected.regexp.f2.flags_value = -1;
+    doTest();
+    
+    test.strictEqual(regexQuery._type(), 'query');
+    test.strictEqual(regexQuery.toString(), JSON.stringify(expected));
 
     test.done();
   },
