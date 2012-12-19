@@ -82,31 +82,31 @@
       has(obj, '_type') &&
       has(obj, '_self') && 
       has(obj, 'toString'));
-  },
+  };
   
   isQuery = function (obj) {
     return (isEJSObject(obj) && obj._type() === 'query');
-  },
+  };
   
   isFilter = function (obj) {
     return (isEJSObject(obj) && obj._type() === 'filter');
-  },
+  };
   
   isFacet = function (obj) {
     return (isEJSObject(obj) && obj._type() === 'facet');
-  },
+  };
   
   isComputedProperty = function (obj) {
     return (isEJSObject(obj) && obj._type() === 'computed property');
-  },
+  };
   
   isGeoPoint = function (obj) {
     return (isEJSObject(obj) && obj._type() === 'geo point');
-  },
+  };
   
   isIndexedShape = function (obj) {
     return (isEJSObject(obj) && obj._type() === 'indexed shape');
-  },
+  };
   
   isShape = function (obj) {
     return (isEJSObject(obj) && obj._type() === 'shape');
