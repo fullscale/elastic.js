@@ -1677,7 +1677,7 @@ exports.filters = {
   PrefixFilter: function (test) {
     test.expect(10);
 
-    var prefixFilter = ejs.PrefixFilter('title'),
+    var prefixFilter = ejs.PrefixFilter('title', 't'),
       expected,
       doTest = function () {
         test.deepEqual(prefixFilter._self(), expected);
@@ -1685,7 +1685,7 @@ exports.filters = {
 
     expected = {
       prefix: {
-        title: ''
+        title: 't'
       }
     };
 

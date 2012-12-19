@@ -9,8 +9,9 @@
     Filters documents that have fields containing terms with a specified prefix.
 
     @param {String} fieldName the field name to be used during matching.
+    @param {String} prefix the prefix value.
     */
-  ejs.PrefixFilter = function (fieldName) {
+  ejs.PrefixFilter = function (fieldName, prefix) {
 
     /**
          The internal filter object. Use <code>get()</code>
@@ -22,7 +23,7 @@
       prefix: {}
     };
 
-    filter.prefix[fieldName] = "";
+    filter.prefix[fieldName] = prefix;
     
     return {
 
