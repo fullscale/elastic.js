@@ -193,6 +193,10 @@
           return query.query;
         }
       
+        if (!isQuery(someQuery)) {
+          throw new TypeError('Argument must be a Query');
+        }
+        
         query.query = someQuery._self();
         return this;
       },
@@ -208,10 +212,12 @@
       indices: function (indexArray) {
         if (indexArray == null) {
           return indices;
-        } else if (typeof indexArray === "string") {
+        } else if (isString(indexArray)) {
           indices = [indexArray];
-        } else {
+        } else if (isArray(indexArray)) {
           indices = indexArray;
+        } else {
+          throw new TypeError('Argument must be a string or array');
         }
 
         // check that an index is specified when a type is
@@ -234,10 +240,12 @@
       types: function (typeArray) {
         if (typeArray == null) {
           return types;
-        } else if (typeof typeArray === "string") {
+        } else if (isString(typeArray)) {
           types = [typeArray];
-        } else {
+        } else if (isArray(typeArray)) {
           types = typeArray;
+        } else {
+          throw new TypeError('Argument must be a string or array');
         }
 
         // check that an index is specified when a type is
@@ -266,6 +274,10 @@
           query.facets = {};
         }
       
+        if (!isFacet(facet)) {
+          throw new TypeError('Argument must be a Facet');
+        }
+        
         extend(query.facets, facet._self());
 
         return this;
@@ -283,6 +295,10 @@
           return query.filter;
         }
       
+        if (!isFilter(filter)) {
+          throw new TypeError('Argument must be a Filter');
+        }
+        
         query.filter = filter._self();
         return this;
       },
@@ -291,7 +307,7 @@
             Performs highlighting of matched terms against the specified fields.
 
             @member ejs.Request
-            @param {Facet} fieldNames An array of field names which to perform highlighting against.
+            @param {Array} fieldNames An array of field names which to perform highlighting against.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       highlight: function (fieldNames) {
@@ -473,7 +489,10 @@
           query.script_fields = {};
         }
       
-      
+        if (!isComputedProperty(oComputedProperty)) {
+          throw new TypeError('Argument must be a ComputedProperty');
+        }
+        
         extend(query.script_fields, oComputedProperty._self());
         return this;
       },

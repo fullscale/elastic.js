@@ -210,7 +210,7 @@ exports.search = {
     test.done();
   },
   Request: function (test) {
-    test.expect(45);
+    test.expect(51);
 
     var req = ejs.Request({indices: ['index1'], types: ['type1']}),
       expected,
@@ -338,6 +338,31 @@ exports.search = {
     test.strictEqual(req._type(), 'request');
     test.strictEqual(req.toString(), JSON.stringify(expected));
 
+    test.throws(function () {
+      req.query('invalid');
+    }, TypeError);
+    
+    test.throws(function () {
+      req.facet('invalid');
+    }, TypeError);
+    
+    test.throws(function () {
+      req.filter('invalid');
+    }, TypeError);
+    
+    test.throws(function () {
+      req.indices(2);
+    }, TypeError);
+    
+    test.throws(function () {
+      req.types(3);
+    }, TypeError);
+    
+    test.throws(function () {
+      req.computedProperty('invalid');
+    }, TypeError);
+    
+    
     test.done();
   }
 };
