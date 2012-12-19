@@ -28,8 +28,9 @@ exports.filters = {
     done();
   },
   exists: function (test) {
-    test.expect(26);
+    test.expect(27);
 
+    test.ok(ejs.RegexpFilter, 'RegexpFilter');
     test.ok(ejs.IndicesFilter, 'IndicesFilter');
     test.ok(ejs.TermsFilter, 'TermsFilter');
     test.ok(ejs.NestedFilter, 'NestedFilter');
@@ -56,6 +57,66 @@ exports.filters = {
     test.ok(ejs.PrefixFilter, 'PrefixFilter');
     test.ok(ejs.MissingFilter, 'MissingFilter');
     test.ok(ejs.OrFilter, 'OrFilter');
+
+    test.done();
+  },
+  RegexpFilter: function (test) {
+    test.expect(12);
+
+    var regexFilter = ejs.RegexpFilter('title', 'regex'),
+      expected,
+      doTest = function () {
+        test.deepEqual(regexFilter._self(), expected);
+      };
+
+    expected = {
+      regexp: {
+        title: {
+          value: 'regex'
+        }
+      }
+    };
+
+    test.ok(regexFilter, 'RegexpFilter exists');
+    test.ok(regexFilter._self(), '_self() works');
+    doTest();
+
+    regexFilter.value('regex2');
+    expected.regexp.title.value = 'regex2';
+    doTest();
+    
+    regexFilter.field('body');
+    expected = {
+      regexp: {
+        body: {
+          value: 'regex2'
+        }
+      }
+    };
+    doTest();
+    
+    regexFilter.flags('INTERSECTION|EMPTY');
+    expected.regexp.body.flags = 'INTERSECTION|EMPTY';
+    doTest();
+    
+    regexFilter.flagsValue(-1);
+    expected.regexp.body.flags_value = -1;
+    doTest();
+    
+    regexFilter.name('filter_name');
+    expected.regexp._name = 'filter_name';
+    doTest();
+    
+    regexFilter.cache(true);
+    expected.regexp._cache = true;
+    doTest();
+    
+    regexFilter.cacheKey('filter_cache_key');
+    expected.regexp._cache_key = 'filter_cache_key';
+    doTest();
+    
+    test.strictEqual(regexFilter._type(), 'filter');
+    test.strictEqual(regexFilter.toString(), JSON.stringify(expected));
 
     test.done();
   },
