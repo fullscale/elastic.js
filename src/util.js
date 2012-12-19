@@ -112,3 +112,7 @@
     return (isEJSObject(obj) && obj._type() === 'shape');
   };
   
+  isSort = function (obj) {
+    return (isEJSObject(obj) && obj._type() === 'sort');
+  };
+  

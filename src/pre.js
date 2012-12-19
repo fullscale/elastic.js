@@ -42,6 +42,7 @@
     isGeoPoint, // checks valid ejs GeoPoint object
     isIndexedShape, // checks valid ejs IndexedShape object
     isShape, // checks valid ejs Shape object
+    isSort, // checks valid ejs Sort object
     
     // create ejs object
     ejs;

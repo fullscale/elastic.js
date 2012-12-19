@@ -28,13 +28,133 @@ exports.search = {
     done();
   },
   exists: function (test) {
-    test.expect(5);
+    test.expect(6);
 
     test.ok(ejs.Request, 'Request');
     test.ok(ejs.ComputedProperty, 'ComputedProperty');
     test.ok(ejs.GeoPoint, 'GeoPoint');
     test.ok(ejs.IndexedShape, 'IndexedShape');
     test.ok(ejs.Shape, 'Shape');
+    test.ok(ejs.Sort, 'Sort');
+    
+    test.done();
+  },
+  Sort: function (test) {
+    test.expect(27);
+    
+    var sort = ejs.Sort(),
+      geoPoint = ejs.GeoPoint([37.7819288, -122.396480]),
+      expected,
+      doTest = function () {
+        test.deepEqual(sort._self(), expected);
+      };
+    
+    expected = {
+      _score: {}
+    };  
+    
+    test.ok(sort, 'Sort exists');
+    test.ok(sort._self(), '_self() works');
+    doTest();
+    
+    sort.field('title');
+    expected = {
+      title: {}
+    };
+    doTest();
+    
+    sort.order('asc');
+    expected.title.order = 'asc';
+    doTest();
+    
+    sort.order('INVALID');
+    doTest();
+    
+    sort.order('DESC');
+    expected.title.order = 'desc';
+    doTest();
+    
+    sort.reverse(true);
+    expected.title.reverse = true;
+    doTest();
+    
+    sort.missing('_last');
+    expected.title.missing = '_last';
+    doTest();
+    
+    sort.ignoreUnmapped(true);
+    expected.title.ignore_unmapped = true;
+    doTest();
+    
+    // geo distance sorting tests
+    sort = ejs.Sort('location').geoDistance(geoPoint);
+    expected = {
+      _geo_distance: {
+        location: geoPoint._self()
+      }
+    };
+    doTest();
+    
+    sort.unit('mi');
+    expected._geo_distance.unit = 'mi';
+    doTest();
+    
+    sort.unit('INVALID');
+    doTest();
+    
+    sort.unit('KM');
+    expected._geo_distance.unit = 'km';
+    doTest();
+    
+    sort.normalize(true);
+    expected._geo_distance.normalize = true;
+    doTest();
+    
+    sort.distanceType('arc');
+    expected._geo_distance.distance_type = 'arc';
+    doTest();
+    
+    sort.distanceType('INVALID');
+    doTest();
+    
+    sort.distanceType('PLANE');
+    expected._geo_distance.distance_type = 'plane';
+    doTest();
+    
+    // script sorting tests
+    sort = ejs.Sort().script("doc['field_name'].value * factor");
+    expected = {
+      _script: {
+        script: "doc['field_name'].value * factor"
+      }
+    };
+    doTest();
+    
+    sort.lang('mvel');
+    expected._script.lang = 'mvel';
+    doTest();
+    
+    sort.params({p1: true, p2: 'v2'});
+    expected._script.params = {p1: true, p2: 'v2'};
+    doTest();
+    
+    sort.type('string');
+    expected._script.type = 'string';
+    doTest();
+    
+    sort.type('INVALID');
+    doTest();
+    
+    sort.type('NUMBER');
+    expected._script.type = 'number';
+    doTest();
+    
+    test.strictEqual(sort._type(), 'sort');
+    test.strictEqual(sort.toString(), JSON.stringify(expected));
+    
+    test.throws(function () {
+      sort.geoDistance('invalid');
+    }, TypeError);
     
     test.done();
   },
