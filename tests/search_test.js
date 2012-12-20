@@ -338,7 +338,7 @@ exports.search = {
     test.done();
   },
   Request: function (test) {
-    test.expect(64);
+    test.expect(65);
 
     var req = ejs.Request({indices: ['index1'], types: ['type1']}),
       matchAll = ejs.MatchAllQuery(),
@@ -500,6 +500,10 @@ exports.search = {
     req.doSearch();
     
     test.deepEqual(req.sort(), expected.sort);
+    
+    req.trackScores(true);
+    expected.track_scores = true;
+    req.doSearch();
     
     test.strictEqual(req._type(), 'request');
     test.strictEqual(req.toString(), JSON.stringify(expected));

@@ -139,7 +139,23 @@
         return this;
       },
 
+      /**
+           Enables score computation and tracking during sorting.  Be default, 
+           when sorting scores are not computed.
 
+            @member ejs.Request
+            @param {Boolean} trueFalse If scores should be computed and tracked.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      trackScores: function (trueFalse) {
+        if (trueFalse == null) {
+          return query.track_scores;
+        }
+      
+        query.track_scores = trueFalse;
+        return this;
+      },
+      
       /**
             Sets the number of results/documents to be returned. This is set on a per page basis.
 
