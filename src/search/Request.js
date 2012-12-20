@@ -544,7 +544,7 @@
             @param {ScriptField} oScriptField A valid <code>ScriptField</code>.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
-      computedProperty: function (oScriptField) {
+      scriptField: function (oScriptField) {
         if (oScriptField == null) {
           return query.script_fields;
         }

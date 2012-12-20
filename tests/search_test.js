@@ -529,7 +529,7 @@ exports.search = {
     }, TypeError);
     
     test.throws(function () {
-      req.computedProperty('invalid');
+      req.scriptField('invalid');
     }, TypeError);
     
     test.throws(function () {
