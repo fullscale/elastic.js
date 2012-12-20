@@ -338,9 +338,10 @@ exports.search = {
     test.done();
   },
   Request: function (test) {
-    test.expect(51);
+    test.expect(64);
 
     var req = ejs.Request({indices: ['index1'], types: ['type1']}),
+      matchAll = ejs.MatchAllQuery(),
       expected,
       mockClient,
       expectedPath = '',
@@ -384,10 +385,7 @@ exports.search = {
       }
     };
     
-    expected = {
-      size: 10,
-      from: 0
-    };
+    expected = {};
 
     test.deepEqual(req.indices(), ['index1']);
     test.deepEqual(req.types(), ['type1']);
@@ -463,6 +461,46 @@ exports.search = {
     expected.timeout = 5000;
     req.doSearch();
     
+    req = ejs.Request({indices: 'index', types: 'type'}).query(matchAll);
+    expected = {
+      query: matchAll._self()
+    };
+    expectedPath = '/index/type/_search';
+    expectedData = JSON.stringify(expected);
+    req.doSearch();
+    
+    req.sort('field1');
+    expected.sort = ['field1'];
+    req.doSearch();
+    
+    req.sort('field2', 'asc');
+    expected.sort.push({field2: {order: 'asc'}});
+    req.doSearch();
+    
+    req.sort('field3', 'invalid');
+    req.doSearch();
+    
+    req.sort('field3', 'DESC');
+    expected.sort.push({field3: {order: 'desc'}});
+    req.doSearch();
+    
+    req.sort(ejs.Sort('field4').asc());
+    expected.sort.push({field4: {order: 'asc'}});
+    req.doSearch();
+    
+    var geoSort = ejs.Sort('location')
+      .geoDistance(ejs.GeoPoint([37.7819288, -122.396480]))
+      .unit('mi').normalize(true);
+    req.sort(geoSort);
+    expected.sort.push(geoSort._self());
+    req.doSearch();
+    
+    req.sort(['field5', geoSort]);
+    expected.sort = ['field5', geoSort._self()];
+    req.doSearch();
+    
+    test.deepEqual(req.sort(), expected.sort);
+    
     test.strictEqual(req._type(), 'request');
     test.strictEqual(req.toString(), JSON.stringify(expected));
 
@@ -490,6 +528,13 @@ exports.search = {
       req.computedProperty('invalid');
     }, TypeError);
     
+    test.throws(function () {
+      req.sort(2);
+    }, TypeError);
+    
+    test.throws(function () {
+      req.sort(['valid', 3]);
+    }, TypeError);
     
     test.done();
   }

@@ -26,10 +26,7 @@
         @member ejs.Request
         @property {Object} query
         */
-    query = {
-      size: 10,
-      from: 0
-    };
+    query = {};
 
     conf = conf || {};
     // check if we are searching across any specific indeices        
@@ -65,17 +62,29 @@
     return {
 
       /**
-            Sets the sort order for results. Multi-level sorting is supported so the
-            order in which sort fields are added to the query requests is relevant.
+            Sets the sorting for the query.  This accepts many input formats.
+            
+            sort() - The current sorting values are returned.
+            sort(fieldName) - Adds the field to the current list of sorting values.
+            sort(fieldName, order) - Adds the field to the current list of
+              sorting with the specified order.  Order must be asc or desc.
+            sort(ejs.Sort) - Adds the Sort value to the current list of sorting values. 
+            sort(array) - Replaces all current sorting values with values
+              from the array.  The array must contain only strings and Sort
+              objects.
 
+            Multi-level sorting is supported so the order in which sort fields 
+            are added to the query requests is relevant.
+            
+            It is recommended to use <code>Sort</code> objects when possible.
+            
             @member ejs.Request
             @param {String} fieldName The field to be sorted by.
-            @param {String} order The order in which to sort. Valid values are <code>desc, asc</code>. Default is <code>desc</code>.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
-      sort: function (fieldName, order) {
-        order = order || "desc";
-
+      sort: function () {
+        var i, len;
+        
         if (!has(query, "sort")) {
           query.sort = [];
         }
@@ -84,9 +93,48 @@
           return query.sort;
         }
       
-        var sorter = {};
-        sorter[fieldName] = order;
-        query.sort.push(sorter);
+        // if passed a single argument
+        if (arguments.length === 1) {
+          var sortVal = arguments[0];
+          
+          if (isString(sortVal)) {
+            // add  a single field name
+            query.sort.push(sortVal);
+          } else if (isSort(sortVal)) {
+            // add the Sort object
+            query.sort.push(sortVal._self());
+          } else if (isArray(sortVal)) {
+            // replace with all values in the array
+            // the values must be a fieldName (string) or a
+            // Sort object.  Any other type throws an Error.
+            query.sort = [];
+            for (i = 0, len = sortVal.length; i < len; i++) {
+              if (isString(sortVal[i])) {
+                query.sort.push(sortVal[i]);
+              } else if (isSort(sortVal[i])) {
+                query.sort.push(sortVal[i]._self());
+              } else {
+                throw new TypeError('Invalid object in array');
+              }
+            }
+          } else {
+            // Invalid object type as argument.
+            throw new TypeError('Argument must be string, Sort, or array');
+          } 
+        } else if (arguments.length === 2) {
+          // handle the case where a single field name and order are passed
+          var field = arguments[0],
+            order = arguments[1];
+            
+          if (isString(field) && isString(order)) {
+            order = order.toLowerCase();
+            if (order === 'asc' || order === 'desc') {
+              var sortObj = {};
+              sortObj[field] = {order: order};
+              query.sort.push(sortObj);
+            }
+          }
+        }
 
         return this;
       },
