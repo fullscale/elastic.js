@@ -338,7 +338,7 @@ exports.search = {
     test.done();
   },
   Request: function (test) {
-    test.expect(65);
+    test.expect(69);
 
     var req = ejs.Request({indices: ['index1'], types: ['type1']}),
       matchAll = ejs.MatchAllQuery(),
@@ -505,6 +505,18 @@ exports.search = {
     expected.track_scores = true;
     req.doSearch();
     
+    req.fields('field1');
+    expected.fields = ['field1'];
+    req.doSearch();
+    
+    req.fields('field2');
+    expected.fields.push('field2');
+    req.doSearch();
+    
+    req.fields(['field3', 'field4']);
+    expected.fields = ['field3', 'field4'];
+    req.doSearch();
+    
     test.strictEqual(req._type(), 'request');
     test.strictEqual(req.toString(), JSON.stringify(expected));
 
@@ -538,6 +550,10 @@ exports.search = {
     
     test.throws(function () {
       req.sort(['valid', 3]);
+    }, TypeError);
+    
+    test.throws(function () {
+      req.fields(3);
     }, TypeError);
     
     test.done();

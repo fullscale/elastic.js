@@ -211,9 +211,13 @@
       /**
             By default, searches return full documents, meaning every property or field.
             This method allows you to specify which fields you want returned.
+            
+            Pass a single field name and it is appended to the current list of
+            fields.  Pass an array of fields and it replaces all existing 
+            fields.
 
             @member ejs.Request
-            @param {Array} s The set fields that are to be returned by the search.
+            @param {String || Array} s The field as a string or fields as array
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       fields: function (fieldList) {
@@ -221,7 +225,18 @@
           return query.fields;
         }
       
-        query.fields = fieldList;
+        if (query.fields == null) {
+          query.fields = [];
+        }
+        
+        if (isString(fieldList)) {
+          query.fields.push(fieldList);
+        } else if (isArray(fieldList)) {
+          query.fields = fieldList;
+        } else {
+          throw new TypeError('Argument must be string or array');
+        }
+        
         return this;
       },
 
