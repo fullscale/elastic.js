@@ -43,7 +43,7 @@ exports.facets = {
     test.done();
   },
   TermsFacet: function (test) {
-    test.expect(28);
+    test.expect(32);
 
     var termFacet = ejs.TermsFacet('somename'),
       termFilter = ejs.TermFilter('t1', 'v1'),
@@ -141,6 +141,22 @@ exports.facets = {
     expected.somename.terms.all_terms = false;
     doTest();
 
+    termFacet.scope('my_scope');
+    expected.somename.scope = 'my_scope';
+    doTest();
+    
+    termFacet.global(true);
+    expected.somename.global = true;
+    doTest();
+    
+    termFacet.cacheFilter(false);
+    expected.somename.cache_filter = false;
+    doTest();
+    
+    termFacet.nested('root.path');
+    expected.somename.nested = 'root.path';
+    doTest();
+    
     test.strictEqual(termFacet._type(), 'facet');
     test.strictEqual(termFacet.toString(), JSON.stringify(expected));
     
@@ -159,7 +175,7 @@ exports.facets = {
     test.done();
   },
   GeoDistanceFacet: function (test) {
-    test.expect(25);
+    test.expect(29);
 
     var geoDistanceFacet = ejs.GeoDistanceFacet('somename'),
       termFilter = ejs.TermFilter('t1', 'v1'),
@@ -269,6 +285,22 @@ exports.facets = {
     expected.somename.facet_filter = termFilter._self();
     doTest();
     
+    geoDistanceFacet.scope('my_scope');
+    expected.somename.scope = 'my_scope';
+    doTest();
+    
+    geoDistanceFacet.global(true);
+    expected.somename.global = true;
+    doTest();
+    
+    geoDistanceFacet.cacheFilter(false);
+    expected.somename.cache_filter = false;
+    doTest();
+    
+    geoDistanceFacet.nested('root.path');
+    expected.somename.nested = 'root.path';
+    doTest();
+    
     test.strictEqual(geoDistanceFacet._type(), 'facet');
     test.strictEqual(geoDistanceFacet.toString(), JSON.stringify(expected));
     
@@ -283,7 +315,7 @@ exports.facets = {
     test.done();
   },
   StatisticalFacet: function (test) {
-    test.expect(13);
+    test.expect(17);
 
     var statisticalFacet = ejs.StatisticalFacet('somename'),
       termFilter = ejs.TermFilter('t1', 'v1'),
@@ -330,6 +362,22 @@ exports.facets = {
     };
     doTest();
 
+    statisticalFacet.scope('my_scope');
+    expected.somename.scope = 'my_scope';
+    doTest();
+    
+    statisticalFacet.global(true);
+    expected.somename.global = true;
+    doTest();
+    
+    statisticalFacet.cacheFilter(false);
+    expected.somename.cache_filter = false;
+    doTest();
+    
+    statisticalFacet.nested('root.path');
+    expected.somename.nested = 'root.path';
+    doTest();
+    
     test.strictEqual(statisticalFacet._type(), 'facet');
     test.strictEqual(statisticalFacet.toString(), JSON.stringify(expected));
     
@@ -344,7 +392,7 @@ exports.facets = {
     test.done();
   },
   TermStatsFacet: function (test) {
-    test.expect(28);
+    test.expect(32);
 
     var termStatsFacet = ejs.TermStatsFacet('somename'),
       termFilter = ejs.TermFilter('t1', 'v1'),
@@ -450,6 +498,22 @@ exports.facets = {
     expected.somename.terms_stats.size = 5;
     doTest();
 
+    termStatsFacet.scope('my_scope');
+    expected.somename.scope = 'my_scope';
+    doTest();
+    
+    termStatsFacet.global(true);
+    expected.somename.global = true;
+    doTest();
+    
+    termStatsFacet.cacheFilter(false);
+    expected.somename.cache_filter = false;
+    doTest();
+    
+    termStatsFacet.nested('root.path');
+    expected.somename.nested = 'root.path';
+    doTest();
+    
     test.strictEqual(termStatsFacet._type(), 'facet');
     test.strictEqual(termStatsFacet.toString(), JSON.stringify(expected));
     
@@ -460,7 +524,7 @@ exports.facets = {
     test.done();
   },
   DateHistogramFacet: function (test) {
-    test.expect(25);
+    test.expect(29);
 
     var dateHistogramFacet = ejs.DateHistogramFacet('somename'),
       termFilter = ejs.TermFilter('t1', 'v1'),
@@ -554,6 +618,22 @@ exports.facets = {
     expected.somename.date_histogram.params = {p1: 'v1', p2: false};
     doTest();
     
+    dateHistogramFacet.scope('my_scope');
+    expected.somename.scope = 'my_scope';
+    doTest();
+    
+    dateHistogramFacet.global(true);
+    expected.somename.global = true;
+    doTest();
+    
+    dateHistogramFacet.cacheFilter(false);
+    expected.somename.cache_filter = false;
+    doTest();
+    
+    dateHistogramFacet.nested('root.path');
+    expected.somename.nested = 'root.path';
+    doTest();
+    
     test.strictEqual(dateHistogramFacet._type(), 'facet');
     test.strictEqual(dateHistogramFacet.toString(), JSON.stringify(expected));
     
@@ -564,7 +644,7 @@ exports.facets = {
     test.done();
   },
   QueryFacet: function (test) {
-    test.expect(9);
+    test.expect(13);
 
     var queryFacet = ejs.QueryFacet('somename'),
       termFilter = ejs.TermFilter('t1', 'v1'),
@@ -590,6 +670,22 @@ exports.facets = {
     expected.somename.facet_filter = termFilter._self();
     doTest();
 
+    queryFacet.scope('my_scope');
+    expected.somename.scope = 'my_scope';
+    doTest();
+    
+    queryFacet.global(true);
+    expected.somename.global = true;
+    doTest();
+    
+    queryFacet.cacheFilter(false);
+    expected.somename.cache_filter = false;
+    doTest();
+    
+    queryFacet.nested('root.path');
+    expected.somename.nested = 'root.path';
+    doTest();
+    
     test.strictEqual(queryFacet._type(), 'facet');
     test.strictEqual(queryFacet.toString(), JSON.stringify(expected));
     
@@ -604,7 +700,7 @@ exports.facets = {
     test.done();
   },
   FilterFacet: function (test) {
-    test.expect(9);
+    test.expect(13);
 
     var filterFacet = ejs.FilterFacet('somename'),
       termFilter1 = ejs.TermFilter('t1', 'v1'),
@@ -629,7 +725,23 @@ exports.facets = {
     filterFacet.facetFilter(termFilter2);
     expected.somename.facet_filter = termFilter2._self();
     doTest();
-
+    
+    filterFacet.scope('my_scope');
+    expected.somename.scope = 'my_scope';
+    doTest();
+    
+    filterFacet.global(true);
+    expected.somename.global = true;
+    doTest();
+    
+    filterFacet.cacheFilter(false);
+    expected.somename.cache_filter = false;
+    doTest();
+    
+    filterFacet.nested('root.path');
+    expected.somename.nested = 'root.path';
+    doTest();
+    
     test.strictEqual(filterFacet._type(), 'facet');
     test.strictEqual(filterFacet.toString(), JSON.stringify(expected));
     
@@ -644,7 +756,7 @@ exports.facets = {
     test.done();
   },
   HistogramFacet: function (test) {
-    test.expect(22);
+    test.expect(26);
 
     var histogramFacet = ejs.HistogramFacet('somename'),
       termFilter = ejs.TermFilter('t1', 'v1'),
@@ -726,6 +838,22 @@ exports.facets = {
     expected.somename.facet_filter = termFilter._self();
     doTest();
 
+    histogramFacet.scope('my_scope');
+    expected.somename.scope = 'my_scope';
+    doTest();
+    
+    histogramFacet.global(true);
+    expected.somename.global = true;
+    doTest();
+    
+    histogramFacet.cacheFilter(false);
+    expected.somename.cache_filter = false;
+    doTest();
+    
+    histogramFacet.nested('root.path');
+    expected.somename.nested = 'root.path';
+    doTest();
+    
     test.strictEqual(histogramFacet._type(), 'facet');
     test.strictEqual(histogramFacet.toString(), JSON.stringify(expected));
     
@@ -736,7 +864,7 @@ exports.facets = {
     test.done();
   },
   RangeFacet: function (test) {
-    test.expect(18);
+    test.expect(22);
 
     var rangeFacet = ejs.RangeFacet('somename'),
       termFilter = ejs.TermFilter('t1', 'v1'),
@@ -815,6 +943,22 @@ exports.facets = {
     });
     doTest();
 
+    rangeFacet.scope('my_scope');
+    expected.somename.scope = 'my_scope';
+    doTest();
+    
+    rangeFacet.global(true);
+    expected.somename.global = true;
+    doTest();
+    
+    rangeFacet.cacheFilter(false);
+    expected.somename.cache_filter = false;
+    doTest();
+    
+    rangeFacet.nested('root.path');
+    expected.somename.nested = 'root.path';
+    doTest();
+    
     test.strictEqual(rangeFacet._type(), 'facet');
     test.strictEqual(rangeFacet.toString(), JSON.stringify(expected));
     

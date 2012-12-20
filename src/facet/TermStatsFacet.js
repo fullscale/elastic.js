@@ -238,6 +238,71 @@
       },
 
       /**
+            <p>Computes values across the entire index</p>
+
+            @member ejs.TermStatsFacet
+            @param {Boolean} trueFalse Calculate facet counts globally or not.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      global: function (trueFalse) {
+        if (trueFalse == null) {
+          return facet[name].global;
+        }
+        
+        facet[name].global = trueFalse;
+        return this;
+      },
+      
+      /**
+            <p>Computes values across the the specified scope</p>
+
+            @member ejs.TermStatsFacet
+            @param {String} scope The scope name to calculate facet counts with.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      scope: function (scope) {
+        if (scope == null) {
+          return facet[name].scope;
+        }
+        
+        facet[name].scope = scope;
+        return this;
+      },
+      
+      /**
+            <p>Enables caching of the <code>facetFilter</code></p>
+
+            @member ejs.TermStatsFacet
+            @param {Boolean} trueFalse If the facetFilter should be cached or not
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      cacheFilter: function (trueFalse) {
+        if (trueFalse == null) {
+          return facet[name].cache_filter;
+        }
+        
+        facet[name].cache_filter = trueFalse;
+        return this;
+      },
+      
+      /**
+            <p>Sets the path to the nested document if faceting against a
+            nested field.</p>
+
+            @member ejs.TermStatsFacet
+            @param {String} path The nested path
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      nested: function (path) {
+        if (path == null) {
+          return facet[name].nested;
+        }
+        
+        facet[name].nested = path;
+        return this;
+      },
+      
+      /**
             <p>Allows you to serialize this object into a JSON encoded string.</p>
 
             @member ejs.TermStatsFacet
