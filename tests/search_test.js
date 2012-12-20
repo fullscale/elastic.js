@@ -40,7 +40,7 @@ exports.search = {
     test.done();
   },
   Sort: function (test) {
-    test.expect(27);
+    test.expect(29);
     
     var sort = ejs.Sort(),
       geoPoint = ejs.GeoPoint([37.7819288, -122.396480]),
@@ -71,6 +71,14 @@ exports.search = {
     doTest();
     
     sort.order('DESC');
+    expected.title.order = 'desc';
+    doTest();
+    
+    sort.asc();
+    expected.title.order = 'asc';
+    doTest();
+    
+    sort.desc();
     expected.title.order = 'desc';
     doTest();
     

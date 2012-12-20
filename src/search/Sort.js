@@ -126,6 +126,30 @@
       },
     
       /**
+            Sets the sort order to ascending (asc).  Same as calling
+            <code>order('asc')</code>.
+          
+            @member ejs.Sort
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      asc: function () {
+        sort[key].order = 'asc';
+        return this;
+      },
+      
+      /**
+            Sets the sort order to descending (desc).  Same as calling
+            <code>order('desc')</code>.
+          
+            @member ejs.Sort
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      desc: function () {
+        sort[key].order = 'desc';
+        return this;
+      },
+      
+      /**
             Sets the order with a boolean value.  
           
             true = descending sort order
