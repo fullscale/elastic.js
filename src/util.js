@@ -96,8 +96,8 @@
     return (isEJSObject(obj) && obj._type() === 'facet');
   };
   
-  isComputedProperty = function (obj) {
-    return (isEJSObject(obj) && obj._type() === 'computed property');
+  isScriptField = function (obj) {
+    return (isEJSObject(obj) && obj._type() === 'script field');
   };
   
   isGeoPoint = function (obj) {

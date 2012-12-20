@@ -9,15 +9,15 @@
     <p><strong>Note:</strong> This module contains a related code example.&nbsp;
     <a target="_blank" class="btn c9" href="https://gist.github.com/1895052">View Code Example</a></p>
 
-    @name ejs.ComputedProperty
+    @name ejs.ScriptField
 
     @desc
     <p>Computes dynamic document properties based on information from other fields.</p>
 
-    @param {String} fieldName A name of the computed property to create.
+    @param {String} fieldName A name of the script field to create.
 
     */
-  ejs.ComputedProperty = function (fieldName) {
+  ejs.ScriptField = function (fieldName) {
     var script = {};
 
     script[fieldName] = {};
@@ -28,7 +28,7 @@
             The script language being used. Currently supported values are
             <code>javascript</code> and <code>mvel</code>.
 
-            @member ejs.ComputedProperty
+            @member ejs.ScriptField
             @param {String} language The language of the script.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
@@ -44,7 +44,7 @@
       /**
             Sets the script/code that will be used to perform the calculation.
 
-            @member ejs.ComputedProperty
+            @member ejs.ScriptField
             @param {String} expression The script/code to use.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
@@ -60,7 +60,7 @@
       /**
             Allows you to set script parameters to be used during the execution of the script.
 
-            @member ejs.ComputedProperty
+            @member ejs.ScriptField
             @param {Object} oParams An object containing key/value pairs representing param name/value.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
@@ -76,7 +76,7 @@
       /**
             Allows you to serialize this object into a JSON encoded string.
 
-            @member ejs.ComputedProperty
+            @member ejs.ScriptField
             @returns {String} returns this object as a serialized JSON string.
             */
       toString: function () {
@@ -86,18 +86,18 @@
       /**
             The type of ejs object.  For internal use only.
             
-            @member ejs.ComputedProperty
+            @member ejs.ScriptField
             @returns {String} the type of object
             */
       _type: function () {
-        return 'computed property';
+        return 'script field';
       },
       
       /**
             Retrieves the internal <code>script</code> object. This is typically used by
             internal API functions so use with caution.
 
-            @member ejs.ComputedProperty
+            @member ejs.ScriptField
             @returns {String} returns this object's internal <code>facet</code> property.
             */
       _self: function () {

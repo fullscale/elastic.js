@@ -538,14 +538,14 @@
       },
 
       /**
-            Computes a document property dynamically based on the supplied <code>ComputedProperty</code>.
+            Computes a document property dynamically based on the supplied <code>ScriptField</code>.
 
             @member ejs.Request
-            @param {ComputedProperty} oComputedProperty A valid <code>ComputedProperty</code>.
+            @param {ScriptField} oScriptField A valid <code>ScriptField</code>.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
-      computedProperty: function (oComputedProperty) {
-        if (oComputedProperty == null) {
+      computedProperty: function (oScriptField) {
+        if (oScriptField == null) {
           return query.script_fields;
         }
       
@@ -553,11 +553,11 @@
           query.script_fields = {};
         }
       
-        if (!isComputedProperty(oComputedProperty)) {
-          throw new TypeError('Argument must be a ComputedProperty');
+        if (!isScriptField(oScriptField)) {
+          throw new TypeError('Argument must be a ScriptField');
         }
         
-        extend(query.script_fields, oComputedProperty._self());
+        extend(query.script_fields, oScriptField._self());
         return this;
       },
 

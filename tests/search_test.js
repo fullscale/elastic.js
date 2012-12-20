@@ -31,7 +31,7 @@ exports.search = {
     test.expect(6);
 
     test.ok(ejs.Request, 'Request');
-    test.ok(ejs.ComputedProperty, 'ComputedProperty');
+    test.ok(ejs.ScriptField, 'ScriptField');
     test.ok(ejs.GeoPoint, 'GeoPoint');
     test.ok(ejs.IndexedShape, 'IndexedShape');
     test.ok(ejs.Shape, 'Shape');
@@ -303,10 +303,10 @@ exports.search = {
     
     test.done();
   },
-  ComputedProperty: function (test) {
+  ScriptField: function (test) {
     test.expect(8);
     
-    var cp = ejs.ComputedProperty('f'),
+    var cp = ejs.ScriptField('f'),
       expected,
       doTest = function () {
         test.deepEqual(cp._self(), expected);
@@ -316,7 +316,7 @@ exports.search = {
       f: {}
     };  
     
-    test.ok(cp, 'ComputedProperty exists');
+    test.ok(cp, 'ScriptField exists');
     test.ok(cp._self(), '_self() works');
     doTest();
     
@@ -332,7 +332,7 @@ exports.search = {
     expected.f.params = {param1: 'p1', param2: 2};
     doTest();
     
-    test.strictEqual(cp._type(), 'computed property');
+    test.strictEqual(cp._type(), 'script field');
     test.strictEqual(cp.toString(), JSON.stringify(expected));
     
     test.done();
