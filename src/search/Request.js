@@ -443,10 +443,10 @@
             */
       preference: function (perf) {
         if (perf == null) {
-          return query.perference;
+          return query.preference;
         }
       
-        query.perference = perf;
+        query.preference = perf;
         return this;
       },
 

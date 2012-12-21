@@ -511,10 +511,19 @@ exports.search = {
     test.done();
   },
   Request: function (test) {
-    test.expect(71);
+    test.expect(86);
 
     var req = ejs.Request({indices: ['index1'], types: ['type1']}),
       matchAll = ejs.MatchAllQuery(),
+      termQuery = ejs.TermQuery('t', 'v'),
+      termFilter = ejs.TermFilter('tf', 'vf'),
+      filterFacet = ejs.FilterFacet('my_filter_facet').filter(termFilter),
+      termsFacet = ejs.TermsFacet('my_terms_facet').field('author'),
+      scriptField = ejs.ScriptField('my_script_field')
+        .script('doc["my_field_name"].value * 2'),
+      scriptField2 = ejs.ScriptField('my_script_field2')
+        .script("doc['my_field_name'].value * factor")
+        .params({'factor': 2.0}),
       expected,
       mockClient,
       expectedPath = '',
@@ -695,6 +704,68 @@ exports.search = {
     req.highlight(hlt);
     expected.highlight = hlt._self();
     req.doSearch();
+    
+    req.size(20);
+    expected.size = 20;
+    doTest();
+    
+    req.from(10);
+    expected.from = 10;
+    doTest();
+    
+    req.timeout(1000);
+    expected.timeout = 1000;
+    doTest();
+    
+    req.query(termQuery);
+    expected.query = termQuery._self();
+    doTest();
+    
+    req.facet(filterFacet);
+    expected.facets = filterFacet._self();
+    doTest();
+    
+    req.facet(termsFacet);
+    // extend is not avaiable in tests so just set place the facet
+    // value into the existing facets object
+    expected.facets.my_terms_facet = termsFacet._self().my_terms_facet;
+    doTest();
+    
+    req.filter(termFilter);
+    expected.filter = termFilter._self();
+    doTest();
+    
+    req.scriptField(scriptField);
+    expected.script_fields = scriptField._self();
+    doTest();
+    
+    req.scriptField(scriptField2);
+    expected.script_fields.my_script_field2 = scriptField2._self().my_script_field2;
+    doTest();
+    
+    req.preference('_primary');
+    expected.preference = '_primary';
+    doTest();
+    
+    req.indexBoost('index', 5.0);
+    expected.indices_boost = {index: 5.0};
+    doTest();
+    
+    req.indexBoost('index2', 3.2);
+    expected.indices_boost.index2 = 3.2;
+    doTest();
+    
+    req.explain(true);
+    expected.explain = true;
+    doTest();
+    
+    req.version(false);
+    expected.version = false;
+    doTest();
+    
+    req.minScore(0.5);
+    expected.min_score = 0.5;
+    doTest();
     
     test.strictEqual(req._type(), 'request');
     test.strictEqual(req.toString(), JSON.stringify(expected));
