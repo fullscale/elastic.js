@@ -116,3 +116,7 @@
     return (isEJSObject(obj) && obj._type() === 'sort');
   };
   
+  isHighlight = function (obj) {
+    return (isEJSObject(obj) && obj._type() === 'highlight');
+  };
+  

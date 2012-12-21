@@ -511,7 +511,7 @@ exports.search = {
     test.done();
   },
   Request: function (test) {
-    test.expect(69);
+    test.expect(71);
 
     var req = ejs.Request({indices: ['index1'], types: ['type1']}),
       matchAll = ejs.MatchAllQuery(),
@@ -690,6 +690,12 @@ exports.search = {
     expected.fields = ['field3', 'field4'];
     req.doSearch();
     
+    var hlt = ejs.Highlight('body').fragmentSize(500, 'body');
+    
+    req.highlight(hlt);
+    expected.highlight = hlt._self();
+    req.doSearch();
+    
     test.strictEqual(req._type(), 'request');
     test.strictEqual(req.toString(), JSON.stringify(expected));
 
@@ -727,6 +733,10 @@ exports.search = {
     
     test.throws(function () {
       req.fields(3);
+    }, TypeError);
+    
+    test.throws(function () {
+      req.highlight('invalid');
     }, TypeError);
     
     test.done();

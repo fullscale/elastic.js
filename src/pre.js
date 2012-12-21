@@ -43,6 +43,7 @@
     isIndexedShape, // checks valid ejs IndexedShape object
     isShape, // checks valid ejs Shape object
     isSort, // checks valid ejs Sort object
+    isHighlight, // checks valid ejs Highlight object
     
     // create ejs object
     ejs;

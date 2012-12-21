@@ -383,172 +383,23 @@
       },
 
       /**
-            Performs highlighting of matched terms against the specified fields.
+            Performs highlighting based on the <code>Highlight</code> 
+            settings.
 
             @member ejs.Request
-            @param {Array} fieldNames An array of field names which to perform highlighting against.
+            @param {Highlight} h A valid Highlight object
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
-      highlight: function (fieldNames) {
-        var i, len;
-
-        query.highlight = {
-          fields: {}
-        };
-
-        if (fieldNames == null) {
-          return query.highlight.fields;
+      highlight: function (h) {
+        if (h == null) {
+          return query.highlight;
         }
       
-        for (i = 0, len = fieldNames.length; i < len; i++) {
-          query.highlight.fields[fieldNames[i]] = {};
+        if (!isHighlight(h)) {
+          throw new TypeError('Argument must be a Highlight object');
         }
 
-        return this;
-      },
-
-      /**
-            Sets the pre tags for highlighted fragments.
-
-            @member ejs.Request
-            @param {Array} tags An array of string pre tags.
-            @param {String} oField An optional field name these settings will be applied to.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      highlightPreTags: function (tags, oField) {
-        if (query.highlight == null) {
-          query.highlight = {
-            fields: {}
-          };
-        }
-
-        if (arguments.length === 0) {
-          return query.highlight.pre_tags;
-        }
-      
-        if (oField == null) {
-          query.highlight.pre_tags = tags;
-        } else {
-          query.highlight.fields[oField] = query.highlight.fields[oField] || {};
-          query.highlight.fields[oField].pre_tags = tags;
-        }
-
-        return this;
-      },
-
-      /**
-            Sets the post tags for highlighted fragments.
-
-            @member ejs.Request
-            @param {Array} tags An array of string post tags.
-            @param {String} oField An optional field name these settings will be applied to.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      highlightPostTags: function (tags, oField) {
-        if (query.highlight == null) {
-          query.highlight = {
-            fields: {}
-          };
-        }
-
-        if (arguments.length === 0) {
-          return query.highlight.post_tags;
-        }
-      
-        if (oField == null) {
-          query.highlight.post_tags = tags;
-        } else {
-          query.highlight.fields[oField] = query.highlight.fields[oField] || {};
-          query.highlight.fields[oField].post_tags = tags;
-        }
-
-        return this;
-      },
-
-      /**
-            Sets the highlighting tag schema.
-
-            @member ejs.Request
-            @param {String} tagSchema A string tag schema name.
-            @param {String} oField An optional field name these settings will be applied to.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      highlightTagSchema: function (tagSchema, oField) {
-        if (query.highlight == null) {
-          query.highlight = {
-            fields: {}
-          };
-        }
-
-        if (arguments.length === 0) {
-          return query.highlight.tags_schema;
-        }
-      
-        if (oField == null) {
-          query.highlight.tags_schema = tagSchema;
-        } else {
-          query.highlight.fields[oField] = query.highlight.fields[oField] || {};
-          query.highlight.fields[oField].tags_schema = tagSchema;
-        }
-
-        return this;
-      },
-
-      /**
-            Sets the number of highlight fragments.
-
-            @member ejs.Request
-            @param {Integer} num The number of highlight fragments.
-            @param {String} oField An optional field name these settings will be applied to.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      highlightFragments: function (num, oField) {
-        if (query.highlight == null) {
-          query.highlight = {
-            fields: {}
-          };
-        }
-
-        if (arguments.length === 0) {
-          return query.highlight.number_of_fragments;
-        }
-      
-        if (oField == null) {
-          query.highlight.number_of_fragments = num;
-        } else {
-          query.highlight.fields[oField] = query.highlight.fields[oField] || {};
-          query.highlight.fields[oField].number_of_fragments = num;
-        }
-
-        return this;
-      },
-
-      /**
-            Sets the size of each highlight fragment in characters.
-
-            @member ejs.Request
-            @param {Integer} num The number of characters in each highlight fragment.
-            @param {String} oField An optional field name these settings will be applied to.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      highlightFragmentSize: function (num, oField) {
-        if (query.highlight == null) {
-          query.highlight = {
-            fields: {}
-          };
-        }
-
-        if (arguments.length === 0) {
-          return query.highlight.fragment_size;
-        }
-      
-        if (oField == null) {
-          query.highlight.fragment_size = num;
-        } else {
-          query.highlight.fields[oField] = query.highlight.fields[oField] || {};
-          query.highlight.fields[oField].fragment_size = num;
-        }
-
+        query.highlight = h._self();
         return this;
       },
 
