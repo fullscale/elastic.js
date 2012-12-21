@@ -4,4 +4,4 @@
     return this;
   };
   
-}());
+}).call(this);

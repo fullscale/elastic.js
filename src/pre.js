@@ -1,11 +1,10 @@
-'use strict';
-
 /**
  @namespace
  @name ejs
  @desc All elastic.js modules are organized under the ejs namespace.
  */
 (function () {
+  'use strict';
 
   var 
 
