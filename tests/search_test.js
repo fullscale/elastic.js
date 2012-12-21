@@ -28,7 +28,7 @@ exports.search = {
     done();
   },
   exists: function (test) {
-    test.expect(6);
+    test.expect(7);
 
     test.ok(ejs.Request, 'Request');
     test.ok(ejs.ScriptField, 'ScriptField');
@@ -36,6 +36,179 @@ exports.search = {
     test.ok(ejs.IndexedShape, 'IndexedShape');
     test.ok(ejs.Shape, 'Shape');
     test.ok(ejs.Sort, 'Sort');
+    test.ok(ejs.Highlight, 'Highlight');
+    
+    test.done();
+  },
+  Highlight: function (test) {
+    test.expect(42);
+    
+    var highlight = ejs.Highlight(['title', 'content']),
+      expected,
+      doTest = function () {
+        test.deepEqual(highlight._self(), expected);
+      };
+    
+    expected = {
+      fields: {
+        title: {},
+        content: {}
+      }
+    };  
+    
+    test.ok(highlight, 'Highlight exists');
+    test.ok(highlight._self(), '_self() works');
+    doTest();
+    
+    highlight.fields('teaser');
+    expected.fields.teaser = {};
+    doTest();
+    
+    highlight.fields(['body', 'summary']);
+    expected.fields.body = {};
+    expected.fields.summary = {};
+    doTest();
+    
+    highlight.preTags('<em>');
+    expected.pre_tags = ['<em>'];
+    doTest();
+    
+    highlight.preTags(['<tag1>', '<tag2>']);
+    expected.pre_tags = ['<tag1>', '<tag2>'];
+    doTest();
+    
+    highlight.preTags('<em>', 'content');
+    expected.fields.content.pre_tags = ['<em>'];
+    doTest();
+    
+    // test adding tags to field that does not exist
+    // it should be added
+    highlight.preTags(['<tag1>', '<tag2>'], 'my_field');
+    expected.fields.my_field = {pre_tags: ['<tag1>', '<tag2>']};
+    doTest();
+    
+    highlight.postTags('<em>');
+    expected.post_tags = ['<em>'];
+    doTest();
+    
+    highlight.postTags(['<tag1>', '<tag2>']);
+    expected.post_tags = ['<tag1>', '<tag2>'];
+    doTest();
+    
+    highlight.postTags('<em>', 'content');
+    expected.fields.content.post_tags = ['<em>'];
+    doTest();
+    
+    highlight.postTags(['<tag1>', '<tag2>'], 'my_field');
+    expected.fields.my_field.post_tags = ['<tag1>', '<tag2>'];
+    doTest();
+    
+    highlight.order('score');
+    expected.order = 'score';
+    doTest();
+    
+    highlight.order('INVALID');
+    doTest();
+    
+    highlight.order('score', 'title');
+    expected.fields.title.order = 'score';
+    doTest();
+    
+    highlight.tagsSchema('styled');
+    expected.tags_schema = 'styled';
+    doTest();
+    
+    highlight.tagsSchema('INVALID');
+    doTest();
+    
+    highlight.highlightFilter(true);
+    expected.highlight_filter = true;
+    doTest();
+    
+    highlight.highlightFilter(false, 'body');
+    expected.fields.body.highlight_filter = false;
+    doTest();
+    
+    // addings a field that already exists with options
+    // should not change anything
+    highlight.fields('body');
+    doTest();
+    
+    highlight.fragmentSize(500);
+    expected.fragment_size = 500;
+    doTest();
+    
+    highlight.fragmentSize(300, 'title');
+    expected.fields.title.fragment_size = 300;
+    doTest();
+    
+    highlight.numberOfFragments(10);
+    expected.number_of_fragments = 10;
+    doTest();
+    
+    highlight.numberOfFragments(2, 'content');
+    expected.fields.content.number_of_fragments = 2;
+    doTest();
+    
+    highlight.encoder('default');
+    expected.encoder = 'default';
+    doTest();
+    
+    highlight.encoder('INVALID');
+    doTest();
+    
+    highlight.encoder('HTML');
+    expected.encoder = 'html';
+    doTest();
+    
+    highlight.requireFieldMatch(true);
+    expected.require_field_match = true;
+    doTest();
+    
+    highlight.requireFieldMatch(true, 'title');
+    expected.fields.title.require_field_match = true;
+    doTest();
+    
+    highlight.boundaryMaxScan(30);
+    expected.boundary_max_scan = 30;
+    doTest();
+    
+    highlight.boundaryMaxScan(10, 'title');
+    expected.fields.title.boundary_max_scan = 10;
+    doTest();
+    
+    highlight.boundaryChars('$#{}');
+    expected.boundary_chars = '$#{}';
+    doTest();
+    
+    highlight.boundaryChars('#', 'content');
+    expected.fields.content.boundary_chars = '#';
+    doTest();
+    
+    highlight.type('highlighter');
+    expected.type = 'highlighter';
+    doTest();
+    
+    highlight.type('INVALID');
+    doTest();
+    
+    highlight.type('FAST-VECTOR-HIGHLIGHTER', 'body');
+    expected.fields.body.type = 'fast-vector-highlighter';
+    doTest();
+    
+    highlight.fragmenter('simple');
+    expected.fragmenter = 'simple';
+    doTest();
+    
+    highlight.fragmenter('INVALID');
+    doTest();
+    
+    highlight.fragmenter('SPAN', 'title');
+    expected.fields.title.fragmenter = 'span';
+    doTest();
+    
+    test.strictEqual(highlight._type(), 'highlight');
+    test.strictEqual(highlight.toString(), JSON.stringify(expected));
     
     test.done();
   },
