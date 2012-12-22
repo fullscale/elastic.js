@@ -7,8 +7,8 @@ A JavaScript implementation of the [ElasticSearch](http://www.elasticsearch.org/
 1. Include elastic.min.js
 2. Include your client, elastic-jquery-client.min.js or elastic-angular-client.min.js.
 3. Initialize your client:
-    a. jQuery Client - `ejs.client = ejs.jQueryClient('http://localhost:9200');`
-    b. Angular Client
+    * jQuery Client - `ejs.client = ejs.jQueryClient('http://localhost:9200');`
+    * Angular Client
         ```javascript
         /* start by injecting the module into your application */
         angular.module('MyApp', ['MyApp.controllers', 'elasticjs.service']);
@@ -25,10 +25,10 @@ A JavaScript implementation of the [ElasticSearch](http://www.elasticsearch.org/
 ### In Node.js
 1. Run `npm install elastic.js`
 2. Require elastic.js and elastic-node-client.js
-   ```javascript
-   var ejs = require('elastic.js'),
-       nc = require('elastic-node-client.js');
-   ```
+    ```javascript
+    var ejs = require('elastic.js'),
+        nc = require('elastic-node-client.js');
+    ```
 3. Initialize your client - `ejs.client = nc.NodeClient('localhost', '9200');`
 4. Write your application
 
