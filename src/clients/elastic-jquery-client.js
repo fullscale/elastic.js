@@ -1,7 +1,7 @@
 /*jshint jquery:true */
-'use strict';
 
 (function () {
+  'use strict';
 
   var 
 
@@ -232,4 +232,4 @@
     };
   };
 
-}());
+}).call(this);
