@@ -1,14 +1,15 @@
 <div class="row-fluid" style="margin-top:15%">
-    <span class="span3 offset4"><i class="icon-search"></i> <strong>Elastic.js Angular Example</strong></span>
+    <span class="span4 offset4">
+        <i class="icon-search"></i>
+        <strong>Elastic.js Angular Example</strong>
+    </span>
 </div>
 <div class="row-fluid">
-    <span class="span3 offset4">
-        <input class="input-block-level"
-               ng-model="$parent.queryTerm"
-               type="text"
-               placeholder="Enter a keyword">
-    </span>
-    &nbsp;<button ng-click="$parent.search()" class="btn" type="button">Search</button>
+    <form class="span4 offset4 form-inline" ng-submit="$parent.search()">
+        <input class="input-xlarge" ng-model="$parent.queryTerm" type="text" 
+            placeholder="Enter a keyword" autofocus>
+        <button class="btn" type="submit">Search</button>
+    </form>
 </div>
 <div class="row-fluid">
     <small class="span4 offset4" style="margin-top:20px">

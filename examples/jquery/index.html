@@ -30,16 +30,17 @@
 
 <script type="text/template" id="searchTmpl">
     <div class="row-fluid" style="margin-top:15%">
-        <span class="span3 offset4"><i class="icon-search"></i> <strong>Elastic.js jQuery Example</strong></span>
+        <span class="span4 offset4">
+            <i class="icon-search"></i>
+            <strong>Elastic.js jQuery Example</strong>
+        </span>
     </div>
     <div class="row-fluid">
-        <span class="span3 offset4">
-            <input id="txtSearch"
-                   class="input-block-level"
-                   type="text"
-                   placeholder="Enter a keyword">
-        </span>
-        &nbsp;<button id="btnSearch" class="btn" type="button">Search</button>
+        <form id="formSearch" class="span4 offset4 form-inline" action="#">
+            <input id="txtSearch" class="input-xlarge" type="text" 
+                placeholder="Enter a keyword" autofocus>
+            <button class="btn" type="submit">Search</button>
+        </form>
     </div>
     <div class="row-fluid">
         <small class="span4 offset4" style="margin-top:20px">

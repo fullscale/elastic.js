@@ -25,11 +25,12 @@
       // renders the main search page
       gotoSearch = function () {
         viewport.empty().append(searchTmpl({}))
-          .find('#btnSearch')
-          .click(function () {
+          .find('#formSearch')
+          .submit(function (e) {
             var txtSearch = $('#txtSearch');
             executeSearch(txtSearch.val());
             txtSearch.val('');
+            return false; // prevent form submission
           });
       },
       
