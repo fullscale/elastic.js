@@ -986,7 +986,7 @@ exports.queries = {
     test.done();
   },
   HasParentQuery: function (test) {
-    test.expect(11);
+    test.expect(14);
 
     var termQuery = ejs.TermQuery('t1', 'v1'),
       termQuery2 = ejs.TermQuery('t2', 'v2'),
@@ -1019,6 +1019,17 @@ exports.queries = {
     expected.has_parent._scope = 'my_scope';
     doTest();
     
+    hasParentQuery.scoreType('none');
+    expected.has_parent.score_type = 'none';
+    doTest();
+    
+    hasParentQuery.scoreType('INVALID');
+    doTest();
+    
+    hasParentQuery.scoreType('SCORE');
+    expected.has_parent.score_type = 'score';
+    doTest();
+    
     hasParentQuery.boost(1.2);
     expected.has_parent.boost = 1.2;
     doTest();
@@ -1037,7 +1048,7 @@ exports.queries = {
     test.done();
   },
   HasChildQuery: function (test) {
-    test.expect(11);
+    test.expect(16);
 
     var termQuery = ejs.TermQuery('t1', 'v1'),
       termQuery2 = ejs.TermQuery('t2', 'v2'),
@@ -1068,6 +1079,25 @@ exports.queries = {
     
     hasChildQuery.scope('my_scope');
     expected.has_child._scope = 'my_scope';
+    doTest();
+    
+    hasChildQuery.scoreType('none');
+    expected.has_child.score_type = 'none';
+    doTest();
+    
+    hasChildQuery.scoreType('INVALID');
+    doTest();
+    
+    hasChildQuery.scoreType('MAX');
+    expected.has_child.score_type = 'max';
+    doTest();
+    
+    hasChildQuery.scoreType('Avg');
+    expected.has_child.score_type = 'avg';
+    doTest();
+    
+    hasChildQuery.scoreType('sum');
+    expected.has_child.score_type = 'sum';
     doTest();
     
     hasChildQuery.boost(1.2);

@@ -86,6 +86,29 @@
       },
 
       /**
+            Sets the scoring method.  Valid values are:
+            
+            none - the default, no scoring
+            score - the score of the parent is used in all child documents.
+
+            @member ejs.HasParentQuery
+            @param {String} s The score type as a string.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      scoreType: function (s) {
+        if (s == null) {
+          return query.has_parent.score_type;
+        }
+    
+        s = s.toLowerCase();
+        if (s === 'none' || s === 'score') {
+          query.has_parent.score_type = s;
+        }
+        
+        return this;
+      },
+      
+      /**
             Sets the boost value of the <code>Query</code>.
 
             @member ejs.HasParentQuery

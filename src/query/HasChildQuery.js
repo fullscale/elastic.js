@@ -84,7 +84,32 @@
         query.has_child._scope = s;
         return this;
       },
-  
+
+      /**
+            Sets the scoring method.  Valid values are:
+            
+            none - the default, no scoring
+            max - the highest score of all matched child documents is used
+            sum - the sum the all the matched child documents is used
+            avg - the average of all matched child documents is used
+
+            @member ejs.HasChildQuery
+            @param {String} s The score type as a string.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      scoreType: function (s) {
+        if (s == null) {
+          return query.has_child.score_type;
+        }
+    
+        s = s.toLowerCase();
+        if (s === 'none' || s === 'max' || s === 'sum' || s === 'avg') {
+          query.has_child.score_type = s;
+        }
+        
+        return this;
+      },
+      
       /**
             Sets the boost value of the <code>Query</code>.
 
