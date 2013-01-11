@@ -3,9 +3,6 @@
     <p>A spanNearQuery will look to find a number of spanQuerys within a given
     distance from each other.</p>
 
-    <p><strong>Note:</strong> This module contains a related code example.&nbsp;
-    <a target="_blank" class="btn c9" href="https://gist.github.com/1917845">View Code Example</a></p>
-
     @name ejs.SpanNearQuery
 
     @desc

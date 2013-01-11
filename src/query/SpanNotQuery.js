@@ -3,9 +3,6 @@
     <p>Removes matches which overlap with another span query.
     The span not query maps to Lucene SpanNotQuery.</p>
 
-    <p><strong>Note:</strong> This module contains a related code example.&nbsp;
-    <a target="_blank" class="btn c9" href="https://gist.github.com/1917845">View Code Example</a></p>
-
     @name ejs.SpanNotQuery
 
     @desc

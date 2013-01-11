@@ -3,9 +3,6 @@
     <p>A filter that restricts matched results/docs to a given distance from the
     point of origin. The format conforms with the GeoJSON specification.</p>
 
-    <p><strong>Note:</strong> This module contains a related code example.&nbsp;
-    <a target="_blank" class="btn c9" href="https://gist.github.com/1903734">View Code Example</a></p>
-    
     @name ejs.GeoDistanceFilter
 
     @desc

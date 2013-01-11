@@ -7,9 +7,6 @@
     </p>See the Lucene <a href="http://lucene.apache.org/java/2_9_1/queryparsersyntax.html">Query Parser Syntax</a>
     for more information.</p>
 
-    <p><strong>Note:</strong> This module contains a related code example.&nbsp;
-    <a target="_blank" class="btn c9" href="https://gist.github.com/1893397">View Code Example</a></p>
-
     @name ejs.QueryStringQuery
 
     @desc

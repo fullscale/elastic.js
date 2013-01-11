@@ -5,9 +5,6 @@
     documents/objects that contain the term <code>Javascript</code>. Term filters
     often serve as the basis for more complex queries such as <em>Boolean</em> queries.</p>
 
-    <p><strong>Note:</strong> This module contains a related code example.&nbsp;
-    <a target="_blank" class="btn c9" href="https://gist.github.com/1894812">View Code Example</a></p>
-
     @name ejs.TermQuery
 
     @desc

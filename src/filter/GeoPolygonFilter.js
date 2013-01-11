@@ -3,9 +3,6 @@
     <p>A filter for locating documents that fall within a polygon of points. Simply provide a lon/lat
     for each document as a Geo Point type. The format conforms with the GeoJSON specification.</p>
 
-    <p><strong>Note:</strong> This module contains a related code example.&nbsp;
-    <a target="_blank" class="btn c9" href="https://gist.github.com/1877636">View Code Example</a></p>
-
     @name ejs.GeoPolygonFilter
 
     @desc

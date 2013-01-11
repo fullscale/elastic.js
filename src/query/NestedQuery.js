@@ -4,14 +4,10 @@
        embedded inside of other objects. It is similar to <code>XPath</code> expressions
        in <code>XML</code> both conceptually and syntactically.</p>
 
-    <p>
-    The query is executed against the nested objects / docs as if they were 
+    <p>The query is executed against the nested objects / docs as if they were 
     indexed as separate docs and resulting in the rootparent doc (or parent 
     nested mapping).</p>
     
-    <p><strong>Note:</strong> This module contains a related code example.&nbsp;
-    <a target="_blank" class="btn c9" href="https://gist.github.com/1894884">View Code Example</a></p>
-
     @name ejs.NestedQuery
 
     @desc

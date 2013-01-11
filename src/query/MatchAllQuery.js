@@ -3,9 +3,6 @@
     <p>This query can be used to match all the documents
     in a given set of collections and/or types.</p>
 
-    <p><strong>Note:</strong> This module contains a related code example.&nbsp;
-    <a target="_blank" class="btn c9" href="https://gist.github.com/1895130">View Code Example</a></p>
-
     @name ejs.MatchAllQuery
 
     @desc

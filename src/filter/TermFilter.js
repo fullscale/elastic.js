@@ -4,9 +4,6 @@
     object. Unlike a RangeFilter this can be used for filtering on multiple
     terms that are not necessarily in a sequence.</p>
 
-    <p><strong>Note:</strong> This module contains a related code example.&nbsp;
-    <a target="_blank" class="btn c9" href="https://gist.github.com/1893529">View Code Example</a></p>
-
     @name ejs.TermFilter
 
     @desc

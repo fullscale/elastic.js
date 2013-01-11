@@ -17,9 +17,6 @@
         </p>
     </div>
 
-    <p><strong>Note:</strong> This module contains a related code example.&nbsp;
-    <a target="_blank" class="btn c9" href="https://gist.github.com/1905236">View Code Example</a></p>
-
     @name ejs.DateHistogramFacet
 
     @desc

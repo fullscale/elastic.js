@@ -6,9 +6,6 @@
     property that dynamically creates a new field called <code>total</code>in each document
     based on the calculation <code>price * quantity</code>.</p>
 
-    <p><strong>Note:</strong> This module contains a related code example.&nbsp;
-    <a target="_blank" class="btn c9" href="https://gist.github.com/1895052">View Code Example</a></p>
-
     @name ejs.ScriptField
 
     @desc

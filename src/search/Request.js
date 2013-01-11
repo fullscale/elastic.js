@@ -3,9 +3,6 @@
     <p>The <code>Request</code> object provides methods generating and 
     executing search requests.</p>
 
-    <p><strong>Note:</strong> This module contains a related code example.&nbsp;
-    <a target="_blank" class="btn c9" href="https://gist.github.com/1895052">View Code Example</a></p>
-
     @name ejs.Request
 
     @desc

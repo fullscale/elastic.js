@@ -6,10 +6,6 @@
     takes a <code>Query</code> and a <code>Filter</code> object as arguments and constructs
     a new <code>Query</code> that is then used for the search.</p>
 
-    <p><strong>Note:</strong> This module contains a related code example.&nbsp;
-    <a target="_blank" class="btn c9" href="https://gist.github.com/1893397">View Code Example</a></p>
-    </p>
-
     @name ejs.FilteredQuery
 
     @desc

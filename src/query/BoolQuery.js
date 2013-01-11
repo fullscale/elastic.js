@@ -4,9 +4,6 @@
     from individual term or phrase queries. For example you might want to search
     for documents containing the terms <code>javascript</code> and <code>python</code>.</p>
 
-    <p><strong>Note:</strong> This module contains a related code example.&nbsp;
-    <a target="_blank" class="btn c9" href="https://gist.github.com/1893930">View Code Example</a></p>
-
     @name ejs.BoolQuery
 
     @desc
