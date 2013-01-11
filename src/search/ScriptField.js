@@ -1,6 +1,6 @@
   /**
     @class
-    <p>Computed properties allow you create dynamic fields on stored documents at query
+    <p>ScriptField's allow you create dynamic fields on stored documents at query
     time. For example, you might have a set of document thats containsthe fields
     <code>price</code> and <code>quantity</code>. At query time, you could define a computed
     property that dynamically creates a new field called <code>total</code>in each document
