@@ -19,7 +19,7 @@
 
     <!-- project dependency libs -->
     <script src="/common/lib/modernizr-2.6.1.min.js"></script>
-    <script src="/common/lib/jquery-1.8.0.min.js"></script>
+    <script src="/common/lib/underscore.min.js"></script>
     <script src="/common/lib/angular.min.js"></script>
     <script src="/dist/elastic.min.js"></script>
     <script src="/dist/elastic-angular-client.min.js"></script>
@@ -37,6 +37,7 @@
         <div class="navbar-inner">
             <div class="container-fluid">
                 <span class="brand">Elastic.js Angular Example</span>
+                <button ng-click="indexSampleDocs()" class="btn btn-inverse pull-right">Index Sample Docs</button>
             </div>
         </div>
     </div>
