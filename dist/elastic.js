@@ -1,4 +1,4 @@
-/*! elastic.js - v1.0.0 - 2013-01-15
+/*! elastic.js - v1.0.0 - 2013-01-19
 * https://github.com/fullscale/elastic.js
 * Copyright (c) 2013 FullScale Labs, LLC; Licensed MIT */
 
@@ -290,13 +290,14 @@
       },
 
       /**
-            By default, time values are stored in UTC format. This method allows users
-            to set a time zone value that is then used to compute intervals 
-            before rounding on the interval value.  Equalivent to 
-            <coe>preZone</code>.  Use <code>preZone</code> if possible.  The 
-            value is an offset from UTC.
+            <p>By default, time values are stored in UTC format.<p> 
+
+            <p>This method allows users to set a time zone value that is then used 
+            to compute intervals before rounding on the interval value. Equalivent to 
+            <coe>preZone</code>.  Use <code>preZone</code> if possible. The 
+            value is an offset from UTC.<p>
             
-            For example, to use EST you would set the value to <code>-5</code>.
+            <p>For example, to use EST you would set the value to <code>-5</code>.</p>
 
             @member ejs.DateHistogramFacet
             @param {Integer} tz An offset value from UTC.
@@ -312,12 +313,13 @@
       },
 
       /**
-            By default, time values are stored in UTC format. This method allows users
-            to set a time zone value that is then used to compute intervals 
-            before rounding on the interval value.  The value is an offset
-            from UTC.
+            <p>By default, time values are stored in UTC format.<p> 
+
+            <p>This method allows users to set a time zone value that is then used to 
+            compute intervals before rounding on the interval value.  The value is an 
+            offset from UTC.<p>
             
-            For example, to use EST you would set the value to <code>-5</code>.
+            <p>For example, to use EST you would set the value to <code>-5</code>.</p>
 
             @member ejs.DateHistogramFacet
             @param {Integer} tz An offset value from UTC.
@@ -333,9 +335,10 @@
       },
       
       /**
-            Enables large date interval conversions (day and up).  Set to 
-            true to enable and then set the <code>interval</code> to an 
-            interval greater than a day.
+            <p>Enables large date interval conversions (day and up).</p>  
+
+            <p>Set to true to enable and then set the <code>interval</code> to an 
+            interval greater than a day.</p>
             
             @member ejs.DateHistogramFacet
             @param {Boolean} trueFalse A valid boolean value.
@@ -351,13 +354,13 @@
       },
       
       /**
-            By default, time values are stored in UTC format. This method allows users
-            to set a time zone value that is then used to compute intervals 
-            after rounding on the interval value.  The value is an offset
-            from UTC.  The tz offset value is simply added to the resulting 
-            bucket's date value.
+            <p>By default, time values are stored in UTC format.<p> 
+
+            <p>This method allows users to set a time zone value that is then used to compute 
+            intervals after rounding on the interval value.  The value is an offset from UTC.  
+            The tz offset value is simply added to the resulting bucket's date value.<p>
             
-            For example, to use EST you would set the value to <code>-5</code>.
+            <p>For example, to use EST you would set the value to <code>-5</code>.</p>
 
             @member ejs.DateHistogramFacet
             @param {Integer} tz An offset value from UTC.
@@ -405,14 +408,16 @@
       },
       
       /**
-            The date histogram works on numeric values (since time is stored 
-            in milliseconds since the epoch in UTC). But, sometimes, systems 
-            will store a different resolution (like seconds since UTC) in a 
-            numeric field. The factor parameter can be used to change the 
-            value in the field to milliseconds to actual do the relevant 
-            rounding, and then be applied again to get to the original unit. 
-            For example, when storing in a numeric field seconds resolution, 
-            the factor can be set to 1000.
+            <p>The date histogram works on numeric values (since time is stored 
+            in milliseconds since the epoch in UTC).<p> 
+
+            <p>But, sometimes, systems will store a different resolution (like seconds since UTC) 
+            in a numeric field. The factor parameter can be used to change the value in the field 
+            to milliseconds to actual do the relevant rounding, and then be applied again to get to 
+            the original unit.</p>
+
+            <p>For example, when storing in a numeric field seconds resolution, 
+            the factor can be set to 1000.<p>
 
             @member ejs.DateHistogramFacet
             @param {Integer} f The conversion factor.
@@ -445,12 +450,14 @@
       },
 
       /**
-            Sets the type of ordering that will be performed on the date
-            buckets.  Valid values are:
+            <p>Sets the type of ordering that will be performed on the date
+            buckets.  Valid values are:<p>
             
-            time - the default, sort by the buckets start time in milliseconds.
-            count - sort by the number of items in the bucket
-            total - sort by the sum/total of the items in the bucket
+            <dl>
+                <dd><code>time</code> - the default, sort by the buckets start time in milliseconds.</dd>
+                <dd><code>count</code> - sort by the number of items in the bucket</dd>
+                <dd><code>total</code> - sort by the sum/total of the items in the bucket</dd>
+            <dl>
             
             @member ejs.DateHistogramFacet
             @param {String} o The ordering method: time, count, or total.
@@ -7855,13 +7862,14 @@
       },
       
       /**
-             Sets the routing value. By default, the shard the document is
-             placed on is controlled by using a hash of the document’s id 
-             value. For more explicit control, this routing value will be fed 
-             into the hash function used by the router.
+             <p>Sets the routing value.<p> 
+
+             <p>By default, the shard the document is placed on is controlled by using a 
+             hash of the document’s id value. For more explicit control, this routing value 
+             will be fed into the hash function used by the router.</p>
              
-             This option is valid during the following operations:
-             index, delete, get, and update.
+             <p>This option is valid during the following operations:
+                <code>index, delete, get, and update</code></p>
 
              @member ejs.Document
              @param {String} route The routing value
@@ -7877,13 +7885,14 @@
       },
       
       /**
-             Sets parent value for a child document.  When indexing a child 
-             document, the routing value is automatically set to be the same 
-             as it’s parent, unless the routing value is explicitly specified 
-             using the routing parameter.
+             <p>Sets parent value for a child document.</p>  
+
+             <p>When indexing a child document, the routing value is automatically set to be 
+             the same as it’s parent, unless the routing value is explicitly specified 
+             using the routing parameter.</p>
              
-             This option is valid during the following operations:
-             index, delete, get, and update.
+             <p>This option is valid during the following operations:
+                 <code>index, delete, get, and update.</code></p>
 
              @member ejs.Document
              @param {String} parent The parent value
@@ -7899,11 +7908,12 @@
       },
       
       /**
-             Sets timestamp of the document.  By default the timestamp will
-             be set to the time the docuement was indexed.
+             <p>Sets timestamp of the document.</p>  
+
+             <p>By default the timestamp will be set to the time the docuement was indexed.</p>
              
-             This option is valid during the following operations:
-             index and update
+             <p>This option is valid during the following operations:
+                <code>index</code> and <code>update</code></p>
 
              @member ejs.Document
              @param {String} parent The parent value
@@ -7919,15 +7929,17 @@
       },
       
       /**
-             Sets the documents time to live (ttl).  The expiration date that 
-             will be set for a document with a provided ttl is relative to the 
-             timestamp of the document, meaning it can be based on the time of 
-             indexing or on any time provided. The provided ttl must be 
-             strictly positive and can be a number (in milliseconds) or any 
-             valid time value such as "1d", "2h", "5m", etc.
+             </p>Sets the documents time to live (ttl).</p>  
+
+             The expiration date that will be set for a document with a provided ttl is relative 
+             to the timestamp of the document, meaning it can be based on the time of indexing or 
+             on any time provided.</p> 
+
+             <p>The provided ttl must be strictly positive and can be a number (in milliseconds) 
+             or any valid time value such as <code>"1d", "2h", "5m",</code> etc.</p>
              
-             This option is valid during the following operations:
-             index and update
+             <p>This option is valid during the following operations:
+                <code>index</code> and <code>update</code></p>
 
              @member ejs.Document
              @param {String} length The amount of time after which the document
@@ -7944,14 +7956,15 @@
       },
       
       /**
-             Set's a timeout for the given operation.  If the primary shard
-             has not completed the operation before this value, an error will
-             occur.  The default timeout is 1 minute. The provided timeout 
-             must be strictly positive and can be a number (in milliseconds) or 
-             any valid time value such as "1d", "2h", "5m", etc.
+             <p>Set's a timeout for the given operation.</p>  
+
+             If the primary shard has not completed the operation before this value, an error will
+             occur.  The default timeout is 1 minute. The provided timeout must be strictly positive 
+             and can be a number (in milliseconds) or any valid time value such as 
+             <code>"1d", "2h", "5m",</code> etc.</p>
              
-             This option is valid during the following operations:
-             index, delete, and update
+             <p>This option is valid during the following operations:
+                <code>index, delete,</code> and <code>update</code></p>
 
              @member ejs.Document
              @param {String} length The amount of time after which the operation
@@ -7968,12 +7981,12 @@
       },
       
       /**
-             Enables the index to be refreshed immediately after the operation
-             occurs.  This is an advanced setting and can lead to performance
-             issues.
+             <p>Enables the index to be refreshed immediately after the operation
+             occurs. This is an advanced setting and can lead to performance
+             issues.</p>
              
-             This option is valid during the following operations:
-             index, delete, get, and update
+             <p>This option is valid during the following operations:
+                <code>index, delete, get,</code> and <code>update</code></p>
 
              @member ejs.Document
              @param {Boolean} trueFalse If the index should be refreshed or not.
@@ -7989,15 +8002,17 @@
       },
       
       /**
-             Sets the document version.  Used for optimistic concurrency 
-             control when set.  If the version of the currently indexed
-             document is less-than or equal to the version specified, an
-             error is produced, otherwise the operation is permitted.
-             By default, internal versioning is used that starts at 1 and 
-             increments with each update. 
+             <p>Sets the document version.</p>  
+
+             Used for optimistic concurrency control when set.  If the version of the currently 
+             indexed document is less-than or equal to the version specified, an error is produced, 
+             otherwise the operation is permitted.</p>
+
+             <p>By default, internal versioning is used that starts at <code>1</code> and 
+             increments with each update.</p>
              
-             This option is valid during the following operations:
-             index, delete, and update
+             <p>This option is valid during the following operations:
+                <code>index, delete,</code> and <code>update</code></p>
 
              @member ejs.Document
              @param {Long} version A positive long value
@@ -8013,13 +8028,17 @@
       },
       
       /**
-             Sets the version type.  Possible values are:
+             <p>Sets the version type.</p>  
+
+             </p>Possible values are:</p>
              
-             internal - the default
-             external - to use your own version (ie. version number from a database)
+             <dl>
+                <dd><code>internal</code> - the default</dd>
+                <dd><code>external</code> - to use your own version (ie. version number from a database)</dd>
+             </dl>
              
-             This option is valid during the following operations:
-             index, delete, and update
+             <p>This option is valid during the following operations:
+                <code>index, delete,</code> and <code>update</code></p>
 
              @member ejs.Document
              @param {String} vt A version type (internal or external)
@@ -8040,12 +8059,13 @@
       },
       
       /**
-             Perform percolation at index time.  Set to * to run document 
-             against all registered queries.  It is also possible to set this
-             value to a string in query string format, ie. "color:green".
+             <p>Perform percolation at index time.</p>  
+
+             <p>Set to * to run document against all registered queries.  It is also possible 
+             to set this value to a string in query string format, ie. <code>"color:green"</code>.</p>
              
-             This option is valid during the following operations:
-             index and update
+             <p>This option is valid during the following operations:
+                <code>index</code> and <code>update</code></p>
 
              @member ejs.Document
              @param {String} qry A percolation query string
@@ -8061,13 +8081,17 @@
       },
       
       /**
-             Sets the indexing operation type.  Valid values are:
+             <p>Sets the indexing operation type.</p>  
+
+             <p>Valid values are:</p>
              
-             index - the default, create or replace
-             create - create only
+             <dl>
+                <dd><code>index</code> - the default, create or replace</dd>
+                <dd><code>create</code> - create only</dd>
+             </dl>
              
-             This option is valid during the following operations:
-             index
+             <p>This option is valid during the following operations:
+                <code>index</code></p>
 
              @member ejs.Document
              @param {String} op The operation type (index or create)
@@ -8087,14 +8111,18 @@
       },
       
       /**
-             Sets the replication mode.  Valid values are:
+             <p>Sets the replication mode.</p>  
+
+             <p>Valid values are:</p>
              
-             async - asynchronous replication to slaves
-             sync - synchronous replication to the slaves
-             default - the currently configured system default. 
+             <dl>
+                <dd><code>async</code> - asynchronous replication to slaves</dd>
+                <dd><code>sync</code> - synchronous replication to the slaves</dd>
+                <dd><code>default</code> - the currently configured system default.</dd> 
+             </dl>
              
-             This option is valid during the following operations:
-             index, delete, and update
+             <p>This option is valid during the following operations:
+                <code>index, delete,</code> and <code>update</code></p>
 
              @member ejs.Document
              @param {String} r The replication mode (async, sync, or default)
@@ -8114,15 +8142,19 @@
       },
       
       /**
-             Sets the write consistency.  Valid values are:
+             <p>Sets the write consistency.</p>  
+
+             <p>Valid values are:</p>
              
-             one - only requires write to one shard
-             quorum - requires writes to quorum (N/2 + 1)
-             all - requires write to succeed on all shards
-             default - the currently configured system default
+             <dl>
+                <dd><code>one - only requires write to one shard</dd>
+                <dd><code>quorum - requires writes to quorum <code>(N/2 + 1)</code></dd>
+                <dd><code>all - requires write to succeed on all shards</dd>
+                <dd><code>default - the currently configured system default</dd>
+             </dl>
              
-             This option is valid during the following operations:
-             index, delete, and update
+             <p>This option is valid during the following operations:
+                <code>index, delete,</code> and <code>update</code></p>
 
              @member ejs.Document
              @param {String} c The write consistency (one, quorum, all, or default)
@@ -8142,16 +8174,20 @@
       },
       
       /**
-             Sets the preference of which shard replicas to execute the get 
-             request on. By default, the operation is randomized between the 
-             shard replicas.  This value can be:
+             <p>Sets the preference of which shard replicas to execute the get 
+             request on.</p> 
+
+             <p>By default, the operation is randomized between the shard replicas.  
+             This value can be:</p>
              
-             _primary - execute only on the primary shard
-             _local - the local shard if possible
-             any string value - to guarentee the same shards will always be used
+             <dl>
+                <dd><code>_primary</code> - execute only on the primary shard</dd>
+                <dd><code>_local</code> - the local shard if possible</dd>
+                <dd><code>any string value</code> - to guarentee the same shards will always be used</dd>
+             </dl>
              
-             This option is valid during the following operations:
-             get
+             <p>This option is valid during the following operations:
+                <code>get</code></p>
 
              @member ejs.Document
              @param {String} p The preference value as a string
@@ -8167,11 +8203,11 @@
       },
       
       /**
-             Sets if the get request is performed in realtime or waits for
-             the indexing operations to complete.  By default it is realtime.
+             <p>Sets if the get request is performed in realtime or waits for
+             the indexing operations to complete.  By default it is realtime.</p>
              
-             This option is valid during the following operations:
-             get
+             <p>This option is valid during the following operations:
+                <code>get</code></p>
 
              @member ejs.Document
              @param {Boolean} trueFalse If realtime get is used or not.
@@ -8187,14 +8223,15 @@
       },
       
       /**
-             Sets the fields of the document to return.  By default the 
-             _source field is returned.  Pass a single value to append to the
-             current list of fields, pass an array to overwrite the current
-             list of fields.  The returned fields will either be loaded if 
-             they are stored, or fetched from the _source
+             <p>Sets the fields of the document to return.</p>  
+
+             <p>By default the <code>_source</code> field is returned.  Pass a single value 
+             to append to the current list of fields, pass an array to overwrite the current
+             list of fields.  The returned fields will either be loaded if they are stored, 
+             or fetched from the <code>_source</code></p>
              
-             This option is valid during the following operations:
-             get and update
+             <p>This option is valid during the following operations:
+                <code>get</code> and <code>update</code></p>
 
              @member ejs.Document
              @param {String || Array} fields a single field name or array of field names.
@@ -8221,10 +8258,10 @@
       },
       
       /**
-             Sets the update script.
+             <p>Sets the update script.</p>
              
-             This option is valid during the following operations:
-             update
+             <p>This option is valid during the following operations:
+                <code>update</code></p>
 
              @member ejs.Document
              @param {String} script a script to use for docuement updates
@@ -8240,10 +8277,10 @@
       },
       
       /**
-             Sets the update script lanauge.  Defaults to mvel.
+             <p>Sets the update script lanauge.  Defaults to <code>mvel</code></p>.
              
-             This option is valid during the following operations:
-             update
+             <p>This option is valid during the following operations:
+                <code>update</code></p>
 
              @member ejs.Document
              @param {String} lang a valid script lanauge type such as mvel.
@@ -8259,12 +8296,13 @@
       },
       
       /**
-             Sets the parameters sent to the update script.  The params must
-             be an object where the key is the parameter name and the value is
-             the parameter value to use in the script.  
+             <p>Sets the parameters sent to the update script.</p>  
+
+             <p>The params must be an object where the key is the parameter name and 
+             the value is the parameter value to use in the script.</p>
              
-             This option is valid during the following operations:
-             update
+             <p>This option is valid during the following operations:
+                <code>update</code></p>
 
              @member ejs.Document
              @param {Object} p a object with script parameters.
@@ -8285,12 +8323,13 @@
       },
       
        /**
-               Sets how many times to retry if there is a version conflict 
-               between getting the document and indexing / deleting it. 
-               Defaults to 0.
+               <p>Sets how many times to retry if there is a version conflict 
+               between getting the document and indexing / deleting it.</p>
 
-               This option is valid during the following operations:
-               update
+               <p>Defaults to <code>0</code>.<p>
+
+               <p>This option is valid during the following operations:
+                <code>update</code></p>
 
                @member ejs.Document
                @param {Integer} num the number of times to retry operation.
@@ -8306,12 +8345,13 @@
       },
       
       /**
-               Sets the upsert document.  The upsert document is used during
-               updates when the specified document you are attempting to 
-               update does not exist.
+               <p>Sets the upsert document.</p>  
+        
+               <p>The upsert document is used during updates when the specified document 
+               you are attempting to update does not exist.</p>
 
-               This option is valid during the following operations:
-               update
+               <p>This option is valid during the following operations:
+                    <code>update</code></p>
 
                @member ejs.Document
                @param {Object} doc the upset document.
@@ -8331,11 +8371,12 @@
       },
       
       /**
-               Sets the source document.  When set during an update operation,
-               it is used as the partial update document.  
+               <p>Sets the source document.</p>  
 
-               This option is valid during the following operations:
-               index and update
+               <p>When set during an update operation, it is used as the partial update document.</p>
+
+               <p>This option is valid during the following operations:
+                    <code>index</code> and <code>update</code></p>
 
                @member ejs.Document
                @param {Object} doc the source document.
@@ -8365,7 +8406,7 @@
       },
       
       /**
-            The type of ejs object.  For internal use only.
+            <p>The type of ejs object.  For internal use only.</p>
             
             @member ejs.Document
             @returns {String} the type of object
@@ -8457,10 +8498,12 @@
       },
 
       /**
-            <p>Updates a document in the given index and type.  If the 
-            document is not found in the index, the "upsert" value is used
-            if set.  The document is updated via an update script or partial
-            document.  To use a script, set the script option, to use a 
+            <p>Updates a document in the given index and type.</p>  
+
+            <p>If the document is not found in the index, the "upsert" value is used
+            if set.  The document is updated via an update script or partial document.</p>
+
+            <p>To use a script, set the script option, to use a 
             partial document, set the source with the partial document.</p>
 
             @member ejs.Document
@@ -8713,15 +8756,15 @@
       },
 
       /**
-            Sets the number of optional clauses that must match.
+            <p>Sets the number of optional clauses that must match.</p>
       
-            By default no optional clauses are necessary for a match
+            <p>By default no optional clauses are necessary for a match
             (unless there are no required clauses).  If this method is used,
-            then the specified number of clauses is required..
+            then the specified number of clauses is required.</p>
 
-            Use of this method is totally independent of specifying that
+            <p>Use of this method is totally independent of specifying that
             any specific clauses are required (or prohibited).  This number will
-            only be compared against the number of matching optional clauses.
+            only be compared against the number of matching optional clauses.</p>
    
             @member ejs.BoolQuery
             @param {Integer} minMatch A positive <code>integer</code> value.
@@ -9277,11 +9320,12 @@
       },
 
       /**
-            Sets the filters and their related boost or script scoring method.
-            Takes an array of objects where each object has a 'filter' property
+            <p>Sets the filters and their related boost or script scoring method.</p>
+
+            <p>Takes an array of objects where each object has a 'filter' property
             and either a 'boost' or 'script' property.  Pass a single object to
             add to the current list of filters or pass a list of objects to
-            overwrite all existing filters.
+            overwrite all existing filters.</p>
           
             <code>
             {filter: someFilter, boost: 2.1}
@@ -9312,12 +9356,13 @@
       },
     
       /**
-            A score_mode can be defined to control how multiple matching 
-            filters control the score. By default, it is set to first which 
-            means the first matching filter will control the score of the 
-            result. It can also be set to min/max/total/avg/multiply which 
-            will aggregate the result from all matching filters based on the 
-            aggregation type.
+            <p>A score_mode can be defined to control how multiple matching 
+            filters control the score.<p> 
+
+            <p>By default, it is set to first which means the first matching filter 
+            will control the score of the result. It can also be set to 
+            <code>min/max/total/avg/multiply</code> which will aggregate the result from all 
+            matching filters based on the aggregation type.<p>
 
             @member ejs.CustomFiltersScoreQuery
             @param {String} s The scoring type as a string. 
@@ -9671,11 +9716,14 @@
 
 
       /**
-            The tie breaker value.  The tie breaker capability allows results
-            that include the same term in multiple fields to be judged better than
-            results that include this term in only the best of those multiple
-            fields, without confusing this with the better case of two different
-            terms in the multiple fields.  Default: 0.0.
+            <p>The tie breaker value.</p>  
+
+            <p>The tie breaker capability allows results that include the same term in multiple 
+            fields to be judged better than results that include this term in only the best of those 
+            multiple fields, without confusing this with the better case of two different terms in 
+            the multiple fields.</p>  
+
+            <p>Default: 0.0.</p>
 
             @member ejs.DisMaxQuery
             @param {Double} tieBreaker A positive <code>double</code> value.
@@ -9723,6 +9771,7 @@
     };
   };
   
+
   /**
     @class
     <p>Wrapper to allow SpanQuery objects participate in composite single-field 
@@ -9897,7 +9946,7 @@
       },
       
       /**
-             Sets the query string.
+             <p>Sets the query string.</p>
 
              @member ejs.FieldQuery
              @param {String} q The lucene query string.
@@ -9913,10 +9962,11 @@
       },
       
       /**
-            Set the default <em>Boolean</em> operator. This operator is used 
-            to join individual query terms when no operator is explicity used 
-            in the query string (i.e., <code>this AND that</code>).
-            Defaults to <code>OR</code> (<em>same as Google</em>).
+            <p>Set the default <code>Boolean</code> operator.</p> 
+
+            <p>This operator is used to join individual query terms when no operator is 
+            explicity used in the query string (i.e., <code>this AND that</code>).
+            Defaults to <code>OR</code> (<em>same as Google</em>).</p>
 
             @member ejs.FieldQuery
             @param {String} op The operator, AND or OR.
@@ -9936,7 +9986,7 @@
       },
 
       /**
-            Sets the analyzer name used to analyze the <code>Query</code> object.
+            <p>Sets the analyzer name used to analyze the <code>Query</code> object.</p>
 
             @member ejs.FieldQuery
             @param {String} analyzer A valid analyzer name.
@@ -9952,8 +10002,8 @@
       },
 
       /**
-            Sets the quote analyzer name used to analyze the <code>query</code>
-            when in quoted text.
+            <p>Sets the quote analyzer name used to analyze the <code>query</code>
+            when in quoted text.</p>
 
             @member ejs.FieldQuery
             @param {String} analyzer A valid analyzer name.
@@ -9969,8 +10019,8 @@
       },
       
       /**
-            Sets whether or not we should auto generate phrase queries *if* the
-            analyzer returns more than one term. Default: false.
+            <p>Sets whether or not we should auto generate phrase queries *if* the
+            analyzer returns more than one term. Default: false.</p>
 
             @member ejs.FieldQuery
             @param {Boolean} trueFalse A <code>true/false</code> value.
@@ -9986,8 +10036,10 @@
       },
 
       /**
-            Sets whether or not wildcard characters (* and ?) are allowed as the
-            first character of the <code>Query</code>.  Default: true.
+            <p>Sets whether or not wildcard characters (* and ?) are allowed as the
+            first character of the <code>Query</code>.</p>  
+
+            <p>Default: <code>true</code>.</p>
 
             @member ejs.FieldQuery
             @param {Boolean} trueFalse A <code>true/false</code> value.
@@ -10003,9 +10055,11 @@
       },
 
       /**
-            Sets whether or not terms from wildcard, prefix, fuzzy, and
-            range queries should automatically be lowercased in the <code>Query</code>
-            since they are not analyzed.  Default: true.
+            <p>Sets whether or not terms from <code>wildcard, prefix, fuzzy,</code> and
+            <code>range</code> queries should automatically be lowercased in the <code>Query</code>
+            since they are not analyzed.</p>  
+
+            <p>Default: <code>true</code>.</p>
 
             @member ejs.FieldQuery
             @param {Boolean} trueFalse A <code>true/false</code> value.
@@ -10021,8 +10075,10 @@
       },
 
       /**
-            Sets whether or not position increments will be used in the
-            <code>Query</code>. Default: true.
+            <p>Sets whether or not position increments will be used in the
+            <code>Query</code>.</p> 
+
+            <p>Default: <code>true</code>.</p>
 
             @member ejs.FieldQuery
             @param {Boolean} trueFalse A <code>true/false</code> value.
@@ -10038,7 +10094,9 @@
       },
 
       /**
-            Set the minimum similarity for fuzzy queries.  Default: 0.5.
+            <p>Set the minimum similarity for fuzzy queries.</p>  
+
+            <p>Default: <code>0.5</code>.</p>
 
             @member ejs.FieldQuery
             @param {Double} minSim A <code>double</code> value between 0 and 1.
@@ -10054,7 +10112,9 @@
       },
 
       /**
-            Sets the boost value of the <code>Query</code>.  Default: 1.0.
+            <p>Sets the boost value of the <code>Query</code>.</p>  
+
+            <p>Default: <code>1.0</code>.</p>
 
             @member ejs.FieldQuery
             @param {Double} boost A positive <code>double</code> value.
@@ -10070,7 +10130,9 @@
       },
 
       /**
-            Sets the prefix length for fuzzy queries.  Default: 0.
+            <p>Sets the prefix length for fuzzy queries.</p>  
+    
+            <p>Default: <code>0</code>.</p>
 
             @member ejs.FieldQuery
             @param {Integer} fuzzLen A positive <code>integer</code> value.
@@ -10086,7 +10148,7 @@
       },
 
       /**
-            Sets the max number of term expansions for fuzzy queries.  
+            <p>Sets the max number of term expansions for fuzzy queries.</p>
 
             @member ejs.FieldQuery
             @param {Integer} max A positive <code>integer</code> value.
@@ -10102,31 +10164,35 @@
       },
 
       /**
-            Sets fuzzy rewrite method.  Valid values are: 
-            
-            constant_score_auto - tries to pick the best constant-score rewrite 
-              method based on term and document counts from the query
-              
-            scoring_boolean - translates each term into boolean should and 
-              keeps the scores as computed by the query
-              
-            constant_score_boolean - same as scoring_boolean, expect no scores
-              are computed.
-              
-            constant_score_filter - first creates a private Filter, by visiting 
-              each term in sequence and marking all docs for that term
-              
-            top_terms_boost_N - first translates each term into boolean should
-              and scores are only computed as the boost using the top N
-              scoring terms.  Replace N with an integer value.
-              
-            top_terms_N -   first translates each term into boolean should
-                and keeps the scores as computed by the query. Only the top N
-                scoring terms are used.  Replace N with an integer value.
-            
-            Default is constant_score_auto.
+            <p>Sets fuzzy rewrite method.<p>  
 
-            This is an advanced option, use with care.
+            <p>Valid values are:</p>
+            
+            <dl>
+                <dd><code>constant_score_auto</code> - tries to pick the best constant-score rewrite 
+                 method based on term and document counts from the query</dd>
+              
+                <dd><code>scoring_boolean</code> - translates each term into boolean should and 
+                 keeps the scores as computed by the query</dd>
+              
+                <dd><code>constant_score_boolean</code> - same as scoring_boolean, expect no scores
+                 are computed.</dd>
+              
+                <dd><code>constant_score_filter</code> - first creates a private Filter, by visiting 
+                 each term in sequence and marking all docs for that term</dd>
+              
+                <dd><code>top_terms_boost_N</code> - first translates each term into boolean should
+                 and scores are only computed as the boost using the top <code>N</code>
+                 scoring terms.  Replace <code>N</code> with an integer value.</dd>
+              
+                <dd><code>top_terms_N</code> - first translates each term into boolean should
+                 and keeps the scores as computed by the query. Only the top <code>N</code>
+                 scoring terms are used.  Replace <code>N</code> with an integer value.</dd>
+            </dl>
+            
+            <p>Default is <code>constant_score_auto</code>.</p>
+
+            <p>This is an advanced option, use with care.</p>
             
             @member ejs.FieldQuery
             @param {String} m The rewrite method as a string.
@@ -10150,29 +10216,33 @@
       },
 
       /**
-            Sets rewrite method.  Valid values are: 
+            <p>Sets rewrite method.</p>  
+
+            <p>Valid values are:</p>
             
-            constant_score_auto - tries to pick the best constant-score rewrite 
-              method based on term and document counts from the query
+            <dl>
+                <dd><code>constant_score_auto</code> - tries to pick the best constant-score rewrite 
+                 method based on term and document counts from the query</dd>
               
-            scoring_boolean - translates each term into boolean should and 
-              keeps the scores as computed by the query
+                <dd><code>scoring_boolean</code> - translates each term into boolean should and 
+                 keeps the scores as computed by the query</dd>
               
-            constant_score_boolean - same as scoring_boolean, expect no scores
-              are computed.
+                <dd><code>constant_score_boolean</code> - same as scoring_boolean, expect no scores
+                 are computed.</p>
               
-            constant_score_filter - first creates a private Filter, by visiting 
-              each term in sequence and marking all docs for that term
+                <dd><code>constant_score_filter</code> - first creates a private Filter, by visiting 
+                 each term in sequence and marking all docs for that term</dd>
               
-            top_terms_boost_N - first translates each term into boolean should
-              and scores are only computed as the boost using the top N
-              scoring terms.  Replace N with an integer value.
+                <dd><code>top_terms_boost_N</code> - first translates each term into boolean should
+                 and scores are only computed as the boost using the top <code>N</code>
+                 scoring terms.  Replace <code>N</code> with an integer value.</dd>
               
-            top_terms_N -   first translates each term into boolean should
-                and keeps the scores as computed by the query. Only the top N
-                scoring terms are used.  Replace N with an integer value.
+                <dd><code>top_terms_N</code> - first translates each term into boolean should
+                 and keeps the scores as computed by the query. Only the top <code>N</code>
+                 scoring terms are used.  Replace <code>N</code> with an integer value.</dd>
+            </dl>
             
-            Default is constant_score_auto.
+            <p>Default is <code>constant_score_auto</code>.</p>
 
             This is an advanced option, use with care.
 
@@ -10198,8 +10268,8 @@
       },
 
       /**
-            Sets the suffix to automatically add to the field name when 
-            performing a quoted search.
+            <p>Sets the suffix to automatically add to the field name when 
+            performing a quoted search.</p>
 
             @member ejs.FieldQuery
             @param {String} s The suffix as a string.
@@ -10215,8 +10285,10 @@
       },
                         
       /**
-            Sets the default slop for phrases. If zero, then exact phrase matches
-            are required.  Default: 0.
+            <p>Sets the default slop for phrases. If zero, then exact phrase matches
+            are required.</p>  
+
+            <p>Default: <code>0</code>.</p>
 
             @member ejs.FieldQuery
             @param {Integer} slop A positive <code>integer</code> value.
@@ -10232,9 +10304,12 @@
       },
 
       /**
-            Sets whether or not we should attempt to analyzed wilcard terms in the
-            <code>Query</code>. By default, wildcard terms are not analyzed.
-            Analysis of wildcard characters is not perfect.  Default: false.
+            <p>Sets whether or not we should attempt to analyzed wilcard terms in the
+            <code>Query</code>.</p> 
+
+            <p>By default, wildcard terms are not analyzed. Analysis of wildcard characters is not perfect.</p>  
+
+            <p>Default: <code>false</code>.</p>
 
             @member ejs.FieldQuery
             @param {Boolean} trueFalse A <code>true/false</code> value.
@@ -10250,7 +10325,7 @@
       },
 
       /**
-            If they query string should be escaped or not.
+            <p>If the query string should be escaped or not.</p>
 
             @member ejs.FieldQuery
             @param {Boolean} trueFalse A <code>true/false</code> value.
@@ -10266,8 +10341,8 @@
       },
       
       /**
-            Sets a percent value controlling how many "should" clauses in the
-            resulting <code>Query</code> should match.
+            <p>Sets a percent value controlling how many <code>should</code> clauses in the
+            resulting <code>Query</code> should match.</p>
 
             @member ejs.FieldQuery
             @param {Integer} minMatch An <code>integer</code> between 0 and 100.
@@ -10283,7 +10358,7 @@
       },
 
       /**
-            Allows you to serialize this object into a JSON encoded string.
+            <p>Allows you to serialize this object into a JSON encoded string.</p>
 
             @member ejs.FieldQuery
             @returns {String} returns this object as a serialized JSON string.
@@ -10293,7 +10368,7 @@
       },
 
       /**
-            The type of ejs object.  For internal use only.
+            <p>The type of ejs object.  For internal use only.</p>
             
             @member ejs.FieldQuery
             @returns {String} the type of object
@@ -10303,8 +10378,8 @@
       },
       
       /**
-            Retrieves the internal <code>query</code> object. This is typically used by
-            internal API functions so use with caution.
+            <p>Retrieves the internal <code>query</code> object. This is typically used by
+            internal API functions so use with caution.</p>
 
             @member ejs.FieldQuery
             @returns {String} returns this object's internal <code>query</code> property.
@@ -10361,7 +10436,7 @@
     return {
 
       /**
-             Adds the query to apply a constant score to.
+             <p>Adds the query to apply a constant score to.</p>
 
              @member ejs.FilteredQuery
              @param {Object} oQuery A valid <code>Query</code> object
@@ -10381,7 +10456,7 @@
       },
 
       /**
-             Adds the filter to apply a constant score to.
+             <p>Adds the filter to apply a constant score to.</p>
 
              @member ejs.FilteredQuery
              @param {Object} oFilter A valid <code>Filter</code> object
@@ -10401,17 +10476,21 @@
       },
 
       /**
-            Sets the filter strategy.  The strategy defines how the filter is
-            applied during document collection.  Valid values are:
-            
-            query_filter - advance query scorer first then filter
-            random_access_random - random access filter
-            leap_frog - query scorer and filter "leap-frog", query goes first
-            leap_frog_filter_first - same as leap_frog, but filter goes first
-            random_access_N - replace N with integer, same as random access 
-              except you can specify a custom threshold
+            <p>Sets the filter strategy.</p>  
 
-            This is an advanced setting, use with care.
+            <p>The strategy defines how the filter is applied during document collection.  
+            Valid values are:</p>
+            
+            <dl>
+                <dd><code>query_filter</code> - advance query scorer first then filter</dd>
+                <dd><code>random_access_random</code> - random access filter</dd>
+                <dd><code>leap_frog</code> - query scorer and filter "leap-frog", query goes first</dd>
+                <dd><code>leap_frog_filter_first</code> - same as <code>leap_frog</code>, but filter goes first</dd>
+                <dd><code>random_access_N</code> - replace <code>N</code> with integer, same as random access 
+                 except you can specify a custom threshold</dd>
+            </dl>
+
+            <p>This is an advanced setting, use with care.</p>
             
             @member ejs.FilteredQuery
             @param {String} strategy The strategy as a string.
@@ -10434,7 +10513,7 @@
       },
       
       /**
-            Enables caching of the filter.
+            <p>Enables caching of the filter.</p>
 
             @member ejs.FilteredQuery
             @param {Boolean} trueFalse A boolean value.
@@ -10450,7 +10529,7 @@
       },
       
       /**
-            Set the cache key.
+            <p>Set the cache key.</p>
 
             @member ejs.FilteredQuery
             @param {String} k A string cache key.
@@ -10466,7 +10545,7 @@
       },
       
       /**
-            Sets the boost value of the <code>Query</code>.
+            <p>Sets the boost value of the <code>Query</code>.</p>
 
             @member ejs.FilteredQuery
             @param {Double} boost A positive <code>double</code> value.
@@ -10482,7 +10561,8 @@
       },
       
       /**
-             Converts this object to a json string
+             <p>Converts this object to a json string</p>
+
              @member ejs.FilteredQuery
              @returns {Object} string
              */
@@ -10491,7 +10571,7 @@
       },
 
       /**
-            The type of ejs object.  For internal use only.
+            <p>The type of ejs object.  For internal use only.</p>
             
             @member ejs.FilteredQuery
             @returns {String} the type of object
@@ -10501,7 +10581,8 @@
       },
       
       /**
-             returns the query object.
+             <p>returns the query object.</p>
+
              @member ejs.FilteredQuery
              @returns {Object} query object
              */
@@ -10981,7 +11062,7 @@
     return {
 
       /**
-             The field to run the query against.
+             <p>The field to run the query against.</p>
 
              @member ejs.FuzzyQuery
              @param {String} f A single field name.
@@ -11002,7 +11083,7 @@
       },
 
       /**
-            The query text to fuzzify.
+            <p>The query text to fuzzify.</p>
 
             @member ejs.FuzzyQuery
             @param {String} s A text string.
@@ -11018,7 +11099,7 @@
       },
 
       /**
-            Set to false to use classic Levenshtein edit distance.
+            <p>Set to false to use classic Levenshtein edit distance.</p>
 
             @member ejs.FuzzyQuery
             @param {Boolean} trueFalse A boolean value
@@ -11034,8 +11115,8 @@
       },
 
       /**
-            The maximum number of query terms that will be included in any 
-            generated query. Defaults to 50.
+            <p>The maximum number of query terms that will be included in any 
+            generated query. Defaults to <code>50</code>.<p>
 
             @member ejs.FuzzyQuery
             @param {Integer} max A positive integer value.
@@ -11051,7 +11132,7 @@
       },
 
       /**
-            The minimum similarity of the term variants. Defaults to 0.5.
+            <p>The minimum similarity of the term variants. Defaults to <code>0.5</code>.</p>
 
             @member ejs.FuzzyQuery
             @param {Double} min A positive double value.
@@ -11067,7 +11148,7 @@
       },
 
       /**
-            Length of required common prefix on variant terms. Defaults to 0..
+            <p>Length of required common prefix on variant terms. Defaults to <code>0</code>.</p>
 
             @member ejs.FuzzyQuery
             @param {Integer} len A positive integer value.
@@ -11083,31 +11164,33 @@
       },
       
       /**
-            Sets rewrite method.  Valid values are: 
+            <p>Sets rewrite method.  Valid values are:</p> 
             
-            constant_score_auto - tries to pick the best constant-score rewrite 
-              method based on term and document counts from the query
+            <dl>
+                <dd><code>constant_score_auto</code> - tries to pick the best constant-score rewrite 
+                 method based on term and document counts from the query</dd>
               
-            scoring_boolean - translates each term into boolean should and 
-              keeps the scores as computed by the query
+                <dd><code>scoring_boolean</code> - translates each term into boolean should and 
+                 keeps the scores as computed by the query</dd>
               
-            constant_score_boolean - same as scoring_boolean, expect no scores
-              are computed.
+                <dd><code>constant_score_boolean</code> - same as scoring_boolean, expect no scores
+                 are computed.</dd>
               
-            constant_score_filter - first creates a private Filter, by visiting 
-              each term in sequence and marking all docs for that term
+                <dd><code>constant_score_filter</code> - first creates a private Filter, by visiting 
+                 each term in sequence and marking all docs for that term</dd>
               
-            top_terms_boost_N - first translates each term into boolean should
-              and scores are only computed as the boost using the top N
-              scoring terms.  Replace N with an integer value.
+                <dd><code>top_terms_boost_N</code> - first translates each term into boolean should
+                 and scores are only computed as the boost using the top <code>N</code>
+                 scoring terms.  Replace <code>N</code> with an integer value.</dd>
               
-            top_terms_N -   first translates each term into boolean should
-                and keeps the scores as computed by the query. Only the top N
-                scoring terms are used.  Replace N with an integer value.
+                <dd><code>top_terms_N</code> - first translates each term into boolean should
+                 and keeps the scores as computed by the query. Only the top <code>N</code>
+                 scoring terms are used.  Replace <code>N</code> with an integer value.</dd>
+            </dl>
             
-            Default is constant_score_auto.
+            <p>Default is <code>constant_score_auto</code>.</p>
 
-            This is an advanced option, use with care.
+            <p>This is an advanced option, use with care.</p>
 
             @member ejs.FuzzyQuery
             @param {String} m The rewrite method as a string.
@@ -11132,7 +11215,7 @@
       
                     
       /**
-            Sets the boost value of the <code>Query</code>.
+            <p>Sets the boost value of the <code>Query</code>.</p>
 
             @member ejs.FuzzyQuery
             @param {Double} boost A positive <code>double</code> value.
@@ -11148,7 +11231,8 @@
       },
 
       /**
-             Serializes the internal <em>query</em> object as a JSON string.
+             <p>Serializes the internal <code>query</code> object as a JSON string.</p>
+
              @member ejs.FuzzyQuery
              @returns {String} Returns a JSON representation of the Query object.
              */
@@ -11157,7 +11241,7 @@
       },
 
       /**
-            The type of ejs object.  For internal use only.
+            <p>The type of ejs object.  For internal use only.</p>
             
             @member ejs.FuzzyQuery
             @returns {String} the type of object
@@ -11167,8 +11251,9 @@
       },
       
       /**
-            This method is used to retrieve the raw query object. It's designed
-            for internal use when composing and serializing queries.
+            <p>This method is used to retrieve the raw query object. It's designed
+            for internal use when composing and serializing queries.</p>
+
             @member ejs.FuzzyQuery
             @returns {Object} Returns the object's <em>query</em> property.
             */
@@ -16863,21 +16948,22 @@
     return {
 
       /**
-            Sets the sorting for the query.  This accepts many input formats.
+            <p>Sets the sorting for the query.  This accepts many input formats.</p>
             
-            sort() - The current sorting values are returned.
-            sort(fieldName) - Adds the field to the current list of sorting values.
-            sort(fieldName, order) - Adds the field to the current list of
-              sorting with the specified order.  Order must be asc or desc.
-            sort(ejs.Sort) - Adds the Sort value to the current list of sorting values. 
-            sort(array) - Replaces all current sorting values with values
-              from the array.  The array must contain only strings and Sort
-              objects.
+            <dl>
+                <dd><code>sort()</code> - The current sorting values are returned.</dd>
+                <dd><code>sort(fieldName)</code> - Adds the field to the current list of sorting values.</dd>
+                <dd><code>sort(fieldName, order)</code> - Adds the field to the current list of
+                    sorting with the specified order.  Order must be asc or desc.</dd>
+                <dd><code>sort(ejs.Sort)</code> - Adds the Sort value to the current list of sorting values.</dd>
+                <dd><code>sort(array)</code> - Replaces all current sorting values with values
+                    from the array.  The array must contain only strings and Sort objects.</dd>
+            </dl>
 
-            Multi-level sorting is supported so the order in which sort fields 
-            are added to the query requests is relevant.
+            <p>Multi-level sorting is supported so the order in which sort fields 
+            are added to the query requests is relevant.</p>
             
-            It is recommended to use <code>Sort</code> objects when possible.
+            <p>It is recommended to use <code>Sort</code> objects when possible.</p>
             
             @member ejs.Request
             @param {String} fieldName The field to be sorted by.
@@ -17229,17 +17315,20 @@
       },
 
       /**
-            Controls a preference of which shard replicas to execute the search request on.
+            <p>Controls the preference of which shard replicas to execute the search request on.
             By default, the operation is randomized between the each shard replicas.  The
-            preference can be one of the following:
+            preference can be one of the following:</p>
 
-            _primary - the operation will only be executed on primary shards
-            _local - the operation will prefer to be executed on local shards
-            _only_node:$nodeid - the search will only be executed on node with id $nodeid
-            custom - any string, will guarentee searches always happen on same node.
+            <dl>
+                <dd><code>_primary</code> - the operation will only be executed on primary shards</dd>
+                <dd><code>_local</code> - the operation will prefer to be executed on local shards</dd>
+                <dd><code>_only_node:$nodeid</code> - the search will only be executed on node with id $nodeid</dd>
+                <dd><code>custom</code> - any string, will guarentee searches always happen on same node.</dd>
+            </dl>
 
             @member ejs.Request
-            @param {String} perf the preference, any of _primary, _local, _only_:$nodeid, or a custom string value.
+            @param {String} perf the preference, any of <code>_primary</code>, <code>_local</code>, 
+                <code>_only_:$nodeid</code>, or a custom string value.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       preference: function (perf) {

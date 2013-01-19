@@ -125,13 +125,14 @@
       },
       
       /**
-             Sets the routing value. By default, the shard the document is
-             placed on is controlled by using a hash of the document’s id 
-             value. For more explicit control, this routing value will be fed 
-             into the hash function used by the router.
+             <p>Sets the routing value.<p> 
+
+             <p>By default, the shard the document is placed on is controlled by using a 
+             hash of the document’s id value. For more explicit control, this routing value 
+             will be fed into the hash function used by the router.</p>
              
-             This option is valid during the following operations:
-             index, delete, get, and update.
+             <p>This option is valid during the following operations:
+                <code>index, delete, get, and update</code></p>
 
              @member ejs.Document
              @param {String} route The routing value
@@ -147,13 +148,14 @@
       },
       
       /**
-             Sets parent value for a child document.  When indexing a child 
-             document, the routing value is automatically set to be the same 
-             as it’s parent, unless the routing value is explicitly specified 
-             using the routing parameter.
+             <p>Sets parent value for a child document.</p>  
+
+             <p>When indexing a child document, the routing value is automatically set to be 
+             the same as it’s parent, unless the routing value is explicitly specified 
+             using the routing parameter.</p>
              
-             This option is valid during the following operations:
-             index, delete, get, and update.
+             <p>This option is valid during the following operations:
+                 <code>index, delete, get, and update.</code></p>
 
              @member ejs.Document
              @param {String} parent The parent value
@@ -169,11 +171,12 @@
       },
       
       /**
-             Sets timestamp of the document.  By default the timestamp will
-             be set to the time the docuement was indexed.
+             <p>Sets timestamp of the document.</p>  
+
+             <p>By default the timestamp will be set to the time the docuement was indexed.</p>
              
-             This option is valid during the following operations:
-             index and update
+             <p>This option is valid during the following operations:
+                <code>index</code> and <code>update</code></p>
 
              @member ejs.Document
              @param {String} parent The parent value
@@ -189,15 +192,17 @@
       },
       
       /**
-             Sets the documents time to live (ttl).  The expiration date that 
-             will be set for a document with a provided ttl is relative to the 
-             timestamp of the document, meaning it can be based on the time of 
-             indexing or on any time provided. The provided ttl must be 
-             strictly positive and can be a number (in milliseconds) or any 
-             valid time value such as "1d", "2h", "5m", etc.
+             </p>Sets the documents time to live (ttl).</p>  
+
+             The expiration date that will be set for a document with a provided ttl is relative 
+             to the timestamp of the document, meaning it can be based on the time of indexing or 
+             on any time provided.</p> 
+
+             <p>The provided ttl must be strictly positive and can be a number (in milliseconds) 
+             or any valid time value such as <code>"1d", "2h", "5m",</code> etc.</p>
              
-             This option is valid during the following operations:
-             index and update
+             <p>This option is valid during the following operations:
+                <code>index</code> and <code>update</code></p>
 
              @member ejs.Document
              @param {String} length The amount of time after which the document
@@ -214,14 +219,15 @@
       },
       
       /**
-             Set's a timeout for the given operation.  If the primary shard
-             has not completed the operation before this value, an error will
-             occur.  The default timeout is 1 minute. The provided timeout 
-             must be strictly positive and can be a number (in milliseconds) or 
-             any valid time value such as "1d", "2h", "5m", etc.
+             <p>Set's a timeout for the given operation.</p>  
+
+             If the primary shard has not completed the operation before this value, an error will
+             occur.  The default timeout is 1 minute. The provided timeout must be strictly positive 
+             and can be a number (in milliseconds) or any valid time value such as 
+             <code>"1d", "2h", "5m",</code> etc.</p>
              
-             This option is valid during the following operations:
-             index, delete, and update
+             <p>This option is valid during the following operations:
+                <code>index, delete,</code> and <code>update</code></p>
 
              @member ejs.Document
              @param {String} length The amount of time after which the operation
@@ -238,12 +244,12 @@
       },
       
       /**
-             Enables the index to be refreshed immediately after the operation
-             occurs.  This is an advanced setting and can lead to performance
-             issues.
+             <p>Enables the index to be refreshed immediately after the operation
+             occurs. This is an advanced setting and can lead to performance
+             issues.</p>
              
-             This option is valid during the following operations:
-             index, delete, get, and update
+             <p>This option is valid during the following operations:
+                <code>index, delete, get,</code> and <code>update</code></p>
 
              @member ejs.Document
              @param {Boolean} trueFalse If the index should be refreshed or not.
@@ -259,15 +265,17 @@
       },
       
       /**
-             Sets the document version.  Used for optimistic concurrency 
-             control when set.  If the version of the currently indexed
-             document is less-than or equal to the version specified, an
-             error is produced, otherwise the operation is permitted.
-             By default, internal versioning is used that starts at 1 and 
-             increments with each update. 
+             <p>Sets the document version.</p>  
+
+             Used for optimistic concurrency control when set.  If the version of the currently 
+             indexed document is less-than or equal to the version specified, an error is produced, 
+             otherwise the operation is permitted.</p>
+
+             <p>By default, internal versioning is used that starts at <code>1</code> and 
+             increments with each update.</p>
              
-             This option is valid during the following operations:
-             index, delete, and update
+             <p>This option is valid during the following operations:
+                <code>index, delete,</code> and <code>update</code></p>
 
              @member ejs.Document
              @param {Long} version A positive long value
@@ -283,13 +291,17 @@
       },
       
       /**
-             Sets the version type.  Possible values are:
+             <p>Sets the version type.</p>  
+
+             </p>Possible values are:</p>
              
-             internal - the default
-             external - to use your own version (ie. version number from a database)
+             <dl>
+                <dd><code>internal</code> - the default</dd>
+                <dd><code>external</code> - to use your own version (ie. version number from a database)</dd>
+             </dl>
              
-             This option is valid during the following operations:
-             index, delete, and update
+             <p>This option is valid during the following operations:
+                <code>index, delete,</code> and <code>update</code></p>
 
              @member ejs.Document
              @param {String} vt A version type (internal or external)
@@ -310,12 +322,13 @@
       },
       
       /**
-             Perform percolation at index time.  Set to * to run document 
-             against all registered queries.  It is also possible to set this
-             value to a string in query string format, ie. "color:green".
+             <p>Perform percolation at index time.</p>  
+
+             <p>Set to * to run document against all registered queries.  It is also possible 
+             to set this value to a string in query string format, ie. <code>"color:green"</code>.</p>
              
-             This option is valid during the following operations:
-             index and update
+             <p>This option is valid during the following operations:
+                <code>index</code> and <code>update</code></p>
 
              @member ejs.Document
              @param {String} qry A percolation query string
@@ -331,13 +344,17 @@
       },
       
       /**
-             Sets the indexing operation type.  Valid values are:
+             <p>Sets the indexing operation type.</p>  
+
+             <p>Valid values are:</p>
              
-             index - the default, create or replace
-             create - create only
+             <dl>
+                <dd><code>index</code> - the default, create or replace</dd>
+                <dd><code>create</code> - create only</dd>
+             </dl>
              
-             This option is valid during the following operations:
-             index
+             <p>This option is valid during the following operations:
+                <code>index</code></p>
 
              @member ejs.Document
              @param {String} op The operation type (index or create)
@@ -357,14 +374,18 @@
       },
       
       /**
-             Sets the replication mode.  Valid values are:
+             <p>Sets the replication mode.</p>  
+
+             <p>Valid values are:</p>
              
-             async - asynchronous replication to slaves
-             sync - synchronous replication to the slaves
-             default - the currently configured system default. 
+             <dl>
+                <dd><code>async</code> - asynchronous replication to slaves</dd>
+                <dd><code>sync</code> - synchronous replication to the slaves</dd>
+                <dd><code>default</code> - the currently configured system default.</dd> 
+             </dl>
              
-             This option is valid during the following operations:
-             index, delete, and update
+             <p>This option is valid during the following operations:
+                <code>index, delete,</code> and <code>update</code></p>
 
              @member ejs.Document
              @param {String} r The replication mode (async, sync, or default)
@@ -384,15 +405,19 @@
       },
       
       /**
-             Sets the write consistency.  Valid values are:
+             <p>Sets the write consistency.</p>  
+
+             <p>Valid values are:</p>
              
-             one - only requires write to one shard
-             quorum - requires writes to quorum (N/2 + 1)
-             all - requires write to succeed on all shards
-             default - the currently configured system default
+             <dl>
+                <dd><code>one - only requires write to one shard</dd>
+                <dd><code>quorum - requires writes to quorum <code>(N/2 + 1)</code></dd>
+                <dd><code>all - requires write to succeed on all shards</dd>
+                <dd><code>default - the currently configured system default</dd>
+             </dl>
              
-             This option is valid during the following operations:
-             index, delete, and update
+             <p>This option is valid during the following operations:
+                <code>index, delete,</code> and <code>update</code></p>
 
              @member ejs.Document
              @param {String} c The write consistency (one, quorum, all, or default)
@@ -412,16 +437,20 @@
       },
       
       /**
-             Sets the preference of which shard replicas to execute the get 
-             request on. By default, the operation is randomized between the 
-             shard replicas.  This value can be:
+             <p>Sets the preference of which shard replicas to execute the get 
+             request on.</p> 
+
+             <p>By default, the operation is randomized between the shard replicas.  
+             This value can be:</p>
              
-             _primary - execute only on the primary shard
-             _local - the local shard if possible
-             any string value - to guarentee the same shards will always be used
+             <dl>
+                <dd><code>_primary</code> - execute only on the primary shard</dd>
+                <dd><code>_local</code> - the local shard if possible</dd>
+                <dd><code>any string value</code> - to guarentee the same shards will always be used</dd>
+             </dl>
              
-             This option is valid during the following operations:
-             get
+             <p>This option is valid during the following operations:
+                <code>get</code></p>
 
              @member ejs.Document
              @param {String} p The preference value as a string
@@ -437,11 +466,11 @@
       },
       
       /**
-             Sets if the get request is performed in realtime or waits for
-             the indexing operations to complete.  By default it is realtime.
+             <p>Sets if the get request is performed in realtime or waits for
+             the indexing operations to complete.  By default it is realtime.</p>
              
-             This option is valid during the following operations:
-             get
+             <p>This option is valid during the following operations:
+                <code>get</code></p>
 
              @member ejs.Document
              @param {Boolean} trueFalse If realtime get is used or not.
@@ -457,14 +486,15 @@
       },
       
       /**
-             Sets the fields of the document to return.  By default the 
-             _source field is returned.  Pass a single value to append to the
-             current list of fields, pass an array to overwrite the current
-             list of fields.  The returned fields will either be loaded if 
-             they are stored, or fetched from the _source
+             <p>Sets the fields of the document to return.</p>  
+
+             <p>By default the <code>_source</code> field is returned.  Pass a single value 
+             to append to the current list of fields, pass an array to overwrite the current
+             list of fields.  The returned fields will either be loaded if they are stored, 
+             or fetched from the <code>_source</code></p>
              
-             This option is valid during the following operations:
-             get and update
+             <p>This option is valid during the following operations:
+                <code>get</code> and <code>update</code></p>
 
              @member ejs.Document
              @param {String || Array} fields a single field name or array of field names.
@@ -491,10 +521,10 @@
       },
       
       /**
-             Sets the update script.
+             <p>Sets the update script.</p>
              
-             This option is valid during the following operations:
-             update
+             <p>This option is valid during the following operations:
+                <code>update</code></p>
 
              @member ejs.Document
              @param {String} script a script to use for docuement updates
@@ -510,10 +540,10 @@
       },
       
       /**
-             Sets the update script lanauge.  Defaults to mvel.
+             <p>Sets the update script lanauge.  Defaults to <code>mvel</code></p>.
              
-             This option is valid during the following operations:
-             update
+             <p>This option is valid during the following operations:
+                <code>update</code></p>
 
              @member ejs.Document
              @param {String} lang a valid script lanauge type such as mvel.
@@ -529,12 +559,13 @@
       },
       
       /**
-             Sets the parameters sent to the update script.  The params must
-             be an object where the key is the parameter name and the value is
-             the parameter value to use in the script.  
+             <p>Sets the parameters sent to the update script.</p>  
+
+             <p>The params must be an object where the key is the parameter name and 
+             the value is the parameter value to use in the script.</p>
              
-             This option is valid during the following operations:
-             update
+             <p>This option is valid during the following operations:
+                <code>update</code></p>
 
              @member ejs.Document
              @param {Object} p a object with script parameters.
@@ -555,12 +586,13 @@
       },
       
        /**
-               Sets how many times to retry if there is a version conflict 
-               between getting the document and indexing / deleting it. 
-               Defaults to 0.
+               <p>Sets how many times to retry if there is a version conflict 
+               between getting the document and indexing / deleting it.</p>
 
-               This option is valid during the following operations:
-               update
+               <p>Defaults to <code>0</code>.<p>
+
+               <p>This option is valid during the following operations:
+                <code>update</code></p>
 
                @member ejs.Document
                @param {Integer} num the number of times to retry operation.
@@ -576,12 +608,13 @@
       },
       
       /**
-               Sets the upsert document.  The upsert document is used during
-               updates when the specified document you are attempting to 
-               update does not exist.
+               <p>Sets the upsert document.</p>  
+        
+               <p>The upsert document is used during updates when the specified document 
+               you are attempting to update does not exist.</p>
 
-               This option is valid during the following operations:
-               update
+               <p>This option is valid during the following operations:
+                    <code>update</code></p>
 
                @member ejs.Document
                @param {Object} doc the upset document.
@@ -601,11 +634,12 @@
       },
       
       /**
-               Sets the source document.  When set during an update operation,
-               it is used as the partial update document.  
+               <p>Sets the source document.</p>  
 
-               This option is valid during the following operations:
-               index and update
+               <p>When set during an update operation, it is used as the partial update document.</p>
+
+               <p>This option is valid during the following operations:
+                    <code>index</code> and <code>update</code></p>
 
                @member ejs.Document
                @param {Object} doc the source document.
@@ -635,7 +669,7 @@
       },
       
       /**
-            The type of ejs object.  For internal use only.
+            <p>The type of ejs object.  For internal use only.</p>
             
             @member ejs.Document
             @returns {String} the type of object
@@ -727,10 +761,12 @@
       },
 
       /**
-            <p>Updates a document in the given index and type.  If the 
-            document is not found in the index, the "upsert" value is used
-            if set.  The document is updated via an update script or partial
-            document.  To use a script, set the script option, to use a 
+            <p>Updates a document in the given index and type.</p>  
+
+            <p>If the document is not found in the index, the "upsert" value is used
+            if set.  The document is updated via an update script or partial document.</p>
+
+            <p>To use a script, set the script option, to use a 
             partial document, set the source with the partial document.</p>
 
             @member ejs.Document

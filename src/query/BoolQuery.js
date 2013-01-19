@@ -166,15 +166,15 @@
       },
 
       /**
-            Sets the number of optional clauses that must match.
+            <p>Sets the number of optional clauses that must match.</p>
       
-            By default no optional clauses are necessary for a match
+            <p>By default no optional clauses are necessary for a match
             (unless there are no required clauses).  If this method is used,
-            then the specified number of clauses is required..
+            then the specified number of clauses is required.</p>
 
-            Use of this method is totally independent of specifying that
+            <p>Use of this method is totally independent of specifying that
             any specific clauses are required (or prohibited).  This number will
-            only be compared against the number of matching optional clauses.
+            only be compared against the number of matching optional clauses.</p>
    
             @member ejs.BoolQuery
             @param {Integer} minMatch A positive <code>integer</code> value.

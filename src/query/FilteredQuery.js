@@ -44,7 +44,7 @@
     return {
 
       /**
-             Adds the query to apply a constant score to.
+             <p>Adds the query to apply a constant score to.</p>
 
              @member ejs.FilteredQuery
              @param {Object} oQuery A valid <code>Query</code> object
@@ -64,7 +64,7 @@
       },
 
       /**
-             Adds the filter to apply a constant score to.
+             <p>Adds the filter to apply a constant score to.</p>
 
              @member ejs.FilteredQuery
              @param {Object} oFilter A valid <code>Filter</code> object
@@ -84,17 +84,21 @@
       },
 
       /**
-            Sets the filter strategy.  The strategy defines how the filter is
-            applied during document collection.  Valid values are:
-            
-            query_filter - advance query scorer first then filter
-            random_access_random - random access filter
-            leap_frog - query scorer and filter "leap-frog", query goes first
-            leap_frog_filter_first - same as leap_frog, but filter goes first
-            random_access_N - replace N with integer, same as random access 
-              except you can specify a custom threshold
+            <p>Sets the filter strategy.</p>  
 
-            This is an advanced setting, use with care.
+            <p>The strategy defines how the filter is applied during document collection.  
+            Valid values are:</p>
+            
+            <dl>
+                <dd><code>query_filter</code> - advance query scorer first then filter</dd>
+                <dd><code>random_access_random</code> - random access filter</dd>
+                <dd><code>leap_frog</code> - query scorer and filter "leap-frog", query goes first</dd>
+                <dd><code>leap_frog_filter_first</code> - same as <code>leap_frog</code>, but filter goes first</dd>
+                <dd><code>random_access_N</code> - replace <code>N</code> with integer, same as random access 
+                 except you can specify a custom threshold</dd>
+            </dl>
+
+            <p>This is an advanced setting, use with care.</p>
             
             @member ejs.FilteredQuery
             @param {String} strategy The strategy as a string.
@@ -117,7 +121,7 @@
       },
       
       /**
-            Enables caching of the filter.
+            <p>Enables caching of the filter.</p>
 
             @member ejs.FilteredQuery
             @param {Boolean} trueFalse A boolean value.
@@ -133,7 +137,7 @@
       },
       
       /**
-            Set the cache key.
+            <p>Set the cache key.</p>
 
             @member ejs.FilteredQuery
             @param {String} k A string cache key.
@@ -149,7 +153,7 @@
       },
       
       /**
-            Sets the boost value of the <code>Query</code>.
+            <p>Sets the boost value of the <code>Query</code>.</p>
 
             @member ejs.FilteredQuery
             @param {Double} boost A positive <code>double</code> value.
@@ -165,7 +169,8 @@
       },
       
       /**
-             Converts this object to a json string
+             <p>Converts this object to a json string</p>
+
              @member ejs.FilteredQuery
              @returns {Object} string
              */
@@ -174,7 +179,7 @@
       },
 
       /**
-            The type of ejs object.  For internal use only.
+            <p>The type of ejs object.  For internal use only.</p>
             
             @member ejs.FilteredQuery
             @returns {String} the type of object
@@ -184,7 +189,8 @@
       },
       
       /**
-             returns the query object.
+             <p>returns the query object.</p>
+
              @member ejs.FilteredQuery
              @returns {Object} query object
              */

@@ -36,7 +36,7 @@
     return {
 
       /**
-             The field to run the query against.
+             <p>The field to run the query against.</p>
 
              @member ejs.FuzzyQuery
              @param {String} f A single field name.
@@ -57,7 +57,7 @@
       },
 
       /**
-            The query text to fuzzify.
+            <p>The query text to fuzzify.</p>
 
             @member ejs.FuzzyQuery
             @param {String} s A text string.
@@ -73,7 +73,7 @@
       },
 
       /**
-            Set to false to use classic Levenshtein edit distance.
+            <p>Set to false to use classic Levenshtein edit distance.</p>
 
             @member ejs.FuzzyQuery
             @param {Boolean} trueFalse A boolean value
@@ -89,8 +89,8 @@
       },
 
       /**
-            The maximum number of query terms that will be included in any 
-            generated query. Defaults to 50.
+            <p>The maximum number of query terms that will be included in any 
+            generated query. Defaults to <code>50</code>.<p>
 
             @member ejs.FuzzyQuery
             @param {Integer} max A positive integer value.
@@ -106,7 +106,7 @@
       },
 
       /**
-            The minimum similarity of the term variants. Defaults to 0.5.
+            <p>The minimum similarity of the term variants. Defaults to <code>0.5</code>.</p>
 
             @member ejs.FuzzyQuery
             @param {Double} min A positive double value.
@@ -122,7 +122,7 @@
       },
 
       /**
-            Length of required common prefix on variant terms. Defaults to 0..
+            <p>Length of required common prefix on variant terms. Defaults to <code>0</code>.</p>
 
             @member ejs.FuzzyQuery
             @param {Integer} len A positive integer value.
@@ -138,31 +138,33 @@
       },
       
       /**
-            Sets rewrite method.  Valid values are: 
+            <p>Sets rewrite method.  Valid values are:</p> 
             
-            constant_score_auto - tries to pick the best constant-score rewrite 
-              method based on term and document counts from the query
+            <dl>
+                <dd><code>constant_score_auto</code> - tries to pick the best constant-score rewrite 
+                 method based on term and document counts from the query</dd>
               
-            scoring_boolean - translates each term into boolean should and 
-              keeps the scores as computed by the query
+                <dd><code>scoring_boolean</code> - translates each term into boolean should and 
+                 keeps the scores as computed by the query</dd>
               
-            constant_score_boolean - same as scoring_boolean, expect no scores
-              are computed.
+                <dd><code>constant_score_boolean</code> - same as scoring_boolean, expect no scores
+                 are computed.</dd>
               
-            constant_score_filter - first creates a private Filter, by visiting 
-              each term in sequence and marking all docs for that term
+                <dd><code>constant_score_filter</code> - first creates a private Filter, by visiting 
+                 each term in sequence and marking all docs for that term</dd>
               
-            top_terms_boost_N - first translates each term into boolean should
-              and scores are only computed as the boost using the top N
-              scoring terms.  Replace N with an integer value.
+                <dd><code>top_terms_boost_N</code> - first translates each term into boolean should
+                 and scores are only computed as the boost using the top <code>N</code>
+                 scoring terms.  Replace <code>N</code> with an integer value.</dd>
               
-            top_terms_N -   first translates each term into boolean should
-                and keeps the scores as computed by the query. Only the top N
-                scoring terms are used.  Replace N with an integer value.
+                <dd><code>top_terms_N</code> - first translates each term into boolean should
+                 and keeps the scores as computed by the query. Only the top <code>N</code>
+                 scoring terms are used.  Replace <code>N</code> with an integer value.</dd>
+            </dl>
             
-            Default is constant_score_auto.
+            <p>Default is <code>constant_score_auto</code>.</p>
 
-            This is an advanced option, use with care.
+            <p>This is an advanced option, use with care.</p>
 
             @member ejs.FuzzyQuery
             @param {String} m The rewrite method as a string.
@@ -187,7 +189,7 @@
       
                     
       /**
-            Sets the boost value of the <code>Query</code>.
+            <p>Sets the boost value of the <code>Query</code>.</p>
 
             @member ejs.FuzzyQuery
             @param {Double} boost A positive <code>double</code> value.
@@ -203,7 +205,8 @@
       },
 
       /**
-             Serializes the internal <em>query</em> object as a JSON string.
+             <p>Serializes the internal <code>query</code> object as a JSON string.</p>
+
              @member ejs.FuzzyQuery
              @returns {String} Returns a JSON representation of the Query object.
              */
@@ -212,7 +215,7 @@
       },
 
       /**
-            The type of ejs object.  For internal use only.
+            <p>The type of ejs object.  For internal use only.</p>
             
             @member ejs.FuzzyQuery
             @returns {String} the type of object
@@ -222,8 +225,9 @@
       },
       
       /**
-            This method is used to retrieve the raw query object. It's designed
-            for internal use when composing and serializing queries.
+            <p>This method is used to retrieve the raw query object. It's designed
+            for internal use when composing and serializing queries.</p>
+
             @member ejs.FuzzyQuery
             @returns {Object} Returns the object's <em>query</em> property.
             */

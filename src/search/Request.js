@@ -59,21 +59,22 @@
     return {
 
       /**
-            Sets the sorting for the query.  This accepts many input formats.
+            <p>Sets the sorting for the query.  This accepts many input formats.</p>
             
-            sort() - The current sorting values are returned.
-            sort(fieldName) - Adds the field to the current list of sorting values.
-            sort(fieldName, order) - Adds the field to the current list of
-              sorting with the specified order.  Order must be asc or desc.
-            sort(ejs.Sort) - Adds the Sort value to the current list of sorting values. 
-            sort(array) - Replaces all current sorting values with values
-              from the array.  The array must contain only strings and Sort
-              objects.
+            <dl>
+                <dd><code>sort()</code> - The current sorting values are returned.</dd>
+                <dd><code>sort(fieldName)</code> - Adds the field to the current list of sorting values.</dd>
+                <dd><code>sort(fieldName, order)</code> - Adds the field to the current list of
+                    sorting with the specified order.  Order must be asc or desc.</dd>
+                <dd><code>sort(ejs.Sort)</code> - Adds the Sort value to the current list of sorting values.</dd>
+                <dd><code>sort(array)</code> - Replaces all current sorting values with values
+                    from the array.  The array must contain only strings and Sort objects.</dd>
+            </dl>
 
-            Multi-level sorting is supported so the order in which sort fields 
-            are added to the query requests is relevant.
+            <p>Multi-level sorting is supported so the order in which sort fields 
+            are added to the query requests is relevant.</p>
             
-            It is recommended to use <code>Sort</code> objects when possible.
+            <p>It is recommended to use <code>Sort</code> objects when possible.</p>
             
             @member ejs.Request
             @param {String} fieldName The field to be sorted by.
@@ -425,17 +426,20 @@
       },
 
       /**
-            Controls a preference of which shard replicas to execute the search request on.
+            <p>Controls the preference of which shard replicas to execute the search request on.
             By default, the operation is randomized between the each shard replicas.  The
-            preference can be one of the following:
+            preference can be one of the following:</p>
 
-            _primary - the operation will only be executed on primary shards
-            _local - the operation will prefer to be executed on local shards
-            _only_node:$nodeid - the search will only be executed on node with id $nodeid
-            custom - any string, will guarentee searches always happen on same node.
+            <dl>
+                <dd><code>_primary</code> - the operation will only be executed on primary shards</dd>
+                <dd><code>_local</code> - the operation will prefer to be executed on local shards</dd>
+                <dd><code>_only_node:$nodeid</code> - the search will only be executed on node with id $nodeid</dd>
+                <dd><code>custom</code> - any string, will guarentee searches always happen on same node.</dd>
+            </dl>
 
             @member ejs.Request
-            @param {String} perf the preference, any of _primary, _local, _only_:$nodeid, or a custom string value.
+            @param {String} perf the preference, any of <code>_primary</code>, <code>_local</code>, 
+                <code>_only_:$nodeid</code>, or a custom string value.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       preference: function (perf) {

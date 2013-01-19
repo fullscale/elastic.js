@@ -1,4 +1,4 @@
-/*! elastic.js - v1.0.0 - 2013-01-15
+/*! elastic.js - v1.0.0 - 2013-01-19
 * https://github.com/fullscale/elastic.js
 * Copyright (c) 2013 FullScale Labs, LLC; Licensed MIT */
 

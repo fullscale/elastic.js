@@ -109,13 +109,14 @@
       },
 
       /**
-            By default, time values are stored in UTC format. This method allows users
-            to set a time zone value that is then used to compute intervals 
-            before rounding on the interval value.  Equalivent to 
-            <coe>preZone</code>.  Use <code>preZone</code> if possible.  The 
-            value is an offset from UTC.
+            <p>By default, time values are stored in UTC format.<p> 
+
+            <p>This method allows users to set a time zone value that is then used 
+            to compute intervals before rounding on the interval value. Equalivent to 
+            <coe>preZone</code>.  Use <code>preZone</code> if possible. The 
+            value is an offset from UTC.<p>
             
-            For example, to use EST you would set the value to <code>-5</code>.
+            <p>For example, to use EST you would set the value to <code>-5</code>.</p>
 
             @member ejs.DateHistogramFacet
             @param {Integer} tz An offset value from UTC.
@@ -131,12 +132,13 @@
       },
 
       /**
-            By default, time values are stored in UTC format. This method allows users
-            to set a time zone value that is then used to compute intervals 
-            before rounding on the interval value.  The value is an offset
-            from UTC.
+            <p>By default, time values are stored in UTC format.<p> 
+
+            <p>This method allows users to set a time zone value that is then used to 
+            compute intervals before rounding on the interval value.  The value is an 
+            offset from UTC.<p>
             
-            For example, to use EST you would set the value to <code>-5</code>.
+            <p>For example, to use EST you would set the value to <code>-5</code>.</p>
 
             @member ejs.DateHistogramFacet
             @param {Integer} tz An offset value from UTC.
@@ -152,9 +154,10 @@
       },
       
       /**
-            Enables large date interval conversions (day and up).  Set to 
-            true to enable and then set the <code>interval</code> to an 
-            interval greater than a day.
+            <p>Enables large date interval conversions (day and up).</p>  
+
+            <p>Set to true to enable and then set the <code>interval</code> to an 
+            interval greater than a day.</p>
             
             @member ejs.DateHistogramFacet
             @param {Boolean} trueFalse A valid boolean value.
@@ -170,13 +173,13 @@
       },
       
       /**
-            By default, time values are stored in UTC format. This method allows users
-            to set a time zone value that is then used to compute intervals 
-            after rounding on the interval value.  The value is an offset
-            from UTC.  The tz offset value is simply added to the resulting 
-            bucket's date value.
+            <p>By default, time values are stored in UTC format.<p> 
+
+            <p>This method allows users to set a time zone value that is then used to compute 
+            intervals after rounding on the interval value.  The value is an offset from UTC.  
+            The tz offset value is simply added to the resulting bucket's date value.<p>
             
-            For example, to use EST you would set the value to <code>-5</code>.
+            <p>For example, to use EST you would set the value to <code>-5</code>.</p>
 
             @member ejs.DateHistogramFacet
             @param {Integer} tz An offset value from UTC.
@@ -224,14 +227,16 @@
       },
       
       /**
-            The date histogram works on numeric values (since time is stored 
-            in milliseconds since the epoch in UTC). But, sometimes, systems 
-            will store a different resolution (like seconds since UTC) in a 
-            numeric field. The factor parameter can be used to change the 
-            value in the field to milliseconds to actual do the relevant 
-            rounding, and then be applied again to get to the original unit. 
-            For example, when storing in a numeric field seconds resolution, 
-            the factor can be set to 1000.
+            <p>The date histogram works on numeric values (since time is stored 
+            in milliseconds since the epoch in UTC).<p> 
+
+            <p>But, sometimes, systems will store a different resolution (like seconds since UTC) 
+            in a numeric field. The factor parameter can be used to change the value in the field 
+            to milliseconds to actual do the relevant rounding, and then be applied again to get to 
+            the original unit.</p>
+
+            <p>For example, when storing in a numeric field seconds resolution, 
+            the factor can be set to 1000.<p>
 
             @member ejs.DateHistogramFacet
             @param {Integer} f The conversion factor.
@@ -264,12 +269,14 @@
       },
 
       /**
-            Sets the type of ordering that will be performed on the date
-            buckets.  Valid values are:
+            <p>Sets the type of ordering that will be performed on the date
+            buckets.  Valid values are:<p>
             
-            time - the default, sort by the buckets start time in milliseconds.
-            count - sort by the number of items in the bucket
-            total - sort by the sum/total of the items in the bucket
+            <dl>
+                <dd><code>time</code> - the default, sort by the buckets start time in milliseconds.</dd>
+                <dd><code>count</code> - sort by the number of items in the bucket</dd>
+                <dd><code>total</code> - sort by the sum/total of the items in the bucket</dd>
+            <dl>
             
             @member ejs.DateHistogramFacet
             @param {String} o The ordering method: time, count, or total.

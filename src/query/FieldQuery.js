@@ -50,7 +50,7 @@
       },
       
       /**
-             Sets the query string.
+             <p>Sets the query string.</p>
 
              @member ejs.FieldQuery
              @param {String} q The lucene query string.
@@ -66,10 +66,11 @@
       },
       
       /**
-            Set the default <em>Boolean</em> operator. This operator is used 
-            to join individual query terms when no operator is explicity used 
-            in the query string (i.e., <code>this AND that</code>).
-            Defaults to <code>OR</code> (<em>same as Google</em>).
+            <p>Set the default <code>Boolean</code> operator.</p> 
+
+            <p>This operator is used to join individual query terms when no operator is 
+            explicity used in the query string (i.e., <code>this AND that</code>).
+            Defaults to <code>OR</code> (<em>same as Google</em>).</p>
 
             @member ejs.FieldQuery
             @param {String} op The operator, AND or OR.
@@ -89,7 +90,7 @@
       },
 
       /**
-            Sets the analyzer name used to analyze the <code>Query</code> object.
+            <p>Sets the analyzer name used to analyze the <code>Query</code> object.</p>
 
             @member ejs.FieldQuery
             @param {String} analyzer A valid analyzer name.
@@ -105,8 +106,8 @@
       },
 
       /**
-            Sets the quote analyzer name used to analyze the <code>query</code>
-            when in quoted text.
+            <p>Sets the quote analyzer name used to analyze the <code>query</code>
+            when in quoted text.</p>
 
             @member ejs.FieldQuery
             @param {String} analyzer A valid analyzer name.
@@ -122,8 +123,8 @@
       },
       
       /**
-            Sets whether or not we should auto generate phrase queries *if* the
-            analyzer returns more than one term. Default: false.
+            <p>Sets whether or not we should auto generate phrase queries *if* the
+            analyzer returns more than one term. Default: false.</p>
 
             @member ejs.FieldQuery
             @param {Boolean} trueFalse A <code>true/false</code> value.
@@ -139,8 +140,10 @@
       },
 
       /**
-            Sets whether or not wildcard characters (* and ?) are allowed as the
-            first character of the <code>Query</code>.  Default: true.
+            <p>Sets whether or not wildcard characters (* and ?) are allowed as the
+            first character of the <code>Query</code>.</p>  
+
+            <p>Default: <code>true</code>.</p>
 
             @member ejs.FieldQuery
             @param {Boolean} trueFalse A <code>true/false</code> value.
@@ -156,9 +159,11 @@
       },
 
       /**
-            Sets whether or not terms from wildcard, prefix, fuzzy, and
-            range queries should automatically be lowercased in the <code>Query</code>
-            since they are not analyzed.  Default: true.
+            <p>Sets whether or not terms from <code>wildcard, prefix, fuzzy,</code> and
+            <code>range</code> queries should automatically be lowercased in the <code>Query</code>
+            since they are not analyzed.</p>  
+
+            <p>Default: <code>true</code>.</p>
 
             @member ejs.FieldQuery
             @param {Boolean} trueFalse A <code>true/false</code> value.
@@ -174,8 +179,10 @@
       },
 
       /**
-            Sets whether or not position increments will be used in the
-            <code>Query</code>. Default: true.
+            <p>Sets whether or not position increments will be used in the
+            <code>Query</code>.</p> 
+
+            <p>Default: <code>true</code>.</p>
 
             @member ejs.FieldQuery
             @param {Boolean} trueFalse A <code>true/false</code> value.
@@ -191,7 +198,9 @@
       },
 
       /**
-            Set the minimum similarity for fuzzy queries.  Default: 0.5.
+            <p>Set the minimum similarity for fuzzy queries.</p>  
+
+            <p>Default: <code>0.5</code>.</p>
 
             @member ejs.FieldQuery
             @param {Double} minSim A <code>double</code> value between 0 and 1.
@@ -207,7 +216,9 @@
       },
 
       /**
-            Sets the boost value of the <code>Query</code>.  Default: 1.0.
+            <p>Sets the boost value of the <code>Query</code>.</p>  
+
+            <p>Default: <code>1.0</code>.</p>
 
             @member ejs.FieldQuery
             @param {Double} boost A positive <code>double</code> value.
@@ -223,7 +234,9 @@
       },
 
       /**
-            Sets the prefix length for fuzzy queries.  Default: 0.
+            <p>Sets the prefix length for fuzzy queries.</p>  
+    
+            <p>Default: <code>0</code>.</p>
 
             @member ejs.FieldQuery
             @param {Integer} fuzzLen A positive <code>integer</code> value.
@@ -239,7 +252,7 @@
       },
 
       /**
-            Sets the max number of term expansions for fuzzy queries.  
+            <p>Sets the max number of term expansions for fuzzy queries.</p>
 
             @member ejs.FieldQuery
             @param {Integer} max A positive <code>integer</code> value.
@@ -255,31 +268,35 @@
       },
 
       /**
-            Sets fuzzy rewrite method.  Valid values are: 
-            
-            constant_score_auto - tries to pick the best constant-score rewrite 
-              method based on term and document counts from the query
-              
-            scoring_boolean - translates each term into boolean should and 
-              keeps the scores as computed by the query
-              
-            constant_score_boolean - same as scoring_boolean, expect no scores
-              are computed.
-              
-            constant_score_filter - first creates a private Filter, by visiting 
-              each term in sequence and marking all docs for that term
-              
-            top_terms_boost_N - first translates each term into boolean should
-              and scores are only computed as the boost using the top N
-              scoring terms.  Replace N with an integer value.
-              
-            top_terms_N -   first translates each term into boolean should
-                and keeps the scores as computed by the query. Only the top N
-                scoring terms are used.  Replace N with an integer value.
-            
-            Default is constant_score_auto.
+            <p>Sets fuzzy rewrite method.<p>  
 
-            This is an advanced option, use with care.
+            <p>Valid values are:</p>
+            
+            <dl>
+                <dd><code>constant_score_auto</code> - tries to pick the best constant-score rewrite 
+                 method based on term and document counts from the query</dd>
+              
+                <dd><code>scoring_boolean</code> - translates each term into boolean should and 
+                 keeps the scores as computed by the query</dd>
+              
+                <dd><code>constant_score_boolean</code> - same as scoring_boolean, expect no scores
+                 are computed.</dd>
+              
+                <dd><code>constant_score_filter</code> - first creates a private Filter, by visiting 
+                 each term in sequence and marking all docs for that term</dd>
+              
+                <dd><code>top_terms_boost_N</code> - first translates each term into boolean should
+                 and scores are only computed as the boost using the top <code>N</code>
+                 scoring terms.  Replace <code>N</code> with an integer value.</dd>
+              
+                <dd><code>top_terms_N</code> - first translates each term into boolean should
+                 and keeps the scores as computed by the query. Only the top <code>N</code>
+                 scoring terms are used.  Replace <code>N</code> with an integer value.</dd>
+            </dl>
+            
+            <p>Default is <code>constant_score_auto</code>.</p>
+
+            <p>This is an advanced option, use with care.</p>
             
             @member ejs.FieldQuery
             @param {String} m The rewrite method as a string.
@@ -303,29 +320,33 @@
       },
 
       /**
-            Sets rewrite method.  Valid values are: 
+            <p>Sets rewrite method.</p>  
+
+            <p>Valid values are:</p>
             
-            constant_score_auto - tries to pick the best constant-score rewrite 
-              method based on term and document counts from the query
+            <dl>
+                <dd><code>constant_score_auto</code> - tries to pick the best constant-score rewrite 
+                 method based on term and document counts from the query</dd>
               
-            scoring_boolean - translates each term into boolean should and 
-              keeps the scores as computed by the query
+                <dd><code>scoring_boolean</code> - translates each term into boolean should and 
+                 keeps the scores as computed by the query</dd>
               
-            constant_score_boolean - same as scoring_boolean, expect no scores
-              are computed.
+                <dd><code>constant_score_boolean</code> - same as scoring_boolean, expect no scores
+                 are computed.</p>
               
-            constant_score_filter - first creates a private Filter, by visiting 
-              each term in sequence and marking all docs for that term
+                <dd><code>constant_score_filter</code> - first creates a private Filter, by visiting 
+                 each term in sequence and marking all docs for that term</dd>
               
-            top_terms_boost_N - first translates each term into boolean should
-              and scores are only computed as the boost using the top N
-              scoring terms.  Replace N with an integer value.
+                <dd><code>top_terms_boost_N</code> - first translates each term into boolean should
+                 and scores are only computed as the boost using the top <code>N</code>
+                 scoring terms.  Replace <code>N</code> with an integer value.</dd>
               
-            top_terms_N -   first translates each term into boolean should
-                and keeps the scores as computed by the query. Only the top N
-                scoring terms are used.  Replace N with an integer value.
+                <dd><code>top_terms_N</code> - first translates each term into boolean should
+                 and keeps the scores as computed by the query. Only the top <code>N</code>
+                 scoring terms are used.  Replace <code>N</code> with an integer value.</dd>
+            </dl>
             
-            Default is constant_score_auto.
+            <p>Default is <code>constant_score_auto</code>.</p>
 
             This is an advanced option, use with care.
 
@@ -351,8 +372,8 @@
       },
 
       /**
-            Sets the suffix to automatically add to the field name when 
-            performing a quoted search.
+            <p>Sets the suffix to automatically add to the field name when 
+            performing a quoted search.</p>
 
             @member ejs.FieldQuery
             @param {String} s The suffix as a string.
@@ -368,8 +389,10 @@
       },
                         
       /**
-            Sets the default slop for phrases. If zero, then exact phrase matches
-            are required.  Default: 0.
+            <p>Sets the default slop for phrases. If zero, then exact phrase matches
+            are required.</p>  
+
+            <p>Default: <code>0</code>.</p>
 
             @member ejs.FieldQuery
             @param {Integer} slop A positive <code>integer</code> value.
@@ -385,9 +408,12 @@
       },
 
       /**
-            Sets whether or not we should attempt to analyzed wilcard terms in the
-            <code>Query</code>. By default, wildcard terms are not analyzed.
-            Analysis of wildcard characters is not perfect.  Default: false.
+            <p>Sets whether or not we should attempt to analyzed wilcard terms in the
+            <code>Query</code>.</p> 
+
+            <p>By default, wildcard terms are not analyzed. Analysis of wildcard characters is not perfect.</p>  
+
+            <p>Default: <code>false</code>.</p>
 
             @member ejs.FieldQuery
             @param {Boolean} trueFalse A <code>true/false</code> value.
@@ -403,7 +429,7 @@
       },
 
       /**
-            If they query string should be escaped or not.
+            <p>If the query string should be escaped or not.</p>
 
             @member ejs.FieldQuery
             @param {Boolean} trueFalse A <code>true/false</code> value.
@@ -419,8 +445,8 @@
       },
       
       /**
-            Sets a percent value controlling how many "should" clauses in the
-            resulting <code>Query</code> should match.
+            <p>Sets a percent value controlling how many <code>should</code> clauses in the
+            resulting <code>Query</code> should match.</p>
 
             @member ejs.FieldQuery
             @param {Integer} minMatch An <code>integer</code> between 0 and 100.
@@ -436,7 +462,7 @@
       },
 
       /**
-            Allows you to serialize this object into a JSON encoded string.
+            <p>Allows you to serialize this object into a JSON encoded string.</p>
 
             @member ejs.FieldQuery
             @returns {String} returns this object as a serialized JSON string.
@@ -446,7 +472,7 @@
       },
 
       /**
-            The type of ejs object.  For internal use only.
+            <p>The type of ejs object.  For internal use only.</p>
             
             @member ejs.FieldQuery
             @returns {String} the type of object
@@ -456,8 +482,8 @@
       },
       
       /**
-            Retrieves the internal <code>query</code> object. This is typically used by
-            internal API functions so use with caution.
+            <p>Retrieves the internal <code>query</code> object. This is typically used by
+            internal API functions so use with caution.</p>
 
             @member ejs.FieldQuery
             @returns {String} returns this object's internal <code>query</code> property.

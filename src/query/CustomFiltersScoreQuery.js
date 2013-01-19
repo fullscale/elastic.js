@@ -90,11 +90,12 @@
       },
 
       /**
-            Sets the filters and their related boost or script scoring method.
-            Takes an array of objects where each object has a 'filter' property
+            <p>Sets the filters and their related boost or script scoring method.</p>
+
+            <p>Takes an array of objects where each object has a 'filter' property
             and either a 'boost' or 'script' property.  Pass a single object to
             add to the current list of filters or pass a list of objects to
-            overwrite all existing filters.
+            overwrite all existing filters.</p>
           
             <code>
             {filter: someFilter, boost: 2.1}
@@ -125,12 +126,13 @@
       },
     
       /**
-            A score_mode can be defined to control how multiple matching 
-            filters control the score. By default, it is set to first which 
-            means the first matching filter will control the score of the 
-            result. It can also be set to min/max/total/avg/multiply which 
-            will aggregate the result from all matching filters based on the 
-            aggregation type.
+            <p>A score_mode can be defined to control how multiple matching 
+            filters control the score.<p> 
+
+            <p>By default, it is set to first which means the first matching filter 
+            will control the score of the result. It can also be set to 
+            <code>min/max/total/avg/multiply</code> which will aggregate the result from all 
+            matching filters based on the aggregation type.<p>
 
             @member ejs.CustomFiltersScoreQuery
             @param {String} s The scoring type as a string. 

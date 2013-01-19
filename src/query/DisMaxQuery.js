@@ -81,11 +81,14 @@
 
 
       /**
-            The tie breaker value.  The tie breaker capability allows results
-            that include the same term in multiple fields to be judged better than
-            results that include this term in only the best of those multiple
-            fields, without confusing this with the better case of two different
-            terms in the multiple fields.  Default: 0.0.
+            <p>The tie breaker value.</p>  
+
+            <p>The tie breaker capability allows results that include the same term in multiple 
+            fields to be judged better than results that include this term in only the best of those 
+            multiple fields, without confusing this with the better case of two different terms in 
+            the multiple fields.</p>  
+
+            <p>Default: 0.0.</p>
 
             @member ejs.DisMaxQuery
             @param {Double} tieBreaker A positive <code>double</code> value.
