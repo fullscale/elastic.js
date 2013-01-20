@@ -116,17 +116,20 @@
             @member ejs.jQueryClient
             @param {String} path the path to GET from the server
             @param {Object} data an object of url parameters for the request
-            @param {Function} cb a callback function that will be called with
+            @param {Function} successcb a callback function that will be called with
               the results of the request.
+            @param {Function} errorcb a callback function that will be called
+              when there is an error with the request
             @returns {Object} returns jQuery <code>jqXHR</code> for the request.
             */
-      get: function (path, data, cb) {
+      get: function (path, data, successcb, errorcb) {
         var opt = jQuery.extend({}, options);
         
         opt.type = 'GET';
         opt.url = getPath(path);
         opt.data = data;
-        opt.success = cb;
+        opt.success = successcb;
+        opt.error = errorcb;
 
         return jQuery.ajax(opt);
       },
@@ -137,17 +140,20 @@
             @member ejs.jQueryClient
             @param {String} path the path to POST to on the server
             @param {String} data the POST body
-            @param {Function} cb a callback function that will be called with
+            @param {Function} successcb a callback function that will be called with
               the results of the request.
+            @param {Function} errorcb a callback function that will be called
+              when there is an error with the request
             @returns {Object} returns jQuery <code>jqXHR</code> for the request.
             */
-      post: function (path, data, cb) {
+      post: function (path, data, successcb, errorcb) {
         var opt = jQuery.extend({}, options);
         
         opt.type = 'POST';
         opt.url = getPath(path);
         opt.data = data;
-        opt.success = cb;
+        opt.success = successcb;
+        opt.error = errorcb;
        
         return jQuery.ajax(opt);  
       },
@@ -158,17 +164,20 @@
             @member ejs.jQueryClient
             @param {String} path the path to PUT to on the server
             @param {String} data the PUT body
-            @param {Function} cb a callback function that will be called with
+            @param {Function} successcb a callback function that will be called with
               the results of the request.
+            @param {Function} errorcb a callback function that will be called
+              when there is an error with the request
             @returns {Object} returns jQuery <code>jqXHR</code> for the request. 
             */
-      put: function (path, data, cb) {
+      put: function (path, data, successcb, errorcb) {
         var opt = jQuery.extend({}, options);
         
         opt.type = 'PUT';
         opt.url = getPath(path);
         opt.data = data;
-        opt.success = cb;
+        opt.success = successcb;
+        opt.error = errorcb;
         
         return jQuery.ajax(opt);
       },
@@ -179,17 +188,20 @@
             @member ejs.jQueryClient
             @param {String} path the path to DELETE to on the server
             @param {String} data the DELETE body
-            @param {Function} cb a callback function that will be called with
+            @param {Function} successcb a callback function that will be called with
               the results of the request.
+            @param {Function} errorcb a callback function that will be called
+              when there is an error with the request
             @returns {Object} returns jQuery <code>jqXHR</code> for the request. 
             */
-      del: function (path, data, cb) {
+      del: function (path, data, successcb, errorcb) {
         var opt = jQuery.extend({}, options);
         
         opt.type = 'DELETE';
         opt.url = getPath(path);
         opt.data = data;
-        opt.success = cb;
+        opt.success = successcb;
+        opt.error = errorcb;
         
         return jQuery.ajax(opt);
       },
@@ -201,17 +213,25 @@
             @member ejs.jQueryClient
             @param {String} path the path to HEAD to on the server
             @param {Object} data an object of url parameters.
-            @param {Function} cb a callback function that will be called with
+            @param {Function} successcb a callback function that will be called with
               the an object of the returned headers.
+            @param {Function} errorcb a callback function that will be called
+              when there is an error with the request
             @returns {Object} returns jQuery <code>jqXHR</code> for the request.
             */
-      head: function (path, data, cb) {
+      head: function (path, data, successcb, errorcb) {
         var opt = jQuery.extend({}, options);
         
         opt.type = 'HEAD';
         opt.url = getPath(path);
         opt.data = data;
+        opt.error = errorcb;
         opt.complete = function (jqXHR, textStatus) {
+          // only parse headers on success
+          if (textStatus !== 'success') {
+            return;
+          }
+          
           var headers = jqXHR.getAllResponseHeaders().split('\n'),
             resp = {},
             parts,
@@ -224,7 +244,9 @@
             }
           }
           
-          cb(resp);
+          if (successcb != null) {
+            successcb(resp);
+          }
         };
         
         return jQuery.ajax(opt);
