@@ -116,7 +116,9 @@
             });
 
             res.on('end', function () {
-              cb(JSON.parse(resData));
+              if (cb != null) {
+                cb(JSON.parse(resData));
+              }
             });
             
           });
@@ -155,7 +157,9 @@
             });
 
             res.on('end', function () {
-              cb(JSON.parse(resData));
+              if (cb != null)
+                cb(JSON.parse(resData));
+              }
             });
             
           });
@@ -195,7 +199,9 @@
             });
 
             res.on('end', function () {
-              cb(JSON.parse(resData));
+              if (cb != null) {
+                cb(JSON.parse(resData));
+              }
             });
             
           });
@@ -235,7 +241,9 @@
             });
 
             res.on('end', function () {
-              cb(JSON.parse(resData));
+              if (cb != null) {
+                cb(JSON.parse(resData));
+              }
             });
             
           });
@@ -265,7 +273,9 @@
           },
           
           req = http.request(opt, function (res) {
-            cb(res.headers);
+            if (cb != null) {
+              cb(res.headers);
+            }
           });
           
         req.end();        
