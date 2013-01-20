@@ -157,7 +157,7 @@
             });
 
             res.on('end', function () {
-              if (cb != null)
+              if (cb != null) {
                 cb(JSON.parse(resData));
               }
             });

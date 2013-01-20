@@ -1,4 +1,4 @@
-/*! elastic.js - v1.0.0 - 2013-01-19
+/*! elastic.js - v1.0.0 - 2013-01-20
 * https://github.com/fullscale/elastic.js
 * Copyright (c) 2013 FullScale Labs, LLC; Licensed MIT */
 
@@ -120,7 +120,9 @@
             });
 
             res.on('end', function () {
-              cb(JSON.parse(resData));
+              if (cb != null) {
+                cb(JSON.parse(resData));
+              }
             });
             
           });
@@ -159,7 +161,9 @@
             });
 
             res.on('end', function () {
-              cb(JSON.parse(resData));
+              if (cb != null) {
+                cb(JSON.parse(resData));
+              }
             });
             
           });
@@ -199,7 +203,9 @@
             });
 
             res.on('end', function () {
-              cb(JSON.parse(resData));
+              if (cb != null) {
+                cb(JSON.parse(resData));
+              }
             });
             
           });
@@ -239,7 +245,9 @@
             });
 
             res.on('end', function () {
-              cb(JSON.parse(resData));
+              if (cb != null) {
+                cb(JSON.parse(resData));
+              }
             });
             
           });
@@ -269,7 +277,9 @@
           },
           
           req = http.request(opt, function (res) {
-            cb(res.headers);
+            if (cb != null) {
+              cb(res.headers);
+            }
           });
           
         req.end();        
