@@ -2466,8 +2466,8 @@ exports.queries = {
     expected.filtered.query = termQuery3._self();
     doTest();
     
-    filterQuery.strategy('query_filter');
-    expected.filtered.strategy = 'query_filter';
+    filterQuery.strategy('query_first');
+    expected.filtered.strategy = 'query_first';
     doTest();
     
     filterQuery.strategy('INVALID');

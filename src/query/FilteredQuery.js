@@ -90,7 +90,7 @@
             Valid values are:</p>
             
             <dl>
-                <dd><code>query_filter</code> - advance query scorer first then filter</dd>
+                <dd><code>query_first</code> - advance query scorer first then filter</dd>
                 <dd><code>random_access_random</code> - random access filter</dd>
                 <dd><code>leap_frog</code> - query scorer and filter "leap-frog", query goes first</dd>
                 <dd><code>leap_frog_filter_first</code> - same as <code>leap_frog</code>, but filter goes first</dd>
@@ -110,7 +110,7 @@
         }
 
         strategy = strategy.toLowerCase();
-        if (strategy === 'query_filter' || strategy === 'random_access_random' ||
+        if (strategy === 'query_first' || strategy === 'random_access_random' ||
           strategy === 'leap_frog' || strategy === 'leap_frog_filter_first' ||
           strategy.indexOf('random_access_') === 0) {
             
