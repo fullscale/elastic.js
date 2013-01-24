@@ -555,10 +555,11 @@ exports.filters = {
     test.done();
   },
   HasParentFilter: function (test) {
-    test.expect(11);
+    test.expect(13);
 
     var termQuery = ejs.TermQuery('t1', 'v1'),
       termQuery2 = ejs.TermQuery('t2', 'v2'),
+      termFilter = ejs.TermFilter('tf1', 'fv1'),
       hasParentFilter = ejs.HasParentFilter(termQuery, 't1'),
       expected,
       doTest = function () {
@@ -592,6 +593,10 @@ exports.filters = {
     expected.has_parent._name = 'has_parent';
     doTest();
     
+    hasParentFilter.filter(termFilter);
+    expected.has_parent.filter = termFilter._self();
+    doTest();
+    
     test.strictEqual(hasParentFilter._type(), 'filter');
     test.strictEqual(hasParentFilter.toString(), JSON.stringify(expected));
 
@@ -603,13 +608,18 @@ exports.filters = {
       ejs.HasParentFilter('invalid', 't1');
     }, TypeError);
 
+    test.throws(function () {
+      hasParentFilter.filter('invalid');
+    }, TypeError);
+    
     test.done();
   },
   HasChildFilter: function (test) {
-    test.expect(11);
+    test.expect(13);
 
     var termQuery = ejs.TermQuery('t1', 'v1'),
       termQuery2 = ejs.TermQuery('t2', 'v2'),
+      termFilter = ejs.TermFilter('tf1', 'fv1'),
       hasChildFilter = ejs.HasChildFilter(termQuery, 't1'),
       expected,
       doTest = function () {
@@ -643,6 +653,10 @@ exports.filters = {
     expected.has_child._name = 'haschild';
     doTest();
     
+    hasChildFilter.filter(termFilter);
+    expected.has_child.filter = termFilter._self();
+    doTest();
+    
     test.strictEqual(hasChildFilter._type(), 'filter');
     test.strictEqual(hasChildFilter.toString(), JSON.stringify(expected));
 
@@ -652,6 +666,10 @@ exports.filters = {
     
     test.throws(function () {
       ejs.HasChildFilter('invalid', 't1');
+    }, TypeError);
+    
+    test.throws(function () {
+      hasChildFilter.filter('invalid');
     }, TypeError);
     
     test.done();

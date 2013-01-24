@@ -50,6 +50,27 @@
         filter.has_parent.query = q._self();
         return this;
       },
+      
+      /**
+            Sets the filter
+
+            @since ElasticSearch 0.21
+            @member ejs.HasParentFilter
+            @param {Object} f A valid Filter object
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      filter: function (f) {
+        if (f == null) {
+          return filter.has_parent.filter;
+        }
+
+        if (!isFilter(f)) {
+          throw new TypeError('Argument must be a Filter object');
+        }
+        
+        filter.has_parent.filter = f._self();
+        return this;
+      },
 
       /**
             Sets the child document type to search against
