@@ -28,8 +28,9 @@ exports.queries = {
     done();
   },
   exists: function (test) {
-    test.expect(37);
+    test.expect(38);
     
+    test.ok(ejs.CommonTermsQuery, 'CommonTermsQuery');
     test.ok(ejs.RegexpQuery, 'RegexpQuery');
     test.ok(ejs.GeoShapeQuery, 'GeoShapeQuery');
     test.ok(ejs.IndicesQuery, 'IndicesQuery');
@@ -68,6 +69,104 @@ exports.queries = {
     test.ok(ejs.SpanFirstQuery, 'SpanFirstQuery');
     test.ok(ejs.FieldMaskingSpanQuery, 'FieldMaskingSpanQuery');
 
+    test.done();
+  },
+  CommonTermsQuery: function (test) {
+    test.expect(20);
+
+    var commonQuery = ejs.CommonTermsQuery(),
+      expected,
+      doTest = function () {
+        test.deepEqual(commonQuery._self(), expected);
+      };
+
+    expected = {
+      common: {
+        no_field_set: {}
+      }
+    };
+
+    test.ok(commonQuery, 'CommonTermsQuery exists');
+    test.ok(commonQuery._self(), '_self() works');
+    doTest();
+
+    commonQuery = ejs.CommonTermsQuery('field');
+    expected = {
+      common: {
+        field: {}
+      }
+    };
+    doTest();
+    
+    commonQuery = ejs.CommonTermsQuery('field', 'qstr');
+    expected = {
+      common: {
+        field: {
+          query: 'qstr'
+        }
+      }
+    };
+    doTest();
+    
+    commonQuery.field('field2');
+    expected = {
+      common: {
+        field2: {
+          query: 'qstr'
+        }
+      }
+    };
+    doTest();
+    
+    commonQuery.query('qstr2');
+    expected.common.field2.query = 'qstr2';
+    doTest();
+    
+    commonQuery.boost(1.5);
+    expected.common.field2.boost = 1.5;
+    doTest();
+
+    commonQuery.disableCoords(true);
+    expected.common.field2.disable_coords = true;
+    doTest();
+    
+    commonQuery.cutoffFrequency(0.65);
+    expected.common.field2.cutoff_frequency = 0.65;
+    doTest();
+    
+    commonQuery.highFreqOperator('and');
+    expected.common.field2.high_freq_operator = 'and';
+    doTest();
+
+    commonQuery.highFreqOperator('junk');
+    doTest();
+
+    commonQuery.highFreqOperator('or');
+    expected.common.field2.high_freq_operator = 'or';
+    doTest();
+
+    commonQuery.lowFreqOperator('and');
+    expected.common.field2.low_freq_operator = 'and';
+    doTest();
+
+    commonQuery.lowFreqOperator('junk');
+    doTest();
+
+    commonQuery.lowFreqOperator('or');
+    expected.common.field2.low_freq_operator = 'or';
+    doTest();
+    
+    commonQuery.analyzer('the analyzer');
+    expected.common.field2.analyzer = 'the analyzer';
+    doTest();
+
+    commonQuery.minimumShouldMatch(10);
+    expected.common.field2.minimum_should_match = 10;
+    doTest();
+    
+    test.strictEqual(commonQuery._type(), 'query');
+    test.strictEqual(commonQuery.toString(), JSON.stringify(expected));
+    
     test.done();
   },
   RegexpQuery: function (test) {
