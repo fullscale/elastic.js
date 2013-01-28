@@ -515,7 +515,7 @@ exports.search = {
     test.done();
   },
   Request: function (test) {
-    test.expect(86);
+    test.expect(90);
 
     var req = ejs.Request({indices: ['index1'], types: ['type1']}),
       matchAll = ejs.MatchAllQuery(),
@@ -647,13 +647,19 @@ exports.search = {
     expected.timeout = 5000;
     req.doSearch();
     
-    req = ejs.Request({indices: 'index', types: 'type'}).query(matchAll);
+    req = ejs.Request({indices: 'index', types: 'type'}).query(matchAll);  
     expected = {
       query: matchAll._self()
     };
     expectedPath = '/index/type/_search';
     expectedData = JSON.stringify(expected);
     req.doSearch();
+    
+    // test count request
+    expectedPath = '/index/type/_count';
+    expectedMethod = 'post';
+    expectedData = JSON.stringify(matchAll._self());
+    req.doCount();
     
     req.sort('field1');
     expected.sort = ['field1'];

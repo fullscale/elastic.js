@@ -17192,7 +17192,36 @@
     */
   ejs.Request = function (conf) {
 
-    var query, indices, types, routing;
+    var query, indices, types, routing,
+    
+      // gernerates the correct url to the specified REST endpoint
+      getRestPath = function (endpoint) {
+        var searchUrl = '';
+        
+        // join any indices
+        if (indices.length > 0) {
+          searchUrl = searchUrl + '/' + indices.join();
+        }
+
+        // join any types
+        if (types.length > 0) {
+          searchUrl = searchUrl + '/' + types.join();
+        }
+        
+        // add the endpoint
+        if (endpoint.length > 0 && endpoint[0] !== '/') {
+          searchUrl = searchUrl + '/';
+        }
+        
+        searchUrl = searchUrl + endpoint;
+        
+        // add any routing information that might be set
+        if (routing !== '') {
+          searchUrl = searchUrl + '?routing=' + encodeURIComponent(routing);
+        }
+        
+        return searchUrl;
+      };
 
     /**
         The internal query object.
@@ -17726,41 +17755,41 @@
       _self: function () {
         return query;
       },
-      
-      /**
-            Executes the search. This call runs synchronously when used on the server side.
-            The callback is still executed and the function returns the return value of the callback.
 
+      /**
+            Executes a count request using the current query.
+            
             @member ejs.Request
-            @param {Function} fnCallBack A callback function that handles the search response.
-            @returns {void} Returns the value of the callback when executing on the server.
+            @param {Function} fnCallBack A callback function that handles the count response.
+            @returns {Object} Returns a client specific object.
             */
-      doSearch: function (fnCallBack) {
-        var 
-          queryData = JSON.stringify(query),
-          searchUrl = '';
+      doCount: function (fnCallBack) {
+        var queryData = JSON.stringify(query.query);
       
         // make sure the user has set a client
         if (ejs.client == null) {
           throw new Error("No Client Set");
         }
-          
-        // generate the search url
-        if (indices.length > 0) {
-          searchUrl = searchUrl + '/' + indices.join();
-        }
+        
+        return ejs.client.post(getRestPath('_count'), queryData, fnCallBack);
+      },
+            
+      /**
+            Executes the search. 
 
-        if (types.length > 0) {
-          searchUrl = searchUrl + '/' + types.join();
+            @member ejs.Request
+            @param {Function} fnCallBack A callback function that handles the search response.
+            @returns {Object} Returns a client specific object.
+            */
+      doSearch: function (fnCallBack) {
+        var queryData = JSON.stringify(query);
+      
+        // make sure the user has set a client
+        if (ejs.client == null) {
+          throw new Error("No Client Set");
         }
         
-        searchUrl = searchUrl + '/_search';
-        
-        if (routing !== '') {
-          searchUrl = searchUrl + '?routing=' + encodeURIComponent(routing);
-        }
-        
-        return ejs.client.post(searchUrl, queryData, fnCallBack);
+        return ejs.client.post(getRestPath('_search'), queryData, fnCallBack);
       }
     };
   };
