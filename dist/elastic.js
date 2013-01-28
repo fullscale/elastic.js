@@ -1,4 +1,4 @@
-/*! elastic.js - v1.0.0 - 2013-01-24
+/*! elastic.js - v1.0.0 - 2013-01-27
 * https://github.com/fullscale/elastic.js
 * Copyright (c) 2013 FullScale Labs, LLC; Licensed MIT */
 
@@ -17837,6 +17837,23 @@
         return this;
       },
 
+      /**
+            If execeptions thrown from the script should be ignored or not.
+            Default: false
+
+            @member ejs.ScriptField
+            @param {Boolean} trueFalse if execptions should be ignored
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      ignoreFailure: function (trueFalse) {
+        if (trueFalse == null) {
+          return script[fieldName].ignore_failure;
+        }
+        
+        script[fieldName].ignore_failure = trueFalse;
+        return this;
+      },
+      
       /**
             Allows you to serialize this object into a JSON encoded string.
 

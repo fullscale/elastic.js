@@ -71,6 +71,23 @@
       },
 
       /**
+            If execeptions thrown from the script should be ignored or not.
+            Default: false
+
+            @member ejs.ScriptField
+            @param {Boolean} trueFalse if execptions should be ignored
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      ignoreFailure: function (trueFalse) {
+        if (trueFalse == null) {
+          return script[fieldName].ignore_failure;
+        }
+        
+        script[fieldName].ignore_failure = trueFalse;
+        return this;
+      },
+      
+      /**
             Allows you to serialize this object into a JSON encoded string.
 
             @member ejs.ScriptField

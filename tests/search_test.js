@@ -477,7 +477,7 @@ exports.search = {
     test.done();
   },
   ScriptField: function (test) {
-    test.expect(8);
+    test.expect(9);
     
     var cp = ejs.ScriptField('f'),
       expected,
@@ -503,6 +503,10 @@ exports.search = {
     
     cp.params({param1: 'p1', param2: 2});
     expected.f.params = {param1: 'p1', param2: 2};
+    doTest();
+    
+    cp.ignoreFailure(true);
+    expected.f.ignore_failure = true;
     doTest();
     
     test.strictEqual(cp._type(), 'script field');
