@@ -515,7 +515,7 @@ exports.search = {
     test.done();
   },
   Request: function (test) {
-    test.expect(90);
+    test.expect(121);
 
     var req = ejs.Request({indices: ['index1'], types: ['type1']}),
       matchAll = ejs.MatchAllQuery(),
@@ -644,7 +644,52 @@ exports.search = {
     req.doSearch();
     
     req.timeout(5000);
-    expected.timeout = 5000;
+    expectedPath = '/_search?routing=route2%2Croute3&timeout=5000';
+    req.doSearch();
+    
+    req.replication('async');
+    test.strictEqual(req.replication(), 'async');
+    expectedPath = '/_search?routing=route2%2Croute3&timeout=5000&replication=async';
+    req.doSearch();
+    
+    req.replication('invalid');
+    test.strictEqual(req.replication(), 'async');
+    expectedPath = '/_search?routing=route2%2Croute3&timeout=5000&replication=async';
+    req.doSearch();
+    
+    req.replication('SYNC');
+    test.strictEqual(req.replication(), 'sync');
+    expectedPath = '/_search?routing=route2%2Croute3&timeout=5000&replication=sync';
+    req.doSearch();
+    
+    req.replication('default');
+    test.strictEqual(req.replication(), 'default');
+    expectedPath = '/_search?routing=route2%2Croute3&timeout=5000&replication=default';
+    req.doSearch();
+    
+    req.consistency('default');
+    test.strictEqual(req.consistency(), 'default');
+    expectedPath = '/_search?routing=route2%2Croute3&timeout=5000&replication=default&consistency=default';
+    req.doSearch();
+    
+    req.consistency('invalid');
+    test.strictEqual(req.consistency(), 'default');
+    expectedPath = '/_search?routing=route2%2Croute3&timeout=5000&replication=default&consistency=default';
+    req.doSearch();
+    
+    req.consistency('ONE');
+    test.strictEqual(req.consistency(), 'one');
+    expectedPath = '/_search?routing=route2%2Croute3&timeout=5000&replication=default&consistency=one';
+    req.doSearch();
+    
+    req.consistency('quorum');
+    test.strictEqual(req.consistency(), 'quorum');
+    expectedPath = '/_search?routing=route2%2Croute3&timeout=5000&replication=default&consistency=quorum';
+    req.doSearch();
+    
+    req.consistency('ALL');
+    test.strictEqual(req.consistency(), 'all');
+    expectedPath = '/_search?routing=route2%2Croute3&timeout=5000&replication=default&consistency=all';
     req.doSearch();
     
     req = ejs.Request({indices: 'index', types: 'type'}).query(matchAll);  
@@ -660,6 +705,12 @@ exports.search = {
     expectedMethod = 'post';
     expectedData = JSON.stringify(matchAll._self());
     req.doCount();
+    
+    // test delete by query request
+    expectedPath = '/index/type/_query';
+    expectedMethod = 'delete';
+    expectedData = JSON.stringify(matchAll._self());
+    req.doDeleteByQuery();
     
     req.sort('field1');
     expected.sort = ['field1'];
@@ -721,10 +772,6 @@ exports.search = {
     
     req.from(10);
     expected.from = 10;
-    doTest();
-    
-    req.timeout(1000);
-    expected.timeout = 1000;
     doTest();
     
     req.query(termQuery);

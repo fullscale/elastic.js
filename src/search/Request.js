@@ -16,11 +16,12 @@
     */
   ejs.Request = function (conf) {
 
-    var query, indices, types, routing,
+    var query, indices, types, params = {},
     
       // gernerates the correct url to the specified REST endpoint
       getRestPath = function (endpoint) {
-        var searchUrl = '';
+        var searchUrl = '', 
+          parts = [];
         
         // join any indices
         if (indices.length > 0) {
@@ -39,9 +40,16 @@
         
         searchUrl = searchUrl + endpoint;
         
-        // add any routing information that might be set
-        if (routing !== '') {
-          searchUrl = searchUrl + '?routing=' + encodeURIComponent(routing);
+        for (var p in params) {
+          if (!has(params, p) || params[p] === '') {
+            continue;
+          }
+          
+          parts.push(p + '=' + encodeURIComponent(params[p]));
+        }
+        
+        if (parts.length > 0) {
+          searchUrl = searchUrl + '?' + parts.join('&');
         }
         
         return searchUrl;
@@ -80,9 +88,7 @@
     }
 
     if (conf.routing != null) {
-      routing = conf.routing;
-    } else {
-      routing = '';
+      params.routing = conf.routing;
     }
     
     return {
@@ -200,20 +206,22 @@
       },
 
       /**
-            A search timeout, bounding the search request to be executed 
-            within the specified time value and bail with the hits accumulated 
-            up to that point when expired. Defaults to no timeout.
+            A timeout, bounding the request to be executed within the 
+            specified time value and bail when expired. Defaults to no timeout.
 
+            <p>This option is valid during the following operations:
+                <code>search</code> and <code>delete by query</code></p>
+    
             @member ejs.Request
             @param {Long} t The timeout value in milliseconds.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       timeout: function (t) {
         if (t == null) {
-          return query.timeout;
+          return params.timeout;
         }
       
-        query.timeout = t;
+        params.timeout = t;
         return this;
       },
                   
@@ -222,19 +230,85 @@
             values will be searched.  Set to an empty string to disable routing.
             Disabled by default.
 
+            <p>This option is valid during the following operations:
+                <code>search, count</code> and <code>delete by query</code></p>
+    
             @member ejs.Request
             @param {String} route The routing values as a comma-separated string.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       routing: function (route) {
         if (route == null) {
-          return routing;
+          return params.routing;
         }
       
-        routing = route;
+        params.routing = route;
         return this;
       },
 
+      /**
+             <p>Sets the replication mode.</p>  
+
+             <p>Valid values are:</p>
+             
+             <dl>
+                <dd><code>async</code> - asynchronous replication to slaves</dd>
+                <dd><code>sync</code> - synchronous replication to the slaves</dd>
+                <dd><code>default</code> - the currently configured system default.</dd> 
+             </dl>
+             
+             <p>This option is valid during the following operations:
+                <code>delete by query</code></p>
+
+             @member ejs.Request
+             @param {String} r The replication mode (async, sync, or default)
+             @returns {Object} returns <code>this</code> so that calls can be chained.
+             */
+      replication: function (r) {
+        if (r == null) {
+          return params.replication;
+        }
+        
+        r = r.toLowerCase();
+        if (r === 'async' || r === 'sync' || r === 'default') {
+          params.replication = r;
+        }
+        
+        return this;
+      },
+      
+      /**
+             <p>Sets the write consistency.</p>  
+
+             <p>Valid values are:</p>
+             
+             <dl>
+                <dd><code>one - only requires write to one shard</dd>
+                <dd><code>quorum - requires writes to quorum <code>(N/2 + 1)</code></dd>
+                <dd><code>all - requires write to succeed on all shards</dd>
+                <dd><code>default - the currently configured system default</dd>
+             </dl>
+             
+             <p>This option is valid during the following operations:
+                <code>delete by query</code></p>
+
+             @member ejs.Request
+             @param {String} c The write consistency (one, quorum, all, or default)
+             @returns {Object} returns <code>this</code> so that calls can be chained.
+             */
+      consistency: function (c) {
+        if (c == null) {
+          return params.consistency;
+        }
+        
+        c = c.toLowerCase();
+        if (c === 'default' || c === 'one' || c === 'quorum' || c === 'all') {
+          params.consistency = c;
+        }
+        
+        return this;
+      },
+      
       /**
             By default, searches return full documents, meaning every property or field.
             This method allows you to specify which fields you want returned.
@@ -578,6 +652,24 @@
             */
       _self: function () {
         return query;
+      },
+
+      /**
+            Executes a delete by query request using the current query.
+            
+            @member ejs.Request
+            @param {Function} fnCallBack A callback function that handles the response.
+            @returns {Object} Returns a client specific object.
+            */
+      doDeleteByQuery: function (fnCallBack) {
+        var queryData = JSON.stringify(query.query);
+      
+        // make sure the user has set a client
+        if (ejs.client == null) {
+          throw new Error("No Client Set");
+        }
+        
+        return ejs.client.del(getRestPath('_query'), queryData, fnCallBack);
       },
 
       /**
