@@ -43,7 +43,7 @@ exports.facets = {
     test.done();
   },
   TermsFacet: function (test) {
-    test.expect(32);
+    test.expect(31);
 
     var termFacet = ejs.TermsFacet('somename'),
       termFilter = ejs.TermFilter('t1', 'v1'),
@@ -141,10 +141,6 @@ exports.facets = {
     expected.somename.terms.all_terms = false;
     doTest();
 
-    termFacet.scope('my_scope');
-    expected.somename.scope = 'my_scope';
-    doTest();
-    
     termFacet.global(true);
     expected.somename.global = true;
     doTest();
@@ -175,7 +171,7 @@ exports.facets = {
     test.done();
   },
   GeoDistanceFacet: function (test) {
-    test.expect(29);
+    test.expect(28);
 
     var geoDistanceFacet = ejs.GeoDistanceFacet('somename'),
       termFilter = ejs.TermFilter('t1', 'v1'),
@@ -284,11 +280,7 @@ exports.facets = {
     geoDistanceFacet.facetFilter(termFilter);
     expected.somename.facet_filter = termFilter._self();
     doTest();
-    
-    geoDistanceFacet.scope('my_scope');
-    expected.somename.scope = 'my_scope';
-    doTest();
-    
+
     geoDistanceFacet.global(true);
     expected.somename.global = true;
     doTest();
@@ -315,7 +307,7 @@ exports.facets = {
     test.done();
   },
   StatisticalFacet: function (test) {
-    test.expect(17);
+    test.expect(16);
 
     var statisticalFacet = ejs.StatisticalFacet('somename'),
       termFilter = ejs.TermFilter('t1', 'v1'),
@@ -361,10 +353,6 @@ exports.facets = {
       factor: 5
     };
     doTest();
-
-    statisticalFacet.scope('my_scope');
-    expected.somename.scope = 'my_scope';
-    doTest();
     
     statisticalFacet.global(true);
     expected.somename.global = true;
@@ -392,7 +380,7 @@ exports.facets = {
     test.done();
   },
   TermStatsFacet: function (test) {
-    test.expect(32);
+    test.expect(31);
 
     var termStatsFacet = ejs.TermStatsFacet('somename'),
       termFilter = ejs.TermFilter('t1', 'v1'),
@@ -497,10 +485,6 @@ exports.facets = {
     termStatsFacet.size(5);
     expected.somename.terms_stats.size = 5;
     doTest();
-
-    termStatsFacet.scope('my_scope');
-    expected.somename.scope = 'my_scope';
-    doTest();
     
     termStatsFacet.global(true);
     expected.somename.global = true;
@@ -524,7 +508,7 @@ exports.facets = {
     test.done();
   },
   DateHistogramFacet: function (test) {
-    test.expect(29);
+    test.expect(28);
 
     var dateHistogramFacet = ejs.DateHistogramFacet('somename'),
       termFilter = ejs.TermFilter('t1', 'v1'),
@@ -618,10 +602,6 @@ exports.facets = {
     expected.somename.date_histogram.params = {p1: 'v1', p2: false};
     doTest();
     
-    dateHistogramFacet.scope('my_scope');
-    expected.somename.scope = 'my_scope';
-    doTest();
-    
     dateHistogramFacet.global(true);
     expected.somename.global = true;
     doTest();
@@ -644,7 +624,7 @@ exports.facets = {
     test.done();
   },
   QueryFacet: function (test) {
-    test.expect(13);
+    test.expect(12);
 
     var queryFacet = ejs.QueryFacet('somename'),
       termFilter = ejs.TermFilter('t1', 'v1'),
@@ -668,10 +648,6 @@ exports.facets = {
 
     queryFacet.facetFilter(termFilter);
     expected.somename.facet_filter = termFilter._self();
-    doTest();
-
-    queryFacet.scope('my_scope');
-    expected.somename.scope = 'my_scope';
     doTest();
     
     queryFacet.global(true);
@@ -700,7 +676,7 @@ exports.facets = {
     test.done();
   },
   FilterFacet: function (test) {
-    test.expect(13);
+    test.expect(12);
 
     var filterFacet = ejs.FilterFacet('somename'),
       termFilter1 = ejs.TermFilter('t1', 'v1'),
@@ -724,10 +700,6 @@ exports.facets = {
 
     filterFacet.facetFilter(termFilter2);
     expected.somename.facet_filter = termFilter2._self();
-    doTest();
-    
-    filterFacet.scope('my_scope');
-    expected.somename.scope = 'my_scope';
     doTest();
     
     filterFacet.global(true);
@@ -756,7 +728,7 @@ exports.facets = {
     test.done();
   },
   HistogramFacet: function (test) {
-    test.expect(26);
+    test.expect(25);
 
     var histogramFacet = ejs.HistogramFacet('somename'),
       termFilter = ejs.TermFilter('t1', 'v1'),
@@ -837,10 +809,6 @@ exports.facets = {
     histogramFacet.facetFilter(termFilter);
     expected.somename.facet_filter = termFilter._self();
     doTest();
-
-    histogramFacet.scope('my_scope');
-    expected.somename.scope = 'my_scope';
-    doTest();
     
     histogramFacet.global(true);
     expected.somename.global = true;
@@ -864,7 +832,7 @@ exports.facets = {
     test.done();
   },
   RangeFacet: function (test) {
-    test.expect(22);
+    test.expect(21);
 
     var rangeFacet = ejs.RangeFacet('somename'),
       termFilter = ejs.TermFilter('t1', 'v1'),
@@ -943,10 +911,6 @@ exports.facets = {
     });
     doTest();
 
-    rangeFacet.scope('my_scope');
-    expected.somename.scope = 'my_scope';
-    doTest();
-    
     rangeFacet.global(true);
     expected.somename.global = true;
     doTest();

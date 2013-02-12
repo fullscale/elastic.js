@@ -323,12 +323,12 @@ exports.filters = {
     expected.nested.filter = termFilter._self();
     doTest();
     
-    nestedFilter.scope('my_scope');
-    expected.nested._scope = 'my_scope';
-    doTest();
-    
     nestedFilter.boost(2.2);
     expected.nested.boost = 2.2;
+    doTest();
+    
+    nestedFilter.join(true);
+    expected.nested.join = true;
     doTest();
     
     nestedFilter.name('filter_name');
@@ -555,7 +555,7 @@ exports.filters = {
     test.done();
   },
   HasParentFilter: function (test) {
-    test.expect(13);
+    test.expect(12);
 
     var termQuery = ejs.TermQuery('t1', 'v1'),
       termQuery2 = ejs.TermQuery('t2', 'v2'),
@@ -585,10 +585,6 @@ exports.filters = {
     expected.has_parent.parent_type = 't2';
     doTest();
     
-    hasParentFilter.scope('my_scope');
-    expected.has_parent._scope = 'my_scope';
-    doTest();
-    
     hasParentFilter.name('has_parent');
     expected.has_parent._name = 'has_parent';
     doTest();
@@ -615,7 +611,7 @@ exports.filters = {
     test.done();
   },
   HasChildFilter: function (test) {
-    test.expect(13);
+    test.expect(12);
 
     var termQuery = ejs.TermQuery('t1', 'v1'),
       termQuery2 = ejs.TermQuery('t2', 'v2'),
@@ -643,10 +639,6 @@ exports.filters = {
     
     hasChildFilter.type('t2');
     expected.has_child.type = 't2';
-    doTest();
-    
-    hasChildFilter.scope('my_scope');
-    expected.has_child._scope = 'my_scope';
     doTest();
     
     hasChildFilter.name('haschild');

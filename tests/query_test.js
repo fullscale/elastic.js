@@ -618,7 +618,7 @@ exports.queries = {
     test.done();
   },
   TopChildrenQuery: function (test) {
-    test.expect(17);
+    test.expect(16);
 
     var termQuery = ejs.TermQuery('t1', 'v1'),
       termQuery2 = ejs.TermQuery('t2', 'v2'),
@@ -645,10 +645,6 @@ exports.queries = {
     
     topChildren.type('t2');
     expected.top_children.type = 't2';
-    doTest();
-    
-    topChildren.scope('my_scope');
-    expected.top_children._scope = 'my_scope';
     doTest();
     
     topChildren.boost(1.2);
@@ -1085,7 +1081,7 @@ exports.queries = {
     test.done();
   },
   HasParentQuery: function (test) {
-    test.expect(14);
+    test.expect(13);
 
     var termQuery = ejs.TermQuery('t1', 'v1'),
       termQuery2 = ejs.TermQuery('t2', 'v2'),
@@ -1112,10 +1108,6 @@ exports.queries = {
     
     hasParentQuery.parentType('t2');
     expected.has_parent.parent_type = 't2';
-    doTest();
-    
-    hasParentQuery.scope('my_scope');
-    expected.has_parent._scope = 'my_scope';
     doTest();
     
     hasParentQuery.scoreType('none');
@@ -1147,7 +1139,7 @@ exports.queries = {
     test.done();
   },
   HasChildQuery: function (test) {
-    test.expect(16);
+    test.expect(15);
 
     var termQuery = ejs.TermQuery('t1', 'v1'),
       termQuery2 = ejs.TermQuery('t2', 'v2'),
@@ -1174,10 +1166,6 @@ exports.queries = {
     
     hasChildQuery.type('t2');
     expected.has_child.type = 't2';
-    doTest();
-    
-    hasChildQuery.scope('my_scope');
-    expected.has_child._scope = 'my_scope';
     doTest();
     
     hasChildQuery.scoreType('none');
@@ -2630,7 +2618,7 @@ exports.queries = {
     test.done();
   },
   NestedQuery: function (test) {
-    test.expect(19);
+    test.expect(18);
 
     var termQuery1 = ejs.TermQuery('t1', 'v1'),
       termQuery2 = ejs.TermQuery('t2', 'v2'),
@@ -2689,10 +2677,6 @@ exports.queries = {
     
     nestedQuery.scoreMode('none');
     expected.nested.score_mode = 'none';
-    doTest();
-    
-    nestedQuery.scope('my_scope');
-    expected.nested._scope = 'my_scope';
     doTest();
     
     nestedQuery.boost(3.2);

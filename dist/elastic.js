@@ -1,4 +1,4 @@
-/*! elastic.js - v1.0.0 - 2013-02-11
+/*! elastic.js - v1.0.0 - 2013-02-25
 * https://github.com/fullscale/elastic.js
 * Copyright (c) 2013 FullScale Labs, LLC; Licensed MIT */
 
@@ -550,16 +550,12 @@
       /**
             <p>Computes values across the the specified scope</p>
 
+            @deprecated since elasticsearch 0.21
             @member ejs.DateHistogramFacet
             @param {String} scope The scope name to calculate facet counts with.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       scope: function (scope) {
-        if (scope == null) {
-          return facet[name].scope;
-        }
-        
-        facet[name].scope = scope;
         return this;
       },
       
@@ -729,16 +725,12 @@
       /**
             <p>Computes values across the the specified scope</p>
 
+            @deprecated since elasticsearch 0.21
             @member ejs.FilterFacet
             @param {String} scope The scope name to calculate facet counts with.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       scope: function (scope) {
-        if (scope == null) {
-          return facet[name].scope;
-        }
-        
-        facet[name].scope = scope;
         return this;
       },
       
@@ -1130,16 +1122,12 @@
       /**
             <p>Computes values across the the specified scope</p>
 
+            @deprecated since elasticsearch 0.21
             @member ejs.GeoDistanceFacet
             @param {String} scope The scope name to calculate facet counts with.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       scope: function (scope) {
-        if (scope == null) {
-          return facet[name].scope;
-        }
-        
-        facet[name].scope = scope;
         return this;
       },
       
@@ -1507,16 +1495,12 @@
       /**
             <p>Computes values across the the specified scope</p>
 
+            @deprecated since elasticsearch 0.21
             @member ejs.HistogramFacet
             @param {String} scope The scope name to calculate facet counts with.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       scope: function (scope) {
-        if (scope == null) {
-          return facet[name].scope;
-        }
-        
-        facet[name].scope = scope;
         return this;
       },
       
@@ -1686,16 +1670,12 @@
       /**
             <p>Computes values across the the specified scope</p>
 
+            @deprecated since elasticsearch 0.21
             @member ejs.QueryFacet
             @param {String} scope The scope name to calculate facet counts with.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       scope: function (scope) {
-        if (scope == null) {
-          return facet[name].scope;
-        }
-        
-        facet[name].scope = scope;
         return this;
       },
       
@@ -2026,16 +2006,12 @@
       /**
             <p>Computes values across the the specified scope</p>
 
+            @deprecated since elasticsearch 0.21
             @member ejs.RangeFacet
             @param {String} scope The scope name to calculate facet counts with.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       scope: function (scope) {
-        if (scope == null) {
-          return facet[name].scope;
-        }
-        
-        facet[name].scope = scope;
         return this;
       },
       
@@ -2274,16 +2250,12 @@
       /**
             <p>Computes values across the the specified scope</p>
 
+            @deprecated since elasticsearch 0.21
             @member ejs.StatisticalFacet
             @param {String} scope The scope name to calculate facet counts with.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       scope: function (scope) {
-        if (scope == null) {
-          return facet[name].scope;
-        }
-        
-        facet[name].scope = scope;
         return this;
       },
       
@@ -2683,16 +2655,12 @@
       /**
             <p>Computes values across the the specified scope</p>
 
+            @deprecated since elasticsearch 0.21
             @member ejs.TermsFacet
             @param {String} scope The scope name to calculate facet counts with.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       scope: function (scope) {
-        if (scope == null) {
-          return facet[name].scope;
-        }
-        
-        facet[name].scope = scope;
         return this;
       },
       
@@ -3017,16 +2985,12 @@
       /**
             <p>Computes values across the the specified scope</p>
 
+            @deprecated since elasticsearch 0.21
             @member ejs.TermStatsFacet
             @param {String} scope The scope name to calculate facet counts with.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       scope: function (scope) {
-        if (scope == null) {
-          return facet[name].scope;
-        }
-        
-        facet[name].scope = scope;
         return this;
       },
       
@@ -4923,16 +4887,12 @@
             Sets the scope of the filter.  A scope allows to run facets on the 
             same scope name that will work against the child documents. 
 
+            @deprecated since elasticsearch 0.21
             @member ejs.HasChildFilter
             @param {String} s The scope name as a string.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       scope: function (s) {
-        if (s == null) {
-          return filter.has_child._scope;
-        }
-  
-        filter.has_child._scope = s;
         return this;
       },
 
@@ -5079,16 +5039,12 @@
             Sets the scope of the filter.  A scope allows to run facets on the 
             same scope name that will work against the parent documents. 
 
+            @deprecated since elasticsearch 0.21
             @member ejs.HasParentFilter
             @param {String} s The scope name as a string.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       scope: function (s) {
-        if (s == null) {
-          return filter.has_parent._scope;
-        }
-
-        filter.has_parent._scope = s;
         return this;
       },
     
@@ -5792,22 +5748,35 @@
       },
     
       /**
+            If the nested query should be "joined" with the parent document.
+            Defaults to false.
+
+            @member ejs.NestedFilter
+            @param {Boolean} trueFalse If the query should be joined or not.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      join: function (trueFalse) {
+        if (trueFalse == null) {
+          return filter.nested.join;
+        }
+
+        filter.nested.join = trueFalse;
+        return this;
+      },
+    
+      /**
             Sets the scope of the filter.  A scope allows to run facets on the 
             same scope name that will work against the nested documents. 
 
+            @deprecated since elasticsearch 0.21
             @member ejs.NestedFilter
             @param {String} s The scope name as a string.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       scope: function (s) {
-        if (s == null) {
-          return filter.nested._scope;
-        }
-
-        filter.nested._scope = s;
         return this;
       },
-    
+      
       /**
             Sets the filter name.
 
@@ -11790,16 +11759,12 @@
             Sets the scope of the query.  A scope allows to run facets on the 
             same scope name that will work against the child documents. 
 
+            @deprecated since elasticsearch 0.21
             @member ejs.HasChildQuery
             @param {String} s The scope name as a string.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       scope: function (s) {
-        if (s == null) {
-          return query.has_child._scope;
-        }
-    
-        query.has_child._scope = s;
         return this;
       },
 
@@ -11951,16 +11916,12 @@
             Sets the scope of the query.  A scope allows to run facets on the 
             same scope name that will work against the parent documents. 
 
+            @deprecated since elasticsearch 0.21
             @member ejs.HasParentQuery
             @param {String} s The scope name as a string.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       scope: function (s) {
-        if (s == null) {
-          return query.has_parent._scope;
-        }
-  
-        query.has_parent._scope = s;
         return this;
       },
 
@@ -13963,16 +13924,12 @@
             Sets the scope of the query.  A scope allows to run facets on the 
             same scope name that will work against the nested documents. 
 
+            @deprecated since elasticsearch 0.21
             @member ejs.NestedQuery
             @param {String} s The scope name as a string.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       scope: function (s) {
-        if (s == null) {
-          return query.nested._scope;
-        }
-
-        query.nested._scope = s;
         return this;
       },
       
@@ -16209,16 +16166,12 @@
             Sets the scope of the query.  A scope allows to run facets on the 
             same scope name that will work against the child documents. 
 
+            @deprecated since elasticsearch 0.21
             @member ejs.TopChildrenQuery
             @param {String} s The scope name as a string.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       scope: function (s) {
-        if (s == null) {
-          return query.top_children._scope;
-        }
-  
-        query.top_children._scope = s;
         return this;
       },
 

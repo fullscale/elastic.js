@@ -76,16 +76,12 @@
             Sets the scope of the query.  A scope allows to run facets on the 
             same scope name that will work against the child documents. 
 
+            @deprecated since elasticsearch 0.21
             @member ejs.TopChildrenQuery
             @param {String} s The scope name as a string.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       scope: function (s) {
-        if (s == null) {
-          return query.top_children._scope;
-        }
-  
-        query.top_children._scope = s;
         return this;
       },
 
