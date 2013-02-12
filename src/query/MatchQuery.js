@@ -100,6 +100,24 @@
       },
 
       /**
+            Sets the maximum threshold/frequency to be considered a low 
+            frequency term in a <code>CommonTermsQuery</code>.  
+            Set to a value between 0 and 1.
+
+            @member ejs.MatchQuery
+            @param {Number} freq A positive <code>double</code> value.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      cutoffFrequency: function (freq) {
+        if (freq == null) {
+          return query.match[field].cutoff_frequency;
+        }
+
+        query.match[field].cutoff_frequency = freq;
+        return this;
+      },
+      
+      /**
             Sets the prefix length for a fuzzy prefix <code>MatchQuery</code>.
 
             @member ejs.MatchQuery

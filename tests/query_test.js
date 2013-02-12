@@ -1665,7 +1665,7 @@ exports.queries = {
     test.done();
   },
   MatchQuery: function (test) {
-    test.expect(39);
+    test.expect(40);
 
     var matchQuery = ejs.MatchQuery('t1', 'v1'),
       expected,
@@ -1708,6 +1708,10 @@ exports.queries = {
     expected.match.t1.type = 'phrase_prefix';
     doTest();
 
+    matchQuery.cutoffFrequency(0.6);
+    expected.match.t1.cutoff_frequency = 0.6;
+    doTest();
+    
     matchQuery.fuzziness(0.5);
     expected.match.t1.fuzziness = 0.5;
     doTest();
@@ -1822,7 +1826,7 @@ exports.queries = {
     test.done();
   },
   MultiMatchQuery: function (test) {
-    test.expect(42);
+    test.expect(43);
 
     var mmQuery = ejs.MultiMatchQuery('t', 'v1'),
       expected,
@@ -1884,6 +1888,10 @@ exports.queries = {
     expected.multi_match.type = 'phrase_prefix';
     doTest();
 
+    mmQuery.cutoffFrequency(0.6);
+    expected.multi_match.cutoff_frequency = 0.6;
+    doTest();
+    
     mmQuery.fuzziness(0.5);
     expected.multi_match.fuzziness = 0.5;
     doTest();
