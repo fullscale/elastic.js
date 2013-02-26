@@ -1,5 +1,6 @@
 /*jshint browser:true */
 /*global angular:true */
+/*jshint es5:true */
 'use strict';
 
 /* 

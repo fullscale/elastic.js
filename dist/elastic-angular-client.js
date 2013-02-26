@@ -1,9 +1,10 @@
-/*! elastic.js - v1.0.0 - 2013-01-20
+/*! elastic.js - v1.0.0 - 2013-02-25
 * https://github.com/fullscale/elastic.js
 * Copyright (c) 2013 FullScale Labs, LLC; Licensed MIT */
 
 /*jshint browser:true */
 /*global angular:true */
+/*jshint es5:true */
 'use strict';
 
 /* 
@@ -60,7 +61,7 @@ angular.module('elasticjs.service', [])
       },
       del: function (path, data, successcb, errorcb) {
         path = url + path;
-        return promiseThen($http.delee(path, data), successcb, errorcb);
+        return promiseThen($http.delete(path, data), successcb, errorcb);
       },
       head: function (path, data, successcb, errorcb) {
         path = url + path;
