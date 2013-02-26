@@ -19,10 +19,13 @@
     ],
     "author": {
         "name": "FullScale Labs, LLC",
-        "url": "https://github.com/fullscale/elastic.js/blob/master/AUTHORS.txt"
+        "url": "https://github.com/fullscale/elastic.js/blob/master/AUTHORS"
     },
+    "files": ["elastic-node-client.js", "elastic.js"],
+    "main": "elastic.js",
     "scripts": {
-        "test": "grunt test"
+        "test": "grunt test",
+        "prepublish": "cp dist/elastic.js dist/elastic-node-client.js ."
     },
     "devDependencies": {
         "grunt": "~0.3.17"
