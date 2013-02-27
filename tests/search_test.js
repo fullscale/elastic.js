@@ -213,9 +213,10 @@ exports.search = {
     test.done();
   },
   Sort: function (test) {
-    test.expect(29);
+    test.expect(37);
     
     var sort = ejs.Sort(),
+      termFilter = ejs.TermFilter('tf1', 'tv1'),
       geoPoint = ejs.GeoPoint([37.7819288, -122.396480]),
       expected,
       doTest = function () {
@@ -265,6 +266,33 @@ exports.search = {
     
     sort.ignoreUnmapped(true);
     expected.title.ignore_unmapped = true;
+    doTest();
+    
+    sort.sortMode('min');
+    expected.title.sort_mode = 'min';
+    doTest();
+    
+    sort.sortMode('INVALID');
+    doTest();
+    
+    sort.sortMode('MAX');
+    expected.title.sort_mode = 'max';
+    doTest();
+    
+    sort.sortMode('Avg');
+    expected.title.sort_mode = 'avg';
+    doTest();
+    
+    sort.sortMode('sum');
+    expected.title.sort_mode = 'sum';
+    doTest();
+    
+    sort.nestedPath('nested.path');
+    expected.title.nested_path = 'nested.path';
+    doTest();
+    
+    sort.nestedFilter(termFilter);
+    expected.title.nested_filter = termFilter._self();
     doTest();
     
     // geo distance sorting tests
@@ -335,6 +363,10 @@ exports.search = {
     
     test.throws(function () {
       sort.geoDistance('invalid');
+    }, TypeError);
+    
+    test.throws(function () {
+      sort.nestedFilter('invalid');
     }, TypeError);
     
     test.done();

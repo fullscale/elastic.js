@@ -320,8 +320,10 @@
       /**
             Sets the script sort type.  Valid values are:
           
-            string - script return value is sorted as a string
-            number - script return value is sorted as a number
+            <dl>
+                <dd><code>string</code> - script return value is sorted as a string</dd>
+                <dd><code>number</code> - script return value is sorted as a number</dd>
+            <dl>
 
             Valid during sort types:  script
           
@@ -341,7 +343,78 @@
       
         return this;
       },
-    
+
+      /**
+            Sets the sort mode.  Valid values are:
+          
+            <dl>
+                <dd><code>min</code> - sort by lowest value</dd>
+                <dd><code>max</code> - sort by highest value</dd>
+                <dd><code>sum</code> - sort by the sum of all values</dd>
+                <dd><code>avg</code> - sort by the average of all values</dd>
+            <dl>
+            
+            Valid during sort types:  field
+          
+            @since elasticsearch 0.90
+            @member ejs.Sort
+            @param {String} m The sort mode.  Either min, max, sum, or avg.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      sortMode: function (m) {
+        if (m == null) {
+          return sort[key].sort_mode;
+        }
+
+        m = m.toLowerCase();
+        if (m === 'min' || m === 'max' || m === 'sum' || m === 'avg') {
+          sort[key].sort_mode = m;
+        }
+      
+        return this;
+      },
+      
+      /**
+            Sets the path of the nested object.
+
+            Valid during sort types:  field
+          
+            @since elasticsearch 0.90
+            @member ejs.Sort
+            @param {String} path The nested path value.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      nestedPath: function (path) {
+        if (path == null) {
+          return sort[key].nested_path;
+        }
+
+        sort[key].nested_path = path;
+        return this;
+      },
+      
+      /**
+            <p>Allows you to set a filter that nested objects must match
+            in order to be considered during sorting.</p>
+
+            @since elasticsearch 0.90
+            @member ejs.Sort
+            @param {Object} oFilter A valid <code>Filter</code> object.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      nestedFilter: function (oFilter) {
+        if (oFilter == null) {
+          return sort[key].nested_filter;
+        }
+      
+        if (!isFilter(oFilter)) {
+          throw new TypeError('Argument must be a Filter');
+        }
+        
+        sort[key].nested_filter = oFilter._self();
+        return this;
+      },
+          
       /**
             Allows you to serialize this object into a JSON encoded string.
 

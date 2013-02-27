@@ -550,7 +550,7 @@
       /**
             <p>Computes values across the the specified scope</p>
 
-            @deprecated since elasticsearch 0.21
+            @deprecated since elasticsearch 0.90
             @member ejs.DateHistogramFacet
             @param {String} scope The scope name to calculate facet counts with.
             @returns {Object} returns <code>this</code> so that calls can be chained.
@@ -725,7 +725,7 @@
       /**
             <p>Computes values across the the specified scope</p>
 
-            @deprecated since elasticsearch 0.21
+            @deprecated since elasticsearch 0.90
             @member ejs.FilterFacet
             @param {String} scope The scope name to calculate facet counts with.
             @returns {Object} returns <code>this</code> so that calls can be chained.
@@ -1122,7 +1122,7 @@
       /**
             <p>Computes values across the the specified scope</p>
 
-            @deprecated since elasticsearch 0.21
+            @deprecated since elasticsearch 0.90
             @member ejs.GeoDistanceFacet
             @param {String} scope The scope name to calculate facet counts with.
             @returns {Object} returns <code>this</code> so that calls can be chained.
@@ -1495,7 +1495,7 @@
       /**
             <p>Computes values across the the specified scope</p>
 
-            @deprecated since elasticsearch 0.21
+            @deprecated since elasticsearch 0.90
             @member ejs.HistogramFacet
             @param {String} scope The scope name to calculate facet counts with.
             @returns {Object} returns <code>this</code> so that calls can be chained.
@@ -1670,7 +1670,7 @@
       /**
             <p>Computes values across the the specified scope</p>
 
-            @deprecated since elasticsearch 0.21
+            @deprecated since elasticsearch 0.90
             @member ejs.QueryFacet
             @param {String} scope The scope name to calculate facet counts with.
             @returns {Object} returns <code>this</code> so that calls can be chained.
@@ -2006,7 +2006,7 @@
       /**
             <p>Computes values across the the specified scope</p>
 
-            @deprecated since elasticsearch 0.21
+            @deprecated since elasticsearch 0.90
             @member ejs.RangeFacet
             @param {String} scope The scope name to calculate facet counts with.
             @returns {Object} returns <code>this</code> so that calls can be chained.
@@ -2250,7 +2250,7 @@
       /**
             <p>Computes values across the the specified scope</p>
 
-            @deprecated since elasticsearch 0.21
+            @deprecated since elasticsearch 0.90
             @member ejs.StatisticalFacet
             @param {String} scope The scope name to calculate facet counts with.
             @returns {Object} returns <code>this</code> so that calls can be chained.
@@ -2655,7 +2655,7 @@
       /**
             <p>Computes values across the the specified scope</p>
 
-            @deprecated since elasticsearch 0.21
+            @deprecated since elasticsearch 0.90
             @member ejs.TermsFacet
             @param {String} scope The scope name to calculate facet counts with.
             @returns {Object} returns <code>this</code> so that calls can be chained.
@@ -2985,7 +2985,7 @@
       /**
             <p>Computes values across the the specified scope</p>
 
-            @deprecated since elasticsearch 0.21
+            @deprecated since elasticsearch 0.90
             @member ejs.TermStatsFacet
             @param {String} scope The scope name to calculate facet counts with.
             @returns {Object} returns <code>this</code> so that calls can be chained.
@@ -4849,7 +4849,7 @@
       /**
             Sets the filter
 
-            @since ElasticSearch 0.21
+            @since elasticsearch 0.90
             @member ejs.HasChildFilter
             @param {Query} f A valid Filter object
             @returns {Object} returns <code>this</code> so that calls can be chained.
@@ -4887,7 +4887,7 @@
             Sets the scope of the filter.  A scope allows to run facets on the 
             same scope name that will work against the child documents. 
 
-            @deprecated since elasticsearch 0.21
+            @deprecated since elasticsearch 0.90
             @member ejs.HasChildFilter
             @param {String} s The scope name as a string.
             @returns {Object} returns <code>this</code> so that calls can be chained.
@@ -5001,7 +5001,7 @@
       /**
             Sets the filter
 
-            @since ElasticSearch 0.21
+            @since elasticsearch 0.90
             @member ejs.HasParentFilter
             @param {Object} f A valid Filter object
             @returns {Object} returns <code>this</code> so that calls can be chained.
@@ -5039,7 +5039,7 @@
             Sets the scope of the filter.  A scope allows to run facets on the 
             same scope name that will work against the parent documents. 
 
-            @deprecated since elasticsearch 0.21
+            @deprecated since elasticsearch 0.90
             @member ejs.HasParentFilter
             @param {String} s The scope name as a string.
             @returns {Object} returns <code>this</code> so that calls can be chained.
@@ -5768,7 +5768,7 @@
             Sets the scope of the filter.  A scope allows to run facets on the 
             same scope name that will work against the nested documents. 
 
-            @deprecated since elasticsearch 0.21
+            @deprecated since elasticsearch 0.90
             @member ejs.NestedFilter
             @param {String} s The scope name as a string.
             @returns {Object} returns <code>this</code> so that calls can be chained.
@@ -9079,7 +9079,7 @@
     across domains without specialized stopword files.</p>
   
     @name ejs.CommonTermsQuery
-    @since ElasticSearch 0.21
+    @since elasticsearch 0.90
   
     @desc
     A query that executes high-frequency terms in a optional sub-query.
@@ -11852,7 +11852,7 @@
             Sets the scope of the query.  A scope allows to run facets on the 
             same scope name that will work against the child documents. 
 
-            @deprecated since elasticsearch 0.21
+            @deprecated since elasticsearch 0.90
             @member ejs.HasChildQuery
             @param {String} s The scope name as a string.
             @returns {Object} returns <code>this</code> so that calls can be chained.
@@ -12009,7 +12009,7 @@
             Sets the scope of the query.  A scope allows to run facets on the 
             same scope name that will work against the parent documents. 
 
-            @deprecated since elasticsearch 0.21
+            @deprecated since elasticsearch 0.90
             @member ejs.HasParentQuery
             @param {String} s The scope name as a string.
             @returns {Object} returns <code>this</code> so that calls can be chained.
@@ -14017,7 +14017,7 @@
             Sets the scope of the query.  A scope allows to run facets on the 
             same scope name that will work against the nested documents. 
 
-            @deprecated since elasticsearch 0.21
+            @deprecated since elasticsearch 0.90
             @member ejs.NestedQuery
             @param {String} s The scope name as a string.
             @returns {Object} returns <code>this</code> so that calls can be chained.
@@ -16259,7 +16259,7 @@
             Sets the scope of the query.  A scope allows to run facets on the 
             same scope name that will work against the child documents. 
 
-            @deprecated since elasticsearch 0.21
+            @deprecated since elasticsearch 0.90
             @member ejs.TopChildrenQuery
             @param {String} s The scope name as a string.
             @returns {Object} returns <code>this</code> so that calls can be chained.
@@ -18522,8 +18522,10 @@
       /**
             Sets the script sort type.  Valid values are:
           
-            string - script return value is sorted as a string
-            number - script return value is sorted as a number
+            <dl>
+                <dd><code>string</code> - script return value is sorted as a string</dd>
+                <dd><code>number</code> - script return value is sorted as a number</dd>
+            <dl>
 
             Valid during sort types:  script
           
@@ -18543,7 +18545,78 @@
       
         return this;
       },
-    
+
+      /**
+            Sets the sort mode.  Valid values are:
+          
+            <dl>
+                <dd><code>min</code> - sort by lowest value</dd>
+                <dd><code>max</code> - sort by highest value</dd>
+                <dd><code>sum</code> - sort by the sum of all values</dd>
+                <dd><code>avg</code> - sort by the average of all values</dd>
+            <dl>
+            
+            Valid during sort types:  field
+          
+            @since elasticsearch 0.90
+            @member ejs.Sort
+            @param {String} m The sort mode.  Either min, max, sum, or avg.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      sortMode: function (m) {
+        if (m == null) {
+          return sort[key].sort_mode;
+        }
+
+        m = m.toLowerCase();
+        if (m === 'min' || m === 'max' || m === 'sum' || m === 'avg') {
+          sort[key].sort_mode = m;
+        }
+      
+        return this;
+      },
+      
+      /**
+            Sets the path of the nested object.
+
+            Valid during sort types:  field
+          
+            @since elasticsearch 0.90
+            @member ejs.Sort
+            @param {String} path The nested path value.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      nestedPath: function (path) {
+        if (path == null) {
+          return sort[key].nested_path;
+        }
+
+        sort[key].nested_path = path;
+        return this;
+      },
+      
+      /**
+            <p>Allows you to set a filter that nested objects must match
+            in order to be considered during sorting.</p>
+
+            @since elasticsearch 0.90
+            @member ejs.Sort
+            @param {Object} oFilter A valid <code>Filter</code> object.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      nestedFilter: function (oFilter) {
+        if (oFilter == null) {
+          return sort[key].nested_filter;
+        }
+      
+        if (!isFilter(oFilter)) {
+          throw new TypeError('Argument must be a Filter');
+        }
+        
+        sort[key].nested_filter = oFilter._self();
+        return this;
+      },
+          
       /**
             Allows you to serialize this object into a JSON encoded string.
 
