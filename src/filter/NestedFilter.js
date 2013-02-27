@@ -124,7 +124,7 @@
             Sets the scope of the filter.  A scope allows to run facets on the 
             same scope name that will work against the nested documents. 
 
-            @deprecated since elasticsearch 0.21
+            @deprecated since elasticsearch 0.90
             @member ejs.NestedFilter
             @param {String} s The scope name as a string.
             @returns {Object} returns <code>this</code> so that calls can be chained.

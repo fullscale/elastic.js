@@ -98,7 +98,7 @@
       /**
             <p>Computes values across the the specified scope</p>
 
-            @deprecated since elasticsearch 0.21
+            @deprecated since elasticsearch 0.90
             @member ejs.FilterFacet
             @param {String} scope The scope name to calculate facet counts with.
             @returns {Object} returns <code>this</code> so that calls can be chained.

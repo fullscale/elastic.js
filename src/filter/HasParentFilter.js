@@ -54,7 +54,7 @@
       /**
             Sets the filter
 
-            @since ElasticSearch 0.21
+            @since elasticsearch 0.90
             @member ejs.HasParentFilter
             @param {Object} f A valid Filter object
             @returns {Object} returns <code>this</code> so that calls can be chained.
@@ -92,7 +92,7 @@
             Sets the scope of the filter.  A scope allows to run facets on the 
             same scope name that will work against the parent documents. 
 
-            @deprecated since elasticsearch 0.21
+            @deprecated since elasticsearch 0.90
             @member ejs.HasParentFilter
             @param {String} s The scope name as a string.
             @returns {Object} returns <code>this</code> so that calls can be chained.

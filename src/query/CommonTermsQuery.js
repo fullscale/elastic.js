@@ -14,7 +14,7 @@
     across domains without specialized stopword files.</p>
   
     @name ejs.CommonTermsQuery
-    @since ElasticSearch 0.21
+    @since elasticsearch 0.90
   
     @desc
     A query that executes high-frequency terms in a optional sub-query.
