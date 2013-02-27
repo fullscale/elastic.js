@@ -20,6 +20,20 @@
          */
     var filter = {
       terms: {}
+    },
+    
+    // make sure we are setup for a list of terms
+    setupTerms = function () {
+      if (!isArray(filter.terms[field])) {
+        filter.terms[field] = [];
+      }
+    },
+    
+    // make sure we are setup for a terms lookup
+    setupLookup = function () {
+      if (isArray(filter.terms[field])) {
+        filter.terms[field] = {};
+      }
     };
    
     if (isArray(terms)) {
@@ -61,10 +75,11 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       terms: function (t) {
+        setupTerms();
         if (t == null) {
           return filter.terms[field];
         }
-
+        
         if (isArray(t)) {
           filter.terms[field] = t;
         } else {
@@ -74,6 +89,84 @@
         return this;
       },
 
+      /**
+            Sets the index the document containing the terms is in when 
+            performing a terms lookup.  Defaults to the index currently 
+            being searched.
+
+            @since elasticsearch 0.90
+            @member ejs.TermsFilter
+            @param {String} idx A valid index name.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      index: function (idx) {
+        setupLookup();
+        if (idx == null) {
+          return filter.terms[field].index;
+        }
+        
+        filter.terms[field].index = idx;
+        return this;
+      },
+
+      /**
+            Sets the type the document containing the terms when performing a 
+            terms lookup.
+
+            @since elasticsearch 0.90
+            @member ejs.TermsFilter
+            @param {String} type A valid type name.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      type: function (type) {
+        setupLookup();
+        if (type == null) {
+          return filter.terms[field].type;
+        }
+        
+        filter.terms[field].type = type;
+        return this;
+      },
+
+
+      /**
+            Sets the document id of the document containing the terms to use
+            when performing a terms lookup.
+
+            @since elasticsearch 0.90
+            @member ejs.TermsFilter
+            @param {String} id A valid index name.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      id: function (id) {
+        setupLookup();
+        if (id == null) {
+          return filter.terms[field].id;
+        }
+        
+        filter.terms[field].id = id;
+        return this;
+      },
+      
+      /**
+            Sets the path/field name where the terms in the source document
+            are located when performing a terms lookup.
+
+            @since elasticsearch 0.90
+            @member ejs.TermsFilter
+            @param {String} path A valid index name.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      path: function (path) {
+        setupLookup();
+        if (path == null) {
+          return filter.terms[field].path;
+        }
+        
+        filter.terms[field].path = path;
+        return this;
+      },
+      
       /**
             Sets the way terms filter executes is by iterating over the terms 
             provided and finding matches docs (loading into a bitset) and 

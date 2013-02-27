@@ -204,7 +204,7 @@ exports.filters = {
     test.done();
   },
   TermsFilter: function (test) {
-    test.expect(20);
+    test.expect(26);
 
     var termsFilter = ejs.TermsFilter('f1', ['t1', 't2']),
       expected,
@@ -240,6 +240,39 @@ exports.filters = {
     
     termsFilter.terms(['t4']);
     expected.terms.f2 = ['t4'];
+    doTest();
+    
+    termsFilter.index('myidx');
+    expected.terms.f2 = {index: 'myidx'};
+    doTest();
+    
+    termsFilter.type('mytype');
+    expected.terms.f2.type = 'mytype';
+    doTest();
+    
+    termsFilter.id('id1');
+    expected.terms.f2.id = 'id1';
+    doTest();
+    
+    termsFilter.path('terms_data');
+    expected.terms.f2.path = 'terms_data';
+    doTest();
+    
+    termsFilter.field('f3');
+    expected = {
+      terms: {
+        f3: {
+          index: 'myidx',
+          type: 'mytype',
+          id: 'id1',
+          path: 'terms_data'
+        }
+      }
+    };
+    doTest();
+    
+    termsFilter.terms('t5');
+    expected.terms.f3 = ['t5'];
     doTest();
     
     termsFilter.execution('plain');
