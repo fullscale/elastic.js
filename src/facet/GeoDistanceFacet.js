@@ -318,6 +318,31 @@
       },
       
       /**
+            <p>Sets the mode the facet will use.<p>
+            
+            <dl>
+                <dd><code>collector</code></dd>
+                <dd><code>post</code></dd>
+            <dl>
+            
+            @member ejs.GeoDistanceFacet
+            @param {String} m The mode: collector or post.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      mode: function (m) {
+        if (m == null) {
+          return facet[name].mode;
+        }
+      
+        m = m.toLowerCase();
+        if (m === 'collector' || m === 'post') {
+          facet[name].mode = m;
+        }
+        
+        return this;
+      },
+      
+      /**
             <p>Computes values across the the specified scope</p>
 
             @deprecated since elasticsearch 0.90

@@ -43,7 +43,7 @@ exports.facets = {
     test.done();
   },
   TermsFacet: function (test) {
-    test.expect(31);
+    test.expect(34);
 
     var termFacet = ejs.TermsFacet('somename'),
       termFilter = ejs.TermFilter('t1', 'v1'),
@@ -145,6 +145,17 @@ exports.facets = {
     expected.somename.global = true;
     doTest();
     
+    termFacet.mode('collector');
+    expected.somename.mode = 'collector';
+    doTest();
+    
+    termFacet.mode('INVALID');
+    doTest();
+    
+    termFacet.mode('POST');
+    expected.somename.mode = 'post';
+    doTest();
+    
     termFacet.cacheFilter(false);
     expected.somename.cache_filter = false;
     doTest();
@@ -171,7 +182,7 @@ exports.facets = {
     test.done();
   },
   GeoDistanceFacet: function (test) {
-    test.expect(28);
+    test.expect(31);
 
     var geoDistanceFacet = ejs.GeoDistanceFacet('somename'),
       termFilter = ejs.TermFilter('t1', 'v1'),
@@ -285,6 +296,17 @@ exports.facets = {
     expected.somename.global = true;
     doTest();
     
+    geoDistanceFacet.mode('collector');
+    expected.somename.mode = 'collector';
+    doTest();
+    
+    geoDistanceFacet.mode('INVALID');
+    doTest();
+    
+    geoDistanceFacet.mode('POST');
+    expected.somename.mode = 'post';
+    doTest();
+    
     geoDistanceFacet.cacheFilter(false);
     expected.somename.cache_filter = false;
     doTest();
@@ -307,7 +329,7 @@ exports.facets = {
     test.done();
   },
   StatisticalFacet: function (test) {
-    test.expect(16);
+    test.expect(19);
 
     var statisticalFacet = ejs.StatisticalFacet('somename'),
       termFilter = ejs.TermFilter('t1', 'v1'),
@@ -358,6 +380,17 @@ exports.facets = {
     expected.somename.global = true;
     doTest();
     
+    statisticalFacet.mode('collector');
+    expected.somename.mode = 'collector';
+    doTest();
+    
+    statisticalFacet.mode('INVALID');
+    doTest();
+    
+    statisticalFacet.mode('POST');
+    expected.somename.mode = 'post';
+    doTest();
+    
     statisticalFacet.cacheFilter(false);
     expected.somename.cache_filter = false;
     doTest();
@@ -380,7 +413,7 @@ exports.facets = {
     test.done();
   },
   TermStatsFacet: function (test) {
-    test.expect(31);
+    test.expect(34);
 
     var termStatsFacet = ejs.TermStatsFacet('somename'),
       termFilter = ejs.TermFilter('t1', 'v1'),
@@ -490,6 +523,17 @@ exports.facets = {
     expected.somename.global = true;
     doTest();
     
+    termStatsFacet.mode('collector');
+    expected.somename.mode = 'collector';
+    doTest();
+    
+    termStatsFacet.mode('INVALID');
+    doTest();
+    
+    termStatsFacet.mode('POST');
+    expected.somename.mode = 'post';
+    doTest();
+    
     termStatsFacet.cacheFilter(false);
     expected.somename.cache_filter = false;
     doTest();
@@ -508,7 +552,7 @@ exports.facets = {
     test.done();
   },
   DateHistogramFacet: function (test) {
-    test.expect(28);
+    test.expect(31);
 
     var dateHistogramFacet = ejs.DateHistogramFacet('somename'),
       termFilter = ejs.TermFilter('t1', 'v1'),
@@ -606,6 +650,17 @@ exports.facets = {
     expected.somename.global = true;
     doTest();
     
+    dateHistogramFacet.mode('collector');
+    expected.somename.mode = 'collector';
+    doTest();
+    
+    dateHistogramFacet.mode('INVALID');
+    doTest();
+    
+    dateHistogramFacet.mode('POST');
+    expected.somename.mode = 'post';
+    doTest();
+    
     dateHistogramFacet.cacheFilter(false);
     expected.somename.cache_filter = false;
     doTest();
@@ -624,7 +679,7 @@ exports.facets = {
     test.done();
   },
   QueryFacet: function (test) {
-    test.expect(12);
+    test.expect(15);
 
     var queryFacet = ejs.QueryFacet('somename'),
       termFilter = ejs.TermFilter('t1', 'v1'),
@@ -654,6 +709,17 @@ exports.facets = {
     expected.somename.global = true;
     doTest();
     
+    queryFacet.mode('collector');
+    expected.somename.mode = 'collector';
+    doTest();
+    
+    queryFacet.mode('INVALID');
+    doTest();
+    
+    queryFacet.mode('POST');
+    expected.somename.mode = 'post';
+    doTest();
+    
     queryFacet.cacheFilter(false);
     expected.somename.cache_filter = false;
     doTest();
@@ -676,7 +742,7 @@ exports.facets = {
     test.done();
   },
   FilterFacet: function (test) {
-    test.expect(12);
+    test.expect(15);
 
     var filterFacet = ejs.FilterFacet('somename'),
       termFilter1 = ejs.TermFilter('t1', 'v1'),
@@ -706,6 +772,17 @@ exports.facets = {
     expected.somename.global = true;
     doTest();
     
+    filterFacet.mode('collector');
+    expected.somename.mode = 'collector';
+    doTest();
+    
+    filterFacet.mode('INVALID');
+    doTest();
+    
+    filterFacet.mode('POST');
+    expected.somename.mode = 'post';
+    doTest();
+    
     filterFacet.cacheFilter(false);
     expected.somename.cache_filter = false;
     doTest();
@@ -728,7 +805,7 @@ exports.facets = {
     test.done();
   },
   HistogramFacet: function (test) {
-    test.expect(25);
+    test.expect(28);
 
     var histogramFacet = ejs.HistogramFacet('somename'),
       termFilter = ejs.TermFilter('t1', 'v1'),
@@ -814,6 +891,17 @@ exports.facets = {
     expected.somename.global = true;
     doTest();
     
+    histogramFacet.mode('collector');
+    expected.somename.mode = 'collector';
+    doTest();
+    
+    histogramFacet.mode('INVALID');
+    doTest();
+    
+    histogramFacet.mode('POST');
+    expected.somename.mode = 'post';
+    doTest();
+    
     histogramFacet.cacheFilter(false);
     expected.somename.cache_filter = false;
     doTest();
@@ -832,7 +920,7 @@ exports.facets = {
     test.done();
   },
   RangeFacet: function (test) {
-    test.expect(21);
+    test.expect(24);
 
     var rangeFacet = ejs.RangeFacet('somename'),
       termFilter = ejs.TermFilter('t1', 'v1'),
@@ -913,6 +1001,17 @@ exports.facets = {
 
     rangeFacet.global(true);
     expected.somename.global = true;
+    doTest();
+    
+    rangeFacet.mode('collector');
+    expected.somename.mode = 'collector';
+    doTest();
+    
+    rangeFacet.mode('INVALID');
+    doTest();
+    
+    rangeFacet.mode('POST');
+    expected.somename.mode = 'post';
     doTest();
     
     rangeFacet.cacheFilter(false);
