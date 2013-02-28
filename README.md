@@ -23,7 +23,7 @@ in Node.js for this purpose.
 
 1. Navigate to the `examples` directory.
 2. Run server.js: `node server.js`.
-3. Open [Angular Example](http://localhost:8125/angular) or [jQuery Example](http://localhost:8125/jquery).
+3. Open [Angular Example](http://localhost:8125/angular/) or [jQuery Example](http://localhost:8125/jquery/).
 
 ### Node.js Example
 The Node.js example is a basic command line tool that accepts a set of query terms, executes the query,
