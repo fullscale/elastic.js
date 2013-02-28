@@ -27,6 +27,9 @@
         "test": "grunt test",
         "prepublish": "cp dist/elastic.js dist/elastic-node-client.js ."
     },
+    "dependencies" : {
+        "colors": "~0.6"
+    },
     "devDependencies": {
         "grunt": "~0.3.17"
     }
