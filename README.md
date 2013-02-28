@@ -8,7 +8,7 @@ You can find the official documentation at the following locations:
 - [User Guide](http://www.fullscale.co/elasticjs)
 - [API Documentation](http://docs.fullscale.co/elasticjs/)
 
-You will also be able to find unofficial documentation and examples on on our 
+You will also be able to find unofficial documentation and examples on on our
 [blog](http://www.fullscale.co/blog/) and GitHub Gist pages [here](https://gist.github.com/mattweber)
 and [here](https://gist.github.com/egaumer).
 
@@ -23,14 +23,14 @@ in Node.js for this purpose.
 
 1. Navigate to the `examples` directory.
 2. Run server.js: `node server.js`.
-3. Open [Angular Example](http://localhost:8125/angular) or [jQuery Example](http://localhost:8125/jquery).
+3. Open [Angular Example](http://localhost:8125/angular/) or [jQuery Example](http://localhost:8125/jquery/).
 
 ### Node.js Example
 The Node.js example is a basic command line tool that accepts a set of query terms, executes the query,
 and prints the results.
 
-1. Navigate to the `examples/node` directory.
-2. Run findtweets.js with your query terms.  `node findtweets.js query terms here`
+1. Install required modules with `npm install`.
+2. Run _findtweets.js_ with your query terms:  `node findtweets.js elas*`
 
 ## Contributing
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [grunt](http://gruntjs.com/).
@@ -38,5 +38,5 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 _Also, please don't edit elastic.js and elastic.min.js files as they are generated via grunt. You'll find source code in the "src" subdirectory!_
 
 ## License
-Copyright (c) 2012 FullScale Labs, LLC  
+Copyright (c) 2012 FullScale Labs, LLC
 Licensed under the MIT license.
