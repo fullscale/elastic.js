@@ -1,4 +1,4 @@
-/*! elastic.js - v1.0.0 - 2013-02-26
+/*! elastic.js - v1.0.0 - 2013-02-27
 * https://github.com/fullscale/elastic.js
 * Copyright (c) 2013 FullScale Labs, LLC; Licensed MIT */
 
@@ -17798,6 +17798,9 @@
                 <dd><code>custom</code> - any string, will guarentee searches always happen on same node.</dd>
             </dl>
 
+            <p>This option is valid during the following operations:
+                <code>search</code> and <code>count</code></p>
+                
             @member ejs.Request
             @param {String} perf the preference, any of <code>_primary</code>, <code>_local</code>, 
                 <code>_only_:$nodeid</code>, or a custom string value.
@@ -17805,10 +17808,10 @@
             */
       preference: function (perf) {
         if (perf == null) {
-          return query.preference;
+          return params.preference;
         }
       
-        query.preference = perf;
+        params.preference = perf;
         return this;
       },
 

@@ -547,7 +547,7 @@ exports.search = {
     test.done();
   },
   Request: function (test) {
-    test.expect(121);
+    test.expect(123);
 
     var req = ejs.Request({indices: ['index1'], types: ['type1']}),
       matchAll = ejs.MatchAllQuery(),
@@ -724,6 +724,11 @@ exports.search = {
     expectedPath = '/_search?routing=route2%2Croute3&timeout=5000&replication=default&consistency=all';
     req.doSearch();
     
+    req.preference('_primary');
+    test.strictEqual(req.preference(), '_primary');
+    expectedPath = '/_search?routing=route2%2Croute3&timeout=5000&replication=default&consistency=all&preference=_primary';
+    req.doSearch();
+    
     req = ejs.Request({indices: 'index', types: 'type'}).query(matchAll);  
     expected = {
       query: matchAll._self()
@@ -830,10 +835,6 @@ exports.search = {
     
     req.scriptField(scriptField2);
     expected.script_fields.my_script_field2 = scriptField2._self().my_script_field2;
-    doTest();
-    
-    req.preference('_primary');
-    expected.preference = '_primary';
     doTest();
     
     req.indexBoost('index', 5.0);
