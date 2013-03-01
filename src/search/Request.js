@@ -505,6 +505,39 @@
       },
 
       /**
+            Allows you to set the specified suggester on this request object. 
+            Multiple suggesters can be set, all of which will be returned when 
+            the search is executed.  Global suggestion text can be set by 
+            passing in a string vs. a <code>Suggest</code> object.
+
+            @since elasticsearch 0.90
+            
+            @member ejs.Request
+            @param {String || Suggest} s A valid Suggest object or a String to 
+              set as the global suggest text.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      suggest: function (s) {
+        if (s == null) {
+          return query.suggest;
+        }
+      
+        if (query.suggest == null) {
+          query.suggest = {};
+        }
+      
+        if (isString(s)) {
+          query.suggest.text = s;
+        } else if (isSuggest(s)) {
+          extend(query.suggest, s._self());
+        } else {
+          throw new TypeError('Argument must be a string or Suggest object');
+        }
+
+        return this;
+      },
+      
+      /**
             Computes a document property dynamically based on the supplied <code>ScriptField</code>.
 
             @member ejs.Request

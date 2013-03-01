@@ -120,3 +120,7 @@
     return (isEJSObject(obj) && obj._type() === 'highlight');
   };
   
+  isSuggest = function (obj) {
+    return (isEJSObject(obj) && obj._type() === 'suggest');
+  };
+  

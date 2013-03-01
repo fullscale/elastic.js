@@ -28,7 +28,7 @@ exports.search = {
     done();
   },
   exists: function (test) {
-    test.expect(7);
+    test.expect(9);
 
     test.ok(ejs.Request, 'Request');
     test.ok(ejs.ScriptField, 'ScriptField');
@@ -37,6 +37,64 @@ exports.search = {
     test.ok(ejs.Shape, 'Shape');
     test.ok(ejs.Sort, 'Sort');
     test.ok(ejs.Highlight, 'Highlight');
+    test.ok(ejs.TermSuggester, 'TermSuggester');
+    test.ok(ejs.PhraseSuggester, 'PhraseSuggester');
+    
+    test.done();
+  },
+  TermSuggester: function (test) {
+    test.expect(6);
+    
+    var suggester = ejs.TermSuggester('suggester'),
+      expected,
+      doTest = function () {
+        test.deepEqual(suggester._self(), expected);
+      };
+    
+    expected = {
+      suggester: {
+        term: {}
+      }
+    };
+    
+    test.ok(suggester, 'TermSuggester exists');
+    test.ok(suggester._self(), '_self() works');
+    doTest();
+    
+    suggester.text('sugest termz');
+    expected.suggester.text = 'sugest termz';
+    doTest();
+    
+    test.strictEqual(suggester._type(), 'suggest');
+    test.strictEqual(suggester.toString(), JSON.stringify(expected));
+    
+    test.done();
+  },
+  PhraseSuggester: function (test) {
+    test.expect(6);
+    
+    var suggester = ejs.PhraseSuggester('suggester'),
+      expected,
+      doTest = function () {
+        test.deepEqual(suggester._self(), expected);
+      };
+    
+    expected = {
+      suggester: {
+        phrase: {}
+      }
+    };
+    
+    test.ok(suggester, 'PhraseSuggester exists');
+    test.ok(suggester._self(), '_self() works');
+    doTest();
+    
+    suggester.text('sugest termz');
+    expected.suggester.text = 'sugest termz';
+    doTest();
+    
+    test.strictEqual(suggester._type(), 'suggest');
+    test.strictEqual(suggester.toString(), JSON.stringify(expected));
     
     test.done();
   },
@@ -547,7 +605,7 @@ exports.search = {
     test.done();
   },
   Request: function (test) {
-    test.expect(123);
+    test.expect(127);
 
     var req = ejs.Request({indices: ['index1'], types: ['type1']}),
       matchAll = ejs.MatchAllQuery(),
@@ -560,6 +618,9 @@ exports.search = {
       scriptField2 = ejs.ScriptField('my_script_field2')
         .script("doc['my_field_name'].value * factor")
         .params({'factor': 2.0}),
+      termSuggest = ejs.TermSuggester('my_term_suggester')
+        .text('sugest termsz'),
+      phraseSuggest = ejs.PhraseSuggester('my_phrase_suggester'),
       expected,
       mockClient,
       expectedPath = '',
@@ -829,6 +890,18 @@ exports.search = {
     expected.filter = termFilter._self();
     doTest();
     
+    req.suggest("global suggest text");
+    expected.suggest = {text: 'global suggest text'};
+    doTest();
+    
+    req.suggest(termSuggest);
+    expected.suggest.my_term_suggester = termSuggest._self().my_term_suggester;
+    doTest();
+    
+    req.suggest(phraseSuggest);
+    expected.suggest.my_phrase_suggester = phraseSuggest._self().my_phrase_suggester;
+    doTest();
+    
     req.scriptField(scriptField);
     expected.script_fields = scriptField._self();
     doTest();
@@ -898,6 +971,10 @@ exports.search = {
     
     test.throws(function () {
       req.highlight('invalid');
+    }, TypeError);
+    
+    test.throws(function () {
+      req.suggest(3);
     }, TypeError);
     
     test.done();

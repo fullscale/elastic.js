@@ -22,7 +22,7 @@ module.exports = function (grunt) {
           'src/filter/*.js',
           'src/index/*.js',
           'src/query/*.js',
-          'src/search/*.js',
+          'src/search/**/*.js',
           'src/utils.js',
           'src/post.js'
         ],
