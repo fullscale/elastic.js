@@ -43,7 +43,7 @@ exports.search = {
     test.done();
   },
   TermSuggester: function (test) {
-    test.expect(6);
+    test.expect(30);
     
     var suggester = ejs.TermSuggester('suggester'),
       expected,
@@ -63,6 +63,99 @@ exports.search = {
     
     suggester.text('sugest termz');
     expected.suggester.text = 'sugest termz';
+    doTest();
+    
+    suggester.analyzer('analyzer');
+    expected.suggester.term.analyzer = 'analyzer';
+    doTest();
+    
+    suggester.field('f');
+    expected.suggester.term.field = 'f';
+    doTest();
+    
+    suggester.size(5);
+    expected.suggester.term.size = 5;
+    doTest();
+    
+    suggester.shardSize(100);
+    expected.suggester.term.shard_size = 100;
+    doTest();
+    
+    suggester.accuracy(0.6);
+    expected.suggester.term.accuracy = 0.6;
+    doTest(0.6);
+    
+    suggester.suggestMode('missing');
+    expected.suggester.term.suggest_mode = 'missing';
+    doTest();
+    
+    suggester.suggestMode('INVALID');
+    doTest();
+    
+    suggester.suggestMode('POPULAR');
+    expected.suggester.term.suggest_mode = 'popular';
+    doTest();
+    
+    suggester.suggestMode('Always');
+    expected.suggester.term.suggest_mode = 'always';
+    doTest();
+    
+    suggester.sort('score');
+    expected.suggester.term.sort = 'score';
+    doTest();
+    
+    suggester.sort('INVALID');
+    doTest();
+    
+    suggester.sort('FREQUENCY');
+    expected.suggester.term.sort = 'frequency';
+    doTest();
+    
+    suggester.stringDistance('internal');
+    expected.suggester.term.string_distance = 'internal';
+    doTest();
+    
+    suggester.stringDistance('INVALID');
+    doTest();
+    
+    suggester.stringDistance('DAMERAU_LEVENSHTEIN');
+    expected.suggester.term.string_distance = 'damerau_levenshtein';
+    doTest();
+    
+    suggester.stringDistance('Levenstein');
+    expected.suggester.term.string_distance = 'levenstein';
+    doTest();
+    
+    suggester.stringDistance('jarowinkler');
+    expected.suggester.term.string_distance = 'jarowinkler';
+    doTest();
+    
+    suggester.stringDistance('ngram');
+    expected.suggester.term.string_distance = 'ngram';
+    doTest();
+    
+    suggester.maxEdits(3);
+    expected.suggester.term.max_edits = 3;
+    doTest();
+    
+    suggester.maxInspections(10);
+    expected.suggester.term.max_inspections = 10;
+    doTest();
+    
+    suggester.maxTermFreq(0.7);
+    expected.suggester.term.max_term_freq = 0.7;
+    doTest();
+    
+    suggester.prefixLength(4);
+    expected.suggester.term.prefix_length = 4;
+    doTest();
+    
+    suggester.minWordLen(3);
+    expected.suggester.term.min_word_len = 3;
+    doTest();
+    
+    suggester.minDocFreq(0.1);
+    expected.suggester.term.min_doc_freq = 0.1;
     doTest();
     
     test.strictEqual(suggester._type(), 'suggest');

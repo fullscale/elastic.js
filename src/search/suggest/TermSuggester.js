@@ -13,6 +13,17 @@
     @desc
     <p>A suggester that suggests terms based on edit distance.</p>
 
+    @borrows ejs.DirectSettingsMixin.accuracy as accuracy
+    @borrows ejs.DirectSettingsMixin.suggestMode as suggestMode
+    @borrows ejs.DirectSettingsMixin.sort as sort
+    @borrows ejs.DirectSettingsMixin.stringDistance as stringDistance
+    @borrows ejs.DirectSettingsMixin.maxEdits as maxEdits
+    @borrows ejs.DirectSettingsMixin.maxInspections as maxInspections
+    @borrows ejs.DirectSettingsMixin.maxTermFreq as maxTermFreq
+    @borrows ejs.DirectSettingsMixin.prefixLength as prefixLength
+    @borrows ejs.DirectSettingsMixin.minWordLen as minWordLen
+    @borrows ejs.DirectSettingsMixin.minDocFreq as minDocFreq
+
     @param {String} name The name which be used to refer to this suggester.
     */
   ejs.TermSuggester = function (name) {
@@ -22,10 +33,15 @@
         @member ejs.TermSuggester
         @property {Object} suggest
         */
-    var suggest = {};
-    suggest[name] = {term: {}};
+    var suggest = {},
+  
+    // common suggester options
+    _common = ejs.DirectSettingsMixin();
+    
+    // setup correct term suggestor format
+    suggest[name] = {term: _common._self()};
 
-    return {
+    return extend(_common, {
 
       /**
             <p>Sets the text to get suggestions for.  If not set, the global
@@ -44,6 +60,71 @@
         return this;
       },
     
+      /**
+            <p>Sets analyzer used to analyze the suggest text.</p>
+
+            @member ejs.TermSuggester
+            @param {String} analyzer A valid analyzer name.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      analyzer: function (analyzer) {
+        if (analyzer == null) {
+          return suggest[name].term.analyzer;
+        }
+    
+        suggest[name].term.analyzer = analyzer;
+        return this;
+      },
+      
+      /**
+            <p>Sets the field used to generate suggestions from.</p>
+
+            @member ejs.TermSuggester
+            @param {String} field A valid field name.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      field: function (field) {
+        if (field == null) {
+          return suggest[name].term.field;
+        }
+    
+        suggest[name].term.field = field;
+        return this;
+      },
+      
+      /**
+            <p>Sets the number of suggestions returned for each token.</p>
+
+            @member ejs.TermSuggester
+            @param {Integer} s A positive integer value.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      size: function (s) {
+        if (s == null) {
+          return suggest[name].term.size;
+        }
+    
+        suggest[name].term.size = s;
+        return this;
+      },
+      
+      /**
+            <p>Sets the maximum number of suggestions to be retrieved from 
+            each individual shard.</p>
+
+            @member ejs.TermSuggester
+            @param {Integer} s A positive integer value.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      shardSize: function (s) {
+        if (s == null) {
+          return suggest[name].term.shard_size;
+        }
+    
+        suggest[name].term.shard_size = s;
+        return this;
+      },
+      
       /**
             <p>Allows you to serialize this object into a JSON encoded string.</p>
 
@@ -74,5 +155,5 @@
       _self: function () {
         return suggest;
       }
-    };
+    });
   };
