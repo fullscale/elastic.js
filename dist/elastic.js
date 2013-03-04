@@ -1,4 +1,4 @@
-/*! elastic.js - v1.0.0 - 2013-02-27
+/*! elastic.js - v1.0.0 - 2013-03-04
 * https://github.com/fullscale/elastic.js
 * Copyright (c) 2013 FullScale Labs, LLC; Licensed MIT */
 
@@ -4711,7 +4711,40 @@
     
         return this;
       },
-          
+
+      /**
+            <p>Sets the spatial strategy.</p>  
+            <p>Valid values are:</p>
+            
+            <dl>
+                <dd><code>recursive</code> - default, recursively traverse nodes in
+                  the spatial prefix tree.  This strategy has support for 
+                  searching non-point shapes.</dd>
+                <dd><code>term</code> - uses a large TermsFilter on each node
+                  in the spatial prefix tree.  It only supports the search of 
+                  indexed Point shapes.</dd>
+            </dl>
+
+            <p>This is an advanced setting, use with care.</p>
+            
+            @since elasticsearch 0.90
+            @member ejs.GeoShapeFilter
+            @param {String} strategy The strategy as a string.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      strategy: function (strategy) {
+        if (strategy == null) {
+          return filter.geo_shape[field].strategy;
+        }
+
+        strategy = strategy.toLowerCase();
+        if (strategy === 'recursive' || strategy === 'term') {
+          filter.geo_shape[field].strategy = strategy;
+        }
+        
+        return this;
+      },
+        
       /**
             Sets the filter name.
 
@@ -11728,7 +11761,40 @@
       
         return this;
       },
+
+      /**
+            <p>Sets the spatial strategy.</p>  
+            <p>Valid values are:</p>
             
+            <dl>
+                <dd><code>recursive</code> - default, recursively traverse nodes in
+                  the spatial prefix tree.  This strategy has support for 
+                  searching non-point shapes.</dd>
+                <dd><code>term</code> - uses a large TermsFilter on each node
+                  in the spatial prefix tree.  It only supports the search of 
+                  indexed Point shapes.</dd>
+            </dl>
+
+            <p>This is an advanced setting, use with care.</p>
+            
+            @since elasticsearch 0.90
+            @member ejs.GeoShapeQuery
+            @param {String} strategy The strategy as a string.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      strategy: function (strategy) {
+        if (strategy == null) {
+          return query.geo_shape[field].strategy;
+        }
+
+        strategy = strategy.toLowerCase();
+        if (strategy === 'recursive' || strategy === 'term') {
+          query.geo_shape[field].strategy = strategy;
+        }
+        
+        return this;
+      },
+             
       /**
             Sets the boost value for documents matching the <code>Query</code>.
 

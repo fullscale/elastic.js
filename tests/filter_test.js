@@ -886,7 +886,7 @@ exports.filters = {
     test.done();
   },
   GeoShapeFilter: function (test) {
-    test.expect(17);
+    test.expect(20);
 
     var geoShapeFilter = ejs.GeoShapeFilter('f1'),
       shape1 = ejs.Shape('envelope', [[-45.0, 45.0], [45.0, -45.0]]),
@@ -953,6 +953,16 @@ exports.filters = {
     expected.geo_shape.f2.indexed_shape = iShape2._self();
     doTest();
     
+    geoShapeFilter.strategy('recursive');
+    expected.geo_shape.f2.strategy = 'recursive';
+    doTest();
+    
+    geoShapeFilter.strategy('INVALID');
+    doTest();
+    
+    geoShapeFilter.strategy('TERM');
+    expected.geo_shape.f2.strategy = 'term';
+    doTest();
     
     geoShapeFilter.cache(true);
     expected.geo_shape._cache = true;

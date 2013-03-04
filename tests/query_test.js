@@ -249,7 +249,7 @@ exports.queries = {
     test.done();
   },
   GeoShapeQuery: function (test) {
-    test.expect(15);
+    test.expect(18);
 
     var geoShapeQuery = ejs.GeoShapeQuery('f1'),
       shape1 = ejs.Shape('envelope', [[-45.0, 45.0], [45.0, -45.0]]),
@@ -316,6 +316,16 @@ exports.queries = {
     expected.geo_shape.f2.indexed_shape = iShape2._self();
     doTest();
     
+    geoShapeQuery.strategy('recursive');
+    expected.geo_shape.f2.strategy = 'recursive';
+    doTest();
+    
+    geoShapeQuery.strategy('INVALID');
+    doTest();
+    
+    geoShapeQuery.strategy('TERM');
+    expected.geo_shape.f2.strategy = 'term';
+    doTest();
     
     geoShapeQuery.boost(1.5);
     expected.geo_shape.f2.boost = 1.5;
