@@ -47,6 +47,8 @@
     isShape, // checks valid ejs Shape object
     isSort, // checks valid ejs Sort object
     isHighlight, // checks valid ejs Highlight object
+    isSuggest, // checks valid ejs Suggest object
+    isGenerator, // checks valid ejs Generator object
     
     // create ejs object
     ejs;
@@ -177,6 +179,14 @@
   
   isHighlight = function (obj) {
     return (isEJSObject(obj) && obj._type() === 'highlight');
+  };
+  
+  isSuggest = function (obj) {
+    return (isEJSObject(obj) && obj._type() === 'suggest');
+  };
+  
+  isGenerator = function (obj) {
+    return (isEJSObject(obj) && obj._type() === 'generator');
   };
   
   /**
@@ -18054,6 +18064,39 @@
       },
 
       /**
+            Allows you to set the specified suggester on this request object. 
+            Multiple suggesters can be set, all of which will be returned when 
+            the search is executed.  Global suggestion text can be set by 
+            passing in a string vs. a <code>Suggest</code> object.
+
+            @since elasticsearch 0.90
+            
+            @member ejs.Request
+            @param {String || Suggest} s A valid Suggest object or a String to 
+              set as the global suggest text.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      suggest: function (s) {
+        if (s == null) {
+          return query.suggest;
+        }
+      
+        if (query.suggest == null) {
+          query.suggest = {};
+        }
+      
+        if (isString(s)) {
+          query.suggest.text = s;
+        } else if (isSuggest(s)) {
+          extend(query.suggest, s._self());
+        } else {
+          throw new TypeError('Argument must be a string or Suggest object');
+        }
+
+        return this;
+      },
+      
+      /**
             Computes a document property dynamically based on the supplied <code>ScriptField</code>.
 
             @member ejs.Request
@@ -18942,6 +18985,896 @@
         return sort;
       }
     };
+  };
+
+  /**
+    @class
+    <p>DirectGenerator is a candidate generator for <code>PhraseSuggester</code>.
+    It generates terms based on edit distance and operators much like the
+    <code>TermSuggester</code>.</p>
+
+    @name ejs.DirectGenerator
+
+    @since elasticsearch 0.90
+  
+    @desc
+    <p>A candidate generator that generates terms based on edit distance.</p>
+
+    @borrows ejs.DirectSettingsMixin.accuracy as accuracy
+    @borrows ejs.DirectSettingsMixin.suggestMode as suggestMode
+    @borrows ejs.DirectSettingsMixin.sort as sort
+    @borrows ejs.DirectSettingsMixin.stringDistance as stringDistance
+    @borrows ejs.DirectSettingsMixin.maxEdits as maxEdits
+    @borrows ejs.DirectSettingsMixin.maxInspections as maxInspections
+    @borrows ejs.DirectSettingsMixin.maxTermFreq as maxTermFreq
+    @borrows ejs.DirectSettingsMixin.prefixLength as prefixLength
+    @borrows ejs.DirectSettingsMixin.minWordLen as minWordLen
+    @borrows ejs.DirectSettingsMixin.minDocFreq as minDocFreq
+    */
+  ejs.DirectGenerator = function () {
+
+  
+    var
+
+    // common suggester options used in this generator
+    _common = ejs.DirectSettingsMixin(),
+  
+    /**
+        The internal generator object.
+        @member ejs.DirectGenerator
+        @property {Object} suggest
+        */
+    generator = _common._self();
+
+    return extend(_common, {
+
+      /**
+            <p>Sets an analyzer that is applied to each of the tokens passed to 
+            this generator.  The analyzer is applied to the original tokens,
+            not the generated tokens.</p>
+
+            @member ejs.DirectGenerator
+            @param {String} analyzer A valid analyzer name.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      preFilter: function (analyzer) {
+        if (analyzer == null) {
+          return generator.pre_filter;
+        }
+  
+        generator.pre_filter = analyzer;
+        return this;
+      },
+    
+      /**
+            <p>Sets an analyzer that is applied to each of the generated tokens 
+            before they are passed to the actual phrase scorer.</p>
+
+            @member ejs.DirectGenerator
+            @param {String} analyzer A valid analyzer name.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      postFilter: function (analyzer) {
+        if (analyzer == null) {
+          return generator.post_filter;
+        }
+  
+        generator.post_filter = analyzer;
+        return this;
+      },
+    
+      /**
+            <p>Sets the field used to generate suggestions from.</p>
+
+            @member ejs.DirectGenerator
+            @param {String} field A valid field name.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      field: function (field) {
+        if (field == null) {
+          return generator.field;
+        }
+  
+        generator.field = field;
+        return this;
+      },
+    
+      /**
+            <p>Sets the number of suggestions returned for each token.</p>
+
+            @member ejs.DirectGenerator
+            @param {Integer} s A positive integer value.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      size: function (s) {
+        if (s == null) {
+          return generator.size;
+        }
+  
+        generator.size = s;
+        return this;
+      },
+    
+      /**
+            <p>Allows you to serialize this object into a JSON encoded string.</p>
+
+            @member ejs.DirectGenerator
+            @returns {String} returns this object as a serialized JSON string.
+            */
+      toString: function () {
+        return JSON.stringify(generator);
+      },
+
+      /**
+            The type of ejs object.  For internal use only.
+        
+            @member ejs.DirectGenerator
+            @returns {String} the type of object
+            */
+      _type: function () {
+        return 'generator';
+      },
+  
+      /**
+            <p>Retrieves the internal <code>generator</code> object. This is typically used by
+               internal API functions so use with caution.</p>
+
+            @member ejs.DirectGenerator
+            @returns {String} returns this object's internal <code>generator</code> property.
+            */
+      _self: function () {
+        return generator;
+      }
+    });
+  };
+
+  /**
+    @mixin
+    <p>The DirectSettingsMixin provides support for common options used across 
+    various <code>Suggester</code> implementations.  This object should not be 
+    used directly.</p>
+
+    @name ejs.DirectSettingsMixin
+    */
+  ejs.DirectSettingsMixin = function () {
+
+    /**
+        The internal settings object.
+        @member ejs.DirectSettingsMixin
+        @property {Object} settings
+        */
+    var settings = {};
+
+    return {
+        
+      /**
+            <p>Sets the accuracy.  How similar the suggested terms at least 
+            need to be compared to the original suggest text.</p>
+
+            @member ejs.DirectSettingsMixin
+            @param {Double} a A positive double value between 0 and 1.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      accuracy: function (a) {
+        if (a == null) {
+          return settings.accuracy;
+        }
+  
+        settings.accuracy = a;
+        return this;
+      },
+    
+      /**
+            <p>Sets the suggest mode.  Valid values are:</p>
+
+            <dl>
+              <dd><code>missing</code> - Only suggest terms in the suggest text that aren't in the index</dd>
+              <dd><code>popular</code> - Only suggest suggestions that occur in more docs then the original suggest text term</dd>
+              <dd><code>always</code> - Suggest any matching suggestions based on terms in the suggest text</dd> 
+            </dl>
+
+            @member ejs.DirectSettingsMixin
+            @param {String} m The mode of missing, popular, or always.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      suggestMode: function (m) {
+        if (m == null) {
+          return settings.suggest_mode;
+        }
+  
+        m = m.toLowerCase();
+        if (m === 'missing' || m === 'popular' || m === 'always') {
+          settings.suggest_mode = m;
+        }
+      
+        return this;
+      },
+    
+      /**
+            <p>Sets the sort mode.  Valid values are:</p>
+
+            <dl>
+              <dd><code>score</code> - Sort by score first, then document frequency, and then the term itself</dd>
+              <dd><code>frequency</code> - Sort by document frequency first, then simlarity score and then the term itself</dd>
+            </dl>
+
+            @member ejs.DirectSettingsMixin
+            @param {String} s The score type of score or frequency.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      sort: function (s) {
+        if (s == null) {
+          return settings.sort;
+        }
+  
+        s = s.toLowerCase();
+        if (s === 'score' || s === 'frequency') {
+          settings.sort = s;
+        }
+      
+        return this;
+      },
+    
+      /**
+            <p>Sets what string distance implementation to use for comparing 
+            how similar suggested terms are.  Valid values are:</p>
+
+            <dl>
+              <dd><code>internal</code> - based on damerau_levenshtein but but highly optimized for comparing string distance for terms inside the index</dd>
+              <dd><code>damerau_levenshtein</code> - String distance algorithm based on Damerau-Levenshtein algorithm</dd>
+              <dd><code>levenstein</code> - String distance algorithm based on Levenstein edit distance algorithm</dd>
+              <dd><code>jarowinkler</code> - String distance algorithm based on Jaro-Winkler algorithm</dd>
+              <dd><code>ngram</code> - String distance algorithm based on character n-grams</dd>
+            </dl>
+
+            @member ejs.DirectSettingsMixin
+            @param {String} s The string distance algorithm name.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      stringDistance: function (s) {
+        if (s == null) {
+          return settings.string_distance;
+        }
+  
+        s = s.toLowerCase();
+        if (s === 'internal' || s === 'damerau_levenshtein' || 
+            s === 'levenstein' || s === 'jarowinkler' || s === 'ngram') {
+          settings.string_distance = s;
+        }
+      
+        return this;
+      },
+    
+      /**
+            <p>Sets the maximum edit distance candidate suggestions can have 
+            in order to be considered as a suggestion.</p>
+
+            @member ejs.DirectSettingsMixin
+            @param {Integer} max An integer value greater than 0.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      maxEdits: function (max) {
+        if (max == null) {
+          return settings.max_edits;
+        }
+  
+        settings.max_edits = max;
+        return this;
+      },
+    
+      /**
+            <p>The factor that is used to multiply with the size in order 
+            to inspect more candidate suggestions.</p>
+
+            @member ejs.DirectSettingsMixin
+            @param {Integer} max A positive integer value.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      maxInspections: function (max) {
+        if (max == null) {
+          return settings.max_inspections;
+        }
+  
+        settings.max_inspections = max;
+        return this;
+      },
+    
+      /**
+            <p>Sets a maximum threshold in number of documents a suggest text 
+            token can exist in order to be corrected.</p>
+
+            @member ejs.DirectSettingsMixin
+            @param {Double} max A positive double value.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      maxTermFreq: function (max) {
+        if (max == null) {
+          return settings.max_term_freq;
+        }
+  
+        settings.max_term_freq = max;
+        return this;
+      },
+    
+      /**
+            <p>Sets the number of minimal prefix characters that must match in 
+            order be a candidate suggestion.</p>
+
+            @member ejs.DirectSettingsMixin
+            @param {Integer} len A positive integer value.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      prefixLength: function (len) {
+        if (len == null) {
+          return settings.prefix_length;
+        }
+  
+        settings.prefix_length = len;
+        return this;
+      },
+    
+      /**
+            <p>Sets the minimum length a suggest text term must have in order 
+            to be corrected.</p>
+
+            @member ejs.DirectSettingsMixin
+            @param {Integer} len A positive integer value.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      minWordLen: function (len) {
+        if (len == null) {
+          return settings.min_word_len;
+        }
+  
+        settings.min_word_len = len;
+        return this;
+      },
+    
+      /**
+            <p>Sets a minimal threshold of the number of documents a suggested 
+            term should appear in.</p>
+
+            @member ejs.DirectSettingsMixin
+            @param {Double} min A positive double value.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      minDocFreq: function (min) {
+        if (min == null) {
+          return settings.min_doc_freq;
+        }
+  
+        settings.min_doc_freq = min;
+        return this;
+      },
+  
+      /**
+            <p>Retrieves the internal <code>settings</code> object. This is typically used by
+               internal API functions so use with caution.</p>
+
+            @member ejs.DirectSettingsMixin
+            @returns {String} returns this object's internal <code>settings</code> property.
+            */
+      _self: function () {
+        return settings;
+      }
+    };
+  };
+
+  /**
+    @class
+    <p>PhraseSuggester extends the <code>PhraseSuggester</code> and suggests
+    entire corrected phrases instead of individual tokens.  The individual
+    phrase suggestions are weighted based on ngram-langugage models. In practice 
+    it will be able to make better decision about which tokens to pick based on 
+    co-occurence and frequencies.</p>
+
+    @name ejs.PhraseSuggester
+
+    @since elasticsearch 0.90
+    
+    @desc
+    <p>A suggester that suggests entire corrected phrases.</p>
+
+    @param {String} name The name which be used to refer to this suggester.
+    */
+  ejs.PhraseSuggester = function (name) {
+
+    /**
+        The internal suggest object.
+        @member ejs.PhraseSuggester
+        @property {Object} suggest
+        */
+    var suggest = {};
+    suggest[name] = {phrase: {}};
+
+    return {
+
+      /**
+            <p>Sets the text to get suggestions for.  If not set, the global
+            suggestion text will be used.</p>
+
+            @member ejs.PhraseSuggester
+            @param {String} txt A string to get suggestions for.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      text: function (txt) {
+        if (txt == null) {
+          return suggest[name].text;
+        }
+    
+        suggest[name].text = txt;
+        return this;
+      },
+
+      /**
+            <p>Sets analyzer used to analyze the suggest text.</p>
+
+            @member ejs.PhraseSuggester
+            @param {String} analyzer A valid analyzer name.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      analyzer: function (analyzer) {
+        if (analyzer == null) {
+          return suggest[name].phrase.analyzer;
+        }
+    
+        suggest[name].phrase.analyzer = analyzer;
+        return this;
+      },
+      
+      /**
+            <p>Sets the field used to generate suggestions from.</p>
+
+            @member ejs.PhraseSuggester
+            @param {String} field A valid field name.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      field: function (field) {
+        if (field == null) {
+          return suggest[name].phrase.field;
+        }
+    
+        suggest[name].phrase.field = field;
+        return this;
+      },
+      
+      /**
+            <p>Sets the number of suggestions returned for each token.</p>
+
+            @member ejs.PhraseSuggester
+            @param {Integer} s A positive integer value.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      size: function (s) {
+        if (s == null) {
+          return suggest[name].phrase.size;
+        }
+    
+        suggest[name].phrase.size = s;
+        return this;
+      },
+      
+      /**
+            <p>Sets the maximum number of suggestions to be retrieved from 
+            each individual shard.</p>
+
+            @member ejs.PhraseSuggester
+            @param {Integer} s A positive integer value.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      shardSize: function (s) {
+        if (s == null) {
+          return suggest[name].phrase.shard_size;
+        }
+    
+        suggest[name].phrase.shard_size = s;
+        return this;
+      },
+      
+      /**
+            <p>Sets the likelihood of a term being a misspelled even if the 
+            term exists in the dictionary. The default it 0.95 corresponding 
+            to 5% or the real words are misspelled.</p>
+
+            @member ejs.PhraseSuggester
+            @param {Double} l A positive double value greater than 0.0.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      realWorldErrorLikelihood: function (l) {
+        if (l == null) {
+          return suggest[name].phrase.real_world_error_likelihood;
+        }
+    
+        suggest[name].phrase.real_world_error_likelihood = l;
+        return this;
+      },
+      
+      /**
+            <p>Sets the confidence level defines a factor applied to the input 
+            phrases score which is used as a threshold for other suggest 
+            candidates. Only candidates that score higher than the threshold 
+            will be included in the result.</p>
+
+            @member ejs.PhraseSuggester
+            @param {Double} c A positive double value.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      confidence: function (c) {
+        if (c == null) {
+          return suggest[name].phrase.confidence;
+        }
+    
+        suggest[name].phrase.confidence = c;
+        return this;
+      },
+      
+      /**
+            <p>Sets the separator that is used to separate terms in the bigram 
+            field. If not set the whitespce character is used as a 
+            separator.</p>
+
+            @member ejs.PhraseSuggester
+            @param {String} sep A string separator.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      separator: function (sep) {
+        if (sep == null) {
+          return suggest[name].phrase.separator;
+        }
+    
+        suggest[name].phrase.separator = sep;
+        return this;
+      },
+      
+      /**
+            <p>Sets the maximum percentage of the terms that at most 
+            considered to be misspellings in order to form a correction.</p>
+
+            @member ejs.PhraseSuggester
+            @param {Double} c A positive double value greater between 0 and 1.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      maxErrors: function (max) {
+        if (max == null) {
+          return suggest[name].phrase.max_errors;
+        }
+    
+        suggest[name].phrase.max_errors = max;
+        return this;
+      },
+      
+      /**
+            <p>Sets the max size of the n-grams (shingles) in the field. If 
+            the field doesn't contain n-grams (shingles) this should be 
+            omitted or set to 1.</p>
+
+            @member ejs.PhraseSuggester
+            @param {Integer} s A positive integer value.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      gramSize: function (s) {
+        if (s == null) {
+          return suggest[name].phrase.gram_size;
+        }
+    
+        suggest[name].phrase.gram_size = s;
+        return this;
+      },
+      
+      /**
+            <p>Forces the use of unigrams.</p>
+
+            @member ejs.PhraseSuggester
+            @param {Boolean} trueFalse True to force unigrams, false otherwise.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      forceUnigrams: function (trueFalse) {
+        if (trueFalse == null) {
+          return suggest[name].phrase.force_unigrams;
+        }
+    
+        suggest[name].phrase.force_unigrams = trueFalse;
+        return this;
+      },
+      
+      /**
+            <p>A smoothing model that takes the weighted mean of the unigrams, 
+            bigrams and trigrams based on user supplied weights (lambdas). The
+            sum of tl, bl, and ul must equal 1.</p>
+
+            @member ejs.PhraseSuggester
+            @param {Double} tl A positive double value used for trigram weight.
+            @param {Double} bl A positive double value used for bigram weight.
+            @param {Double} ul A positive double value used for unigram weight.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      linearSmoothing: function (tl, bl, ul) {
+        if (arguments.length === 0) {
+          return suggest[name].phrase.linear;
+        }
+    
+        suggest[name].phrase.linear = {
+          trigram_lambda: tl,
+          bigram_lambda: bl,
+          unigram_lambda: ul
+        };
+        
+        return this;
+      },
+      
+      /**
+            <p>A smoothing model that uses an additive smoothing model where a 
+            constant (typically 1.0 or smaller) is added to all counts to 
+            balance weights, The default alpha is 0.5.</p>
+
+            @member ejs.PhraseSuggester
+            @param {Double} alpha A double value.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      laplaceSmoothing: function (alpha) {
+        if (alpha == null) {
+          return suggest[name].phrase.laplace;
+        }
+    
+        suggest[name].phrase.laplace = {
+          alpha: alpha
+        };
+        
+        return this;
+      },
+      
+      /**
+            <p>A simple backoff model that backs off to lower order n-gram 
+            models if the higher order count is 0 and discounts the lower 
+            order n-gram model by a constant factor. The default discount is 
+            0.4.</p>
+
+            @member ejs.PhraseSuggester
+            @param {Double} discount A double value.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      stupidBackoffSmoothing: function (discount) {
+        if (discount == null) {
+          return suggest[name].phrase.stupid_backoff;
+        }
+    
+        suggest[name].phrase.stupid_backoff = {
+          discount: discount
+        };
+        
+        return this;
+      },
+      
+      /**
+            Adds a direct generator. If passed a single <code>Generator</code>
+            it is added to the list of existing generators.  If passed an 
+            array of Generators, they replace all existing generators.
+
+            @member ejs.PhraseSuggester
+            @param {Generator || Array} oGenerator A valid Generator or 
+              array of Generator objects.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      directGenerator: function (oGenerator) {
+        var i, len;
+
+        if (suggest[name].phrase.direct_generator == null) {
+          suggest[name].phrase.direct_generator = [];
+        }
+
+        if (oGenerator == null) {
+          return suggest[name].phrase.direct_generator;
+        }
+
+        if (isGenerator(oGenerator)) {
+          suggest[name].phrase.direct_generator.push(oGenerator._self());
+        } else if (isArray(oGenerator)) {
+          suggest[name].phrase.direct_generator = [];
+          for (i = 0, len = oGenerator.length; i < len; i++) {
+            if (!isGenerator(oGenerator[i])) {
+              throw new TypeError('Argument must be an array of Generators');
+            }
+
+            suggest[name].phrase.direct_generator.push(oGenerator[i]._self());
+          }
+        } else {
+          throw new TypeError('Argument must be a Generator or array of Generators');
+        }
+
+        return this;
+      },
+        
+      /**
+            <p>Allows you to serialize this object into a JSON encoded string.</p>
+
+            @member ejs.PhraseSuggester
+            @returns {String} returns this object as a serialized JSON string.
+            */
+      toString: function () {
+        return JSON.stringify(suggest);
+      },
+
+      /**
+            The type of ejs object.  For internal use only.
+          
+            @member ejs.PhraseSuggester
+            @returns {String} the type of object
+            */
+      _type: function () {
+        return 'suggest';
+      },
+    
+      /**
+            <p>Retrieves the internal <code>suggest</code> object. This is typically used by
+               internal API functions so use with caution.</p>
+
+            @member ejs.PhraseSuggester
+            @returns {String} returns this object's internal <code>suggest</code> property.
+            */
+      _self: function () {
+        return suggest;
+      }
+    };
+  };
+
+  /**
+    @class
+    <p>TermSuggester suggests terms based on edit distance. The provided suggest 
+    text is analyzed before terms are suggested. The suggested terms are 
+    provided per analyzed suggest text token.  This leaves the suggest-selection 
+    to the API consumer.  For a higher level suggester, please use the 
+    <code>PhraseSuggester</code>.</p>
+
+    @name ejs.TermSuggester
+
+    @since elasticsearch 0.90
+    
+    @desc
+    <p>A suggester that suggests terms based on edit distance.</p>
+
+    @borrows ejs.DirectSettingsMixin.accuracy as accuracy
+    @borrows ejs.DirectSettingsMixin.suggestMode as suggestMode
+    @borrows ejs.DirectSettingsMixin.sort as sort
+    @borrows ejs.DirectSettingsMixin.stringDistance as stringDistance
+    @borrows ejs.DirectSettingsMixin.maxEdits as maxEdits
+    @borrows ejs.DirectSettingsMixin.maxInspections as maxInspections
+    @borrows ejs.DirectSettingsMixin.maxTermFreq as maxTermFreq
+    @borrows ejs.DirectSettingsMixin.prefixLength as prefixLength
+    @borrows ejs.DirectSettingsMixin.minWordLen as minWordLen
+    @borrows ejs.DirectSettingsMixin.minDocFreq as minDocFreq
+
+    @param {String} name The name which be used to refer to this suggester.
+    */
+  ejs.TermSuggester = function (name) {
+
+    /**
+        The internal suggest object.
+        @member ejs.TermSuggester
+        @property {Object} suggest
+        */
+    var suggest = {},
+  
+    // common suggester options
+    _common = ejs.DirectSettingsMixin();
+    
+    // setup correct term suggestor format
+    suggest[name] = {term: _common._self()};
+
+    return extend(_common, {
+
+      /**
+            <p>Sets the text to get suggestions for.  If not set, the global
+            suggestion text will be used.</p>
+
+            @member ejs.TermSuggester
+            @param {String} txt A string to get suggestions for.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      text: function (txt) {
+        if (txt == null) {
+          return suggest[name].text;
+        }
+    
+        suggest[name].text = txt;
+        return this;
+      },
+    
+      /**
+            <p>Sets analyzer used to analyze the suggest text.</p>
+
+            @member ejs.TermSuggester
+            @param {String} analyzer A valid analyzer name.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      analyzer: function (analyzer) {
+        if (analyzer == null) {
+          return suggest[name].term.analyzer;
+        }
+    
+        suggest[name].term.analyzer = analyzer;
+        return this;
+      },
+      
+      /**
+            <p>Sets the field used to generate suggestions from.</p>
+
+            @member ejs.TermSuggester
+            @param {String} field A valid field name.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      field: function (field) {
+        if (field == null) {
+          return suggest[name].term.field;
+        }
+    
+        suggest[name].term.field = field;
+        return this;
+      },
+      
+      /**
+            <p>Sets the number of suggestions returned for each token.</p>
+
+            @member ejs.TermSuggester
+            @param {Integer} s A positive integer value.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      size: function (s) {
+        if (s == null) {
+          return suggest[name].term.size;
+        }
+    
+        suggest[name].term.size = s;
+        return this;
+      },
+      
+      /**
+            <p>Sets the maximum number of suggestions to be retrieved from 
+            each individual shard.</p>
+
+            @member ejs.TermSuggester
+            @param {Integer} s A positive integer value.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      shardSize: function (s) {
+        if (s == null) {
+          return suggest[name].term.shard_size;
+        }
+    
+        suggest[name].term.shard_size = s;
+        return this;
+      },
+      
+      /**
+            <p>Allows you to serialize this object into a JSON encoded string.</p>
+
+            @member ejs.TermSuggester
+            @returns {String} returns this object as a serialized JSON string.
+            */
+      toString: function () {
+        return JSON.stringify(suggest);
+      },
+
+      /**
+            The type of ejs object.  For internal use only.
+          
+            @member ejs.TermSuggester
+            @returns {String} the type of object
+            */
+      _type: function () {
+        return 'suggest';
+      },
+    
+      /**
+            <p>Retrieves the internal <code>suggest</code> object. This is typically used by
+               internal API functions so use with caution.</p>
+
+            @member ejs.TermSuggester
+            @returns {String} returns this object's internal <code>suggest</code> property.
+            */
+      _self: function () {
+        return suggest;
+      }
+    });
   };
 
   // run in noConflict mode

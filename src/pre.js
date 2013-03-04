@@ -44,6 +44,7 @@
     isSort, // checks valid ejs Sort object
     isHighlight, // checks valid ejs Highlight object
     isSuggest, // checks valid ejs Suggest object
+    isGenerator, // checks valid ejs Generator object
     
     // create ejs object
     ejs;

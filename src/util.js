@@ -124,3 +124,7 @@
     return (isEJSObject(obj) && obj._type() === 'suggest');
   };
   
+  isGenerator = function (obj) {
+    return (isEJSObject(obj) && obj._type() === 'generator');
+  };
+  

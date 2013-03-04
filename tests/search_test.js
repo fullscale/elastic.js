@@ -28,7 +28,7 @@ exports.search = {
     done();
   },
   exists: function (test) {
-    test.expect(9);
+    test.expect(11);
 
     test.ok(ejs.Request, 'Request');
     test.ok(ejs.ScriptField, 'ScriptField');
@@ -39,6 +39,121 @@ exports.search = {
     test.ok(ejs.Highlight, 'Highlight');
     test.ok(ejs.TermSuggester, 'TermSuggester');
     test.ok(ejs.PhraseSuggester, 'PhraseSuggester');
+    test.ok(ejs.DirectSettingsMixin, 'DirectSettingsMixin');
+    test.ok(ejs.DirectGenerator, 'DirectGenerator');
+    
+    test.done();
+  },
+  DirectGenerator: function (test) {
+    test.expect(29);
+    
+    var generator = ejs.DirectGenerator(),
+      expected,
+      doTest = function () {
+        test.deepEqual(generator._self(), expected);
+      };
+    
+    expected = {};
+    
+    test.ok(generator, 'DirectGenerator exists');
+    test.ok(generator._self(), '_self() works');
+    doTest();
+    
+    generator.preFilter('pre analyzer');
+    expected.pre_filter = 'pre analyzer';
+    doTest();
+    
+    generator.postFilter('post analyzer');
+    expected.post_filter = 'post analyzer';
+    doTest();
+    
+    generator.field('f');
+    expected.field = 'f';
+    doTest();
+    
+    generator.size(5);
+    expected.size = 5;
+    doTest();
+    
+    generator.accuracy(0.6);
+    expected.accuracy = 0.6;
+    doTest(0.6);
+    
+    generator.suggestMode('missing');
+    expected.suggest_mode = 'missing';
+    doTest();
+    
+    generator.suggestMode('INVALID');
+    doTest();
+    
+    generator.suggestMode('POPULAR');
+    expected.suggest_mode = 'popular';
+    doTest();
+    
+    generator.suggestMode('Always');
+    expected.suggest_mode = 'always';
+    doTest();
+    
+    generator.sort('score');
+    expected.sort = 'score';
+    doTest();
+    
+    generator.sort('INVALID');
+    doTest();
+    
+    generator.sort('FREQUENCY');
+    expected.sort = 'frequency';
+    doTest();
+    
+    generator.stringDistance('internal');
+    expected.string_distance = 'internal';
+    doTest();
+    
+    generator.stringDistance('INVALID');
+    doTest();
+    
+    generator.stringDistance('DAMERAU_LEVENSHTEIN');
+    expected.string_distance = 'damerau_levenshtein';
+    doTest();
+    
+    generator.stringDistance('Levenstein');
+    expected.string_distance = 'levenstein';
+    doTest();
+    
+    generator.stringDistance('jarowinkler');
+    expected.string_distance = 'jarowinkler';
+    doTest();
+    
+    generator.stringDistance('ngram');
+    expected.string_distance = 'ngram';
+    doTest();
+    
+    generator.maxEdits(3);
+    expected.max_edits = 3;
+    doTest();
+    
+    generator.maxInspections(10);
+    expected.max_inspections = 10;
+    doTest();
+    
+    generator.maxTermFreq(0.7);
+    expected.max_term_freq = 0.7;
+    doTest();
+    
+    generator.prefixLength(4);
+    expected.prefix_length = 4;
+    doTest();
+    
+    generator.minWordLen(3);
+    expected.min_word_len = 3;
+    doTest();
+    
+    generator.minDocFreq(0.1);
+    expected.min_doc_freq = 0.1;
+    doTest();
+    
+    test.strictEqual(generator._type(), 'generator');
+    test.strictEqual(generator.toString(), JSON.stringify(expected));
     
     test.done();
   },
@@ -164,9 +279,22 @@ exports.search = {
     test.done();
   },
   PhraseSuggester: function (test) {
-    test.expect(6);
+    test.expect(24);
     
     var suggester = ejs.PhraseSuggester('suggester'),
+      gen1 = ejs.DirectGenerator().field('body')
+        .suggestMode('always')
+        .minWordLen(1),
+      gen2 = ejs.DirectGenerator().field('reverse')
+        .suggestMode('always')
+        .minWordLen(1)
+        .preFilter('reverse')
+        .postFilter('reverse'),
+      gen3 = ejs.DirectGenerator().field('body')
+        .suggestMode('popular')
+        .minWordLen(2)
+        .prefixLength(3)
+        .size(100),
       expected,
       doTest = function () {
         test.deepEqual(suggester._self(), expected);
@@ -186,8 +314,88 @@ exports.search = {
     expected.suggester.text = 'sugest termz';
     doTest();
     
+    suggester.analyzer('analyzer');
+    expected.suggester.phrase.analyzer = 'analyzer';
+    doTest();
+    
+    suggester.field('f');
+    expected.suggester.phrase.field = 'f';
+    doTest();
+    
+    suggester.size(5);
+    expected.suggester.phrase.size = 5;
+    doTest();
+    
+    suggester.shardSize(100);
+    expected.suggester.phrase.shard_size = 100;
+    doTest();
+    
+    suggester.realWorldErrorLikelihood(0.99);
+    expected.suggester.phrase.real_world_error_likelihood = 0.99;
+    doTest();
+    
+    suggester.confidence(0.6);
+    expected.suggester.phrase.confidence = 0.6;
+    doTest();
+    
+    suggester.separator('|');
+    expected.suggester.phrase.separator = '|';
+    doTest();
+    
+    suggester.maxErrors(0.5);
+    expected.suggester.phrase.max_errors = 0.5;
+    doTest();
+    
+    suggester.gramSize(2);
+    expected.suggester.phrase.gram_size = 2;
+    doTest();
+    
+    suggester.forceUnigrams(false);
+    expected.suggester.phrase.force_unigrams = false;
+    doTest();
+    
+    suggester.linearSmoothing(0.7, 0.2, 0.1);
+    expected.suggester.phrase.linear = {
+      trigram_lambda: 0.7,
+      bigram_lambda: 0.2,
+      unigram_lambda: 0.1
+    };
+    doTest();
+    
+    suggester.laplaceSmoothing(0.7);
+    expected.suggester.phrase.laplace = {
+      alpha: 0.7
+    };
+    doTest();
+    
+    suggester.stupidBackoffSmoothing(0.5);
+    expected.suggester.phrase.stupid_backoff = {
+      discount: 0.5
+    };
+    doTest();
+    
+    suggester.directGenerator(gen1);
+    expected.suggester.phrase.direct_generator = [gen1._self()];
+    doTest();
+    
+    suggester.directGenerator(gen2);
+    expected.suggester.phrase.direct_generator.push(gen2._self());
+    doTest();
+    
+    suggester.directGenerator([gen3, gen1]);
+    expected.suggester.phrase.direct_generator = [gen3._self(), gen1._self()];
+    doTest();
+    
     test.strictEqual(suggester._type(), 'suggest');
     test.strictEqual(suggester.toString(), JSON.stringify(expected));
+    
+    test.throws(function () {
+      suggester.directGenerator('invalid');
+    }, TypeError);
+    
+    test.throws(function () {
+      suggester.directGenerator([gen1, gen2, 'invalid']);
+    }, TypeError);
     
     test.done();
   },
