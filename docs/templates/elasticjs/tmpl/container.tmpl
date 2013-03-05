@@ -150,6 +150,8 @@
                     if (doc.description) {
                       print('<p class="description">' + doc.description + '</p>');
                     }
+
+                    print(render('details.tmpl', doc));
             
                     if (doc.examples && doc.examples.length) {
                       print('<h2>Example' + (doc.examples.length > 1? 's':'') + '</h2>');
