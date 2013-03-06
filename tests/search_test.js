@@ -355,22 +355,28 @@ exports.search = {
     doTest();
     
     suggester.linearSmoothing(0.7, 0.2, 0.1);
-    expected.suggester.phrase.linear = {
-      trigram_lambda: 0.7,
-      bigram_lambda: 0.2,
-      unigram_lambda: 0.1
+    expected.suggester.phrase.smoothing = {
+      linear: {
+        trigram_lambda: 0.7,
+        bigram_lambda: 0.2,
+        unigram_lambda: 0.1
+      }
     };
     doTest();
     
     suggester.laplaceSmoothing(0.7);
-    expected.suggester.phrase.laplace = {
-      alpha: 0.7
+    expected.suggester.phrase.smoothing = {
+      laplace: {
+        alpha: 0.7
+      }
     };
     doTest();
     
     suggester.stupidBackoffSmoothing(0.5);
-    expected.suggester.phrase.stupid_backoff = {
-      discount: 0.5
+    expected.suggester.phrase.smoothing = {
+      stupid_backoff: {
+        discount: 0.5
+      }
     };
     doTest();
     

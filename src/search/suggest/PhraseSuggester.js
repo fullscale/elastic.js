@@ -228,13 +228,15 @@
             */
       linearSmoothing: function (tl, bl, ul) {
         if (arguments.length === 0) {
-          return suggest[name].phrase.linear;
+          return suggest[name].phrase.smoothing;
         }
     
-        suggest[name].phrase.linear = {
-          trigram_lambda: tl,
-          bigram_lambda: bl,
-          unigram_lambda: ul
+        suggest[name].phrase.smoothing = {
+          linear: {
+            trigram_lambda: tl,
+            bigram_lambda: bl,
+            unigram_lambda: ul
+          }
         };
         
         return this;
@@ -251,11 +253,13 @@
             */
       laplaceSmoothing: function (alpha) {
         if (alpha == null) {
-          return suggest[name].phrase.laplace;
+          return suggest[name].phrase.smoothing;
         }
     
-        suggest[name].phrase.laplace = {
-          alpha: alpha
+        suggest[name].phrase.smoothing = {
+          laplace: {
+            alpha: alpha
+          }
         };
         
         return this;
@@ -273,11 +277,13 @@
             */
       stupidBackoffSmoothing: function (discount) {
         if (discount == null) {
-          return suggest[name].phrase.stupid_backoff;
+          return suggest[name].phrase.smoothing;
         }
     
-        suggest[name].phrase.stupid_backoff = {
-          discount: discount
+        suggest[name].phrase.smoothing = {
+          stupid_backoff: {
+            discount: discount
+          }
         };
         
         return this;
