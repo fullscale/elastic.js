@@ -633,23 +633,23 @@ exports.search = {
     expected.title.ignore_unmapped = true;
     doTest();
     
-    sort.sortMode('min');
-    expected.title.sort_mode = 'min';
+    sort.mode('min');
+    expected.title.mode = 'min';
     doTest();
     
-    sort.sortMode('INVALID');
+    sort.mode('INVALID');
     doTest();
     
-    sort.sortMode('MAX');
-    expected.title.sort_mode = 'max';
+    sort.mode('MAX');
+    expected.title.mode = 'max';
     doTest();
     
-    sort.sortMode('Avg');
-    expected.title.sort_mode = 'avg';
+    sort.mode('Avg');
+    expected.title.mode = 'avg';
     doTest();
     
-    sort.sortMode('sum');
-    expected.title.sort_mode = 'sum';
+    sort.mode('sum');
+    expected.title.mode = 'sum';
     doTest();
     
     sort.nestedPath('nested.path');

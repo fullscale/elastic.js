@@ -361,14 +361,14 @@
             @param {String} m The sort mode.  Either min, max, sum, or avg.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
-      sortMode: function (m) {
+      mode: function (m) {
         if (m == null) {
-          return sort[key].sort_mode;
+          return sort[key].mode;
         }
 
         m = m.toLowerCase();
         if (m === 'min' || m === 'max' || m === 'sum' || m === 'avg') {
-          sort[key].sort_mode = m;
+          sort[key].mode = m;
         }
       
         return this;
