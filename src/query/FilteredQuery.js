@@ -110,7 +110,7 @@
         }
 
         strategy = strategy.toLowerCase();
-        if (strategy === 'query_first' || strategy === 'random_access_random' ||
+        if (strategy === 'query_first' || strategy === 'random_access_always' ||
           strategy === 'leap_frog' || strategy === 'leap_frog_filter_first' ||
           strategy.indexOf('random_access_') === 0) {
             

@@ -2578,8 +2578,8 @@ exports.queries = {
     filterQuery.strategy('INVALID');
     doTest();
     
-    filterQuery.strategy('random_access_random');
-    expected.filtered.strategy = 'random_access_random';
+    filterQuery.strategy('random_access_always');
+    expected.filtered.strategy = 'random_access_always';
     doTest();
     
     filterQuery.strategy('LEAP_FROG');
