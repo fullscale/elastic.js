@@ -912,7 +912,7 @@ exports.search = {
     test.done();
   },
   Request: function (test) {
-    test.expect(127);
+    test.expect(136);
 
     var req = ejs.Request({indices: ['index1'], types: ['type1']}),
       matchAll = ejs.MatchAllQuery(),
@@ -1095,6 +1095,21 @@ exports.search = {
     req.preference('_primary');
     test.strictEqual(req.preference(), '_primary');
     expectedPath = '/_search?routing=route2%2Croute3&timeout=5000&replication=default&consistency=all&preference=_primary';
+    req.doSearch();
+    
+    req.ignoreIndices('none');
+    test.strictEqual(req.ignoreIndices(), 'none');
+    expectedPath = '/_search?routing=route2%2Croute3&timeout=5000&replication=default&consistency=all&preference=_primary&ignore_indices=none';
+    req.doSearch();
+    
+    req.ignoreIndices('INVALID');
+    test.strictEqual(req.ignoreIndices(), 'none');
+    expectedPath = '/_search?routing=route2%2Croute3&timeout=5000&replication=default&consistency=all&preference=_primary&ignore_indices=none';
+    req.doSearch();
+    
+    req.ignoreIndices('MISSING');
+    test.strictEqual(req.ignoreIndices(), 'missing');
+    expectedPath = '/_search?routing=route2%2Croute3&timeout=5000&replication=default&consistency=all&preference=_primary&ignore_indices=missing';
     req.doSearch();
     
     req = ejs.Request({indices: 'index', types: 'type'}).query(matchAll);  

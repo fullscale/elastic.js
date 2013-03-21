@@ -591,6 +591,35 @@
       },
 
       /**
+            <p>Determines what type of indices to exclude from a request.  The
+            value can be one of the following:</p>
+
+            <dl>
+                <dd><code>none</code> - No indices / aliases will be excluded from a request</dd>
+                <dd><code>missing</code> - Indices / aliases that are missing will be excluded from a request</dd>
+            </dl>
+
+            <p>This option is valid during the following operations:
+                <code>search, count</code> and <code>delete by query</code></p>
+                
+            @member ejs.Request
+            @param {String} ignoreType the type of ignore (none or missing).
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      ignoreIndices: function (ignoreType) {
+        if (ignoreType == null) {
+          return params.ignore_indices;
+        }
+      
+        ignoreType = ignoreType.toLowerCase();
+        if (ignoreType === 'none' || ignoreType === 'missing') {
+          params.ignore_indices = ignoreType;
+        }
+        
+        return this;
+      },
+      
+      /**
             Boosts hits in the specified index by the given boost value.
 
             @member ejs.Request
