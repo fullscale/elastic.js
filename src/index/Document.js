@@ -693,10 +693,11 @@
             <p>Retrieves a document from the given index and type.</p>
 
             @member ejs.Document
-            @param {Function} fnCallBack A callback function that handles the response.
+            @param {Function} successcb A callback function that handles the response.
+            @param {Function} errorcb A callback function that handles errors.
             @returns {Object} The return value is dependent on client implementation.
             */
-      doGet: function (fnCallBack) {
+      doGet: function (successcb, errorcb) {
         // make sure the user has set a client
         if (ejs.client == null) {
           throw new Error("No Client Set");
@@ -711,7 +712,7 @@
         // params as the data
         var url = '/' + index + '/' + type + '/' + id;
         
-        return ejs.client.get(url, genClientParams(), fnCallBack);
+        return ejs.client.get(url, genClientParams(), successcb, errorcb);
       },
 
       /**
@@ -719,10 +720,11 @@
             is set, one is created during indexing.</p>
 
             @member ejs.Document
-            @param {Function} fnCallBack A callback function that handles the response.
+            @param {Function} successcb A callback function that handles the response.
+            @param {Function} errorcb A callback function that handles errors.
             @returns {Object} The return value is dependent on client implementation.
             */
-      doIndex: function (fnCallBack) {
+      doIndex: function (successcb, errorcb) {
         // make sure the user has set a client
         if (ejs.client == null) {
           throw new Error("No Client Set");
@@ -751,10 +753,10 @@
         
         // do post if id not set so one is created
         if (id == null) {
-          response = ejs.client.post(url, data, fnCallBack);
+          response = ejs.client.post(url, data, successcb, errorcb);
         } else {
           // put when id is specified
-          response = ejs.client.put(url, data, fnCallBack);
+          response = ejs.client.put(url, data, successcb, errorcb);
         }
         
         return response;
@@ -770,10 +772,11 @@
             partial document, set the source with the partial document.</p>
 
             @member ejs.Document
-            @param {Function} fnCallBack A callback function that handles the response.
+            @param {Function} successcb A callback function that handles the response.
+            @param {Function} errorcb A callback function that handles errors.
             @returns {Object} The return value is dependent on client implementation.
             */
-      doUpdate: function (fnCallBack) {
+      doUpdate: function (successcb, errorcb) {
         // make sure the user has set a client
         if (ejs.client == null) {
           throw new Error("No Client Set");
@@ -815,7 +818,7 @@
           data.doc = params.source;
         }
         
-        return ejs.client.post(url, JSON.stringify(data), fnCallBack);
+        return ejs.client.post(url, JSON.stringify(data), successcb, errorcb);
       },
 
       /**
@@ -823,10 +826,11 @@
             speciifed id.</p>
 
             @member ejs.Document
-            @param {Function} fnCallBack A callback function that handles the response.
+            @param {Function} successcb A callback function that handles the response.
+            @param {Function} errorcb A callback function that handles errors.
             @returns {void} Returns the value of the callback when executing on the server.
             */
-      doDelete: function (fnCallBack) {
+      doDelete: function (successcb, errorcb) {
         // make sure the user has set a client
         if (ejs.client == null) {
           throw new Error("No Client Set");
@@ -844,7 +848,7 @@
           url = url + '?' + paramStr;
         }
         
-        return ejs.client.del(url, data, fnCallBack);
+        return ejs.client.del(url, data, successcb, errorcb);
       }
 
     };

@@ -1,4 +1,4 @@
-/*! elastic.js - v1.0.0 - 2013-03-05
+/*! elastic.js - v1.0.0 - 2013-03-21
 * https://github.com/fullscale/elastic.js
 * Copyright (c) 2013 FullScale Labs, LLC; Licensed MIT */
 
@@ -98,10 +98,12 @@
             @member ejs.NodeClient
             @param {String} path the path to GET from the server
             @param {Object} data an object of url parameters for the request
-            @param {Function} cb a callback function that will be called with
+            @param {Function} successcb a callback function that will be called with
               the results of the request.
+            @param {Function} errorcb a callback function that will be called
+                when there is an error with the request
             */
-      get: function (path, data, cb) {
+      get: function (path, data, successcb, errorcb) {
         var 
         
           opt = {
@@ -120,13 +122,18 @@
             });
 
             res.on('end', function () {
-              if (cb != null) {
-                cb(JSON.parse(resData));
+              if (successcb != null) {
+                successcb(JSON.parse(resData));
               }
             });
             
           });
-          
+        
+        // handle request errors
+        if (errorcb != null) {
+          req.on('error', errorcb);
+        }
+        
         req.end();
       },
       
@@ -136,10 +143,12 @@
             @member ejs.NodeClient
             @param {String} path the path to POST to on the server
             @param {String} data the POST body
-            @param {Function} cb a callback function that will be called with
+            @param {Function} successcb a callback function that will be called with
               the results of the request.
+            @param {Function} errorcb a callback function that will be called
+                when there is an error with the request
             */
-      post: function (path, data, cb) {
+      post: function (path, data, successcb, errorcb) {
         var 
         
           opt = {
@@ -161,12 +170,17 @@
             });
 
             res.on('end', function () {
-              if (cb != null) {
-                cb(JSON.parse(resData));
+              if (successcb != null) {
+                successcb(JSON.parse(resData));
               }
             });
             
           });
+        
+        // handle request errors
+        if (errorcb != null) {
+          req.on('error', errorcb);
+        }
           
         req.write(data);
         req.end();        
@@ -178,10 +192,12 @@
             @member ejs.NodeClient
             @param {String} path the path to PUT to on the server
             @param {String} data the PUT body
-            @param {Function} cb a callback function that will be called with
+            @param {Function} successcb a callback function that will be called with
               the results of the request. 
+            @param {Function} errorcb a callback function that will be called
+                when there is an error with the request
             */
-      put: function (path, data, cb) {
+      put: function (path, data, successcb, errorcb) {
         var 
         
           opt = {
@@ -203,12 +219,17 @@
             });
 
             res.on('end', function () {
-              if (cb != null) {
-                cb(JSON.parse(resData));
+              if (successcb != null) {
+                successcb(JSON.parse(resData));
               }
             });
             
           });
+        
+        // handle request errors
+        if (errorcb != null) {
+          req.on('error', errorcb);
+        }
           
         req.write(data);
         req.end();        
@@ -220,10 +241,12 @@
             @member ejs.NodeClient
             @param {String} path the path to DELETE to on the server
             @param {String} data the DELETE body
-            @param {Function} cb a callback function that will be called with
+            @param {Function} successcb a callback function that will be called with
               the results of the request.
+            @param {Function} errorcb a callback function that will be called
+                when there is an error with the request
             */
-      del: function (path, data, cb) {
+      del: function (path, data, successcb, errorcb) {
         var 
         
           opt = {
@@ -245,12 +268,17 @@
             });
 
             res.on('end', function () {
-              if (cb != null) {
-                cb(JSON.parse(resData));
+              if (successcb != null) {
+                successcb(JSON.parse(resData));
               }
             });
             
           });
+          
+        // handle request errors
+        if (errorcb != null) {
+          req.on('error', errorcb);
+        }
           
         req.write(data);
         req.end();        
@@ -263,10 +291,12 @@
             @member ejs.NodeClient
             @param {String} path the path to HEAD to on the server
             @param {Object} data an object of url parameters.
-            @param {Function} cb a callback function that will be called with
+            @param {Function} successcb a callback function that will be called with
               the an object of the returned headers.
+            @param {Function} errorcb a callback function that will be called
+                when there is an error with the request
             */
-      head: function (path, data, cb) {
+      head: function (path, data, successcb, errorcb) {
         var 
         
           opt = {
@@ -277,10 +307,15 @@
           },
           
           req = http.request(opt, function (res) {
-            if (cb != null) {
-              cb(res.headers);
+            if (successcb != null) {
+              successcb(res.headers);
             }
           });
+        
+        // handle request errors
+        if (errorcb != null) {
+          req.on('error', errorcb);
+        }
           
         req.end();        
       }

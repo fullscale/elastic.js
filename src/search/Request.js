@@ -723,10 +723,11 @@
             Executes a delete by query request using the current query.
             
             @member ejs.Request
-            @param {Function} fnCallBack A callback function that handles the response.
+            @param {Function} successcb A callback function that handles the response.
+            @param {Function} errorcb A callback function that handles errors.
             @returns {Object} Returns a client specific object.
             */
-      doDeleteByQuery: function (fnCallBack) {
+      doDeleteByQuery: function (successcb, errorcb) {
         var queryData = JSON.stringify(query.query);
       
         // make sure the user has set a client
@@ -734,17 +735,18 @@
           throw new Error("No Client Set");
         }
         
-        return ejs.client.del(getRestPath('_query'), queryData, fnCallBack);
+        return ejs.client.del(getRestPath('_query'), queryData, successcb, errorcb);
       },
 
       /**
             Executes a count request using the current query.
             
             @member ejs.Request
-            @param {Function} fnCallBack A callback function that handles the count response.
+            @param {Function} successcb A callback function that handles the count response.
+            @param {Function} errorcb A callback function that handles errors.
             @returns {Object} Returns a client specific object.
             */
-      doCount: function (fnCallBack) {
+      doCount: function (successcb, errorcb) {
         var queryData = JSON.stringify(query.query);
       
         // make sure the user has set a client
@@ -752,17 +754,18 @@
           throw new Error("No Client Set");
         }
         
-        return ejs.client.post(getRestPath('_count'), queryData, fnCallBack);
+        return ejs.client.post(getRestPath('_count'), queryData, successcb, errorcb);
       },
             
       /**
             Executes the search. 
 
             @member ejs.Request
-            @param {Function} fnCallBack A callback function that handles the search response.
+            @param {Function} successcb A callback function that handles the search response.
+            @param {Function} errorcb A callback function that handles errors.
             @returns {Object} Returns a client specific object.
             */
-      doSearch: function (fnCallBack) {
+      doSearch: function (successcb, errorcb) {
         var queryData = JSON.stringify(query);
       
         // make sure the user has set a client
@@ -770,7 +773,7 @@
           throw new Error("No Client Set");
         }
         
-        return ejs.client.post(getRestPath('_search'), queryData, fnCallBack);
+        return ejs.client.post(getRestPath('_search'), queryData, successcb, errorcb);
       }
     };
   };

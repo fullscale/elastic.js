@@ -1,4 +1,4 @@
-/*! elastic.js - v1.0.0 - 2013-03-06
+/*! elastic.js - v1.0.0 - 2013-03-21
 * https://github.com/fullscale/elastic.js
 * Copyright (c) 2013 FullScale Labs, LLC; Licensed MIT */
 
@@ -8802,10 +8802,11 @@
             <p>Retrieves a document from the given index and type.</p>
 
             @member ejs.Document
-            @param {Function} fnCallBack A callback function that handles the response.
+            @param {Function} successcb A callback function that handles the response.
+            @param {Function} errorcb A callback function that handles errors.
             @returns {Object} The return value is dependent on client implementation.
             */
-      doGet: function (fnCallBack) {
+      doGet: function (successcb, errorcb) {
         // make sure the user has set a client
         if (ejs.client == null) {
           throw new Error("No Client Set");
@@ -8820,7 +8821,7 @@
         // params as the data
         var url = '/' + index + '/' + type + '/' + id;
         
-        return ejs.client.get(url, genClientParams(), fnCallBack);
+        return ejs.client.get(url, genClientParams(), successcb, errorcb);
       },
 
       /**
@@ -8828,10 +8829,11 @@
             is set, one is created during indexing.</p>
 
             @member ejs.Document
-            @param {Function} fnCallBack A callback function that handles the response.
+            @param {Function} successcb A callback function that handles the response.
+            @param {Function} errorcb A callback function that handles errors.
             @returns {Object} The return value is dependent on client implementation.
             */
-      doIndex: function (fnCallBack) {
+      doIndex: function (successcb, errorcb) {
         // make sure the user has set a client
         if (ejs.client == null) {
           throw new Error("No Client Set");
@@ -8860,10 +8862,10 @@
         
         // do post if id not set so one is created
         if (id == null) {
-          response = ejs.client.post(url, data, fnCallBack);
+          response = ejs.client.post(url, data, successcb, errorcb);
         } else {
           // put when id is specified
-          response = ejs.client.put(url, data, fnCallBack);
+          response = ejs.client.put(url, data, successcb, errorcb);
         }
         
         return response;
@@ -8879,10 +8881,11 @@
             partial document, set the source with the partial document.</p>
 
             @member ejs.Document
-            @param {Function} fnCallBack A callback function that handles the response.
+            @param {Function} successcb A callback function that handles the response.
+            @param {Function} errorcb A callback function that handles errors.
             @returns {Object} The return value is dependent on client implementation.
             */
-      doUpdate: function (fnCallBack) {
+      doUpdate: function (successcb, errorcb) {
         // make sure the user has set a client
         if (ejs.client == null) {
           throw new Error("No Client Set");
@@ -8924,7 +8927,7 @@
           data.doc = params.source;
         }
         
-        return ejs.client.post(url, JSON.stringify(data), fnCallBack);
+        return ejs.client.post(url, JSON.stringify(data), successcb, errorcb);
       },
 
       /**
@@ -8932,10 +8935,11 @@
             speciifed id.</p>
 
             @member ejs.Document
-            @param {Function} fnCallBack A callback function that handles the response.
+            @param {Function} successcb A callback function that handles the response.
+            @param {Function} errorcb A callback function that handles errors.
             @returns {void} Returns the value of the callback when executing on the server.
             */
-      doDelete: function (fnCallBack) {
+      doDelete: function (successcb, errorcb) {
         // make sure the user has set a client
         if (ejs.client == null) {
           throw new Error("No Client Set");
@@ -8953,7 +8957,7 @@
           url = url + '?' + paramStr;
         }
         
-        return ejs.client.del(url, data, fnCallBack);
+        return ejs.client.del(url, data, successcb, errorcb);
       }
 
     };
@@ -11119,7 +11123,7 @@
         }
 
         strategy = strategy.toLowerCase();
-        if (strategy === 'query_first' || strategy === 'random_access_random' ||
+        if (strategy === 'query_first' || strategy === 'random_access_always' ||
           strategy === 'leap_frog' || strategy === 'leap_frog_filter_first' ||
           strategy.indexOf('random_access_') === 0) {
             
@@ -18150,6 +18154,35 @@
       },
 
       /**
+            <p>Determines what type of indices to exclude from a request.  The
+            value can be one of the following:</p>
+
+            <dl>
+                <dd><code>none</code> - No indices / aliases will be excluded from a request</dd>
+                <dd><code>missing</code> - Indices / aliases that are missing will be excluded from a request</dd>
+            </dl>
+
+            <p>This option is valid during the following operations:
+                <code>search, count</code> and <code>delete by query</code></p>
+                
+            @member ejs.Request
+            @param {String} ignoreType the type of ignore (none or missing).
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      ignoreIndices: function (ignoreType) {
+        if (ignoreType == null) {
+          return params.ignore_indices;
+        }
+      
+        ignoreType = ignoreType.toLowerCase();
+        if (ignoreType === 'none' || ignoreType === 'missing') {
+          params.ignore_indices = ignoreType;
+        }
+        
+        return this;
+      },
+      
+      /**
             Boosts hits in the specified index by the given boost value.
 
             @member ejs.Request
@@ -18253,10 +18286,11 @@
             Executes a delete by query request using the current query.
             
             @member ejs.Request
-            @param {Function} fnCallBack A callback function that handles the response.
+            @param {Function} successcb A callback function that handles the response.
+            @param {Function} errorcb A callback function that handles errors.
             @returns {Object} Returns a client specific object.
             */
-      doDeleteByQuery: function (fnCallBack) {
+      doDeleteByQuery: function (successcb, errorcb) {
         var queryData = JSON.stringify(query.query);
       
         // make sure the user has set a client
@@ -18264,17 +18298,18 @@
           throw new Error("No Client Set");
         }
         
-        return ejs.client.del(getRestPath('_query'), queryData, fnCallBack);
+        return ejs.client.del(getRestPath('_query'), queryData, successcb, errorcb);
       },
 
       /**
             Executes a count request using the current query.
             
             @member ejs.Request
-            @param {Function} fnCallBack A callback function that handles the count response.
+            @param {Function} successcb A callback function that handles the count response.
+            @param {Function} errorcb A callback function that handles errors.
             @returns {Object} Returns a client specific object.
             */
-      doCount: function (fnCallBack) {
+      doCount: function (successcb, errorcb) {
         var queryData = JSON.stringify(query.query);
       
         // make sure the user has set a client
@@ -18282,17 +18317,18 @@
           throw new Error("No Client Set");
         }
         
-        return ejs.client.post(getRestPath('_count'), queryData, fnCallBack);
+        return ejs.client.post(getRestPath('_count'), queryData, successcb, errorcb);
       },
             
       /**
             Executes the search. 
 
             @member ejs.Request
-            @param {Function} fnCallBack A callback function that handles the search response.
+            @param {Function} successcb A callback function that handles the search response.
+            @param {Function} errorcb A callback function that handles errors.
             @returns {Object} Returns a client specific object.
             */
-      doSearch: function (fnCallBack) {
+      doSearch: function (successcb, errorcb) {
         var queryData = JSON.stringify(query);
       
         // make sure the user has set a client
@@ -18300,7 +18336,7 @@
           throw new Error("No Client Set");
         }
         
-        return ejs.client.post(getRestPath('_search'), queryData, fnCallBack);
+        return ejs.client.post(getRestPath('_search'), queryData, successcb, errorcb);
       }
     };
   };
@@ -18900,14 +18936,14 @@
             @param {String} m The sort mode.  Either min, max, sum, or avg.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
-      sortMode: function (m) {
+      mode: function (m) {
         if (m == null) {
-          return sort[key].sort_mode;
+          return sort[key].mode;
         }
 
         m = m.toLowerCase();
         if (m === 'min' || m === 'max' || m === 'sum' || m === 'avg') {
-          sort[key].sort_mode = m;
+          sort[key].mode = m;
         }
       
         return this;
