@@ -1,7 +1,3 @@
-/*! elastic.js - v1.0.0 - 2013-03-21
-* https://github.com/fullscale/elastic.js
-* Copyright (c) 2013 FullScale Labs, LLC; Licensed MIT */
-
 /*global require:true */
 
 (function () {
