@@ -353,7 +353,7 @@
             "all" or "none".  
 
             @member ejs.MatchQuery
-            @param {String} q A valid analyzer name.
+            @param {String} q A no match action, "all" or "none".
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       zeroTermsQuery: function (q) {
