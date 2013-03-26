@@ -406,6 +406,27 @@
       },
 
       /**
+            Sets what happens when no terms match.  Valid values are
+            "all" or "none".  
+
+            @member ejs.MultiMatchQuery
+            @param {String} q A no match action, "all" or "none".
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      zeroTermsQuery: function (q) {
+        if (q == null) {
+          return query.multi_match.zero_terms_query;
+        }
+
+        q = q.toLowerCase();
+        if (q === 'all' || q === 'none') {
+          query.multi_match.zero_terms_query = q;
+        }
+        
+        return this;
+      },
+      
+      /**
             Allows you to serialize this object into a JSON encoded string.
 
             @member ejs.MultiMatchQuery

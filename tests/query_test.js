@@ -1824,7 +1824,7 @@ exports.queries = {
     test.done();
   },
   MultiMatchQuery: function (test) {
-    test.expect(43);
+    test.expect(46);
 
     var mmQuery = ejs.MultiMatchQuery('t', 'v1'),
       expected,
@@ -1981,6 +1981,17 @@ exports.queries = {
     
     mmQuery.lenient(true);
     expected.multi_match.lenient = true;
+    doTest();
+    
+    mmQuery.zeroTermsQuery('all');
+    expected.multi_match.zero_terms_query = 'all';
+    doTest();
+    
+    mmQuery.zeroTermsQuery('invalid');
+    doTest();
+    
+    mmQuery.zeroTermsQuery('NONE');
+    expected.multi_match.zero_terms_query = 'none';
     doTest();
     
     test.strictEqual(mmQuery._type(), 'query');

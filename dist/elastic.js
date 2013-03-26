@@ -1,4 +1,4 @@
-/*! elastic.js - v1.0.0 - 2013-03-21
+/*! elastic.js - v1.0.0 - 2013-03-26
 * https://github.com/fullscale/elastic.js
 * Copyright (c) 2013 FullScale Labs, LLC; Licensed MIT */
 
@@ -13125,7 +13125,7 @@
             "all" or "none".  
 
             @member ejs.MatchQuery
-            @param {String} q A valid analyzer name.
+            @param {String} q A no match action, "all" or "none".
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       zeroTermsQuery: function (q) {
@@ -14170,6 +14170,27 @@
         return this;
       },
 
+      /**
+            Sets what happens when no terms match.  Valid values are
+            "all" or "none".  
+
+            @member ejs.MultiMatchQuery
+            @param {String} q A no match action, "all" or "none".
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      zeroTermsQuery: function (q) {
+        if (q == null) {
+          return query.multi_match.zero_terms_query;
+        }
+
+        q = q.toLowerCase();
+        if (q === 'all' || q === 'none') {
+          query.multi_match.zero_terms_query = q;
+        }
+        
+        return this;
+      },
+      
       /**
             Allows you to serialize this object into a JSON encoded string.
 
