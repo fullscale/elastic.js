@@ -283,10 +283,10 @@
              <p>Valid values are:</p>
              
              <dl>
-                <dd><code>one - only requires write to one shard</dd>
-                <dd><code>quorum - requires writes to quorum <code>(N/2 + 1)</code></dd>
-                <dd><code>all - requires write to succeed on all shards</dd>
-                <dd><code>default - the currently configured system default</dd>
+                <dd><code>one</code> - only requires write to one shard</dd>
+                <dd><code>quorum</code> - requires writes to quorum <code>(N/2 + 1)</code></dd>
+                <dd><code>all</code> - requires write to succeed on all shards</dd>
+                <dd><code>default</code> - the currently configured system default</dd>
              </dl>
              
              <p>This option is valid during the following operations:
