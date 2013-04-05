@@ -310,6 +310,50 @@
       },
       
       /**
+             <p>Sets the search execution type for the request.</p>  
+
+             <p>Valid values are:</p>
+             
+             <dl>
+                <dd><code>dfs_query_then_fetch</code> - same as query_then_fetch, 
+                  except distributed term frequencies are calculated first.</dd>
+                <dd><code>dfs_query_and_fetch</code> - same as query_and_fetch,
+                  except distributed term frequencies are calculated first.</dd>
+                <dd><code>query_then_fetch</code> - executed against all 
+                  shards, but only enough information is returned.  When ready,
+                  only the relevant shards are asked for the actual document 
+                  content</dd>
+                <dd><code>query_and_fetch</code> - execute the query on all 
+                  relevant shards and return the results, including content.</dd>
+                <dd><code>scan</code> - efficiently scroll a large result set</dd>
+                <dd><code>count</code> -  special search type that returns the 
+                  count that matched the search request without any docs </dd>
+             </dl>
+             
+             <p>This option is valid during the following operations:
+                <code>search</code></p>
+
+             @member ejs.Request
+             @param {String} t The search execution type
+             @returns {Object} returns <code>this</code> so that calls can be chained.
+             */
+      searchType: function (t) {
+        if (t == null) {
+          return params.search_type;
+        }
+        
+        t = t.toLowerCase();
+        if (t === 'dfs_query_then_fetch' || t === 'dfs_query_and_fetch' || 
+          t === 'query_then_fetch' || t === 'query_and_fetch' || 
+          t === 'scan' || t === 'count') {
+            
+          params.search_type = t;
+        }
+        
+        return this;
+      },
+      
+      /**
             By default, searches return full documents, meaning every property or field.
             This method allows you to specify which fields you want returned.
             

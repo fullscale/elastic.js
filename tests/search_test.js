@@ -912,7 +912,7 @@ exports.search = {
     test.done();
   },
   Request: function (test) {
-    test.expect(136);
+    test.expect(157);
 
     var req = ejs.Request({indices: ['index1'], types: ['type1']}),
       matchAll = ejs.MatchAllQuery(),
@@ -1110,6 +1110,41 @@ exports.search = {
     req.ignoreIndices('MISSING');
     test.strictEqual(req.ignoreIndices(), 'missing');
     expectedPath = '/_search?routing=route2%2Croute3&timeout=5000&replication=default&consistency=all&preference=_primary&ignore_indices=missing';
+    req.doSearch();
+    
+    req.searchType('dfs_query_then_fetch');
+    test.strictEqual(req.searchType(), 'dfs_query_then_fetch');
+    expectedPath = '/_search?routing=route2%2Croute3&timeout=5000&replication=default&consistency=all&preference=_primary&ignore_indices=missing&search_type=dfs_query_then_fetch';
+    req.doSearch();
+    
+    req.searchType('INVALID');
+    test.strictEqual(req.searchType(), 'dfs_query_then_fetch');
+    expectedPath = '/_search?routing=route2%2Croute3&timeout=5000&replication=default&consistency=all&preference=_primary&ignore_indices=missing&search_type=dfs_query_then_fetch';
+    req.doSearch();
+    
+    req.searchType('DFS_QUERY_AND_FETCH');
+    test.strictEqual(req.searchType(), 'dfs_query_and_fetch');
+    expectedPath = '/_search?routing=route2%2Croute3&timeout=5000&replication=default&consistency=all&preference=_primary&ignore_indices=missing&search_type=dfs_query_and_fetch';
+    req.doSearch();
+    
+    req.searchType('Query_then_Fetch');
+    test.strictEqual(req.searchType(), 'query_then_fetch');
+    expectedPath = '/_search?routing=route2%2Croute3&timeout=5000&replication=default&consistency=all&preference=_primary&ignore_indices=missing&search_type=query_then_fetch';
+    req.doSearch();
+    
+    req.searchType('query_and_fetch');
+    test.strictEqual(req.searchType(), 'query_and_fetch');
+    expectedPath = '/_search?routing=route2%2Croute3&timeout=5000&replication=default&consistency=all&preference=_primary&ignore_indices=missing&search_type=query_and_fetch';
+    req.doSearch();
+    
+    req.searchType('scan');
+    test.strictEqual(req.searchType(), 'scan');
+    expectedPath = '/_search?routing=route2%2Croute3&timeout=5000&replication=default&consistency=all&preference=_primary&ignore_indices=missing&search_type=scan';
+    req.doSearch();
+    
+    req.searchType('count');
+    test.strictEqual(req.searchType(), 'count');
+    expectedPath = '/_search?routing=route2%2Croute3&timeout=5000&replication=default&consistency=all&preference=_primary&ignore_indices=missing&search_type=count';
     req.doSearch();
     
     req = ejs.Request({indices: 'index', types: 'type'}).query(matchAll);  
