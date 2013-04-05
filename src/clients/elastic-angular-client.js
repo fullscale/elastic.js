@@ -23,8 +23,8 @@ angular.module('elasticjs.service', [])
           (successcb || angular.noop)(response.data);
           return response.data;
         }, function (response) {
-          (errorcb || angular.noop)(undefined);
-          return undefined;
+          (errorcb || angular.noop)(response.data);
+          return response.data;
         });
       };
 
