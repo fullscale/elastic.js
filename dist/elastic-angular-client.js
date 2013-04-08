@@ -1,4 +1,4 @@
-/*! elastic.js - v1.0.0 - 2013-03-05
+/*! elastic.js - v1.0.0 - 2013-04-08
 * https://github.com/fullscale/elastic.js
 * Copyright (c) 2013 FullScale Labs, LLC; Licensed MIT */
 
@@ -27,8 +27,8 @@ angular.module('elasticjs.service', [])
           (successcb || angular.noop)(response.data);
           return response.data;
         }, function (response) {
-          (errorcb || angular.noop)(undefined);
-          return undefined;
+          (errorcb || angular.noop)(response.data);
+          return response.data;
         });
       };
 

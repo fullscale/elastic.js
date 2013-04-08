@@ -1,4 +1,4 @@
-/*! elastic.js - v1.0.0 - 2013-04-04
+/*! elastic.js - v1.0.0 - 2013-04-08
 * https://github.com/fullscale/elastic.js
 * Copyright (c) 2013 FullScale Labs, LLC; Licensed MIT */
 
@@ -18994,7 +18994,7 @@
                 <dd><code>avg</code> - sort by the average of all values</dd>
             <dl>
             
-            Valid during sort types:  field
+            Valid during sort types:  field, geo distance
           
             @since elasticsearch 0.90
             @member ejs.Sort
