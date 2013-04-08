@@ -354,7 +354,7 @@
                 <dd><code>avg</code> - sort by the average of all values</dd>
             <dl>
             
-            Valid during sort types:  field
+            Valid during sort types:  field, geo distance
           
             @since elasticsearch 0.90
             @member ejs.Sort
