@@ -24,10 +24,14 @@
     hasOwnProp = ObjProto.hasOwnProperty,
     nativeForEach = ArrayProto.forEach,
     nativeIsArray = Array.isArray,
+    nativeIndexOf = ArrayProto.indexOf,
     breaker = {},
     has,
     each,
     extend,
+    indexOf,
+    genClientParams,
+    genParamStr,
     isArray,
     isObject,
     isString,
@@ -45,6 +49,8 @@
     isHighlight, // checks valid ejs Highlight object
     isSuggest, // checks valid ejs Suggest object
     isGenerator, // checks valid ejs Generator object
+    isClusterHealth, // checks valid ejs ClusterHealth object
+    isClusterState, // checks valid ejs ClusterState object
     
     // create ejs object
     ejs;

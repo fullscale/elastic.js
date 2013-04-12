@@ -27,52 +27,9 @@
     */
   ejs.Document = function (index, type, id) {
 
-    var params = {},
-    
-      // converts client params to a string param1=val1&param2=val1
-      genParamStr = function () {
-        var clientParams = genClientParams(),
-        parts = [];
-        
-        for (var p in clientParams) {
-          if (!has(clientParams, p)) {
-            continue;
-          }
-          
-          parts.push(p + '=' + encodeURIComponent(clientParams[p]));
-        }
-        
-        return parts.join('&');
-      },
-      
-      // Converts the stored params into parameters that will be passed
-      // to a client.  Certain parameter are skipped, and others require
-      // special processing before being sent to the client.
-      genClientParams = function () {
-        var clientParams = {};
-        
-        for (var param in params) {
-          if (!has(params, param)) {
-            continue;
-          }
-          
-          // skip params that don't go in the query string
-          if (param === 'upsert' || param === 'source' ||
-            param === 'script' || param === 'lang' || param === 'params') {
-            continue;
-          }
-                    
-          // process all over params
-          var paramVal = params[param];
-          if (isArray(paramVal)) {
-            paramVal = paramVal.join();
-          }
-            
-          clientParams[param] = paramVal;
-        }
-        
-        return clientParams;
-      };
+    var 
+      params = {},
+      paramExcludes = ['upsert', 'source', 'script', 'lang', 'params'];
       
     return {
 
@@ -712,7 +669,8 @@
         // params as the data
         var url = '/' + index + '/' + type + '/' + id;
         
-        return ejs.client.get(url, genClientParams(), successcb, errorcb);
+        return ejs.client.get(url, genClientParams(params, paramExcludes), 
+                                                          successcb, errorcb);
       },
 
       /**
@@ -740,7 +698,7 @@
         
         var url = '/' + index + '/' + type,
           data = JSON.stringify(params.source),
-          paramStr = genParamStr(),
+          paramStr = genParamStr(params, paramExcludes),
           response;
           
         if (id != null) {
@@ -792,7 +750,7 @@
         
         var url = '/' + index + '/' + type + '/' + id + '/_update',
           data = {},
-          paramStr = genParamStr();
+          paramStr = genParamStr(params, paramExcludes);
         
         if (paramStr !== '') {
           url = url + '?' + paramStr;
@@ -842,7 +800,7 @@
         
         var url = '/' + index + '/' + type + '/' + id,
           data = '',
-          paramStr = genParamStr();
+          paramStr = genParamStr(params, paramExcludes);
         
         if (paramStr !== '') {
           url = url + '?' + paramStr;

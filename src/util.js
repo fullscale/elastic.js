@@ -42,6 +42,77 @@
     return obj;
   };
 
+  // Returns the index at which value can be found in the array, or -1 if 
+  // value is not present in the array.
+  indexOf = function (array, item) {
+    if (array == null) {
+      return -1;
+    }
+    
+    var i = 0, l = array.length;
+    if (nativeIndexOf && array.indexOf === nativeIndexOf) {
+      return array.indexOf(item);
+    }
+    
+    for (; i < l; i++) {
+      if (array[i] === item) {
+        return i;
+        
+      }
+    }
+    
+    return -1;
+  };
+  
+  // Converts the stored params into parameters that will be passed
+  // to a client.  Certain parameter are skipped, and others require
+  // special processing before being sent to the client.
+  genClientParams = function (params, excludes) {
+    var 
+      clientParams = {},
+      param,
+      paramVal;
+    
+    for (param in params) {
+      if (!has(params, param)) {
+        continue;
+      }
+      
+      // skip params that don't go in the query string
+      if (indexOf(excludes, param) !== -1) {
+        continue;
+      }
+                
+      // process all other params
+      paramVal = params[param];
+      if (isArray(paramVal)) {
+        paramVal = paramVal.join();
+      }
+        
+      clientParams[param] = paramVal;
+    }
+    
+    return clientParams;
+  };
+  
+  // converts client params to a string param1=val1&param2=val1
+  genParamStr = function (params, excludes) {
+    var 
+      clientParams = genClientParams(params, excludes),
+      parts = [],
+      p;
+    
+    for (p in clientParams) {
+      if (!has(clientParams, p)) {
+        continue;
+      }
+      
+      parts.push(p + '=' + encodeURIComponent(clientParams[p]));
+    }
+    
+    return parts.join('&');
+  };
+  
   // Is a given value an array?
   // Delegates to ECMA5's native Array.isArray
   // switched to ===, not sure why underscore used ==
@@ -126,5 +197,13 @@
   
   isGenerator = function (obj) {
     return (isEJSObject(obj) && obj._type() === 'generator');
+  };
+  
+  isClusterHealth = function (obj) {
+    return (isEJSObject(obj) && obj._type() === 'cluster health');
+  };
+  
+  isClusterState = function (obj) {
+    return (isEJSObject(obj) && obj._type() === 'cluster state');
   };
   
