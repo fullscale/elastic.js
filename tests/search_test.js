@@ -140,8 +140,8 @@ exports.search = {
     expected.max_term_freq = 0.7;
     doTest();
     
-    generator.prefixLength(4);
-    expected.prefix_length = 4;
+    generator.prefixLen(4);
+    expected.prefix_len = 4;
     doTest();
     
     generator.minWordLen(3);
@@ -261,8 +261,8 @@ exports.search = {
     expected.suggester.term.max_term_freq = 0.7;
     doTest();
     
-    suggester.prefixLength(4);
-    expected.suggester.term.prefix_length = 4;
+    suggester.prefixLen(4);
+    expected.suggester.term.prefix_len = 4;
     doTest();
     
     suggester.minWordLen(3);
@@ -293,7 +293,7 @@ exports.search = {
       gen3 = ejs.DirectGenerator().field('body')
         .suggestMode('popular')
         .minWordLen(2)
-        .prefixLength(3)
+        .prefixLen(3)
         .size(100),
       expected,
       doTest = function () {

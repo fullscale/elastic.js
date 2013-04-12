@@ -174,12 +174,12 @@
             @param {Integer} len A positive integer value.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
-      prefixLength: function (len) {
+      prefixLen: function (len) {
         if (len == null) {
-          return settings.prefix_length;
+          return settings.prefix_len;
         }
   
-        settings.prefix_length = len;
+        settings.prefix_len = len;
         return this;
       },
     
