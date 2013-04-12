@@ -10,7 +10,7 @@ be injected into your angular controllers.
 angular.module('elasticjs.service', [])
   .factory('ejsResource', ['$http', function ($http) {
 
-  return function (url) {
+  return function (config) {
 
     var
 
@@ -28,40 +28,54 @@ angular.module('elasticjs.service', [])
         });
       };
 
+    // check if we have a config object
+    // if not, we have the server url so
+    // we convert it to a config object
+    if (config !== Object(config)) {
+      config = {server: config};
+    }
+    
     // set url to empty string if it was not specified
-    if (url == null) {
-      url = '';
+    if (config.server == null) {
+      config.server = '';
     }
 
     /* implement the elastic.js client interface for angular */
     ejs.client = {
       server: function (s) {
         if (s == null) {
-          return url;
+          return config.server;
         }
       
-        url = s;
+        config.server = s;
         return this;
       },
       post: function (path, data, successcb, errorcb) {
-        path = url + path;
-        return promiseThen($http.post(path, data), successcb, errorcb);
+        path = config.server + path;
+        var reqConfig = {url: path, data: data, method: 'POST'};
+        return promiseThen($http(angular.extend(reqConfig, config)), successcb, errorcb);
       },
       get: function (path, data, successcb, errorcb) {
-        path = url + path;
-        return promiseThen($http.get(path, data), successcb, errorcb);
+        path = config.server + path;
+        // no body on get request, data will be request params
+        var reqConfig = {url: path, params: data, method: 'GET'};
+        return promiseThen($http(angular.extend(reqConfig, config)), successcb, errorcb);
       },
       put: function (path, data, successcb, errorcb) {
-        path = url + path;
-        return promiseThen($http.put(path, data), successcb, errorcb);
+        path = config.server + path;
+        var reqConfig = {url: path, data: data, method: 'PUT'};
+        return promiseThen($http(angular.extend(reqConfig, config)), successcb, errorcb);
       },
       del: function (path, data, successcb, errorcb) {
-        path = url + path;
-        return promiseThen($http.delete(path, data), successcb, errorcb);
+        path = config.server + path;
+        var reqConfig = {url: path, data: data, method: 'DELETE'};
+        return promiseThen($http(angular.extend(reqConfig, config)), successcb, errorcb);
       },
       head: function (path, data, successcb, errorcb) {
-        path = url + path;
-        return $http.head(path, data)
+        path = config.server + path;
+        // no body on HEAD request, data will be request params
+        var reqConfig = {url: path, params: data, method: 'HEAD'};
+        return $http(angular.extend(reqConfig, config))
           .then(function (response) {
           (successcb || angular.noop)(response.headers());
           return response.headers();
