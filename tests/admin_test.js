@@ -28,10 +28,190 @@ exports.cluster = {
     done();
   },
   exists: function (test) {
-    test.expect(2);
+    test.expect(3);
 
     test.ok(ejs.ClusterHealth, 'ClusterHealth');
     test.ok(ejs.ClusterState, 'ClusterState');
+    test.ok(ejs.NodeStats, 'NodeStats');
+    
+    test.done();
+  },
+  NodeStats: function (test) {
+    test.expect(49);
+
+    var stats = ejs.NodeStats(),
+      expected,
+      mockClient,
+      expectedPath = '',
+      expectedData = '',
+      expectedMethod = '',
+      doTest = function (method, path, data, cb) {
+        if (expectedPath !== '') {
+          test.strictEqual(path, expectedPath);
+          expectedPath = '';
+        }
+        
+        if (expectedData !== '') {
+          test.deepEqual(data, expectedData);
+          expectedData = '';
+        }
+        
+        if (expectedMethod !== '') {
+          test.strictEqual(method, expectedMethod);
+          expectedMethod = '';
+        }
+        
+        test.deepEqual(stats._self(), expected);
+      };
+
+    // setup fake client to call doTest
+    ejs.client = mockClient = {
+      get: function (path, data, cb) {
+        doTest('get', path, data, cb);
+      },
+      post: function (path, data, cb) {
+        doTest('post', path, data, cb);
+      },
+      put: function (path, data, cb) {
+        doTest('put', path, data, cb);
+      },
+      del: function (path, data, cb) {
+        doTest('delete', path, data, cb);
+      },
+      head: function (path, data, cb) {
+        doTest('head', path, data, cb);
+      }
+    };
+    
+    expected = {};
+    
+    test.ok(stats, 'NodeStats exists');
+    test.ok(stats._self(), '_self() works');
+    doTest();
+    
+    stats.nodes('n1');
+    expected.nodes = ['n1'];
+    test.deepEqual(stats.nodes(), ['n1']);
+    doTest();
+    
+    stats.nodes('n2');
+    expected.nodes.push('n2');
+    test.deepEqual(stats.nodes(), ['n1', 'n2']);
+    doTest();
+    
+    stats.nodes(['n3', 'n4']);
+    expected.nodes = ['n3', 'n4'];
+    test.deepEqual(stats.nodes(), ['n3', 'n4']);
+    doTest();
+    
+    stats.clear(true);
+    expected.clear = true;
+    test.strictEqual(stats.clear(), true);
+    doTest();
+    
+    stats.all(true);
+    expected.all = true;
+    test.strictEqual(stats.all(), true);
+    doTest();
+    
+    stats.indices(false);
+    expected.indices = false;
+    test.strictEqual(stats.indices(), false);
+    doTest();
+    
+    stats.os(true);
+    expected.os = true;
+    test.strictEqual(stats.os(), true);
+    doTest();
+    
+    stats.process(true);
+    expected.process = true;
+    test.strictEqual(stats.process(), true);
+    doTest();
+    
+    stats.jvm(true);
+    expected.jvm = true;
+    test.strictEqual(stats.jvm(), true);
+    doTest();
+    
+    stats.threadPool(true);
+    expected.thread_pool = true;
+    test.strictEqual(stats.threadPool(), true);
+    doTest();
+    
+    stats.network(true);
+    expected.network = true;
+    test.strictEqual(stats.network(), true);
+    doTest();
+    
+    stats.fs(true);
+    expected.fs = true;
+    test.strictEqual(stats.fs(), true);
+    doTest();
+    
+    stats.transport(true);
+    expected.transport = true;
+    test.strictEqual(stats.transport(), true);
+    doTest();
+    
+    stats.http(true);
+    expected.http = true;
+    test.strictEqual(stats.http(), true);
+    doTest();
+    
+    test.strictEqual(stats._type(), 'node stats');
+    test.strictEqual(stats.toString(), JSON.stringify(expected));
+   
+    stats = ejs.NodeStats();
+    expected = {};
+    expectedMethod = 'get';
+    expectedData = {};
+    expectedPath = '/_nodes/stats';
+    stats.doStats();
+    
+    stats.clear(true).http(true).fs(true);
+    expected.clear = true;
+    expected.http = true;
+    expected.fs = true;
+    expectedData = {
+      clear: true,
+      http: true,
+      fs: true
+    };
+    expectedPath = '/_nodes/stats';
+    stats.doStats();
+    
+    stats.nodes(['n1', 'n2']);
+    expected.nodes = ['n1', 'n2'];
+    expectedData = {
+      clear: true,
+      http: true,
+      fs: true
+    };
+    expectedPath = '/_nodes/n1,n2/stats';
+    stats.doStats();
+    
+    stats.nodes('n3');
+    expected.nodes.push('n3');
+    expectedPath = '/_nodes/n1,n2,n3/stats';
+    stats.doStats();
+    
+    stats.nodes([]);
+    stats.threadPool(true);
+    expected.thread_pool = true;
+    expected.nodes = [];
+    expectedData = {
+      clear: true,
+      http: true,
+      fs: true,
+      thread_pool: true
+    };
+    expectedPath = '/_nodes/stats';
+    stats.doStats();
+    
+    test.throws(function () {
+      stats.nodes(3);
+    }, Error, 'Nodes must be string or array');
     
     test.done();
   },
