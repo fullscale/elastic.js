@@ -1,4 +1,4 @@
-/*! elastic.js - v1.0.0 - 2013-04-12
+/*! elastic.js - v1.0.0 - 2013-04-13
 * https://github.com/fullscale/elastic.js
 * Copyright (c) 2013 FullScale Labs, LLC; Licensed MIT */
 
@@ -28,10 +28,14 @@
     hasOwnProp = ObjProto.hasOwnProperty,
     nativeForEach = ArrayProto.forEach,
     nativeIsArray = Array.isArray,
+    nativeIndexOf = ArrayProto.indexOf,
     breaker = {},
     has,
     each,
     extend,
+    indexOf,
+    genClientParams,
+    genParamStr,
     isArray,
     isObject,
     isString,
@@ -49,7 +53,10 @@
     isHighlight, // checks valid ejs Highlight object
     isSuggest, // checks valid ejs Suggest object
     isGenerator, // checks valid ejs Generator object
-    isCluster, // checks valid ejs Cluster object
+    isClusterHealth, // checks valid ejs ClusterHealth object
+    isClusterState, // checks valid ejs ClusterState object
+    isNodeStats, // checks valid ejs NodeStats object
+    isNodeInfo, // checks valid ejs NodeInfo object
     
     // create ejs object
     ejs;
@@ -104,6 +111,77 @@
     return obj;
   };
 
+  // Returns the index at which value can be found in the array, or -1 if 
+  // value is not present in the array.
+  indexOf = function (array, item) {
+    if (array == null) {
+      return -1;
+    }
+    
+    var i = 0, l = array.length;
+    if (nativeIndexOf && array.indexOf === nativeIndexOf) {
+      return array.indexOf(item);
+    }
+    
+    for (; i < l; i++) {
+      if (array[i] === item) {
+        return i;
+        
+      }
+    }
+    
+    return -1;
+  };
+  
+  // Converts the stored params into parameters that will be passed
+  // to a client.  Certain parameter are skipped, and others require
+  // special processing before being sent to the client.
+  genClientParams = function (params, excludes) {
+    var 
+      clientParams = {},
+      param,
+      paramVal;
+    
+    for (param in params) {
+      if (!has(params, param)) {
+        continue;
+      }
+      
+      // skip params that don't go in the query string
+      if (indexOf(excludes, param) !== -1) {
+        continue;
+      }
+                
+      // process all other params
+      paramVal = params[param];
+      if (isArray(paramVal)) {
+        paramVal = paramVal.join();
+      }
+        
+      clientParams[param] = paramVal;
+    }
+    
+    return clientParams;
+  };
+  
+  // converts client params to a string param1=val1&param2=val1
+  genParamStr = function (params, excludes) {
+    var 
+      clientParams = genClientParams(params, excludes),
+      parts = [],
+      p;
+    
+    for (p in clientParams) {
+      if (!has(clientParams, p)) {
+        continue;
+      }
+      
+      parts.push(p + '=' + encodeURIComponent(clientParams[p]));
+    }
+    
+    return parts.join('&');
+  };
+  
   // Is a given value an array?
   // Delegates to ECMA5's native Array.isArray
   // switched to ===, not sure why underscore used ==
@@ -190,9 +268,22 @@
     return (isEJSObject(obj) && obj._type() === 'generator');
   };
   
-  isCluster = function (obj) {
-    return (isEJSObject(obj) && obj._type() === 'cluster');
+  isClusterHealth = function (obj) {
+    return (isEJSObject(obj) && obj._type() === 'cluster health');
   };
+  
+  isClusterState = function (obj) {
+    return (isEJSObject(obj) && obj._type() === 'cluster state');
+  };
+  
+  isNodeStats = function (obj) {
+    return (isEJSObject(obj) && obj._type() === 'node stats');
+  };
+  
+  isNodeInfo = function (obj) {
+    return (isEJSObject(obj) && obj._type() === 'node info');
+  };
+  
   
   /**
     @class
@@ -8141,52 +8232,9 @@
     */
   ejs.Document = function (index, type, id) {
 
-    var params = {},
-    
-      // converts client params to a string param1=val1&param2=val1
-      genParamStr = function () {
-        var clientParams = genClientParams(),
-        parts = [];
-        
-        for (var p in clientParams) {
-          if (!has(clientParams, p)) {
-            continue;
-          }
-          
-          parts.push(p + '=' + encodeURIComponent(clientParams[p]));
-        }
-        
-        return parts.join('&');
-      },
-      
-      // Converts the stored params into parameters that will be passed
-      // to a client.  Certain parameter are skipped, and others require
-      // special processing before being sent to the client.
-      genClientParams = function () {
-        var clientParams = {};
-        
-        for (var param in params) {
-          if (!has(params, param)) {
-            continue;
-          }
-          
-          // skip params that don't go in the query string
-          if (param === 'upsert' || param === 'source' ||
-            param === 'script' || param === 'lang' || param === 'params') {
-            continue;
-          }
-                    
-          // process all over params
-          var paramVal = params[param];
-          if (isArray(paramVal)) {
-            paramVal = paramVal.join();
-          }
-            
-          clientParams[param] = paramVal;
-        }
-        
-        return clientParams;
-      };
+    var 
+      params = {},
+      paramExcludes = ['upsert', 'source', 'script', 'lang', 'params'];
       
     return {
 
@@ -8826,7 +8874,8 @@
         // params as the data
         var url = '/' + index + '/' + type + '/' + id;
         
-        return ejs.client.get(url, genClientParams(), successcb, errorcb);
+        return ejs.client.get(url, genClientParams(params, paramExcludes), 
+                                                          successcb, errorcb);
       },
 
       /**
@@ -8854,7 +8903,7 @@
         
         var url = '/' + index + '/' + type,
           data = JSON.stringify(params.source),
-          paramStr = genParamStr(),
+          paramStr = genParamStr(params, paramExcludes),
           response;
           
         if (id != null) {
@@ -8906,7 +8955,7 @@
         
         var url = '/' + index + '/' + type + '/' + id + '/_update',
           data = {},
-          paramStr = genParamStr();
+          paramStr = genParamStr(params, paramExcludes);
         
         if (paramStr !== '') {
           url = url + '?' + paramStr;
@@ -8956,7 +9005,7 @@
         
         var url = '/' + index + '/' + type + '/' + id,
           data = '',
-          paramStr = genParamStr();
+          paramStr = genParamStr(params, paramExcludes);
         
         if (paramStr !== '') {
           url = url + '?' + paramStr;
@@ -16876,76 +16925,28 @@
 
   /**
     @class
-    <p>The <code>Cluster</code> object provides an interface for working with
-    your cluster.  Some example operations avaiable are retreiving the cluster
-    health, cluster state, stats for your nodes, etc.</p>
+    <p>The <code>ClusterHealth</code> object provides an interface for accessing
+    the health information of your cluster.</p>
 
-    @name ejs.Cluster
+    @name ejs.ClusterHealth
 
-    @desc
-    Object used to perform cluster operations.
-     
+    @desc Access the health of your cluster.
     */
-  ejs.Cluster = function () {
+  ejs.ClusterHealth = function () {
 
-    var params = {},
+    var 
+      params = {},
+      paramExcludes = ['indices'];
   
-      // converts client params to a string param1=val1&param2=val1
-      genParamStr = function () {
-        var clientParams = genClientParams(),
-        parts = [];
-      
-        for (var p in clientParams) {
-          if (!has(clientParams, p)) {
-            continue;
-          }
-        
-          parts.push(p + '=' + encodeURIComponent(clientParams[p]));
-        }
-      
-        return parts.join('&');
-      },
-    
-      // Converts the stored params into parameters that will be passed
-      // to a client.  Certain parameter are skipped, and others require
-      // special processing before being sent to the client.
-      genClientParams = function () {
-        var clientParams = {};
-      
-        for (var param in params) {
-          if (!has(params, param)) {
-            continue;
-          }
-        
-          // skip params that don't go in the query string
-          if (param === 'indices') {
-            continue;
-          }
-                  
-          // process all over params
-          var paramVal = params[param];
-          if (isArray(paramVal)) {
-            paramVal = paramVal.join();
-          }
-          
-          clientParams[param] = paramVal;
-        }
-      
-        return clientParams;
-      };
-    
     return {
-    
+  
       /**
-             <p>Set's the indices the current operation will execute against 
-             if the operation supports it.  If a single value is passed in it
-             will be appended to the current list of indices.  If an array is
-             passed in it will replace all existing indices.</p>  
-           
-             <p>This option is valid during the following operations:
-                <code>health</code></p>
-
-             @member ejs.Cluster
+             <p>Set's the indices to get the health information for.  If a 
+             single value is passed in it will be appended to the current list 
+             of indices.  If an array is passed in it will replace all existing 
+             indices.</p>  
+         
+             @member ejs.ClusterHealth
              @param {String || Array} i An index name or list of index names.
              @returns {Object} returns <code>this</code> so that calls can be chained.
              */
@@ -16953,11 +16954,11 @@
         if (params.indices == null) {
           params.indices = [];
         }
-      
+    
         if (i == null) {
           return params.indices;
         }
-      
+    
         if (isString(i)) {
           params.indices.push(i);
         } else if (isArray(i)) {
@@ -16965,17 +16966,247 @@
         } else {
           throw new TypeError('Argument must be string or array');
         }
+    
+        return this;
+      },
+  
+      /**
+             <p>If the operation will run on the local node only</p>  
+
+             @member ejs.ClusterHealth
+             @param {Boolean} trueFalse True to run on local node only
+             @returns {Object} returns <code>this</code> so that calls can be chained.
+             */
+      local: function (trueFalse) {
+        if (trueFalse == null) {
+          return params.local;
+        }
+    
+        params.local = trueFalse;
+        return this;
+      },
+    
+      /**
+             <p>Set's a timeout for the response from the master node.</p>  
+
+             @member ejs.ClusterHealth
+             @param {String} length The amount of time after which the operation
+              will timeout.
+             @returns {Object} returns <code>this</code> so that calls can be chained.
+             */
+      masterTimeout: function (length) {
+        if (length == null) {
+          return params.master_timeout;
+        }
+    
+        params.master_timeout = length;
+        return this;
+      },
+    
+      /**
+             <p>Set's a timeout to use during any of the waitFor* options.</p>  
+
+             @member ejs.ClusterHealth
+             @param {String} length The amount of time after which the operation
+              will timeout.
+             @returns {Object} returns <code>this</code> so that calls can be chained.
+             */
+      timeout: function (length) {
+        if (length == null) {
+          return params.timeout;
+        }
+    
+        params.timeout = length;
+        return this;
+      },
+  
+      /**
+             <p>Set the cluster status to wait for (or until timeout).  Valid 
+             values are:</p>  
+         
+             <dl>
+                 <dd><code>green</code></dd>
+                 <dd><code>yellow</code></dd>
+                 <dd><code>red</code></dd>
+             </dl>
+
+             @member ejs.ClusterHealth
+             @param {String} status The status to wait for (green, yellow, or red).
+             @returns {Object} returns <code>this</code> so that calls can be chained.
+             */
+      waitForStatus: function (status) {
+        if (status == null) {
+          return params.wait_for_status;
+        }
+    
+        status = status.toLowerCase();
+        if (status === 'green' || status === 'yellow' || status === 'red') {
+          params.wait_for_status = status;
+        }
       
         return this;
       },
     
       /**
-             <p>If the operation will run on the local node only</p>  
-           
-             <p>This option is valid during the following operations:
-                <code>health</code></p>
+             <p>Set's the number of shards that can be relocating before
+             proceeding with the operation.  Typically set to 0 meaning we
+             must wait for all shards to be done relocating.</p>  
 
-             @member ejs.Cluster
+             @member ejs.ClusterHealth
+             @param {Integer} num The number of acceptable relocating shards.
+             @returns {Object} returns <code>this</code> so that calls can be chained.
+             */
+      waitForRelocatingShards: function (num) {
+        if (num == null) {
+          return params.wait_for_relocating_shards;
+        }
+    
+        params.wait_for_relocating_shards = num;
+        return this;
+      },
+    
+      /**
+             <p>Set's the number of shards that should be active before
+             proceeding with the operation.</p>  
+
+             @member ejs.ClusterHealth
+             @param {Integer} num The number of active shards.
+             @returns {Object} returns <code>this</code> so that calls can be chained.
+             */
+      waitForActiveShards: function (num) {
+        if (num == null) {
+          return params.wait_for_active_shards;
+        }
+    
+        params.wait_for_active_shards = num;
+        return this;
+      },
+    
+      /**
+             <p>Set's the number of nodes that must be available before
+             proceeding with the operation.  The value can be specified
+             as an integer or as values such as >=N, <=N, >N, <N, ge(N), 
+             le(N), gt(N) and lt(N).</p>  
+
+             @member ejs.ClusterHealth
+             @param {String} num The number of avaiable nodes
+             @returns {Object} returns <code>this</code> so that calls can be chained.
+             */
+      waitForNodes: function (num) {
+        if (num == null) {
+          return params.wait_for_nodes;
+        }
+    
+        params.wait_for_nodes = num;
+        return this;
+      },
+    
+      /**
+             <p>Set the level of details for the operation.  Possible values
+             for the level are:</p>  
+         
+             <dl>
+                 <dd><code>cluster</code></dd>
+                 <dd><code>indices</code></dd>
+                 <dd><code>shards</code></dd>
+             </dl>
+
+             @member ejs.ClusterHealth
+             @param {String} l The details level (cluster, indices, or shards)
+             @returns {Object} returns <code>this</code> so that calls can be chained.
+             */
+      level: function (l) {
+        if (l == null) {
+          return params.level;
+        }
+    
+        l = l.toLowerCase();
+        if (l === 'cluster' || l === 'indices' || l === 'shards') {
+          params.level = l;
+        }
+      
+        return this;
+      },
+    
+      /**
+            <p>Allows you to serialize this object into a JSON encoded string.</p>
+
+            @member ejs.ClusterHealth
+            @returns {String} returns this object as a serialized JSON string.
+            */
+      toString: function () {
+        return JSON.stringify(params);
+      },
+  
+      /**
+            <p>The type of ejs object.  For internal use only.</p>
+        
+            @member ejs.ClusterHealth
+            @returns {String} the type of object
+            */
+      _type: function () {
+        return 'cluster health';
+      },
+  
+      /**
+            <p>Retrieves the internal <code>document</code> object. This is 
+            typically used by internal API functions so use with caution.</p>
+
+            @member ejs.ClusterHealth
+            @returns {Object} returns this object's internal object.
+            */
+      _self: function () {
+        return params;
+      },
+  
+      /**
+            <p>Retrieves very simple status on the health of the cluster.</p>
+
+            @member ejs.ClusterHealth
+            @param {Function} successcb A callback function that handles the response.
+            @param {Function} errorcb A callback function that handles errors.
+            @returns {Object} The return value is dependent on client implementation.
+            */
+      doHealth: function (successcb, errorcb) {
+        // make sure the user has set a client
+        if (ejs.client == null) {
+          throw new Error("No Client Set");
+        }
+    
+        var url = '/_cluster/health';
+      
+        if (params.indices && params.indices.length > 0) {
+          url = url + '/' + params.indices.join();
+        }
+      
+        return ejs.client.get(url, genClientParams(params, paramExcludes), 
+                                                          successcb, errorcb);
+      }
+    
+    };
+  };
+  /**
+    @class
+    <p>The <code>ClusterState</code> object provides an interface for 
+    accessing the state of your cluster.</p>
+
+    @name ejs.ClusterState
+
+    @desc Retrieves comprehensive state information of your cluster.
+     
+    */
+  ejs.ClusterState = function () {
+
+    var 
+      params = {},
+      paramExcludes = [];
+    
+    return {
+    
+      /**
+             <p>If the operation will run on the local node only</p>  
+
+             @member ejs.ClusterState
              @param {Boolean} trueFalse True to run on local node only
              @returns {Object} returns <code>this</code> so that calls can be chained.
              */
@@ -16990,11 +17221,8 @@
       
       /**
              <p>Set's a timeout for the response from the master node.</p>  
-           
-             <p>This option is valid during the following operations:
-                <code>health</code></p>
 
-             @member ejs.Cluster
+             @member ejs.ClusterState
              @param {String} length The amount of time after which the operation
               will timeout.
              @returns {Object} returns <code>this</code> so that calls can be chained.
@@ -17007,154 +17235,139 @@
         params.master_timeout = length;
         return this;
       },
-      
+            
       /**
-             <p>Set's a timeout for the given operation.</p>  
-           
-             <p>This option is valid during the following operations:
-                <code>health</code></p>
+             <p>Sets if we should filter out the nodes part of the state
+             response.</p>  
 
-             @member ejs.Cluster
-             @param {String} length The amount of time after which the operation
-              will timeout.
+             @member ejs.ClusterState
+             @param {Boolean} trueFalse True to filter out the nodes state
              @returns {Object} returns <code>this</code> so that calls can be chained.
              */
-      timeout: function (length) {
-        if (length == null) {
-          return params.timeout;
+      filterNodes: function (trueFalse) {
+        if (trueFalse == null) {
+          return params.filter_nodes;
         }
       
-        params.timeout = length;
-        return this;
-      },
-    
-      /**
-             <p>Set the cluster status to wait for (or until timeout).  Valid 
-             values are:</p>  
-           
-             <dl>
-                 <dd><code>green</code></dd>
-                 <dd><code>yellow</code></dd>
-                 <dd><code>red</code></dd>
-             </dl>
-           
-             <p>This option is valid during the following operations:
-                <code>health</code></p>
-
-             @member ejs.Cluster
-             @param {String} status The status to wait for (green, yellow, or red).
-             @returns {Object} returns <code>this</code> so that calls can be chained.
-             */
-      waitForStatus: function (status) {
-        if (status == null) {
-          return params.wait_for_status;
-        }
-      
-        status = status.toLowerCase();
-        if (status === 'green' || status === 'yellow' || status === 'red') {
-          params.wait_for_status = status;
-        }
-        
+        params.filter_nodes = trueFalse;
         return this;
       },
       
       /**
-             <p>Set's the number of shards that can be relocating before
-             proceeding with the operation.  Typically set to 0 meaning we
-             must wait for all shards to be done relocating.</p>  
-           
-             <p>This option is valid during the following operations:
-                <code>health</code></p>
+             <p>Sets if we should filter out the routing table part of the 
+             state response.</p>  
 
-             @member ejs.Cluster
-             @param {Integer} num The number of acceptable relocating shards.
+             @member ejs.ClusterState
+             @param {Boolean} trueFalse True to filter out the routing table
              @returns {Object} returns <code>this</code> so that calls can be chained.
              */
-      waitForRelocatingShards: function (num) {
-        if (num == null) {
-          return params.wait_for_relocating_shards;
+      filterRoutingTable: function (trueFalse) {
+        if (trueFalse == null) {
+          return params.filter_routing_table;
         }
       
-        params.wait_for_relocating_shards = num;
+        params.filter_routing_table = trueFalse;
         return this;
       },
       
       /**
-             <p>Set's the number of shards that should be active before
-             proceeding with the operation.</p>  
-           
-             <p>This option is valid during the following operations:
-                <code>health</code></p>
+             <p>Sets if we should filter out the metadata part of the 
+             state response.</p>  
 
-             @member ejs.Cluster
-             @param {Integer} num The number of active shards.
+             @member ejs.ClusterState
+             @param {Boolean} trueFalse True to filter out the metadata 
              @returns {Object} returns <code>this</code> so that calls can be chained.
              */
-      waitForActiveShards: function (num) {
-        if (num == null) {
-          return params.wait_for_active_shards;
+      filterMetadata: function (trueFalse) {
+        if (trueFalse == null) {
+          return params.filter_metadata;
         }
       
-        params.wait_for_active_shards = num;
+        params.filter_metadata = trueFalse;
         return this;
       },
       
       /**
-             <p>Set's the number of nodes that must be available before
-             proceeding with the operation.  The value can be specified
-             as an integer or as values such as >=N, <=N, >N, <N, ge(N), 
-             le(N), gt(N) and lt(N).</p>  
-           
-             <p>This option is valid during the following operations:
-                <code>health</code></p>
+             <p>Sets if we should filter out the blocks part of the state
+             response.</p>  
 
-             @member ejs.Cluster
-             @param {String} num The number of avaiable nodes
+             @member ejs.ClusterState
+             @param {Boolean} trueFalse True to filter out the blocks response
              @returns {Object} returns <code>this</code> so that calls can be chained.
              */
-      waitForNodes: function (num) {
-        if (num == null) {
-          return params.wait_for_nodes;
+      filterBlocks: function (trueFalse) {
+        if (trueFalse == null) {
+          return params.filter_blocks;
         }
       
-        params.wait_for_nodes = num;
+        params.filter_blocks = trueFalse;
         return this;
       },
       
       /**
-             <p>Set the level of details for the operation.  Possible values
-             for the level are:</p>  
-           
-             <dl>
-                 <dd><code>cluster</code></dd>
-                 <dd><code>indices</code></dd>
-                 <dd><code>shards</code></dd>
-             </dl>
-           
-             <p>This option is valid during the following operations:
-                <code>health</code></p>
+             <p>When not filtering metadata, a list of indices to include in 
+             the metadata response.  If a single value is passed in it
+             will be appended to the current list of indices.  If an array is
+             passed in it will replace all existing indices.</p>  
 
-             @member ejs.Cluster
-             @param {String} l The details level (cluster, indices, or shards)
+             @member ejs.ClusterState
+             @param {String || Array} i An index name or list of index names.
              @returns {Object} returns <code>this</code> so that calls can be chained.
              */
-      level: function (l) {
-        if (l == null) {
-          return params.level;
+      filterIndices: function (i) {
+        if (params.filter_indices == null) {
+          params.filter_indices = [];
         }
       
-        l = l.toLowerCase();
-        if (l === 'cluster' || l === 'indices' || l === 'shards') {
-          params.level = l;
+        if (i == null) {
+          return params.filter_indices;
         }
-        
+      
+        if (isString(i)) {
+          params.filter_indices.push(i);
+        } else if (isArray(i)) {
+          params.filter_indices = i;
+        } else {
+          throw new TypeError('Argument must be string or array');
+        }
+      
+        return this;
+      },
+      
+      /**
+             <p>When not filtering metadata, a list of index templates to 
+             include in the metadata response.  If a single value is passed in 
+             it will be appended to the current list of templates.  If an 
+             array is passed in it will replace all existing templates.</p>  
+
+             @member ejs.ClusterState
+             @param {String || Array} i A template name or list of template names.
+             @returns {Object} returns <code>this</code> so that calls can be chained.
+             */
+      filterIndexTemplates: function (i) {
+        if (params.filter_index_templates == null) {
+          params.filter_index_templates = [];
+        }
+      
+        if (i == null) {
+          return params.filter_index_templates;
+        }
+      
+        if (isString(i)) {
+          params.filter_index_templates.push(i);
+        } else if (isArray(i)) {
+          params.filter_index_templates = i;
+        } else {
+          throw new TypeError('Argument must be string or array');
+        }
+      
         return this;
       },
       
       /**
             <p>Allows you to serialize this object into a JSON encoded string.</p>
 
-            @member ejs.Cluster
+            @member ejs.ClusterState
             @returns {String} returns this object as a serialized JSON string.
             */
       toString: function () {
@@ -17164,47 +17377,617 @@
       /**
             <p>The type of ejs object.  For internal use only.</p>
           
-            @member ejs.Cluster
+            @member ejs.ClusterState
             @returns {String} the type of object
             */
       _type: function () {
-        return 'cluster';
+        return 'cluster state';
       },
     
       /**
             <p>Retrieves the internal <code>document</code> object. This is 
             typically used by internal API functions so use with caution.</p>
 
-            @member ejs.Cluster
+            @member ejs.ClusterState
             @returns {Object} returns this object's internal object.
             */
       _self: function () {
         return params;
       },
-    
+      
       /**
-            <p>Retrieves very simple status on the health of the cluster.</p>
+            <p>Retrieves comprehensive state information of the whole cluster.</p>
 
-            @member ejs.Cluster
+            @member ejs.ClusterState
             @param {Function} successcb A callback function that handles the response.
             @param {Function} errorcb A callback function that handles errors.
             @returns {Object} The return value is dependent on client implementation.
             */
-      doHealth: function (successcb, errorcb) {
+      doState: function (successcb, errorcb) {
         // make sure the user has set a client
         if (ejs.client == null) {
           throw new Error("No Client Set");
         }
       
-        var url = '/_cluster/health';
+        var url = '/_cluster/state';
         
-        if (params.indices && params.indices.length > 0) {
-          url = url + '/' + params.indices.join();
-        }
-        
-        return ejs.client.get(url, genClientParams(), successcb, errorcb);
+        return ejs.client.get(url, genClientParams(params, paramExcludes), 
+                                                          successcb, errorcb);
       }
 
+    };
+  };
+  /**
+    @class
+    <p>The <code>NodeInfo</code> object provides an interface for accessing
+    the information for one or more (or all) nodes in your cluster.  Information 
+    is available for settings, os, process, jvm, thread pool, network, plugins,
+    transport, and http.</p>
+
+    @name ejs.NodeInfo
+
+    @desc Retrieve one or more (or all) node info.
+    */
+  ejs.NodeInfo = function () {
+
+    var 
+      params = {},
+      paramExcludes = ['nodes'];
+
+    return {
+
+      /**
+             <p>Set's the nodes to get the information for.  If a 
+             single value is passed in it will be appended to the current list 
+             of nodes.  If an array is passed in it will replace all existing 
+             nodes.  Nodes can be identified in the APIs either using their 
+             internal node id, the node name, address, custom attributes, or 
+             _local for only the node receiving the request.</p>  
+     
+             @member ejs.NodeInfo
+             @param {String || Array} n A node identifier (id, name, etc).
+             @returns {Object} returns <code>this</code> so that calls can be chained.
+             */
+      nodes: function (n) {
+        if (params.nodes == null) {
+          params.nodes = [];
+        }
+
+        if (n == null) {
+          return params.nodes;
+        }
+
+        if (isString(n)) {
+          params.nodes.push(n);
+        } else if (isArray(n)) {
+          params.nodes = n;
+        } else {
+          throw new TypeError('Argument must be string or array');
+        }
+
+        return this;
+      },
+
+      /**
+             <p>Clears all the flags (first). Useful, if you only want to 
+             retrieve specific information.</p>  
+
+             @member ejs.NodeInfo
+             @param {Boolean} trueFalse True to clear all flags
+             @returns {Object} returns <code>this</code> so that calls can be chained.
+             */
+      clear: function (trueFalse) {
+        if (trueFalse == null) {
+          return params.clear;
+        }
+
+        params.clear = trueFalse;
+        return this;
+      },
+
+      /**
+             <p>Enables all information flags.</p>  
+
+             @member ejs.NodeInfo
+             @param {Boolean} trueFalse True to get all available stats
+             @returns {Object} returns <code>this</code> so that calls can be chained.
+             */
+      all: function (trueFalse) {
+        if (trueFalse == null) {
+          return params.all;
+        }
+
+        params.all = trueFalse;
+        return this;
+      },
+  
+      /**
+             <p>Get information about node settings.</p>  
+
+             @member ejs.NodeInfo
+             @param {Boolean} trueFalse True to get settings information
+             @returns {Object} returns <code>this</code> so that calls can be chained.
+             */
+      settings: function (trueFalse) {
+        if (trueFalse == null) {
+          return params.settings;
+        }
+
+        params.settings = trueFalse;
+        return this;
+      },
+  
+      /**
+             <p>If stats about the os should be returned.</p>  
+
+             @member ejs.NodeInfo
+             @param {Boolean} trueFalse True to get os stats
+             @returns {Object} returns <code>this</code> so that calls can be chained.
+             */
+      os: function (trueFalse) {
+        if (trueFalse == null) {
+          return params.os;
+        }
+
+        params.os = trueFalse;
+        return this;
+      },
+  
+      /**
+             <p>If information about the process should be returned.</p>  
+
+             @member ejs.NodeInfo
+             @param {Boolean} trueFalse True to get process information
+             @returns {Object} returns <code>this</code> so that calls can be chained.
+             */
+      process: function (trueFalse) {
+        if (trueFalse == null) {
+          return params.process;
+        }
+
+        params.process = trueFalse;
+        return this;
+      },
+  
+      /**
+             <p>If information about the jvm should be returned.</p>  
+
+             @member ejs.NodeInfo
+             @param {Boolean} trueFalse True to get jvm information
+             @returns {Object} returns <code>this</code> so that calls can be chained.
+             */
+      jvm: function (trueFalse) {
+        if (trueFalse == null) {
+          return params.jvm;
+        }
+
+        params.jvm = trueFalse;
+        return this;
+      },
+  
+      /**
+             <p>If information about the thread pool should be returned.</p>  
+
+             @member ejs.NodeInfo
+             @param {Boolean} trueFalse True to get thread pool information
+             @returns {Object} returns <code>this</code> so that calls can be chained.
+             */
+      threadPool: function (trueFalse) {
+        if (trueFalse == null) {
+          return params.thread_pool;
+        }
+
+        params.thread_pool = trueFalse;
+        return this;
+      },
+  
+      /**
+             <p>If information about the network should be returned.</p>  
+
+             @member ejs.NodeInfo
+             @param {Boolean} trueFalse True to get network information
+             @returns {Object} returns <code>this</code> so that calls can be chained.
+             */
+      network: function (trueFalse) {
+        if (trueFalse == null) {
+          return params.network;
+        }
+
+        params.network = trueFalse;
+        return this;
+      },
+  
+      /**
+             <p>If information about the transport should be returned.</p>  
+
+             @member ejs.NodeInfo
+             @param {Boolean} trueFalse True to get transport information
+             @returns {Object} returns <code>this</code> so that calls can be chained.
+             */
+      transport: function (trueFalse) {
+        if (trueFalse == null) {
+          return params.transport;
+        }
+
+        params.transport = trueFalse;
+        return this;
+      },
+  
+      /**
+             <p>If information about the http should be returned.</p>  
+
+             @member ejs.NodeInfo
+             @param {Boolean} trueFalse True to get http information
+             @returns {Object} returns <code>this</code> so that calls can be chained.
+             */
+      http: function (trueFalse) {
+        if (trueFalse == null) {
+          return params.http;
+        }
+
+        params.http = trueFalse;
+        return this;
+      },
+  
+      /**
+             <p>If information about plugins should be returned.</p>  
+
+             @member ejs.NodeInfo
+             @param {Boolean} trueFalse True to get plugin information
+             @returns {Object} returns <code>this</code> so that calls can be chained.
+             */
+      plugin: function (trueFalse) {
+        if (trueFalse == null) {
+          return params.plugin;
+        }
+
+        params.plugin = trueFalse;
+        return this;
+      },
+    
+      /**
+            <p>Allows you to serialize this object into a JSON encoded string.</p>
+
+            @member ejs.NodeInfo
+            @returns {String} returns this object as a serialized JSON string.
+            */
+      toString: function () {
+        return JSON.stringify(params);
+      },
+
+      /**
+            <p>The type of ejs object.  For internal use only.</p>
+    
+            @member ejs.NodeInfo
+            @returns {String} the type of object
+            */
+      _type: function () {
+        return 'node info';
+      },
+
+      /**
+            <p>Retrieves the internal <code>document</code> object. This is 
+            typically used by internal API functions so use with caution.</p>
+
+            @member ejs.NodeInfo
+            @returns {Object} returns this object's internal object.
+            */
+      _self: function () {
+        return params;
+      },
+
+      /**
+            <p>Retrieves very simple status on the health of the cluster.</p>
+
+            @member ejs.NodeInfo
+            @param {Function} successcb A callback function that handles the response.
+            @param {Function} errorcb A callback function that handles errors.
+            @returns {Object} The return value is dependent on client implementation.
+            */
+      doInfo: function (successcb, errorcb) {
+        // make sure the user has set a client
+        if (ejs.client == null) {
+          throw new Error("No Client Set");
+        }
+
+        var url = '/_nodes';
+  
+        if (params.nodes && params.nodes.length > 0) {
+          url = url + '/' + params.nodes.join();
+        }
+    
+        return ejs.client.get(url, genClientParams(params, paramExcludes), 
+                                                          successcb, errorcb);
+      }
+
+    };
+  };
+  /**
+    @class
+    <p>The <code>NodeStats</code> object provides an interface for accessing
+    the stats for one or more (or all) nodes in your cluster.  Stats are 
+    available for indicies, os, process, jvm, thread pool, network, filesystem,
+    transport, and http.</p>
+
+    @name ejs.NodeStats
+
+    @desc Retrieve one or more (or all) of the cluster nodes statistics.
+    */
+  ejs.NodeStats = function () {
+
+    var 
+      params = {},
+      paramExcludes = ['nodes'];
+
+    return {
+
+      /**
+             <p>Set's the nodes to get the stats information for.  If a 
+             single value is passed in it will be appended to the current list 
+             of nodes.  If an array is passed in it will replace all existing 
+             nodes.  Nodes can be identified in the APIs either using their 
+             internal node id, the node name, address, custom attributes, or 
+             _local for only the node receiving the request.</p>  
+       
+             @member ejs.NodeStats
+             @param {String || Array} n A node identifier (id, name, etc).
+             @returns {Object} returns <code>this</code> so that calls can be chained.
+             */
+      nodes: function (n) {
+        if (params.nodes == null) {
+          params.nodes = [];
+        }
+  
+        if (n == null) {
+          return params.nodes;
+        }
+  
+        if (isString(n)) {
+          params.nodes.push(n);
+        } else if (isArray(n)) {
+          params.nodes = n;
+        } else {
+          throw new TypeError('Argument must be string or array');
+        }
+  
+        return this;
+      },
+
+      /**
+             <p>Clears all the flags (first). Useful, if you only want to 
+             retrieve specific stats.</p>  
+
+             @member ejs.NodeStats
+             @param {Boolean} trueFalse True to clear all flags
+             @returns {Object} returns <code>this</code> so that calls can be chained.
+             */
+      clear: function (trueFalse) {
+        if (trueFalse == null) {
+          return params.clear;
+        }
+  
+        params.clear = trueFalse;
+        return this;
+      },
+  
+      /**
+             <p>Enables all stats flags.</p>  
+
+             @member ejs.NodeStats
+             @param {Boolean} trueFalse True to get all available stats
+             @returns {Object} returns <code>this</code> so that calls can be chained.
+             */
+      all: function (trueFalse) {
+        if (trueFalse == null) {
+          return params.all;
+        }
+  
+        params.all = trueFalse;
+        return this;
+      },
+    
+      /**
+             <p>If stats about indices should be returned.  This is enabled
+             by default.</p>  
+
+             @member ejs.NodeStats
+             @param {Boolean} trueFalse True to get indicies stats
+             @returns {Object} returns <code>this</code> so that calls can be chained.
+             */
+      indices: function (trueFalse) {
+        if (trueFalse == null) {
+          return params.indices;
+        }
+  
+        params.indices = trueFalse;
+        return this;
+      },
+    
+      /**
+             <p>If stats about the os should be returned.</p>  
+
+             @member ejs.NodeStats
+             @param {Boolean} trueFalse True to get os stats
+             @returns {Object} returns <code>this</code> so that calls can be chained.
+             */
+      os: function (trueFalse) {
+        if (trueFalse == null) {
+          return params.os;
+        }
+  
+        params.os = trueFalse;
+        return this;
+      },
+    
+      /**
+             <p>If stats about the process should be returned.</p>  
+
+             @member ejs.NodeStats
+             @param {Boolean} trueFalse True to get process stats
+             @returns {Object} returns <code>this</code> so that calls can be chained.
+             */
+      process: function (trueFalse) {
+        if (trueFalse == null) {
+          return params.process;
+        }
+  
+        params.process = trueFalse;
+        return this;
+      },
+    
+      /**
+             <p>If stats about the jvm should be returned.</p>  
+
+             @member ejs.NodeStats
+             @param {Boolean} trueFalse True to get jvm stats
+             @returns {Object} returns <code>this</code> so that calls can be chained.
+             */
+      jvm: function (trueFalse) {
+        if (trueFalse == null) {
+          return params.jvm;
+        }
+  
+        params.jvm = trueFalse;
+        return this;
+      },
+    
+      /**
+             <p>If stats about the thread pool should be returned.</p>  
+
+             @member ejs.NodeStats
+             @param {Boolean} trueFalse True to get thread pool stats
+             @returns {Object} returns <code>this</code> so that calls can be chained.
+             */
+      threadPool: function (trueFalse) {
+        if (trueFalse == null) {
+          return params.thread_pool;
+        }
+  
+        params.thread_pool = trueFalse;
+        return this;
+      },
+    
+      /**
+             <p>If stats about the network should be returned.</p>  
+
+             @member ejs.NodeStats
+             @param {Boolean} trueFalse True to get network stats
+             @returns {Object} returns <code>this</code> so that calls can be chained.
+             */
+      network: function (trueFalse) {
+        if (trueFalse == null) {
+          return params.network;
+        }
+  
+        params.network = trueFalse;
+        return this;
+      },
+    
+      /**
+             <p>If stats about the file system (fs) should be returned.</p>  
+
+             @member ejs.NodeStats
+             @param {Boolean} trueFalse True to get file system stats
+             @returns {Object} returns <code>this</code> so that calls can be chained.
+             */
+      fs: function (trueFalse) {
+        if (trueFalse == null) {
+          return params.fs;
+        }
+  
+        params.fs = trueFalse;
+        return this;
+      },
+    
+      /**
+             <p>If stats about the transport should be returned.</p>  
+
+             @member ejs.NodeStats
+             @param {Boolean} trueFalse True to get transport stats
+             @returns {Object} returns <code>this</code> so that calls can be chained.
+             */
+      transport: function (trueFalse) {
+        if (trueFalse == null) {
+          return params.transport;
+        }
+  
+        params.transport = trueFalse;
+        return this;
+      },
+    
+      /**
+             <p>If stats about the http should be returned.</p>  
+
+             @member ejs.NodeStats
+             @param {Boolean} trueFalse True to get http stats
+             @returns {Object} returns <code>this</code> so that calls can be chained.
+             */
+      http: function (trueFalse) {
+        if (trueFalse == null) {
+          return params.http;
+        }
+  
+        params.http = trueFalse;
+        return this;
+      },
+    
+      /**
+            <p>Allows you to serialize this object into a JSON encoded string.</p>
+
+            @member ejs.NodeStats
+            @returns {String} returns this object as a serialized JSON string.
+            */
+      toString: function () {
+        return JSON.stringify(params);
+      },
+
+      /**
+            <p>The type of ejs object.  For internal use only.</p>
+      
+            @member ejs.NodeStats
+            @returns {String} the type of object
+            */
+      _type: function () {
+        return 'node stats';
+      },
+
+      /**
+            <p>Retrieves the internal <code>document</code> object. This is 
+            typically used by internal API functions so use with caution.</p>
+
+            @member ejs.NodeStats
+            @returns {Object} returns this object's internal object.
+            */
+      _self: function () {
+        return params;
+      },
+
+      /**
+            <p>Retrieves very simple status on the health of the cluster.</p>
+
+            @member ejs.NodeStats
+            @param {Function} successcb A callback function that handles the response.
+            @param {Function} errorcb A callback function that handles errors.
+            @returns {Object} The return value is dependent on client implementation.
+            */
+      doStats: function (successcb, errorcb) {
+        // make sure the user has set a client
+        if (ejs.client == null) {
+          throw new Error("No Client Set");
+        }
+  
+        var url = '/_nodes';
+    
+        if (params.nodes && params.nodes.length > 0) {
+          url = url + '/' + params.nodes.join();
+        }
+    
+        url = url + '/stats';
+      
+        return ejs.client.get(url, genClientParams(params, paramExcludes), 
+                                                          successcb, errorcb);
+      }
+  
     };
   };
   /**
@@ -18153,7 +18936,8 @@
             Disabled by default.
 
             <p>This option is valid during the following operations:
-                <code>search, count</code> and <code>delete by query</code></p>
+                <code>search, search shards, count</code> and 
+                <code>delete by query</code></p>
     
             @member ejs.Request
             @param {String} route The routing values as a comma-separated string.
@@ -18540,7 +19324,7 @@
             </dl>
 
             <p>This option is valid during the following operations:
-                <code>search</code> and <code>count</code></p>
+                <code>search, search shards, </code> and <code>count</code></p>
                 
             @member ejs.Request
             @param {String} perf the preference, any of <code>_primary</code>, <code>_local</code>, 
@@ -18557,6 +19341,25 @@
       },
 
       /**
+             <p>If the operation will run on the local node only</p>  
+
+             <p>This option is valid during the following operations:
+                <code>search shards</code></p>
+                  
+             @member ejs.Request
+             @param {Boolean} trueFalse True to run on local node only
+             @returns {Object} returns <code>this</code> so that calls can be chained.
+             */
+      local: function (trueFalse) {
+        if (trueFalse == null) {
+          return params.local;
+        }
+      
+        params.local = trueFalse;
+        return this;
+      },
+      
+      /**
             <p>Determines what type of indices to exclude from a request.  The
             value can be one of the following:</p>
 
@@ -18566,7 +19369,8 @@
             </dl>
 
             <p>This option is valid during the following operations:
-                <code>search, count</code> and <code>delete by query</code></p>
+                <code>search, search shards, count</code> and 
+                <code>delete by query</code></p>
                 
             @member ejs.Request
             @param {String} ignoreType the type of ignore (none or missing).
@@ -18740,7 +19544,28 @@
         }
         
         return ejs.client.post(getRestPath('_search'), queryData, successcb, errorcb);
+      },
+      
+      /**
+            Executes the search request as configured but only returns back 
+            the shards and nodes that the search is going to execute on.  This
+            is a cluster admin method. 
+
+            @member ejs.Request
+            @param {Function} successcb A callback function that handles the response.
+            @param {Function} errorcb A callback function that handles errors.
+            @returns {Object} Returns a client specific object.
+            */
+      doSearchShards: function (successcb, errorcb) {
+        // make sure the user has set a client
+        if (ejs.client == null) {
+          throw new Error("No Client Set");
+        }
+
+        // we don't need to send in the body data, just use empty string
+        return ejs.client.post(getRestPath('_search_shards'), '', successcb, errorcb);
       }
+      
     };
   };
 
@@ -19743,12 +20568,12 @@
             @param {Integer} len A positive integer value.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
-      prefixLength: function (len) {
+      prefixLen: function (len) {
         if (len == null) {
-          return settings.prefix_length;
+          return settings.prefix_len;
         }
   
-        settings.prefix_length = len;
+        settings.prefix_len = len;
         return this;
       },
     
