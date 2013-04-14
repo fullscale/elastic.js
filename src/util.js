@@ -207,3 +207,12 @@
     return (isEJSObject(obj) && obj._type() === 'cluster state');
   };
   
+  isNodeStats = function (obj) {
+    return (isEJSObject(obj) && obj._type() === 'node stats');
+  };
+  
+  isNodeInfo = function (obj) {
+    return (isEJSObject(obj) && obj._type() === 'node info');
+  };
+  
+  

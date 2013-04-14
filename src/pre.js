@@ -51,6 +51,8 @@
     isGenerator, // checks valid ejs Generator object
     isClusterHealth, // checks valid ejs ClusterHealth object
     isClusterState, // checks valid ejs ClusterState object
+    isNodeStats, // checks valid ejs NodeStats object
+    isNodeInfo, // checks valid ejs NodeInfo object
     
     // create ejs object
     ejs;
