@@ -28,11 +28,191 @@ exports.cluster = {
     done();
   },
   exists: function (test) {
-    test.expect(3);
+    test.expect(4);
 
     test.ok(ejs.ClusterHealth, 'ClusterHealth');
     test.ok(ejs.ClusterState, 'ClusterState');
     test.ok(ejs.NodeStats, 'NodeStats');
+    test.ok(ejs.NodeInfo, 'NodeInfo');
+    
+    test.done();
+  },
+  NodeInfo: function (test) {
+    test.expect(49);
+
+    var info = ejs.NodeInfo(),
+      expected,
+      mockClient,
+      expectedPath = '',
+      expectedData = '',
+      expectedMethod = '',
+      doTest = function (method, path, data, cb) {
+        if (expectedPath !== '') {
+          test.strictEqual(path, expectedPath);
+          expectedPath = '';
+        }
+        
+        if (expectedData !== '') {
+          test.deepEqual(data, expectedData);
+          expectedData = '';
+        }
+        
+        if (expectedMethod !== '') {
+          test.strictEqual(method, expectedMethod);
+          expectedMethod = '';
+        }
+        
+        test.deepEqual(info._self(), expected);
+      };
+
+    // setup fake client to call doTest
+    ejs.client = mockClient = {
+      get: function (path, data, cb) {
+        doTest('get', path, data, cb);
+      },
+      post: function (path, data, cb) {
+        doTest('post', path, data, cb);
+      },
+      put: function (path, data, cb) {
+        doTest('put', path, data, cb);
+      },
+      del: function (path, data, cb) {
+        doTest('delete', path, data, cb);
+      },
+      head: function (path, data, cb) {
+        doTest('head', path, data, cb);
+      }
+    };
+    
+    expected = {};
+    
+    test.ok(info, 'NodeInfo exists');
+    test.ok(info._self(), '_self() works');
+    doTest();
+    
+    info.nodes('n1');
+    expected.nodes = ['n1'];
+    test.deepEqual(info.nodes(), ['n1']);
+    doTest();
+    
+    info.nodes('n2');
+    expected.nodes.push('n2');
+    test.deepEqual(info.nodes(), ['n1', 'n2']);
+    doTest();
+    
+    info.nodes(['n3', 'n4']);
+    expected.nodes = ['n3', 'n4'];
+    test.deepEqual(info.nodes(), ['n3', 'n4']);
+    doTest();
+    
+    info.clear(true);
+    expected.clear = true;
+    test.strictEqual(info.clear(), true);
+    doTest();
+    
+    info.all(true);
+    expected.all = true;
+    test.strictEqual(info.all(), true);
+    doTest();
+    
+    info.settings(false);
+    expected.settings = false;
+    test.strictEqual(info.settings(), false);
+    doTest();
+    
+    info.os(true);
+    expected.os = true;
+    test.strictEqual(info.os(), true);
+    doTest();
+    
+    info.process(true);
+    expected.process = true;
+    test.strictEqual(info.process(), true);
+    doTest();
+    
+    info.jvm(true);
+    expected.jvm = true;
+    test.strictEqual(info.jvm(), true);
+    doTest();
+    
+    info.threadPool(true);
+    expected.thread_pool = true;
+    test.strictEqual(info.threadPool(), true);
+    doTest();
+    
+    info.network(true);
+    expected.network = true;
+    test.strictEqual(info.network(), true);
+    doTest();
+    
+    info.transport(true);
+    expected.transport = true;
+    test.strictEqual(info.transport(), true);
+    doTest();
+    
+    info.http(true);
+    expected.http = true;
+    test.strictEqual(info.http(), true);
+    doTest();
+    
+    info.plugin(true);
+    expected.plugin = true;
+    test.strictEqual(info.plugin(), true);
+    doTest();
+    
+    test.strictEqual(info._type(), 'node info');
+    test.strictEqual(info.toString(), JSON.stringify(expected));
+   
+    info = ejs.NodeInfo();
+    expected = {};
+    expectedMethod = 'get';
+    expectedData = {};
+    expectedPath = '/_nodes';
+    info.doInfo();
+    
+    info.clear(true).http(true).plugin(true);
+    expected.clear = true;
+    expected.http = true;
+    expected.plugin = true;
+    expectedData = {
+      clear: true,
+      http: true,
+      plugin: true
+    };
+    expectedPath = '/_nodes';
+    info.doInfo();
+    
+    info.nodes(['n1', 'n2']);
+    expected.nodes = ['n1', 'n2'];
+    expectedData = {
+      clear: true,
+      http: true,
+      plugin: true
+    };
+    expectedPath = '/_nodes/n1,n2';
+    info.doInfo();
+    
+    info.nodes('n3');
+    expected.nodes.push('n3');
+    expectedPath = '/_nodes/n1,n2,n3';
+    info.doInfo();
+    
+    info.nodes([]);
+    info.threadPool(true);
+    expected.thread_pool = true;
+    expected.nodes = [];
+    expectedData = {
+      clear: true,
+      http: true,
+      plugin: true,
+      thread_pool: true
+    };
+    expectedPath = '/_nodes';
+    info.doInfo();
+    
+    test.throws(function () {
+      info.nodes(3);
+    }, Error, 'Nodes must be string or array');
     
     test.done();
   },
