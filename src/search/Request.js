@@ -231,7 +231,8 @@
             Disabled by default.
 
             <p>This option is valid during the following operations:
-                <code>search, count</code> and <code>delete by query</code></p>
+                <code>search, search shards, count</code> and 
+                <code>delete by query</code></p>
     
             @member ejs.Request
             @param {String} route The routing values as a comma-separated string.
@@ -618,7 +619,7 @@
             </dl>
 
             <p>This option is valid during the following operations:
-                <code>search</code> and <code>count</code></p>
+                <code>search, search shards, </code> and <code>count</code></p>
                 
             @member ejs.Request
             @param {String} perf the preference, any of <code>_primary</code>, <code>_local</code>, 
@@ -635,6 +636,25 @@
       },
 
       /**
+             <p>If the operation will run on the local node only</p>  
+
+             <p>This option is valid during the following operations:
+                <code>search shards</code></p>
+                  
+             @member ejs.Request
+             @param {Boolean} trueFalse True to run on local node only
+             @returns {Object} returns <code>this</code> so that calls can be chained.
+             */
+      local: function (trueFalse) {
+        if (trueFalse == null) {
+          return params.local;
+        }
+      
+        params.local = trueFalse;
+        return this;
+      },
+      
+      /**
             <p>Determines what type of indices to exclude from a request.  The
             value can be one of the following:</p>
 
@@ -644,7 +664,8 @@
             </dl>
 
             <p>This option is valid during the following operations:
-                <code>search, count</code> and <code>delete by query</code></p>
+                <code>search, search shards, count</code> and 
+                <code>delete by query</code></p>
                 
             @member ejs.Request
             @param {String} ignoreType the type of ignore (none or missing).
@@ -818,6 +839,27 @@
         }
         
         return ejs.client.post(getRestPath('_search'), queryData, successcb, errorcb);
+      },
+      
+      /**
+            Executes the search request as configured but only returns back 
+            the shards and nodes that the search is going to execute on.  This
+            is a cluster admin method. 
+
+            @member ejs.Request
+            @param {Function} successcb A callback function that handles the response.
+            @param {Function} errorcb A callback function that handles errors.
+            @returns {Object} Returns a client specific object.
+            */
+      doSearchShards: function (successcb, errorcb) {
+        // make sure the user has set a client
+        if (ejs.client == null) {
+          throw new Error("No Client Set");
+        }
+
+        // we don't need to send in the body data, just use empty string
+        return ejs.client.post(getRestPath('_search_shards'), '', successcb, errorcb);
       }
+      
     };
   };

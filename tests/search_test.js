@@ -912,7 +912,7 @@ exports.search = {
     test.done();
   },
   Request: function (test) {
-    test.expect(157);
+    test.expect(163);
 
     var req = ejs.Request({indices: ['index1'], types: ['type1']}),
       matchAll = ejs.MatchAllQuery(),
@@ -1147,6 +1147,11 @@ exports.search = {
     expectedPath = '/_search?routing=route2%2Croute3&timeout=5000&replication=default&consistency=all&preference=_primary&ignore_indices=missing&search_type=count';
     req.doSearch();
     
+    req.local(true);
+    test.strictEqual(req.local(), true);
+    expectedPath = '/_search?routing=route2%2Croute3&timeout=5000&replication=default&consistency=all&preference=_primary&ignore_indices=missing&search_type=count&local=true';
+    req.doSearch();
+    
     req = ejs.Request({indices: 'index', types: 'type'}).query(matchAll);  
     expected = {
       query: matchAll._self()
@@ -1166,6 +1171,12 @@ exports.search = {
     expectedMethod = 'delete';
     expectedData = JSON.stringify(matchAll._self());
     req.doDeleteByQuery();
+    
+    // test search shards
+    expectedPath = '/index/type/_search_shards';
+    expectedMethod = 'post';
+    expectedData = '';
+    req.doSearchShards();
     
     req.sort('field1');
     expected.sort = ['field1'];
