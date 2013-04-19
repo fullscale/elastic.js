@@ -588,7 +588,7 @@ exports.filters = {
     test.done();
   },
   HasParentFilter: function (test) {
-    test.expect(12);
+    test.expect(14);
 
     var termQuery = ejs.TermQuery('t1', 'v1'),
       termQuery2 = ejs.TermQuery('t2', 'v2'),
@@ -622,6 +622,14 @@ exports.filters = {
     expected.has_parent._name = 'has_parent';
     doTest();
     
+    hasParentFilter.cache(true);
+    expected.has_parent._cache = true;
+    doTest();
+    
+    hasParentFilter.cacheKey('hasp_cached');
+    expected.has_parent._cache_key = 'hasp_cached';
+    doTest();
+    
     hasParentFilter.filter(termFilter);
     expected.has_parent.filter = termFilter._self();
     doTest();
@@ -644,7 +652,7 @@ exports.filters = {
     test.done();
   },
   HasChildFilter: function (test) {
-    test.expect(12);
+    test.expect(14);
 
     var termQuery = ejs.TermQuery('t1', 'v1'),
       termQuery2 = ejs.TermQuery('t2', 'v2'),
@@ -677,6 +685,15 @@ exports.filters = {
     hasChildFilter.name('haschild');
     expected.has_child._name = 'haschild';
     doTest();
+    
+    hasChildFilter.cache(true);
+    expected.has_child._cache = true;
+    doTest();
+    
+    hasChildFilter.cacheKey('hasc_cached');
+    expected.has_child._cache_key = 'hasc_cached';
+    doTest();
+    
     
     hasChildFilter.filter(termFilter);
     expected.has_child.filter = termFilter._self();

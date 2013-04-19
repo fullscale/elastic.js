@@ -1,4 +1,4 @@
-/*! elastic.js - v1.0.0 - 2013-04-13
+/*! elastic.js - v1.0.0 - 2013-04-19
 * https://github.com/fullscale/elastic.js
 * Copyright (c) 2013 FullScale Labs, LLC; Licensed MIT */
 
@@ -5275,7 +5275,39 @@
         filter.has_child._name = name;
         return this;
       },
-          
+
+      /**
+            Enable or disable caching of the filter
+
+            @member ejs.HasChildFilter
+            @param {Boolean} trueFalse True to cache the filter, false otherwise.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      cache: function (trueFalse) {
+        if (trueFalse == null) {
+          return filter.has_child._cache;
+        }
+
+        filter.has_child._cache = trueFalse;
+        return this;
+      },
+  
+      /**
+            Sets the cache key.
+
+            @member ejs.HasChildFilter
+            @param {String} key the cache key as a string.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      cacheKey: function (key) {
+        if (key == null) {
+          return filter.has_child._cache_key;
+        }
+
+        filter.has_child._cache_key = key;
+        return this;
+      },
+         
       /**
             Allows you to serialize this object into a JSON encoded string.
 
@@ -5427,7 +5459,39 @@
         filter.has_parent._name = name;
         return this;
       },
-    
+
+      /**
+            Enable or disable caching of the filter
+
+            @member ejs.HasParentFilter
+            @param {Boolean} trueFalse True to cache the filter, false otherwise.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      cache: function (trueFalse) {
+        if (trueFalse == null) {
+          return filter.has_parent._cache;
+        }
+
+        filter.has_parent._cache = trueFalse;
+        return this;
+      },
+  
+      /**
+            Sets the cache key.
+
+            @member ejs.HasParentFilter
+            @param {String} key the cache key as a string.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      cacheKey: function (key) {
+        if (key == null) {
+          return filter.has_parent._cache_key;
+        }
+
+        filter.has_parent._cache_key = key;
+        return this;
+      },
+          
       /**
             Allows you to serialize this object into a JSON encoded string.
 

@@ -116,7 +116,39 @@
         filter.has_parent._name = name;
         return this;
       },
-    
+
+      /**
+            Enable or disable caching of the filter
+
+            @member ejs.HasParentFilter
+            @param {Boolean} trueFalse True to cache the filter, false otherwise.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      cache: function (trueFalse) {
+        if (trueFalse == null) {
+          return filter.has_parent._cache;
+        }
+
+        filter.has_parent._cache = trueFalse;
+        return this;
+      },
+  
+      /**
+            Sets the cache key.
+
+            @member ejs.HasParentFilter
+            @param {String} key the cache key as a string.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      cacheKey: function (key) {
+        if (key == null) {
+          return filter.has_parent._cache_key;
+        }
+
+        filter.has_parent._cache_key = key;
+        return this;
+      },
+          
       /**
             Allows you to serialize this object into a JSON encoded string.
 
