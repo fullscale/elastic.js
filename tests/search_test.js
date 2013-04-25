@@ -28,7 +28,7 @@ exports.search = {
     done();
   },
   exists: function (test) {
-    test.expect(11);
+    test.expect(12);
 
     test.ok(ejs.Request, 'Request');
     test.ok(ejs.ScriptField, 'ScriptField');
@@ -41,6 +41,7 @@ exports.search = {
     test.ok(ejs.PhraseSuggester, 'PhraseSuggester');
     test.ok(ejs.DirectSettingsMixin, 'DirectSettingsMixin');
     test.ok(ejs.DirectGenerator, 'DirectGenerator');
+    test.ok(ejs.MultiSearchRequest, 'MultiSearchRequest');
     
     test.done();
   },
@@ -1343,6 +1344,226 @@ exports.search = {
     
     test.throws(function () {
       req.suggest(3);
+    }, TypeError);
+    
+    test.done();
+  },
+  MultiSearchRequest: function (test) {
+    test.expect(77);
+
+    var mreq = ejs.MultiSearchRequest({indices: ['index1'], types: ['type1']}), 
+      req = ejs.Request({indices: ['index1'], types: ['type1']})
+        .query(ejs.MatchAllQuery()),
+      req2 = ejs.Request().preference('_local').timeout(300)
+        .query(ejs.TermQuery('t', 'v'))
+        .filter(ejs.TermFilter('tf', 'vf')),
+      req3 = ejs.Request({types: 'type2'}).routing('abc')
+        .ignoreIndices('ignored')
+        .query(ejs.MatchAllQuery())
+        .facet(ejs.TermsFacet('my_terms_facet').field('author')),
+      req4 = ejs.Request().searchType('dfs_query_and_fetch')
+        .query(ejs.MatchAllQuery()),
+      rawReq,
+      expected,
+      mockClient,
+      expectedPath = '',
+      expectedData = '',
+      expectedMethod = '',
+      doTest = function (method, path, data, cb) {
+        if (expectedPath !== '') {
+          test.strictEqual(path, expectedPath);
+          expectedPath = '';
+        }
+        
+        if (expectedData !== '') {
+          test.deepEqual(data, expectedData);
+          expectedData = '';
+        }
+        
+        if (expectedMethod !== '') {
+          test.strictEqual(method, expectedMethod);
+          expectedMethod = '';
+        }
+        
+        test.deepEqual(mreq._self(), expected);
+      };
+
+    // setup fake client to call doTest
+    ejs.client = mockClient = {
+      get: function (path, data, cb) {
+        doTest('get', path, data, cb);
+      },
+      post: function (path, data, cb) {
+        doTest('post', path, data, cb);
+      },
+      put: function (path, data, cb) {
+        doTest('put', path, data, cb);
+      },
+      del: function (path, data, cb) {
+        doTest('delete', path, data, cb);
+      },
+      head: function (path, data, cb) {
+        doTest('head', path, data, cb);
+      }
+    };
+    
+    expected = [];
+
+    test.deepEqual(mreq.indices(), ['index1']);
+    test.deepEqual(mreq.types(), ['type1']);
+    expectedMethod = 'post';
+    expectedPath = '/index1/type1/_msearch';
+    mreq.doSearch();
+
+
+    mreq.indices([]);
+    test.deepEqual(mreq.indices(), ['_all']);
+    expectedPath = '/_all/type1/_msearch';
+    mreq.doSearch();
+
+    mreq.types([]);
+    test.deepEqual(mreq.types(), []);
+    expectedPath = '/_all/_msearch';
+    mreq.doSearch();
+
+    mreq.indices([]);
+    test.deepEqual(mreq.indices(), []);
+    expectedPath = '/_msearch';
+    mreq.doSearch();
+
+    mreq.indices(['index1', 'index2']);
+    test.deepEqual(mreq.indices(), ['index1', 'index2']);
+    expectedPath = '/index1,index2/_msearch';
+    mreq.doSearch();
+
+    mreq.types(['type1', 'type2']);
+    test.deepEqual(mreq.types(), ['type1', 'type2']);
+    expectedPath = '/index1,index2/type1,type2/_msearch';
+    mreq.doSearch();
+
+    mreq = ejs.MultiSearchRequest({});
+    test.deepEqual(mreq.indices(), []);
+    test.deepEqual(mreq.types(), []);
+    expectedPath = '/_msearch';
+    mreq.doSearch();
+    
+    mreq = ejs.MultiSearchRequest({
+      indices: 'index1',
+      types: 'type1'
+    });
+    test.deepEqual(mreq.indices(), ['index1']);
+    test.deepEqual(mreq.types(), ['type1']);
+    expectedPath = '/index1/type1/_msearch';
+    mreq.doSearch();
+
+    mreq = ejs.MultiSearchRequest({
+      types: 'type1'
+    });
+    test.deepEqual(mreq.indices(), ['_all']);
+    test.deepEqual(mreq.types(), ['type1']);
+    expectedPath = '/_all/type1/_msearch';
+    mreq.doSearch();
+    
+    mreq = ejs.MultiSearchRequest().requests(req);
+    expected = [req._self()];
+    expectedData = 
+      JSON.stringify({indices: req.indices(), types: req.types()}) +
+      '\n' + req.toString() + '\n';
+    test.deepEqual(mreq.requests(), [req]);
+    mreq.doSearch();
+    
+    mreq.requests(req2);
+    expected.push(req2._self());
+    rawReq = req2._self();
+    rawReq.timeout = 300;
+    expectedData = 
+      JSON.stringify({indices: req.indices(), types: req.types()}) +
+      '\n' + req.toString() + '\n' +
+      JSON.stringify({preference: req2.preference()}) +
+      '\n' + JSON.stringify(rawReq) + '\n';
+    test.deepEqual(mreq.requests(), [req, req2]);
+    mreq.doSearch();
+    
+    mreq.requests([req3, req4]);
+    expected = [req3._self(), req4._self()];
+    expectedData = 
+      JSON.stringify({indices: req3.indices(), types: req3.types(),
+        routing: req3.routing(), ignore_indices: req3.ignoreIndices()}) +
+      '\n' + req3.toString() + '\n' +
+      JSON.stringify({search_type: req4.searchType()}) +
+      '\n' + req4.toString() + '\n';
+    test.deepEqual(mreq.requests(), [req3, req4]);
+    mreq.doSearch();
+    
+    mreq.requests(req2);
+    expected.push(req2._self());
+    expectedData = 
+      JSON.stringify({indices: req3.indices(), types: req3.types(),
+        routing: req3.routing(), ignore_indices: req3.ignoreIndices()}) +
+      '\n' + req3.toString() + '\n' +
+      JSON.stringify({search_type: req4.searchType()}) +
+      '\n' + req4.toString() + '\n' + 
+      JSON.stringify({preference: req2.preference()}) +
+      '\n' + JSON.stringify(rawReq) + '\n';
+    test.deepEqual(mreq.requests(), [req3, req4, req2]);
+    mreq.doSearch();
+    
+    mreq = ejs.MultiSearchRequest().ignoreIndices('none');
+    test.strictEqual(mreq.ignoreIndices(), 'none');
+    expected = [];
+    expectedPath = '/_msearch?ignore_indices=none';
+    mreq.doSearch();
+    
+    mreq.ignoreIndices('INVALID');
+    test.strictEqual(mreq.ignoreIndices(), 'none');
+    expectedPath = '/_msearch?ignore_indices=none';
+    mreq.doSearch();
+    
+    mreq.ignoreIndices('MISSING');
+    test.strictEqual(mreq.ignoreIndices(), 'missing');
+    expectedPath = '/_msearch?ignore_indices=missing';
+    mreq.doSearch();
+    
+    mreq.searchType('dfs_query_then_fetch');
+    test.strictEqual(mreq.searchType(), 'dfs_query_then_fetch');
+    expectedPath = '/_msearch?ignore_indices=missing&search_type=dfs_query_then_fetch';
+    mreq.doSearch();
+    
+    mreq.searchType('INVALID');
+    test.strictEqual(mreq.searchType(), 'dfs_query_then_fetch');
+    expectedPath = '/_msearch?ignore_indices=missing&search_type=dfs_query_then_fetch';
+    mreq.doSearch();
+    
+    mreq.searchType('DFS_QUERY_AND_FETCH');
+    test.strictEqual(mreq.searchType(), 'dfs_query_and_fetch');
+    expectedPath = '/_msearch?ignore_indices=missing&search_type=dfs_query_and_fetch';
+    mreq.doSearch();
+    
+    mreq.searchType('Query_then_Fetch');
+    test.strictEqual(mreq.searchType(), 'query_then_fetch');
+    expectedPath = '/_msearch?ignore_indices=missing&search_type=query_then_fetch';
+    mreq.doSearch();
+    
+    mreq.searchType('query_and_fetch');
+    test.strictEqual(mreq.searchType(), 'query_and_fetch');
+    expectedPath = '/_msearch?ignore_indices=missing&search_type=query_and_fetch';
+    mreq.doSearch();
+    
+    mreq.searchType('scan');
+    test.strictEqual(mreq.searchType(), 'scan');
+    expectedPath = '/_msearch?ignore_indices=missing&search_type=scan';
+    mreq.doSearch();
+    
+    mreq.searchType('count');
+    test.strictEqual(mreq.searchType(), 'count');
+    expectedPath = '/_msearch?ignore_indices=missing&search_type=count';
+    mreq.doSearch();
+    
+    test.strictEqual(mreq._type(), 'multi search request');
+    test.strictEqual(mreq.toString(), JSON.stringify(expected));
+
+    test.throws(function () {
+      mreq.requests('invalid');
     }, TypeError);
     
     test.done();

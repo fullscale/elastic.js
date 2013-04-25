@@ -215,4 +215,11 @@
     return (isEJSObject(obj) && obj._type() === 'node info');
   };
   
-  
+  isRequest = function (obj) {
+    return (isEJSObject(obj) && obj._type() === 'request');
+  };
+
+  isMultiSearchRequest = function (obj) {
+    return (isEJSObject(obj) && obj._type() === 'multi search request');
+  };
+ 

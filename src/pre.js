@@ -53,6 +53,8 @@
     isClusterState, // checks valid ejs ClusterState object
     isNodeStats, // checks valid ejs NodeStats object
     isNodeInfo, // checks valid ejs NodeInfo object
+    isRequest, // checks valid ejs Request object
+    isMultiSearchRequest, // checks valid ejs MultiSearchRequest object
     
     // create ejs object
     ejs;
