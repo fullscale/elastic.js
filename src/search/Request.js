@@ -1,6 +1,6 @@
   /**
     @class
-    <p>The <code>Request</code> object provides methods generating and 
+    <p>The <code>Request</code> object provides methods generating and
     executing search requests.</p>
 
     @name ejs.Request
@@ -17,12 +17,12 @@
   ejs.Request = function (conf) {
 
     var query, indices, types, params = {},
-    
+
       // gernerates the correct url to the specified REST endpoint
       getRestPath = function (endpoint) {
-        var searchUrl = '', 
+        var searchUrl = '',
           parts = [];
-        
+
         // join any indices
         if (indices.length > 0) {
           searchUrl = searchUrl + '/' + indices.join();
@@ -32,26 +32,26 @@
         if (types.length > 0) {
           searchUrl = searchUrl + '/' + types.join();
         }
-        
+
         // add the endpoint
         if (endpoint.length > 0 && endpoint[0] !== '/') {
           searchUrl = searchUrl + '/';
         }
-        
+
         searchUrl = searchUrl + endpoint;
-        
+
         for (var p in params) {
           if (!has(params, p) || params[p] === '') {
             continue;
           }
-          
+
           parts.push(p + '=' + encodeURIComponent(params[p]));
         }
-        
+
         if (parts.length > 0) {
           searchUrl = searchUrl + '?' + parts.join('&');
         }
-        
+
         return searchUrl;
       };
 
@@ -63,7 +63,7 @@
     query = {};
 
     conf = conf || {};
-    // check if we are searching across any specific indeices        
+    // check if we are searching across any specific indeices
     if (conf.indices == null) {
       indices = [];
     } else if (isString(conf.indices)) {
@@ -90,12 +90,12 @@
     if (conf.routing != null) {
       params.routing = conf.routing;
     }
-    
+
     return {
 
       /**
             <p>Sets the sorting for the query.  This accepts many input formats.</p>
-            
+
             <dl>
                 <dd><code>sort()</code> - The current sorting values are returned.</dd>
                 <dd><code>sort(fieldName)</code> - Adds the field to the current list of sorting values.</dd>
@@ -106,18 +106,18 @@
                     from the array.  The array must contain only strings and Sort objects.</dd>
             </dl>
 
-            <p>Multi-level sorting is supported so the order in which sort fields 
+            <p>Multi-level sorting is supported so the order in which sort fields
             are added to the query requests is relevant.</p>
-            
+
             <p>It is recommended to use <code>Sort</code> objects when possible.</p>
-            
+
             @member ejs.Request
             @param {String} fieldName The field to be sorted by.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       sort: function () {
         var i, len;
-        
+
         if (!has(query, "sort")) {
           query.sort = [];
         }
@@ -125,11 +125,11 @@
         if (arguments.length === 0) {
           return query.sort;
         }
-      
+
         // if passed a single argument
         if (arguments.length === 1) {
           var sortVal = arguments[0];
-          
+
           if (isString(sortVal)) {
             // add  a single field name
             query.sort.push(sortVal);
@@ -153,12 +153,12 @@
           } else {
             // Invalid object type as argument.
             throw new TypeError('Argument must be string, Sort, or array');
-          } 
+          }
         } else if (arguments.length === 2) {
           // handle the case where a single field name and order are passed
           var field = arguments[0],
             order = arguments[1];
-            
+
           if (isString(field) && isString(order)) {
             order = order.toLowerCase();
             if (order === 'asc' || order === 'desc') {
@@ -173,7 +173,7 @@
       },
 
       /**
-           Enables score computation and tracking during sorting.  Be default, 
+           Enables score computation and tracking during sorting.  Be default,
            when sorting scores are not computed.
 
             @member ejs.Request
@@ -184,11 +184,11 @@
         if (trueFalse == null) {
           return query.track_scores;
         }
-      
+
         query.track_scores = trueFalse;
         return this;
       },
-      
+
       /**
             Sets the number of results/documents to be returned. This is set on a per page basis.
 
@@ -200,18 +200,18 @@
         if (s == null) {
           return query.size;
         }
-      
+
         query.size = s;
         return this;
       },
 
       /**
-            A timeout, bounding the request to be executed within the 
+            A timeout, bounding the request to be executed within the
             specified time value and bail when expired. Defaults to no timeout.
 
             <p>This option is valid during the following operations:
                 <code>search</code> and <code>delete by query</code></p>
-    
+
             @member ejs.Request
             @param {Long} t The timeout value in milliseconds.
             @returns {Object} returns <code>this</code> so that calls can be chained.
@@ -220,20 +220,20 @@
         if (t == null) {
           return params.timeout;
         }
-      
+
         params.timeout = t;
         return this;
       },
-                  
+
       /**
             Sets the shard routing parameter.  Only shards matching routing
             values will be searched.  Set to an empty string to disable routing.
             Disabled by default.
 
             <p>This option is valid during the following operations:
-                <code>search, search shards, count</code> and 
+                <code>search, search shards, count</code> and
                 <code>delete by query</code></p>
-    
+
             @member ejs.Request
             @param {String} route The routing values as a comma-separated string.
             @returns {Object} returns <code>this</code> so that calls can be chained.
@@ -242,22 +242,22 @@
         if (route == null) {
           return params.routing;
         }
-      
+
         params.routing = route;
         return this;
       },
 
       /**
-             <p>Sets the replication mode.</p>  
+             <p>Sets the replication mode.</p>
 
              <p>Valid values are:</p>
-             
+
              <dl>
                 <dd><code>async</code> - asynchronous replication to slaves</dd>
                 <dd><code>sync</code> - synchronous replication to the slaves</dd>
-                <dd><code>default</code> - the currently configured system default.</dd> 
+                <dd><code>default</code> - the currently configured system default.</dd>
              </dl>
-             
+
              <p>This option is valid during the following operations:
                 <code>delete by query</code></p>
 
@@ -269,27 +269,27 @@
         if (r == null) {
           return params.replication;
         }
-        
+
         r = r.toLowerCase();
         if (r === 'async' || r === 'sync' || r === 'default') {
           params.replication = r;
         }
-        
+
         return this;
       },
-      
+
       /**
-             <p>Sets the write consistency.</p>  
+             <p>Sets the write consistency.</p>
 
              <p>Valid values are:</p>
-             
+
              <dl>
                 <dd><code>one</code> - only requires write to one shard</dd>
                 <dd><code>quorum</code> - requires writes to quorum <code>(N/2 + 1)</code></dd>
                 <dd><code>all</code> - requires write to succeed on all shards</dd>
                 <dd><code>default</code> - the currently configured system default</dd>
              </dl>
-             
+
              <p>This option is valid during the following operations:
                 <code>delete by query</code></p>
 
@@ -301,36 +301,36 @@
         if (c == null) {
           return params.consistency;
         }
-        
+
         c = c.toLowerCase();
         if (c === 'default' || c === 'one' || c === 'quorum' || c === 'all') {
           params.consistency = c;
         }
-        
+
         return this;
       },
-      
+
       /**
-             <p>Sets the search execution type for the request.</p>  
+             <p>Sets the search execution type for the request.</p>
 
              <p>Valid values are:</p>
-             
+
              <dl>
-                <dd><code>dfs_query_then_fetch</code> - same as query_then_fetch, 
+                <dd><code>dfs_query_then_fetch</code> - same as query_then_fetch,
                   except distributed term frequencies are calculated first.</dd>
                 <dd><code>dfs_query_and_fetch</code> - same as query_and_fetch,
                   except distributed term frequencies are calculated first.</dd>
-                <dd><code>query_then_fetch</code> - executed against all 
+                <dd><code>query_then_fetch</code> - executed against all
                   shards, but only enough information is returned.  When ready,
-                  only the relevant shards are asked for the actual document 
+                  only the relevant shards are asked for the actual document
                   content</dd>
-                <dd><code>query_and_fetch</code> - execute the query on all 
+                <dd><code>query_and_fetch</code> - execute the query on all
                   relevant shards and return the results, including content.</dd>
                 <dd><code>scan</code> - efficiently scroll a large result set</dd>
-                <dd><code>count</code> -  special search type that returns the 
+                <dd><code>count</code> -  special search type that returns the
                   count that matched the search request without any docs </dd>
              </dl>
-             
+
              <p>This option is valid during the following operations:
                 <code>search</code></p>
 
@@ -342,24 +342,24 @@
         if (t == null) {
           return params.search_type;
         }
-        
+
         t = t.toLowerCase();
-        if (t === 'dfs_query_then_fetch' || t === 'dfs_query_and_fetch' || 
-          t === 'query_then_fetch' || t === 'query_and_fetch' || 
+        if (t === 'dfs_query_then_fetch' || t === 'dfs_query_and_fetch' ||
+          t === 'query_then_fetch' || t === 'query_and_fetch' ||
           t === 'scan' || t === 'count') {
-            
+
           params.search_type = t;
         }
-        
+
         return this;
       },
-      
+
       /**
             By default, searches return full documents, meaning every property or field.
             This method allows you to specify which fields you want returned.
-            
+
             Pass a single field name and it is appended to the current list of
-            fields.  Pass an array of fields and it replaces all existing 
+            fields.  Pass an array of fields and it replaces all existing
             fields.
 
             @member ejs.Request
@@ -370,11 +370,11 @@
         if (fieldList == null) {
           return query.fields;
         }
-      
+
         if (query.fields == null) {
           query.fields = [];
         }
-        
+
         if (isString(fieldList)) {
           query.fields.push(fieldList);
         } else if (isArray(fieldList)) {
@@ -382,7 +382,29 @@
         } else {
           throw new TypeError('Argument must be string or array');
         }
-        
+
+        return this;
+      },
+
+      /**
+            Once a query executes, you can use rescore to run a secondary, more
+            expensive query to re-order the results.
+
+            @member ejs.Request
+            @param {Rescore} r The rescore configuration.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      rescore: function (r) {
+        if (r == null) {
+          return query.rescore;
+        }
+
+        if (!isRescore(r)) {
+          throw new TypeError('Argument must be a Rescore');
+        }
+
+        query.rescore = r._self();
+
         return this;
       },
 
@@ -400,7 +422,7 @@
         if (f == null) {
           return query.from;
         }
-        
+
         query.from = f;
         return this;
       },
@@ -417,11 +439,11 @@
         if (someQuery == null) {
           return query.query;
         }
-      
+
         if (!isQuery(someQuery)) {
           throw new TypeError('Argument must be a Query');
         }
-        
+
         query.query = someQuery._self();
         return this;
       },
@@ -494,15 +516,15 @@
         if (facet == null) {
           return query.facets;
         }
-      
+
         if (query.facets == null) {
           query.facets = {};
         }
-      
+
         if (!isFacet(facet)) {
           throw new TypeError('Argument must be a Facet');
         }
-        
+
         extend(query.facets, facet._self());
 
         return this;
@@ -519,17 +541,17 @@
         if (filter == null) {
           return query.filter;
         }
-      
+
         if (!isFilter(filter)) {
           throw new TypeError('Argument must be a Filter');
         }
-        
+
         query.filter = filter._self();
         return this;
       },
 
       /**
-            Performs highlighting based on the <code>Highlight</code> 
+            Performs highlighting based on the <code>Highlight</code>
             settings.
 
             @member ejs.Request
@@ -540,7 +562,7 @@
         if (h == null) {
           return query.highlight;
         }
-      
+
         if (!isHighlight(h)) {
           throw new TypeError('Argument must be a Highlight object');
         }
@@ -550,15 +572,15 @@
       },
 
       /**
-            Allows you to set the specified suggester on this request object. 
-            Multiple suggesters can be set, all of which will be returned when 
-            the search is executed.  Global suggestion text can be set by 
+            Allows you to set the specified suggester on this request object.
+            Multiple suggesters can be set, all of which will be returned when
+            the search is executed.  Global suggestion text can be set by
             passing in a string vs. a <code>Suggest</code> object.
 
             @since elasticsearch 0.90
-            
+
             @member ejs.Request
-            @param {String || Suggest} s A valid Suggest object or a String to 
+            @param {String || Suggest} s A valid Suggest object or a String to
               set as the global suggest text.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
@@ -566,11 +588,11 @@
         if (s == null) {
           return query.suggest;
         }
-      
+
         if (query.suggest == null) {
           query.suggest = {};
         }
-      
+
         if (isString(s)) {
           query.suggest.text = s;
         } else if (isSuggest(s)) {
@@ -581,7 +603,7 @@
 
         return this;
       },
-      
+
       /**
             Computes a document property dynamically based on the supplied <code>ScriptField</code>.
 
@@ -593,15 +615,15 @@
         if (oScriptField == null) {
           return query.script_fields;
         }
-      
+
         if (query.script_fields == null) {
           query.script_fields = {};
         }
-      
+
         if (!isScriptField(oScriptField)) {
           throw new TypeError('Argument must be a ScriptField');
         }
-        
+
         extend(query.script_fields, oScriptField._self());
         return this;
       },
@@ -620,9 +642,9 @@
 
             <p>This option is valid during the following operations:
                 <code>search, search shards, </code> and <code>count</code></p>
-                
+
             @member ejs.Request
-            @param {String} perf the preference, any of <code>_primary</code>, <code>_local</code>, 
+            @param {String} perf the preference, any of <code>_primary</code>, <code>_local</code>,
                 <code>_only_:$nodeid</code>, or a custom string value.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
@@ -630,17 +652,17 @@
         if (perf == null) {
           return params.preference;
         }
-      
+
         params.preference = perf;
         return this;
       },
 
       /**
-             <p>If the operation will run on the local node only</p>  
+             <p>If the operation will run on the local node only</p>
 
              <p>This option is valid during the following operations:
                 <code>search shards</code></p>
-                  
+
              @member ejs.Request
              @param {Boolean} trueFalse True to run on local node only
              @returns {Object} returns <code>this</code> so that calls can be chained.
@@ -649,11 +671,11 @@
         if (trueFalse == null) {
           return params.local;
         }
-      
+
         params.local = trueFalse;
         return this;
       },
-      
+
       /**
             <p>Determines what type of indices to exclude from a request.  The
             value can be one of the following:</p>
@@ -664,9 +686,9 @@
             </dl>
 
             <p>This option is valid during the following operations:
-                <code>search, search shards, count</code> and 
+                <code>search, search shards, count</code> and
                 <code>delete by query</code></p>
-                
+
             @member ejs.Request
             @param {String} ignoreType the type of ignore (none or missing).
             @returns {Object} returns <code>this</code> so that calls can be chained.
@@ -675,15 +697,15 @@
         if (ignoreType == null) {
           return params.ignore_indices;
         }
-      
+
         ignoreType = ignoreType.toLowerCase();
         if (ignoreType === 'none' || ignoreType === 'missing') {
           params.ignore_indices = ignoreType;
         }
-        
+
         return this;
       },
-      
+
       /**
             Boosts hits in the specified index by the given boost value.
 
@@ -700,7 +722,7 @@
         if (arguments.length === 0) {
           return query.indices_boost;
         }
-      
+
         query.indices_boost[index] = boost;
         return this;
       },
@@ -715,8 +737,8 @@
       explain: function (trueFalse) {
         if (trueFalse == null) {
           return query.explain;
-        } 
-        
+        }
+
         query.explain = trueFalse;
         return this;
       },
@@ -732,7 +754,7 @@
         if (trueFalse == null) {
           return query.version;
         }
-        
+
         query.version = trueFalse;
         return this;
       },
@@ -748,7 +770,7 @@
         if (min == null) {
           return query.min_score;
         }
-        
+
         query.min_score = min;
         return this;
       },
@@ -765,14 +787,14 @@
 
       /**
             The type of ejs object.  For internal use only.
-            
+
             @member ejs.Request
             @returns {String} the type of object
             */
       _type: function () {
         return 'request';
       },
-      
+
       /**
             Retrieves the internal <code>query</code> object. This is typically used by
             internal API functions so use with caution.
@@ -786,7 +808,7 @@
 
       /**
             Executes a delete by query request using the current query.
-            
+
             @member ejs.Request
             @param {Function} successcb A callback function that handles the response.
             @param {Function} errorcb A callback function that handles errors.
@@ -794,18 +816,18 @@
             */
       doDeleteByQuery: function (successcb, errorcb) {
         var queryData = JSON.stringify(query.query);
-      
+
         // make sure the user has set a client
         if (ejs.client == null) {
           throw new Error("No Client Set");
         }
-        
+
         return ejs.client.del(getRestPath('_query'), queryData, successcb, errorcb);
       },
 
       /**
             Executes a count request using the current query.
-            
+
             @member ejs.Request
             @param {Function} successcb A callback function that handles the count response.
             @param {Function} errorcb A callback function that handles errors.
@@ -813,17 +835,17 @@
             */
       doCount: function (successcb, errorcb) {
         var queryData = JSON.stringify(query.query);
-      
+
         // make sure the user has set a client
         if (ejs.client == null) {
           throw new Error("No Client Set");
         }
-        
+
         return ejs.client.post(getRestPath('_count'), queryData, successcb, errorcb);
       },
-            
+
       /**
-            Executes the search. 
+            Executes the search.
 
             @member ejs.Request
             @param {Function} successcb A callback function that handles the search response.
@@ -832,19 +854,19 @@
             */
       doSearch: function (successcb, errorcb) {
         var queryData = JSON.stringify(query);
-      
+
         // make sure the user has set a client
         if (ejs.client == null) {
           throw new Error("No Client Set");
         }
-        
+
         return ejs.client.post(getRestPath('_search'), queryData, successcb, errorcb);
       },
-      
+
       /**
-            Executes the search request as configured but only returns back 
+            Executes the search request as configured but only returns back
             the shards and nodes that the search is going to execute on.  This
-            is a cluster admin method. 
+            is a cluster admin method.
 
             @member ejs.Request
             @param {Function} successcb A callback function that handles the response.
@@ -860,6 +882,6 @@
         // we don't need to send in the body data, just use empty string
         return ejs.client.post(getRestPath('_search_shards'), '', successcb, errorcb);
       }
-      
+
     };
   };
