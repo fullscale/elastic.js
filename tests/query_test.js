@@ -28,7 +28,7 @@ exports.queries = {
     done();
   },
   exists: function (test) {
-    test.expect(38);
+    test.expect(39);
     
     test.ok(ejs.CommonTermsQuery, 'CommonTermsQuery');
     test.ok(ejs.RegexpQuery, 'RegexpQuery');
@@ -67,6 +67,7 @@ exports.queries = {
     test.ok(ejs.SpanNotQuery, 'SpanNotQuery');
     test.ok(ejs.SpanOrQuery, 'SpanOrQuery');
     test.ok(ejs.SpanFirstQuery, 'SpanFirstQuery');
+    test.ok(ejs.SpanMultiTermQuery, 'SpanMultiTermQuery');
     test.ok(ejs.FieldMaskingSpanQuery, 'FieldMaskingSpanQuery');
 
     test.done();
@@ -3081,6 +3082,48 @@ exports.queries = {
     
     test.throws(function () {
       spanFirstQuery.match('invalid');
+    }, TypeError);
+    
+    test.done();
+  },
+  SpanMultiTermQuery: function (test) {
+    test.expect(9);
+
+    var mtQuery1 = ejs.FuzzyQuery('t1', 'v1'),
+      mtQuery2 = ejs.WildcardQuery('t2', 'v2*'),
+      spanMultiTermQuery = ejs.SpanMultiTermQuery(),
+      expected,
+      doTest = function () {
+        test.deepEqual(spanMultiTermQuery._self(), expected);
+      };
+
+    expected = {
+      span_multi_term: {
+        match: {}
+      }
+    };
+
+    test.ok(spanMultiTermQuery, 'SpanMultiTermQuery exists');
+    test.ok(spanMultiTermQuery._self(), '_self() works');
+    doTest();
+
+    spanMultiTermQuery = ejs.SpanMultiTermQuery(mtQuery1);
+    expected.span_multi_term.match = mtQuery1._self();
+    doTest();
+    
+    spanMultiTermQuery.match(mtQuery2);
+    expected.span_multi_term.match = mtQuery2._self();
+    doTest();
+    
+    test.strictEqual(spanMultiTermQuery._type(), 'query');
+    test.strictEqual(spanMultiTermQuery.toString(), JSON.stringify(expected));
+
+    test.throws(function () {
+      ejs.SpanMultiTermQuery('invalid');
+    }, TypeError);
+    
+    test.throws(function () {
+      spanMultiTermQuery.match('invalid');
     }, TypeError);
     
     test.done();
