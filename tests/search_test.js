@@ -28,7 +28,7 @@ exports.search = {
     done();
   },
   exists: function (test) {
-    test.expect(12);
+    test.expect(13);
 
     test.ok(ejs.Request, 'Request');
     test.ok(ejs.ScriptField, 'ScriptField');
@@ -42,6 +42,80 @@ exports.search = {
     test.ok(ejs.DirectSettingsMixin, 'DirectSettingsMixin');
     test.ok(ejs.DirectGenerator, 'DirectGenerator');
     test.ok(ejs.MultiSearchRequest, 'MultiSearchRequest');
+    test.ok(ejs.Rescore, 'Rescore');
+    
+    test.done();
+  },
+  Rescore: function (test) {
+    test.expect(17);
+    
+    var rescore = ejs.Rescore(),
+      termQuery1 = ejs.TermQuery('f1', 't1'),
+      termQuery2 = ejs.TermQuery('f2', 't2'),
+      expected,
+      doTest = function () {
+        test.deepEqual(rescore._self(), expected);
+      };
+    
+    expected = {
+      query: {}
+    };
+    
+    test.ok(rescore, 'Rescore exists');
+    test.ok(rescore._self(), '_self() works');
+    doTest();
+    
+    rescore = ejs.Rescore(100);
+    expected.window_size = 100;
+    doTest();
+    
+    rescore = ejs.Rescore(1000, termQuery1);
+    expected.window_size = 1000;
+    expected.query.rescore_query = termQuery1._self();
+    doTest();
+    
+    rescore.windowSize(100);
+    expected.window_size = 100;
+    doTest();
+    
+    rescore.rescoreQuery(termQuery2);
+    expected.query.rescore_query = termQuery2._self();
+    doTest();
+    
+    rescore.queryWeight(2);
+    expected.query.query_weight = 2;
+    doTest();
+    
+    rescore.rescoreQueryWeight(3);
+    expected.query.rescore_query_weight = 3;
+    doTest();
+    
+    test.strictEqual(rescore._type(), 'rescore');
+    test.strictEqual(rescore.toString(), JSON.stringify(expected));
+    
+    test.throws(function () {
+      ejs.Rescore('invalid');
+    }, TypeError);
+    
+    test.throws(function () {
+      ejs.Rescore(2, 'invalid');
+    }, TypeError);
+    
+    test.throws(function () {
+      rescore.rescoreQuery('invalid');
+    }, TypeError);
+    
+    test.throws(function () {
+      rescore.rescoreQueryWeight('invalid');
+    }, TypeError);
+    
+    test.throws(function () {
+      rescore.queryWeight('invalid');
+    }, TypeError);
+    
+    test.throws(function () {
+      rescore.windowSize('invalid');
+    }, TypeError);
     
     test.done();
   },
@@ -913,7 +987,7 @@ exports.search = {
     test.done();
   },
   Request: function (test) {
-    test.expect(163);
+    test.expect(165);
 
     var req = ejs.Request({indices: ['index1'], types: ['type1']}),
       matchAll = ejs.MatchAllQuery(),
@@ -929,6 +1003,7 @@ exports.search = {
       termSuggest = ejs.TermSuggester('my_term_suggester')
         .text('sugest termsz'),
       phraseSuggest = ejs.PhraseSuggester('my_phrase_suggester'),
+      rescore = ejs.Rescore(1000, termQuery).queryWeight(3),
       expected,
       mockClient,
       expectedPath = '',
@@ -1271,6 +1346,10 @@ exports.search = {
     expected.suggest.my_phrase_suggester = phraseSuggest._self().my_phrase_suggester;
     doTest();
     
+    req.rescore(rescore);
+    expected.rescore = rescore._self();
+    doTest();
+    
     req.scriptField(scriptField);
     expected.script_fields = scriptField._self();
     doTest();
@@ -1344,6 +1423,10 @@ exports.search = {
     
     test.throws(function () {
       req.suggest(3);
+    }, TypeError);
+    
+    test.throws(function () {
+      req.rescore('invalid');
     }, TypeError);
     
     test.done();

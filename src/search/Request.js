@@ -382,7 +382,29 @@
         } else {
           throw new TypeError('Argument must be string or array');
         }
-        
+
+        return this;
+      },
+
+      /**
+            Once a query executes, you can use rescore to run a secondary, more
+            expensive query to re-order the results.
+
+            @member ejs.Request
+            @param {Rescore} r The rescore configuration.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      rescore: function (r) {
+        if (r == null) {
+          return query.rescore;
+        }
+
+        if (!isRescore(r)) {
+          throw new TypeError('Argument must be a Rescore');
+        }
+
+        query.rescore = r._self();
+
         return this;
       },
 

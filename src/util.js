@@ -158,7 +158,11 @@
   isQuery = function (obj) {
     return (isEJSObject(obj) && obj._type() === 'query');
   };
-  
+
+  isRescore = function (obj) {
+    return (isEJSObject(obj) && obj._type() === 'rescore');
+  };
+
   isFilter = function (obj) {
     return (isEJSObject(obj) && obj._type() === 'filter');
   };

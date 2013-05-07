@@ -39,6 +39,7 @@
     isFunction,
     isEJSObject, // checks if valid ejs object
     isQuery, // checks valid ejs Query object
+    isRescore, // checks valid ejs Rescore object
     isFilter, // checks valid ejs Filter object
     isFacet, // checks valid ejs Facet object
     isScriptField, // checks valid ejs ScriptField object
