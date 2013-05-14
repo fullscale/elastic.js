@@ -89,6 +89,8 @@
             Sets the scoring type.  Valid values are max, sum, or avg. If
             another value is passed it we silently ignore the value.
 
+            @deprecated since elasticsearch 0.90.1, use scoreMode
+            
             @member ejs.TopChildrenQuery
             @param {String} s The scoring type as a string. 
             @returns {Object} returns <code>this</code> so that calls can be chained.
@@ -99,13 +101,34 @@
         }
   
         s = s.toLowerCase();
-        if (s === 'max' || s === 'sum' || s === 'avg') {
+        if (s === 'max' || s === 'sum' || s === 'avg' || s === 'total') {
           query.top_children.score = s;
         }
       
         return this;
       },
   
+      /**
+            Sets the scoring type.  Valid values are max, sum, total, or avg. 
+            If another value is passed it we silently ignore the value.
+
+            @member ejs.TopChildrenQuery
+            @param {String} s The scoring type as a string. 
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      scoreMode: function (s) {
+        if (s == null) {
+          return query.top_children.score_mode;
+        }
+  
+        s = s.toLowerCase();
+        if (s === 'max' || s === 'sum' || s === 'avg' || s === 'total') {
+          query.top_children.score_mode = s;
+        }
+      
+        return this;
+      },
+      
       /**
             Sets the factor which is the number of hits that are asked for in
             the child query.  Defaults to 5.

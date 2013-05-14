@@ -24,13 +24,13 @@
          @property {Object} query
          */
     var query = {
-      span_multi_term: {
+      span_multi: {
         match: {}
       }
     };
 
     if (qry != null) {
-      query.span_multi_term.match = qry._self();
+      query.span_multi.match = qry._self();
     }
 
     return {
@@ -44,14 +44,14 @@
             */
       match: function (mtQuery) {
         if (mtQuery == null) {
-          return query.span_multi_term.match;
+          return query.span_multi.match;
         }
   
         if (!isQuery(mtQuery)) {
           throw new TypeError('Argument must be a MultiTermQuery');
         }
     
-        query.span_multi_term.match = mtQuery._self();
+        query.span_multi.match = mtQuery._self();
         return this;
       },
   

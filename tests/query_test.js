@@ -629,7 +629,7 @@ exports.queries = {
     test.done();
   },
   TopChildrenQuery: function (test) {
-    test.expect(16);
+    test.expect(22);
 
     var termQuery = ejs.TermQuery('t1', 'v1'),
       termQuery2 = ejs.TermQuery('t2', 'v2'),
@@ -675,6 +675,29 @@ exports.queries = {
     
     topChildren.score('avg');
     expected.top_children.score = 'avg';
+    doTest();
+    
+    topChildren.score('total');
+    expected.top_children.score = 'total';
+    doTest();
+    
+    topChildren.scoreMode('silently fail');
+    doTest();
+    
+    topChildren.scoreMode('max');
+    expected.top_children.score_mode = 'max';
+    doTest();
+    
+    topChildren.scoreMode('SUM');
+    expected.top_children.score_mode = 'sum';
+    doTest();
+    
+    topChildren.scoreMode('avg');
+    expected.top_children.score_mode = 'avg';
+    doTest();
+    
+    topChildren.scoreMode('total');
+    expected.top_children.score_mode = 'total';
     doTest();
     
     topChildren.factor(7);
@@ -1092,7 +1115,7 @@ exports.queries = {
     test.done();
   },
   HasParentQuery: function (test) {
-    test.expect(13);
+    test.expect(16);
 
     var termQuery = ejs.TermQuery('t1', 'v1'),
       termQuery2 = ejs.TermQuery('t2', 'v2'),
@@ -1132,6 +1155,17 @@ exports.queries = {
     expected.has_parent.score_type = 'score';
     doTest();
     
+    hasParentQuery.scoreMode('none');
+    expected.has_parent.score_mode = 'none';
+    doTest();
+    
+    hasParentQuery.scoreMode('INVALID');
+    doTest();
+    
+    hasParentQuery.scoreMode('SCORE');
+    expected.has_parent.score_mode = 'score';
+    doTest();
+    
     hasParentQuery.boost(1.2);
     expected.has_parent.boost = 1.2;
     doTest();
@@ -1150,7 +1184,7 @@ exports.queries = {
     test.done();
   },
   HasChildQuery: function (test) {
-    test.expect(15);
+    test.expect(20);
 
     var termQuery = ejs.TermQuery('t1', 'v1'),
       termQuery2 = ejs.TermQuery('t2', 'v2'),
@@ -1196,6 +1230,25 @@ exports.queries = {
     
     hasChildQuery.scoreType('sum');
     expected.has_child.score_type = 'sum';
+    doTest();
+    
+    hasChildQuery.scoreMode('none');
+    expected.has_child.score_mode = 'none';
+    doTest();
+    
+    hasChildQuery.scoreMode('INVALID');
+    doTest();
+    
+    hasChildQuery.scoreMode('MAX');
+    expected.has_child.score_mode = 'max';
+    doTest();
+    
+    hasChildQuery.scoreMode('Avg');
+    expected.has_child.score_mode = 'avg';
+    doTest();
+    
+    hasChildQuery.scoreMode('sum');
+    expected.has_child.score_mode = 'sum';
     doTest();
     
     hasChildQuery.boost(1.2);
@@ -2640,7 +2693,7 @@ exports.queries = {
     test.done();
   },
   NestedQuery: function (test) {
-    test.expect(18);
+    test.expect(19);
 
     var termQuery1 = ejs.TermQuery('t1', 'v1'),
       termQuery2 = ejs.TermQuery('t2', 'v2'),
@@ -2699,6 +2752,10 @@ exports.queries = {
     
     nestedQuery.scoreMode('none');
     expected.nested.score_mode = 'none';
+    doTest();
+    
+    nestedQuery.scoreMode('sum');
+    expected.nested.score_mode = 'sum';
     doTest();
     
     nestedQuery.boost(3.2);
@@ -3098,7 +3155,7 @@ exports.queries = {
       };
 
     expected = {
-      span_multi_term: {
+      span_multi: {
         match: {}
       }
     };
@@ -3108,11 +3165,11 @@ exports.queries = {
     doTest();
 
     spanMultiTermQuery = ejs.SpanMultiTermQuery(mtQuery1);
-    expected.span_multi_term.match = mtQuery1._self();
+    expected.span_multi.match = mtQuery1._self();
     doTest();
     
     spanMultiTermQuery.match(mtQuery2);
-    expected.span_multi_term.match = mtQuery2._self();
+    expected.span_multi.match = mtQuery2._self();
     doTest();
     
     test.strictEqual(spanMultiTermQuery._type(), 'query');

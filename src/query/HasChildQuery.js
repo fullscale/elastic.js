@@ -89,6 +89,8 @@
             sum - the sum the all the matched child documents is used
             avg - the average of all matched child documents is used
 
+            @deprecated since elasticsearch 0.90.1, use scoreMode
+            
             @member ejs.HasChildQuery
             @param {String} s The score type as a string.
             @returns {Object} returns <code>this</code> so that calls can be chained.
@@ -101,6 +103,31 @@
         s = s.toLowerCase();
         if (s === 'none' || s === 'max' || s === 'sum' || s === 'avg') {
           query.has_child.score_type = s;
+        }
+        
+        return this;
+      },
+      
+      /**
+            Sets the scoring method.  Valid values are:
+            
+            none - the default, no scoring
+            max - the highest score of all matched child documents is used
+            sum - the sum the all the matched child documents is used
+            avg - the average of all matched child documents is used
+
+            @member ejs.HasChildQuery
+            @param {String} s The score type as a string.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      scoreMode: function (s) {
+        if (s == null) {
+          return query.has_child.score_mode;
+        }
+    
+        s = s.toLowerCase();
+        if (s === 'none' || s === 'max' || s === 'sum' || s === 'avg') {
+          query.has_child.score_mode = s;
         }
         
         return this;

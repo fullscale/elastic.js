@@ -1,4 +1,4 @@
-/*! elastic.js - v1.0.0 - 2013-05-06
+/*! elastic.js - v1.0.0 - 2013-05-14
 * https://github.com/fullscale/elastic.js
 * Copyright (c) 2013 FullScale Labs, LLC; Licensed MIT */
 
@@ -12306,6 +12306,8 @@
             sum - the sum the all the matched child documents is used
             avg - the average of all matched child documents is used
 
+            @deprecated since elasticsearch 0.90.1, use scoreMode
+            
             @member ejs.HasChildQuery
             @param {String} s The score type as a string.
             @returns {Object} returns <code>this</code> so that calls can be chained.
@@ -12318,6 +12320,31 @@
         s = s.toLowerCase();
         if (s === 'none' || s === 'max' || s === 'sum' || s === 'avg') {
           query.has_child.score_type = s;
+        }
+        
+        return this;
+      },
+      
+      /**
+            Sets the scoring method.  Valid values are:
+            
+            none - the default, no scoring
+            max - the highest score of all matched child documents is used
+            sum - the sum the all the matched child documents is used
+            avg - the average of all matched child documents is used
+
+            @member ejs.HasChildQuery
+            @param {String} s The score type as a string.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      scoreMode: function (s) {
+        if (s == null) {
+          return query.has_child.score_mode;
+        }
+    
+        s = s.toLowerCase();
+        if (s === 'none' || s === 'max' || s === 'sum' || s === 'avg') {
+          query.has_child.score_mode = s;
         }
         
         return this;
@@ -12461,6 +12488,8 @@
             none - the default, no scoring
             score - the score of the parent is used in all child documents.
 
+            @deprecated since elasticsearch 0.90.1 use scoreMode
+            
             @member ejs.HasParentQuery
             @param {String} s The score type as a string.
             @returns {Object} returns <code>this</code> so that calls can be chained.
@@ -12473,6 +12502,29 @@
         s = s.toLowerCase();
         if (s === 'none' || s === 'score') {
           query.has_parent.score_type = s;
+        }
+        
+        return this;
+      },
+      
+      /**
+            Sets the scoring method.  Valid values are:
+            
+            none - the default, no scoring
+            score - the score of the parent is used in all child documents.
+            
+            @member ejs.HasParentQuery
+            @param {String} s The score type as a string.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      scoreMode: function (s) {
+        if (s == null) {
+          return query.has_parent.score_mode;
+        }
+    
+        s = s.toLowerCase();
+        if (s === 'none' || s === 'score') {
+          query.has_parent.score_mode = s;
         }
         
         return this;
@@ -14463,7 +14515,7 @@
       
         mode = mode.toLowerCase();
         if (mode === 'avg' || mode === 'total' || mode === 'max' || 
-          mode === 'none') {
+          mode === 'none' || mode === 'sum') {
             
           query.nested.score_mode = mode;
         }
@@ -15838,13 +15890,13 @@
          @property {Object} query
          */
     var query = {
-      span_multi_term: {
+      span_multi: {
         match: {}
       }
     };
 
     if (qry != null) {
-      query.span_multi_term.match = qry._self();
+      query.span_multi.match = qry._self();
     }
 
     return {
@@ -15858,14 +15910,14 @@
             */
       match: function (mtQuery) {
         if (mtQuery == null) {
-          return query.span_multi_term.match;
+          return query.span_multi.match;
         }
   
         if (!isQuery(mtQuery)) {
           throw new TypeError('Argument must be a MultiTermQuery');
         }
     
-        query.span_multi_term.match = mtQuery._self();
+        query.span_multi.match = mtQuery._self();
         return this;
       },
   
@@ -16820,6 +16872,8 @@
             Sets the scoring type.  Valid values are max, sum, or avg. If
             another value is passed it we silently ignore the value.
 
+            @deprecated since elasticsearch 0.90.1, use scoreMode
+            
             @member ejs.TopChildrenQuery
             @param {String} s The scoring type as a string. 
             @returns {Object} returns <code>this</code> so that calls can be chained.
@@ -16830,13 +16884,34 @@
         }
   
         s = s.toLowerCase();
-        if (s === 'max' || s === 'sum' || s === 'avg') {
+        if (s === 'max' || s === 'sum' || s === 'avg' || s === 'total') {
           query.top_children.score = s;
         }
       
         return this;
       },
   
+      /**
+            Sets the scoring type.  Valid values are max, sum, total, or avg. 
+            If another value is passed it we silently ignore the value.
+
+            @member ejs.TopChildrenQuery
+            @param {String} s The scoring type as a string. 
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      scoreMode: function (s) {
+        if (s == null) {
+          return query.top_children.score_mode;
+        }
+  
+        s = s.toLowerCase();
+        if (s === 'max' || s === 'sum' || s === 'avg' || s === 'total') {
+          query.top_children.score_mode = s;
+        }
+      
+        return this;
+      },
+      
       /**
             Sets the factor which is the number of hits that are asked for in
             the child query.  Defaults to 5.

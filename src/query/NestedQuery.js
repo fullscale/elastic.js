@@ -105,7 +105,7 @@
       
         mode = mode.toLowerCase();
         if (mode === 'avg' || mode === 'total' || mode === 'max' || 
-          mode === 'none') {
+          mode === 'none' || mode === 'sum') {
             
           query.nested.score_mode = mode;
         }
