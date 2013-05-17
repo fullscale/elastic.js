@@ -1,4 +1,4 @@
-/*! elastic.js - v1.0.0 - 2013-05-14
+/*! elastic.js - v1.0.0 - 2013-05-17
 * https://github.com/fullscale/elastic.js
 * Copyright (c) 2013 FullScale Labs, LLC; Licensed MIT */
 
@@ -18789,6 +18789,32 @@
       },
       
       /**
+            Sets arbitrary options that can be passed to the highlighter
+            implementation in use.
+            
+            @since elasticsearch 0.90.1
+            
+            @member ejs.Highlight
+            @param {String} opts A map/object of option name and values.
+            @param {Object} oField An optional field name
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      options: function (opts, oField) {
+        if (opts === null && oField != null) {
+          return highlight.fields[oField].options;
+        } else if (opts == null) {
+          return highlight.options;
+        }
+
+        if (!isObject(opts) || isArray(opts) || isEJSObject(opts)) {
+          throw new TypeError('Parameter must be an object');
+        }
+        
+        addOption(oField, 'options', opts);
+        return this;
+      },
+      
+      /**
             Allows you to serialize this object into a JSON encoded string.
 
             @member ejs.Highlight
@@ -20949,7 +20975,7 @@
       /**
             Sets the path of the nested object.
 
-            Valid during sort types:  field
+            Valid during sort types:  field, geo distance
           
             @since elasticsearch 0.90
             @member ejs.Sort
@@ -20969,6 +20995,8 @@
             <p>Allows you to set a filter that nested objects must match
             in order to be considered during sorting.</p>
 
+            Valid during sort types: field, geo distance
+            
             @since elasticsearch 0.90
             @member ejs.Sort
             @param {Object} oFilter A valid <code>Filter</code> object.

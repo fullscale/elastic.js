@@ -394,6 +394,32 @@
       },
       
       /**
+            Sets arbitrary options that can be passed to the highlighter
+            implementation in use.
+            
+            @since elasticsearch 0.90.1
+            
+            @member ejs.Highlight
+            @param {String} opts A map/object of option name and values.
+            @param {Object} oField An optional field name
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      options: function (opts, oField) {
+        if (opts === null && oField != null) {
+          return highlight.fields[oField].options;
+        } else if (opts == null) {
+          return highlight.options;
+        }
+
+        if (!isObject(opts) || isArray(opts) || isEJSObject(opts)) {
+          throw new TypeError('Parameter must be an object');
+        }
+        
+        addOption(oField, 'options', opts);
+        return this;
+      },
+      
+      /**
             Allows you to serialize this object into a JSON encoded string.
 
             @member ejs.Highlight

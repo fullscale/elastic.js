@@ -481,7 +481,7 @@ exports.search = {
     test.done();
   },
   Highlight: function (test) {
-    test.expect(42);
+    test.expect(47);
     
     var highlight = ejs.Highlight(['title', 'content']),
       expected,
@@ -647,8 +647,28 @@ exports.search = {
     expected.fields.title.fragmenter = 'span';
     doTest();
     
+    highlight.options({a: 1, b: 2});
+    expected.options = {a: 1, b: 2};
+    doTest();
+    
+    highlight.options({c: 3}, 'body');
+    expected.fields.body.options = {c: 3};
+    doTest();
+    
     test.strictEqual(highlight._type(), 'highlight');
     test.strictEqual(highlight.toString(), JSON.stringify(expected));
+    
+    test.throws(function () {
+      highlight.options('invalid');
+    }, TypeError);
+    
+    test.throws(function () {
+      highlight.options(['invalid']);
+    }, TypeError);
+    
+    test.throws(function () {
+      highlight.options(ejs.GeoPoint());
+    }, TypeError);
     
     test.done();
   },
