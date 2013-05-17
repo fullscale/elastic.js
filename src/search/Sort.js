@@ -377,7 +377,7 @@
       /**
             Sets the path of the nested object.
 
-            Valid during sort types:  field
+            Valid during sort types:  field, geo distance
           
             @since elasticsearch 0.90
             @member ejs.Sort
@@ -397,6 +397,8 @@
             <p>Allows you to set a filter that nested objects must match
             in order to be considered during sorting.</p>
 
+            Valid during sort types: field, geo distance
+            
             @since elasticsearch 0.90
             @member ejs.Sort
             @param {Object} oFilter A valid <code>Filter</code> object.
