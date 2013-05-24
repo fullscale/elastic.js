@@ -35,7 +35,7 @@
   ],
   "main": "elastic.js",
   "scripts": {
-    "test": "grunt test",
+    "test": "grunt nodeunit",
     "prepublish": "cp dist/elastic.js dist/elastic-node-client.js ."
   },
   "dependencies": {
