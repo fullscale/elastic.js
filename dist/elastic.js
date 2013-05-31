@@ -1,4 +1,4 @@
-/*! elastic.js - v1.1.1 - 2013-05-24
+/*! elastic.js - v1.1.1 - 2013-05-31
  * https://github.com/fullscale/elastic.js
  * Copyright (c) 2013 FullScale Labs, LLC; Licensed MIT */
 
@@ -9578,12 +9578,12 @@
             @param {String} trueFalse A <code>true/false</code value.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
-      disableCoords: function (trueFalse) {
+      disableCoord: function (trueFalse) {
         if (trueFalse == null) {
-          return query.common[field].disable_coords;
+          return query.common[field].disable_coord;
         }
 
-        query.common[field].disable_coords = trueFalse;
+        query.common[field].disable_coord = trueFalse;
         return this;
       },
           

@@ -127,8 +127,8 @@ exports.queries = {
     expected.common.field2.boost = 1.5;
     doTest();
 
-    commonQuery.disableCoords(true);
-    expected.common.field2.disable_coords = true;
+    commonQuery.disableCoord(true);
+    expected.common.field2.disable_coord = true;
     doTest();
     
     commonQuery.cutoffFrequency(0.65);

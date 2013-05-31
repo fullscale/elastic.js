@@ -109,12 +109,12 @@
             @param {String} trueFalse A <code>true/false</code value.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
-      disableCoords: function (trueFalse) {
+      disableCoord: function (trueFalse) {
         if (trueFalse == null) {
-          return query.common[field].disable_coords;
+          return query.common[field].disable_coord;
         }
 
-        query.common[field].disable_coords = trueFalse;
+        query.common[field].disable_coord = trueFalse;
         return this;
       },
           
