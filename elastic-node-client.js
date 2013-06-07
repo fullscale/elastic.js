@@ -1,4 +1,4 @@
-/*! elastic.js - v1.1.1 - 2013-06-05
+/*! elastic.js - v1.1.1 - 2013-06-07
  * https://github.com/fullscale/elastic.js
  * Copyright (c) 2013 FullScale Labs, LLC; Licensed MIT */
 
@@ -102,7 +102,8 @@
             */
       get: function (path, data, successcb, errorcb) {
         var opt = {
-            hostname: serverUrlObj.hostName,
+            hostname: serverUrlObj.hostname,
+            port:     serverUrlObj.port,
             auth:     serverUrlObj.auth,
             path:     path + '?' + querystring.stringify(data),
             method:   'GET'
@@ -117,7 +118,7 @@
             });
 
             res.on('end', function () {
-              if (successcb !== null) {
+              if (typeof successcb === 'function') {
                 successcb(JSON.parse(resData));
               }
             });
@@ -125,7 +126,7 @@
           });
 
         // handle request errors
-        if (errorcb !== null) {
+        if (typeof errorcb === 'function') {
           req.on('error', errorcb);
         }
 
@@ -147,7 +148,8 @@
         var
 
           opt = {
-            hostname: serverUrlObj.hostName,
+            hostname: serverUrlObj.hostname,
+            port:     serverUrlObj.port,
             auth:     serverUrlObj.auth,
             path: path,
             method: 'POST',
@@ -155,7 +157,6 @@
               'Content-Type': 'application/json'
             }
           },
-
           req = httpClient.request(opt, function (res) {
             var resData = '';
             res.setEncoding('utf8');
@@ -165,7 +166,7 @@
             });
 
             res.on('end', function () {
-              if (successcb !== null) {
+              if (typeof successcb === 'function') {
                 successcb(JSON.parse(resData));
               }
             });
@@ -173,7 +174,7 @@
           });
 
         // handle request errors
-        if (errorcb !== null) {
+        if (typeof errorcb === 'function') {
           req.on('error', errorcb);
         }
 
@@ -196,7 +197,8 @@
         var
 
           opt = {
-            hostname: serverUrlObj.hostName,
+            hostname: serverUrlObj.hostname,
+            port:     serverUrlObj.port,
             auth:     serverUrlObj.auth,
             path: path,
             method: 'PUT',
@@ -214,7 +216,7 @@
             });
 
             res.on('end', function () {
-              if (successcb !== null) {
+              if (typeof successcb === 'function') {
                 successcb(JSON.parse(resData));
               }
             });
@@ -222,7 +224,7 @@
           });
 
         // handle request errors
-        if (errorcb !== null) {
+        if (typeof errorcb === 'function') {
           req.on('error', errorcb);
         }
 
@@ -245,7 +247,8 @@
         var
 
           opt = {
-            hostname: serverUrlObj.hostName,
+            hostname: serverUrlObj.hostname,
+            port:     serverUrlObj.port,
             auth:     serverUrlObj.auth,
             path: path,
             method: 'DELETE',
@@ -263,7 +266,7 @@
             });
 
             res.on('end', function () {
-              if (successcb !== null) {
+              if (typeof successcb === 'function') {
                 successcb(JSON.parse(resData));
               }
             });
@@ -271,7 +274,7 @@
           });
 
         // handle request errors
-        if (errorcb !== null) {
+        if (typeof errorcb === 'function') {
           req.on('error', errorcb);
         }
 
@@ -295,20 +298,21 @@
         var
 
           opt = {
-            hostname: serverUrlObj.hostName,
+            hostname: serverUrlObj.hostname,
+            port:     serverUrlObj.port,
             auth:     serverUrlObj.auth,
             path: path + '?' + querystring.stringify(data),
             method: 'HEAD'
           },
 
           req = httpClient.request(opt, function (res) {
-            if (successcb !== null) {
+            if (typeof successcb === 'function') {
               successcb(res.headers);
             }
           });
 
         // handle request errors
-        if (errorcb !== null) {
+        if (typeof errorcb === 'function') {
           req.on('error', errorcb);
         }
 
