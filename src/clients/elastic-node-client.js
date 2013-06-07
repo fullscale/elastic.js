@@ -60,7 +60,8 @@
 
     // Pick HTTP or HTTPS
     var httpClient;
-    if (serverUrlObj.protocol === 'https') {
+
+    if (serverUrlObj.protocol === 'https:') {
       httpClient = https;
     } else {
       httpClient = http;
