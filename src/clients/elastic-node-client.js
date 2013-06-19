@@ -43,48 +43,102 @@
     code is running on the same server as ElasticSearch, ie. in a plugin.
     An example server is http://user:password@localhost:9200/.
     */
-  ejs.NodeClient = function (serverUrl) {
+  ejs.NodeClient = function (serverUrlOrHost, portOrUndefined) {
     var
 
-      // method to ensure the path always starts with a slash
-      getPath = function (path) {
-        if (path.charAt(0) !== '/') {
-          path = '/' + path;
+      // method to ensure the path always starts with a slash and is prefixed
+      // with the path of the ES endpoint.
+      getPath = function (path, queryStringData) {
+        if (path !== '' && path.charAt(0) !== '/') {
+          path = serverUrlObj.path + '/' + path;
+        } else {
+          path = serverUrlObj.path + path;
         }
-
+        if (queryStringData !== undefined && queryStringData !== null) {
+          var qs = querystring.stringify(queryStringData);
+          if (qs) {
+            path = path + '?' + qs;
+          }
+        }
         return path;
       };
 
     // Parse the serverUrl into an options object
-    var serverUrlObj = url.parse(serverUrl);
+    var serverUrlObj;
 
     // Pick HTTP or HTTPS
-    var httpClient;
+    var httpClientObj;
 
-    if (serverUrlObj.protocol === 'https:') {
-      httpClient = https;
-    } else {
-      httpClient = http;
+    var httpClientFct = function(c) {
+      if (!c) {
+        return httpClientObj;
+      }
+      if (c.protocol) {
+        c = c.protocol;
+      }
+      if (typeof c === 'string') {
+        if (c.indexOf('https') === 0) {
+          httpClientObj = https;
+        } else {
+          httpClientObj = http;
+        }
+      } else if (typeof c.request === 'function') {
+        httpClientObj = c;
+      }
+      return this;
+    };
+    var serverUrlFct = function (serverUrlOrHost, portOrUndefined) {
+      if (!serverUrlOrHost) {
+        return url.format(serverUrlObj);
+      }
+      var serverUrl;
+      if (portOrUndefined > 0) {
+        serverUrl = 'http://' + serverUrlOrHost + ':' + portOrUndefined;
+      } else if (serverUrlOrHost.indexOf('://') === -1) {
+        serverUrl = 'http://' + serverUrlOrHost + ':' + 80;
+      } else {
+        serverUrl = serverUrlOrHost;
+      }
+
+      serverUrlObj = url.parse(serverUrl);
+      // remove the root path as we guarantee that there 
+      // will be a '/' appended later
+      if (serverUrlObj.path.charAt(serverUrlObj.path.length - 1) === '/' && serverUrlObj.pathname === '/') {
+        serverUrlObj.path = serverUrlObj.path.slice(0, serverUrlObj.path.length - 1);
+        serverUrlObj.pathname = '';
+      }
+      httpClientFct(serverUrlObj);
+      return this;
+    };
+    if (serverUrlOrHost) {
+      serverUrlFct(serverUrlOrHost, portOrUndefined);
+    }
+    if (serverUrlObj) {
+      httpClientFct(serverUrlObj);
     }
 
     return {
 
       /**
-            Sets the ElasticSearch host.
+            Sets the ElasticSearch endpoint.
 
             @member ejs.NodeClient
             @param {String} h the hostname of the ElasticSearch server
             @returns {Object} returns <code>this</code> so that calls can be
-              chained. Returns {String} current value if `h` is not specified.
+              chained. Returns {Object} current value if `h` is not specified.
             */
-      serverUrl: function (serverUrl) {
-        if (serverUrl == null) {
-          return url.format(serverUrlObj);
-        }
+      serverUrl: serverUrlFct,
 
-        serverUrlObj = url.parse(serverUrl);
-        return this;
-      },
+      /**
+            Sets the httpClient used to make requests against Elasticsearch.
+            Mostly used to customize the client or for testing.
+
+            @member ejs.NodeClient
+            @param {Object} `c` Either a url or a protocol or require('http') or require('https')
+            @returns {Object} returns <code>this</code> so that calls can be
+              chained. Returns {Object} current value if `c` is not specified.
+            */
+      httpClient: httpClientFct,
 
       /**
             Performs HTTP GET requests against the server.
@@ -102,11 +156,11 @@
             hostname: serverUrlObj.hostname,
             port:     serverUrlObj.port,
             auth:     serverUrlObj.auth,
-            path:     path + '?' + querystring.stringify(data),
+            path:     getPath(path, data),
             method:   'GET'
           },
 
-          req = httpClient.request(opt, function (res) {
+          req = httpClientObj.request(opt, function (res) {
             var resData = '';
             res.setEncoding('utf8');
 
@@ -148,13 +202,13 @@
             hostname: serverUrlObj.hostname,
             port:     serverUrlObj.port,
             auth:     serverUrlObj.auth,
-            path: path,
+            path:     getPath(path),
             method: 'POST',
             headers: {
               'Content-Type': 'application/json'
             }
           },
-          req = httpClient.request(opt, function (res) {
+          req = httpClientObj.request(opt, function (res) {
             var resData = '';
             res.setEncoding('utf8');
 
@@ -197,14 +251,14 @@
             hostname: serverUrlObj.hostname,
             port:     serverUrlObj.port,
             auth:     serverUrlObj.auth,
-            path: path,
+            path:     getPath(path),
             method: 'PUT',
             headers: {
               'Content-Type': 'application/json'
             }
           },
 
-          req = httpClient.request(opt, function (res) {
+          req = httpClientObj.request(opt, function (res) {
             var resData = '';
             res.setEncoding('utf8');
 
@@ -247,14 +301,14 @@
             hostname: serverUrlObj.hostname,
             port:     serverUrlObj.port,
             auth:     serverUrlObj.auth,
-            path: path,
+            path:     getPath(path),
             method: 'DELETE',
             headers: {
               'Content-Type': 'application/json'
             }
           },
 
-          req = httpClient.request(opt, function (res) {
+          req = httpClientObj.request(opt, function (res) {
             var resData = '';
             res.setEncoding('utf8');
 
@@ -298,11 +352,11 @@
             hostname: serverUrlObj.hostname,
             port:     serverUrlObj.port,
             auth:     serverUrlObj.auth,
-            path: path + '?' + querystring.stringify(data),
+            path:     getPath(path, data),
             method: 'HEAD'
           },
 
-          req = httpClient.request(opt, function (res) {
+          req = httpClientObj.request(opt, function (res) {
             if (typeof successcb === 'function') {
               successcb(res.headers);
             }
