@@ -1,4 +1,4 @@
-/*! elastic.js - v1.1.1 - 2013-05-24
+/*! elastic.js - v1.1.1 - 2013-08-13
  * https://github.com/fullscale/elastic.js
  * Copyright (c) 2013 FullScale Labs, LLC; Licensed MIT */
 
@@ -130,6 +130,7 @@
         var opt = jQuery.extend({}, options);
         
         opt.type = 'GET';
+        opt.processData = true;
         opt.url = getPath(path);
         opt.data = data;
         opt.success = successcb;

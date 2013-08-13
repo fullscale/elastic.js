@@ -126,6 +126,7 @@
         var opt = jQuery.extend({}, options);
         
         opt.type = 'GET';
+        opt.processData = true;
         opt.url = getPath(path);
         opt.data = data;
         opt.success = successcb;
