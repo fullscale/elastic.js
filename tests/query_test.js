@@ -1364,7 +1364,7 @@ exports.queries = {
     test.done();
   },
   FuzzyLikeThisFieldQuery: function (test) {
-    test.expect(13);
+    test.expect(14);
 
     var fltQuery = ejs.FuzzyLikeThisFieldQuery('f1', 'like text'),
       expected,
@@ -1416,6 +1416,10 @@ exports.queries = {
     
     fltQuery.analyzer('some analyzer');
     expected.flt_field.f2.analyzer = 'some analyzer';
+    doTest();
+    
+    fltQuery.failOnUnsupportedField(false);
+    expected.flt_field.f2.fail_on_unsupported_field = false;
     doTest();
     
     fltQuery.boost(1.2);
