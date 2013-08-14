@@ -47,7 +47,7 @@ exports.search = {
     test.done();
   },
   Rescore: function (test) {
-    test.expect(17);
+    test.expect(23);
     
     var rescore = ejs.Rescore(),
       termQuery1 = ejs.TermQuery('f1', 't1'),
@@ -88,6 +88,29 @@ exports.search = {
     
     rescore.rescoreQueryWeight(3);
     expected.query.rescore_query_weight = 3;
+    doTest();
+    
+    rescore.scoreMode('total');
+    expected.query.score_mode = 'total';
+    doTest();
+    
+    rescore.scoreMode('INVALID');
+    doTest();
+    
+    rescore.scoreMode('MIN');
+    expected.query.score_mode = 'min';
+    doTest();
+    
+    rescore.scoreMode('Max');
+    expected.query.score_mode = 'max';
+    doTest();
+    
+    rescore.scoreMode('AvG');
+    expected.query.score_mode = 'avg';
+    doTest();
+    
+    rescore.scoreMode('multiply');
+    expected.query.score_mode = 'multiply';
     doTest();
     
     test.strictEqual(rescore._type(), 'rescore');

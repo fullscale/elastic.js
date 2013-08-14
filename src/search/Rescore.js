@@ -116,6 +116,33 @@
       },
 
       /**
+            Sets the scoring mode.  Valid values are:
+            
+            total - default mode, the scores combined
+            multiply - the scores multiplied
+            min - the lowest of the scores
+            max - the highest score 
+            avg - the average of the scores
+
+            @member ejs.Rescore
+            @param {String} s The score mode as a string.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      scoreMode: function (s) {
+        if (s == null) {
+          return rescore.query.score_mode;
+        }
+    
+        s = s.toLowerCase();
+        if (s === 'total' || s === 'min' || s === 'max' || s === 'multiply' || 
+          s === 'avg') {
+          rescore.query.score_mode = s;
+        }
+        
+        return this;
+      },
+      
+      /**
             Allows you to serialize this object into a JSON encoded string.
 
             @member ejs.Rescore
