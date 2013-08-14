@@ -148,11 +148,6 @@ exports.index = {
     expected.version_type = 'external';
     doTest();
     
-    doc.percolate('*');
-    expected.percolate = '*';
-    test.strictEqual(doc.percolate(), '*');
-    doTest();
-    
     doc.opType('index');
     expected.op_type = 'index';
     test.strictEqual(doc.opType(), 'index');
@@ -248,6 +243,11 @@ exports.index = {
     doc.upsert({title: 'test title'});
     expected.upsert = {title: 'test title'};
     test.deepEqual(doc.upsert(), {title: 'test title'});
+    doTest();
+    
+    doc.docAsUpsert(true);
+    expected.doc_as_upsert = true;
+    test.strictEqual(doc.docAsUpsert(), true);
     doTest();
     
     doc.source({title: 'test title', body: 'test body'});

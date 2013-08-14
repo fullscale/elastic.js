@@ -8567,7 +8567,7 @@
              increments with each update.</p>
              
              <p>This option is valid during the following operations:
-                <code>index, delete,</code> and <code>update</code></p>
+                <code>get, index, delete,</code> and <code>update</code></p>
 
              @member ejs.Document
              @param {Long} version A positive long value
@@ -8593,7 +8593,7 @@
              </dl>
              
              <p>This option is valid during the following operations:
-                <code>index, delete,</code> and <code>update</code></p>
+                <code>get, index, delete,</code> and <code>update</code></p>
 
              @member ejs.Document
              @param {String} vt A version type (internal or external)
@@ -8610,28 +8610,6 @@
           params.version_type = vt;
         }
         
-        return this;
-      },
-      
-      /**
-             <p>Perform percolation at index time.</p>  
-
-             <p>Set to * to run document against all registered queries.  It is also possible 
-             to set this value to a string in query string format, ie. <code>"color:green"</code>.</p>
-             
-             <p>This option is valid during the following operations:
-                <code>index</code> and <code>update</code></p>
-
-             @member ejs.Document
-             @param {String} qry A percolation query string
-             @returns {Object} returns <code>this</code> so that calls can be chained.
-             */
-      percolate: function (qry) {
-        if (qry == null) {
-          return params.percolate;
-        }
-        
-        params.percolate = qry;
         return this;
       },
       
@@ -8922,6 +8900,25 @@
         }
         
         params.upsert = doc;
+        return this;
+      },
+      
+      /**
+             <p>Sets if doc (source) should be used for the upsert value.</p>
+             
+             <p>This option is valid during the following operations:
+                <code>update</code></p>
+
+             @member ejs.Document
+             @param {Boolean} trueFalse If realtime get is used or not.
+             @returns {Object} returns <code>this</code> so that calls can be chained.
+             */
+      docAsUpsert: function (trueFalse) {
+        if (trueFalse == null) {
+          return params.doc_as_upsert;
+        }
+        
+        params.doc_as_upsert = trueFalse;
         return this;
       },
       
