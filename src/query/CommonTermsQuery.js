@@ -178,8 +178,8 @@
       },
     
       /**
-            Sets the minimum number of common that need to common in a document
-            before that document is returned in the results.
+            Sets the minimum number of low freq matches that need to match in 
+            a document before that document is returned in the results.
 
             @member ejs.CommonTermsQuery
             @param {Integer} min A positive integer.
@@ -187,13 +187,50 @@
             */
       minimumShouldMatch: function (min) {
         if (min == null) {
-          return query.common[field].minimum_should_match;
+          return query.common[field].minimum_should_match.low_freq;
         }
     
-        query.common[field].minimum_should_match = min;
+        if (query.common[field].minimum_should_match == null) {
+          query.common[field].minimum_should_match = {};
+        }
+        
+        query.common[field].minimum_should_match.low_freq = min;
         return this;
       },
 
+      /**
+            Sets the minimum number of low freq matches that need to match in 
+            a document before that document is returned in the results.
+
+            @member ejs.CommonTermsQuery
+            @param {Integer} min A positive integer.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      minimumShouldMatchLowFreq: function (min) {
+        return this.minimumShouldMatch(min);
+      },
+      
+      /**
+            Sets the minimum number of high freq matches that need to match in 
+            a document before that document is returned in the results.
+
+            @member ejs.CommonTermsQuery
+            @param {Integer} min A positive integer.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      minimumShouldMatchHighFreq: function (min) {
+        if (min == null) {
+          return query.common[field].minimum_should_match.high_freq;
+        }
+    
+        if (query.common[field].minimum_should_match == null) {
+          query.common[field].minimum_should_match = {};
+        }
+        
+        query.common[field].minimum_should_match.high_freq = min;
+        return this;
+      },
+      
       /**
             Sets the boost value for documents commoning the <code>Query</code>.
 

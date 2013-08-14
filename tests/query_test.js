@@ -73,7 +73,7 @@ exports.queries = {
     test.done();
   },
   CommonTermsQuery: function (test) {
-    test.expect(20);
+    test.expect(22);
 
     var commonQuery = ejs.CommonTermsQuery(),
       expected,
@@ -162,7 +162,15 @@ exports.queries = {
     doTest();
 
     commonQuery.minimumShouldMatch(10);
-    expected.common.field2.minimum_should_match = 10;
+    expected.common.field2.minimum_should_match = {low_freq: 10};
+    doTest();
+    
+    commonQuery.minimumShouldMatchLowFreq(5);
+    expected.common.field2.minimum_should_match.low_freq = 5;
+    doTest();
+    
+    commonQuery.minimumShouldMatchHighFreq(10);
+    expected.common.field2.minimum_should_match.high_freq = 10;
     doTest();
     
     test.strictEqual(commonQuery._type(), 'query');
