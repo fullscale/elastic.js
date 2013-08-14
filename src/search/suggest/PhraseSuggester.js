@@ -216,6 +216,22 @@
       },
       
       /**
+            <p>Sets the token limit.</p>
+
+            @member ejs.PhraseSuggester
+            @param {Integer} l A positive integer value.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      tokenLimit: function (l) {
+        if (l == null) {
+          return suggest[name].phrase.token_limit;
+        }
+    
+        suggest[name].phrase.token_limit = l;
+        return this;
+      },
+      
+      /**
             <p>A smoothing model that takes the weighted mean of the unigrams, 
             bigrams and trigrams based on user supplied weights (lambdas). The
             sum of tl, bl, and ul must equal 1.</p>
@@ -284,6 +300,27 @@
           stupid_backoff: {
             discount: discount
           }
+        };
+        
+        return this;
+      },
+      
+      /**
+            <p>Enables highlighting of suggestions</p>
+
+            @member ejs.PhraseSuggester
+            @param {String} preTag A tag used at highlight start.
+            @param {String} postTag A tag used at the end of the highlight.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      highlight: function (preTag, postTag) {
+        if (arguments.length === 0) {
+          return suggest[name].phrase.highlight;
+        }
+    
+        suggest[name].phrase.highlight = {
+          pre_tag: preTag,
+          post_tag: postTag
         };
         
         return this;

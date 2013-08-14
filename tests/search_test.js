@@ -377,7 +377,7 @@ exports.search = {
     test.done();
   },
   PhraseSuggester: function (test) {
-    test.expect(24);
+    test.expect(26);
     
     var suggester = ejs.PhraseSuggester('suggester'),
       gen1 = ejs.DirectGenerator().field('body')
@@ -452,6 +452,10 @@ exports.search = {
     expected.suggester.phrase.force_unigrams = false;
     doTest();
     
+    suggester.tokenLimit(10);
+    expected.suggester.phrase.token_limit = 10;
+    doTest();
+    
     suggester.linearSmoothing(0.7, 0.2, 0.1);
     expected.suggester.phrase.smoothing = {
       linear: {
@@ -475,6 +479,13 @@ exports.search = {
       stupid_backoff: {
         discount: 0.5
       }
+    };
+    doTest();
+    
+    suggester.highlight('<b>', '</b>');
+    expected.suggester.phrase.highlight = {
+      pre_tag: '<b>',
+      post_tag: '</b>'
     };
     doTest();
     
