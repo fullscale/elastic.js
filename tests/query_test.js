@@ -2107,7 +2107,7 @@ exports.queries = {
     test.done();
   },
   BoolQuery: function (test) {
-    test.expect(21);
+    test.expect(22);
 
     var termQuery1 = ejs.TermQuery('t1', 'v1'),
       termQuery2 = ejs.TermQuery('t2', 'v2'),
@@ -2159,6 +2159,10 @@ exports.queries = {
     expected.bool.boost = 1.5;
     doTest();
 
+    boolQuery.adjustPureNegative(false);
+    expected.bool.adjust_pure_negative = false;
+    doTest();
+    
     boolQuery.disableCoord(false);
     expected.bool.disable_coord = false;
     doTest();

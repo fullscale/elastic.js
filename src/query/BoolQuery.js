@@ -149,6 +149,24 @@
       },
 
       /**
+            Sets if the <code>Query</code> should be enhanced with a
+            <code>MatchAllQuery</code> in order to act as a pure exclude when
+            only negative (mustNot) clauses exist. Default: true.
+
+            @member ejs.BoolQuery
+            @param {String} trueFalse A <code>true/false</code value.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      adjustPureNegative: function (trueFalse) {
+        if (trueFalse == null) {
+          return query.bool.adjust_pure_negative;
+        }
+
+        query.bool.adjust_pure_negative = trueFalse;
+        return this;
+      },
+      
+      /**
             Enables or disables similarity coordinate scoring of documents
             matching the <code>Query</code>. Default: false.
 
