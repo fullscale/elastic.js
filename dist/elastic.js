@@ -8118,6 +8118,42 @@
       },
       
       /**
+            Sets the routing value for the source document when performing a 
+            terms lookup.
+
+            @since elasticsearch 0.90.2
+            @member ejs.TermsFilter
+            @param {String} path A valid index name.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      routing: function (r) {
+        setupLookup();
+        if (r == null) {
+          return filter.terms[field].routing;
+        }
+        
+        filter.terms[field].routing = r;
+        return this;
+      },
+      
+      /**
+            Enable or disable caching of the lookup
+
+            @member ejs.TermsFilter
+            @param {Boolean} trueFalse True to cache the lookup, false otherwise.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      cacheLookup: function (trueFalse) {
+        setupLookup();
+        if (trueFalse == null) {
+          return filter.terms[field].cache;
+        }
+
+        filter.terms[field].cache = trueFalse;
+        return this;
+      },
+      
+      /**
             Sets the way terms filter executes is by iterating over the terms 
             provided and finding matches docs (loading into a bitset) and 
             caching it.  Valid values are: plain, bool, bool_nocache, and, 
