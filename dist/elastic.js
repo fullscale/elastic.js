@@ -18374,13 +18374,13 @@
 
       /**
             Sets the GeoPoint as properties on an object.  The object must have
-            a 'lat' and 'lon' property.  
+            a 'lat' and 'lon' or a 'geohash' property.  
           
             Example:
-            {lat: 41.12, lon: -71.34}
+            {lat: 41.12, lon: -71.34} or {geohash: "drm3btev3e86"}
 
             @member ejs.GeoPoint
-            @param {Object} obj an object with a lat and lon property.
+            @param {Object} obj an object with a lat and lon or geohash property.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       properties: function (obj) {
@@ -18392,6 +18392,10 @@
           point = {
             lat: obj.lat,
             lon: obj.lon
+          };
+        } else if (isObject(obj) && has(obj, 'geohash')) {
+          point = {
+            geohash: obj.geohash
           };
         }
       
@@ -20623,7 +20627,8 @@
       validType = function (t) {
         var valid = false;
         if (t === 'point' || t === 'linestring' || t === 'polygon' || 
-          t === 'multipoint' || t === 'envelope' || t === 'multipolygon') {
+          t === 'multipoint' || t === 'envelope' || t === 'multipolygon' ||
+          t === 'circle' || t === 'multilinestring') {
           valid = true;
         }
 
@@ -20676,7 +20681,23 @@
         shape.coordinates = c;
         return this;
       },
+      
+      /**
+            Sets the radius for parsing a circle <code>Shape</code>.
+
+            @member ejs.Shape
+            @param {String} r a valid radius value for a circle.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      radius: function (r) {
+        if (r == null) {
+          return shape.radius;
+        }
         
+        shape.radius = r;
+        return this;
+      },
+      
       /**
             Allows you to serialize this object into a JSON encoded string.
 

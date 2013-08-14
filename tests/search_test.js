@@ -832,7 +832,7 @@ exports.search = {
     test.done();
   },
   Shape: function (test) {
-    test.expect(13);
+    test.expect(16);
     
     var shape = ejs.Shape('envelope', [[-45.0, 45.0], [45.0, -45.0]]),
       expected,
@@ -874,6 +874,18 @@ exports.search = {
     
     shape.type('polygon');
     expected.type = 'polygon';
+    doTest();
+    
+    shape.type('circle');
+    expected.type = 'circle';
+    doTest();
+    
+    shape.type('multilinestring');
+    expected.type = 'multilinestring';
+    doTest();
+    
+    shape.radius("20");
+    expected.radius = "20";
     doTest();
     
     shape.coordinates([[-180.0, 10.0], [20.0, 90.0], [180.0, -5.0], 
@@ -927,7 +939,7 @@ exports.search = {
     test.done();
   },
   GeoPoint: function (test) {
-    test.expect(10);
+    test.expect(11);
     
     var geoPoint = ejs.GeoPoint(),
       expected,
@@ -948,6 +960,10 @@ exports.search = {
     
     geoPoint.properties({lat: 37.7817289, lon: -122.396181});
     expected = {lat: 37.7817289, lon: -122.396181};
+    doTest();
+    
+    geoPoint.properties({geohash: "drm3btev3e86"});
+    expected = {geohash: "drm3btev3e86"};
     doTest();
     
     geoPoint.string("37.7819288,-122.396480");

@@ -25,13 +25,13 @@
 
       /**
             Sets the GeoPoint as properties on an object.  The object must have
-            a 'lat' and 'lon' property.  
+            a 'lat' and 'lon' or a 'geohash' property.  
           
             Example:
-            {lat: 41.12, lon: -71.34}
+            {lat: 41.12, lon: -71.34} or {geohash: "drm3btev3e86"}
 
             @member ejs.GeoPoint
-            @param {Object} obj an object with a lat and lon property.
+            @param {Object} obj an object with a lat and lon or geohash property.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       properties: function (obj) {
@@ -43,6 +43,10 @@
           point = {
             lat: obj.lat,
             lon: obj.lon
+          };
+        } else if (isObject(obj) && has(obj, 'geohash')) {
+          point = {
+            geohash: obj.geohash
           };
         }
       
