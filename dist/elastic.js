@@ -18105,6 +18105,23 @@
       },
     
       /**
+             <p>Set's a timeout for the info operation</p>  
+
+             @member ejs.NodeInfo
+             @param {String} length The amount of time after which the operation
+              will timeout.
+             @returns {Object} returns <code>this</code> so that calls can be chained.
+             */
+      timeout: function (length) {
+        if (length == null) {
+          return params.timeout;
+        }
+    
+        params.timeout = length;
+        return this;
+      },
+      
+      /**
             <p>Allows you to serialize this object into a JSON encoded string.</p>
 
             @member ejs.NodeInfo

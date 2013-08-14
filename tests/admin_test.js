@@ -38,7 +38,7 @@ exports.cluster = {
     test.done();
   },
   NodeInfo: function (test) {
-    test.expect(49);
+    test.expect(51);
 
     var info = ejs.NodeInfo(),
       expected,
@@ -160,6 +160,11 @@ exports.cluster = {
     test.strictEqual(info.plugin(), true);
     doTest();
     
+    info.timeout('1m');
+    expected.timeout = '1m';
+    test.strictEqual(info.timeout(), '1m');
+    doTest();
+    
     test.strictEqual(info._type(), 'node info');
     test.strictEqual(info.toString(), JSON.stringify(expected));
    
@@ -199,13 +204,16 @@ exports.cluster = {
     
     info.nodes([]);
     info.threadPool(true);
+    info.timeout('2m');
     expected.thread_pool = true;
     expected.nodes = [];
+    expected.timeout = '2m';
     expectedData = {
       clear: true,
       http: true,
       plugin: true,
-      thread_pool: true
+      thread_pool: true,
+      timeout: '2m'
     };
     expectedPath = '/_nodes';
     info.doInfo();
