@@ -1432,7 +1432,7 @@ exports.queries = {
     test.done();
   },
   FuzzyLikeThisQuery: function (test) {
-    test.expect(16);
+    test.expect(17);
 
     var fltQuery = ejs.FuzzyLikeThisQuery('like text'),
       expected,
@@ -1484,6 +1484,10 @@ exports.queries = {
     
     fltQuery.analyzer('some analyzer');
     expected.flt.analyzer = 'some analyzer';
+    doTest();
+    
+    fltQuery.failOnUnsupportedField(false);
+    expected.flt.fail_on_unsupported_field = false;
     doTest();
     
     fltQuery.boost(1.2);
