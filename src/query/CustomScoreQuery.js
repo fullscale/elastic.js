@@ -9,13 +9,13 @@
     @desc
     Scores a query based on a script.
 
-    @param {Object} qry A valid query object.
+    @param {Object} qry A valid query or filter object.
     @param {String} script A valid script expression.
     */
   ejs.CustomScoreQuery = function (qry, script) {
 
-    if (!isQuery(qry)) {
-      throw new TypeError('Argument must be a Query');
+    if (!isQuery(qry) && !isFilter(qry)) {
+      throw new TypeError('Argument must be a Query or Filter');
     }
     
     /**
@@ -25,15 +25,20 @@
          */
     var query = {
       custom_score: {
-        query: qry._self(),
         script: script
       }
     };
 
+    if (isQuery(qry)) {
+      query.custom_score.query = qry._self();
+    } else if (isFilter(qry)) {
+      query.custom_score.filter = qry._self();
+    }
+    
     return {
 
       /**
-            Sets the query to be apply the custom score to.
+            Sets the query to apply the custom score to.
 
             @member ejs.CustomScoreQuery
             @param {Object} q A valid Query object
@@ -52,6 +57,26 @@
         return this;
       },
 
+      /**
+            Sets the filter to apply the custom score to.
+
+            @member ejs.CustomScoreQuery
+            @param {Object} f A valid Filter object
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      filter: function (f) {
+        if (f == null) {
+          return query.custom_score.filter;
+        }
+      
+        if (!isFilter(f)) {
+          throw new TypeError('Argument must be a Filter');
+        }
+        
+        query.custom_score.filter = f._self();
+        return this;
+      },
+      
       /**
             Sets the script that calculates the custom score
 

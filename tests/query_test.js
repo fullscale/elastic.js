@@ -1512,7 +1512,7 @@ exports.queries = {
       }
     };
 
-    test.ok(cbfQuery, 'CustomScoreQuery exists');
+    test.ok(cbfQuery, 'CustomBoostFactorQuery exists');
     test.ok(cbfQuery._self(), '_self() works');
     doTest();
     
@@ -1542,10 +1542,12 @@ exports.queries = {
     test.done();
   },
   CustomScoreQuery: function (test) {
-    test.expect(13);
+    test.expect(16);
 
     var termQuery = ejs.TermQuery('t1', 'v1'),
       termQuery2 = ejs.TermQuery('t2', 'v2'),
+      termFilter = ejs.TermFilter('tf1', 'vf1'),
+      termFilter2 = ejs.TermFilter('tf2', 'vf2'),
       customScoreQuery = ejs.CustomScoreQuery(termQuery, 's1'),
       expected,
       doTest = function () {
@@ -1554,8 +1556,8 @@ exports.queries = {
 
     expected = {
       custom_score: {
-        query: termQuery._self(),
-        script: 's1'
+        script: 's1',
+        query: termQuery._self()
       }
     };
 
@@ -1563,8 +1565,21 @@ exports.queries = {
     test.ok(customScoreQuery._self(), '_self() works');
     doTest();
     
+    customScoreQuery = ejs.CustomScoreQuery(termFilter, 's1');
+    expected = {
+      custom_score: {
+        script: 's1',
+        filter: termFilter._self()
+      }
+    };
+    doTest();
+    
     customScoreQuery.query(termQuery2);
     expected.custom_score.query = termQuery2._self();
+    doTest();
+    
+    customScoreQuery.filter(termFilter2);
+    expected.custom_score.filter = termFilter2._self();
     doTest();
     
     customScoreQuery.script('s2');
@@ -1596,6 +1611,10 @@ exports.queries = {
     
     test.throws(function () {
       customScoreQuery.query('invalid');
+    }, TypeError);
+    
+    test.throws(function () {
+      customScoreQuery.filter('invalid');
     }, TypeError);
     
     test.done();
