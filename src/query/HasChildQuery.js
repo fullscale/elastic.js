@@ -134,6 +134,22 @@
       },
       
       /**
+            Sets the cutoff value to short circuit processing.
+
+            @member ejs.HasChildQuery
+            @param {Integer} cutoff A positive <code>integer</code> value.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      shortCircuitCutoff: function (cutoff) {
+        if (cutoff == null) {
+          return query.has_child.short_circuit_cutoff;
+        }
+
+        query.has_child.short_circuit_cutoff = cutoff;
+        return this;
+      },
+      
+      /**
             Sets the boost value of the <code>Query</code>.
 
             @member ejs.HasChildQuery

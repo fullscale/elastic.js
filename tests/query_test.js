@@ -1192,7 +1192,7 @@ exports.queries = {
     test.done();
   },
   HasChildQuery: function (test) {
-    test.expect(20);
+    test.expect(21);
 
     var termQuery = ejs.TermQuery('t1', 'v1'),
       termQuery2 = ejs.TermQuery('t2', 'v2'),
@@ -1257,6 +1257,10 @@ exports.queries = {
     
     hasChildQuery.scoreMode('sum');
     expected.has_child.score_mode = 'sum';
+    doTest();
+    
+    hasChildQuery.shortCircuitCutoff(8192);
+    expected.has_child.short_circuit_cutoff = 8192;
     doTest();
     
     hasChildQuery.boost(1.2);
