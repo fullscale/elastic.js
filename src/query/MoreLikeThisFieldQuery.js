@@ -239,6 +239,23 @@
         query.mlt_field[field].boost_terms = boost;
         return this;
       },
+      
+      /**
+            Should the <code>Query</code> fail when an unsupported field
+            is specified. Defaults to true.
+
+            @member ejs.MoreLikeThisFieldQuery
+            @param {Boolean} trueFalse A boolean value
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      failOnUnsupportedField: function (trueFalse) {
+        if (trueFalse == null) {
+          return query.mlt_field[field].fail_on_unsupported_field;
+        }
+  
+        query.mlt_field[field].fail_on_unsupported_field = trueFalse;
+        return this;
+      },
                     
       /**
             Sets the boost value of the <code>Query</code>.

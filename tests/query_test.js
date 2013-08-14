@@ -941,7 +941,7 @@ exports.queries = {
     test.done();
   },
   MoreLikeThisFieldQuery: function (test) {
-    test.expect(18);
+    test.expect(19);
 
     var mltQuery = ejs.MoreLikeThisFieldQuery('f1', 'like text'),
       expected,
@@ -1011,6 +1011,10 @@ exports.queries = {
     expected.mlt_field.f2.boost_terms = 1.3;
     doTest();
     
+    mltQuery.failOnUnsupportedField(false);
+    expected.mlt_field.f2.fail_on_unsupported_field = false;
+    doTest();
+      
     mltQuery.analyzer('some analyzer');
     expected.mlt_field.f2.analyzer = 'some analyzer';
     doTest();
@@ -1025,7 +1029,7 @@ exports.queries = {
     test.done();
   },
   MoreLikeThisQuery: function (test) {
-    test.expect(22);
+    test.expect(23);
 
     var mltQuery = ejs.MoreLikeThisQuery(['f', 'f2'], 'like text'),
       expected,
@@ -1099,6 +1103,10 @@ exports.queries = {
     
     mltQuery.boostTerms(1.3);
     expected.mlt.boost_terms = 1.3;
+    doTest();
+    
+    mltQuery.failOnUnsupportedField(false);
+    expected.mlt.fail_on_unsupported_field = false;
     doTest();
     
     mltQuery.analyzer('some analyzer');
