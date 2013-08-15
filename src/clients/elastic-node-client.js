@@ -6,7 +6,9 @@
   var 
 
     // node imports
+    protocol,
     http = require('http'),
+    https = require('https'),
     querystring = require('querystring'),
     
     // save reference to global object
@@ -30,19 +32,42 @@
   /**
     @class
     A <code>NodeClient</code> is a type of <code>client</code> that uses
-    NodeJS http module for communication with ElasticSearch.
+    NodeJS http or https module for communication with ElasticSearch.
     
     @name ejs.NodeClient
 
     @desc
-    A client that uses the NodeJS http module for communication.
+    A client that uses the NodeJS http or https module for communication.
 
-    @param {String} host the hostname of your ElasticSearch server.  ie. localhost
-    @param {String} post the post of your ElasticSearch server. ie. 9200
+    @param {String} host the optional hostname of your ES server. Default localhost.
+    @param {String} post the optional port of your ES server. Default 9200.
+    @param {String} proto the optional protocol to use (http or https). Default http.
     */
-  ejs.NodeClient = function (host, port) {
+  ejs.NodeClient = function (host, port, proto) {
     var 
-    
+      // http option defaults
+      options = {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      },
+      
+      // clone defaults
+      getOptions = function () {
+        var option,
+            opts = {};
+            
+        for (option in options) {
+          if (!options.hasOwnProperty(option)) {
+            continue;
+          }
+          
+          opts[option] = options[option];
+        }
+        
+        return opts;
+      },
+      
       // method to ensure the path always starts with a slash
       getPath = function (path) {
         if (path.charAt(0) !== '/') {
@@ -51,6 +76,24 @@
         
         return path;
       };
+    
+    if (host == null) {
+      host = 'localhost';
+    }
+    
+    if (proto === 'https' || proto === 'HTTPS') {
+      proto = 'https';
+      protocol = https;
+    } else {
+      proto = 'http';
+      protocol = http;
+    }
+    
+    if (port == null && proto === 'http') {
+      port = '9200';
+    } else if (port == null && proto === 'https') {
+      port = '443';
+    }
     
     return {
     
@@ -89,6 +132,53 @@
       },
       
       /**
+            Sets the transport protocol, currently only http or https.
+
+            @member ejs.NodeClient
+            @param {String} p the protocol to use, http or https.
+            @returns {Object} returns <code>this</code> so that calls can be 
+              chained. Returns {String} current value if `p` is not specified.
+            */
+      protocol: function (p) {
+        if (p == null) {
+          return proto;
+        }
+        
+        p = p.toLowerCase();
+        if (p === 'https') {
+          protocol = https;
+          proto = p;
+        } else {
+          proto = 'http';
+          protocol = http;
+        }
+        
+        return this;
+      },
+      
+      /**
+            Sets a request option.
+
+            @member ejs.NodeClient
+            @param {String} oKey The option name
+            @param {String} oVal The option value
+            @returns {Object} returns <code>this</code> so that calls can be 
+            chained. Returns the current value of oKey if oVal is not set.
+            */
+      option: function (oKey, oVal) {
+        if (oKey == null) {
+          return options;
+        }
+        
+        if (oVal == null) {
+          return options[oKey];
+        }
+        
+        options[oKey] = oVal;
+        return this;
+      },
+      
+      /**
             Performs HTTP GET requests against the server.
 
             @member ejs.NodeClient
@@ -100,30 +190,29 @@
                 when there is an error with the request
             */
       get: function (path, data, successcb, errorcb) {
-        var 
-        
-          opt = {
-            host: host,
-            port: port,
-            path: path + '?' + querystring.stringify(data),
-            method: 'GET'
-          },
+        var req,
+            opt = getOptions();
           
-          req = http.request(opt, function (res) {
-            var resData = '';
-            res.setEncoding('utf8');
+        opt.host = host;
+        opt.port = port;
+        opt.path = path + '?' + querystring.stringify(data);
+        opt.method = 'GET';
+        
+        req = protocol.request(opt, function (res) {
+          var resData = '';
+          res.setEncoding('utf8');
 
-            res.on('data', function (chunk) {
-              resData = resData + chunk;
-            });
-
-            res.on('end', function () {
-              if (successcb != null) {
-                successcb(JSON.parse(resData));
-              }
-            });
-            
+          res.on('data', function (chunk) {
+            resData = resData + chunk;
           });
+
+          res.on('end', function () {
+            if (successcb != null) {
+              successcb(JSON.parse(resData));
+            }
+          });
+          
+        });
         
         // handle request errors
         if (errorcb != null) {
@@ -145,33 +234,29 @@
                 when there is an error with the request
             */
       post: function (path, data, successcb, errorcb) {
-        var 
+        var req,
+            opt = getOptions();
         
-          opt = {
-            host: host,
-            port: port,
-            path: path,
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            }
-          },
-          
-          req = http.request(opt, function (res) {
-            var resData = '';
-            res.setEncoding('utf8');
+        opt.host = host;
+        opt.port = port;
+        opt.path = path;
+        opt.method = 'POST';
+        
+        req = protocol.request(opt, function (res) {
+          var resData = '';
+          res.setEncoding('utf8');
 
-            res.on('data', function (chunk) {
-              resData = resData + chunk;
-            });
-
-            res.on('end', function () {
-              if (successcb != null) {
-                successcb(JSON.parse(resData));
-              }
-            });
-            
+          res.on('data', function (chunk) {
+            resData = resData + chunk;
           });
+
+          res.on('end', function () {
+            if (successcb != null) {
+              successcb(JSON.parse(resData));
+            }
+          });
+          
+        });
         
         // handle request errors
         if (errorcb != null) {
@@ -194,33 +279,29 @@
                 when there is an error with the request
             */
       put: function (path, data, successcb, errorcb) {
-        var 
+        var req,
+            opt = getOptions();
         
-          opt = {
-            host: host,
-            port: port,
-            path: path,
-            method: 'PUT',
-            headers: {
-              'Content-Type': 'application/json'
-            }
-          },
-          
-          req = http.request(opt, function (res) {
-            var resData = '';
-            res.setEncoding('utf8');
+        opt.host = host;
+        opt.port = port;
+        opt.path = path;
+        opt.method = 'PUT';
+                  
+        req = protocol.request(opt, function (res) {
+          var resData = '';
+          res.setEncoding('utf8');
 
-            res.on('data', function (chunk) {
-              resData = resData + chunk;
-            });
-
-            res.on('end', function () {
-              if (successcb != null) {
-                successcb(JSON.parse(resData));
-              }
-            });
-            
+          res.on('data', function (chunk) {
+            resData = resData + chunk;
           });
+
+          res.on('end', function () {
+            if (successcb != null) {
+              successcb(JSON.parse(resData));
+            }
+          });
+          
+        });
         
         // handle request errors
         if (errorcb != null) {
@@ -243,33 +324,29 @@
                 when there is an error with the request
             */
       del: function (path, data, successcb, errorcb) {
-        var 
+        var req,
+            opt = getOptions();
         
-          opt = {
-            host: host,
-            port: port,
-            path: path,
-            method: 'DELETE',
-            headers: {
-              'Content-Type': 'application/json'
-            }
-          },
+        opt.host = host;
+        opt.port = port;
+        opt.path = path;
+        opt.method = 'DELETE';
           
-          req = http.request(opt, function (res) {
-            var resData = '';
-            res.setEncoding('utf8');
+        req = protocol.request(opt, function (res) {
+          var resData = '';
+          res.setEncoding('utf8');
 
-            res.on('data', function (chunk) {
-              resData = resData + chunk;
-            });
-
-            res.on('end', function () {
-              if (successcb != null) {
-                successcb(JSON.parse(resData));
-              }
-            });
-            
+          res.on('data', function (chunk) {
+            resData = resData + chunk;
           });
+
+          res.on('end', function () {
+            if (successcb != null) {
+              successcb(JSON.parse(resData));
+            }
+          });
+          
+        });
           
         // handle request errors
         if (errorcb != null) {
@@ -293,20 +370,19 @@
                 when there is an error with the request
             */
       head: function (path, data, successcb, errorcb) {
-        var 
-        
-          opt = {
-            host: host,
-            port: port,
-            path: path + '?' + querystring.stringify(data),
-            method: 'HEAD'
-          },
+        var req,
+            opt = getOptions();
           
-          req = http.request(opt, function (res) {
-            if (successcb != null) {
-              successcb(res.headers);
-            }
-          });
+        opt.host = host;
+        opt.port = port;
+        opt.path = path + '?' + querystring.stringify(data);
+        opt.method = 'HEAD';
+          
+        req = protocol.request(opt, function (res) {
+          if (successcb != null) {
+            successcb(res.headers);
+          }
+        });
         
         // handle request errors
         if (errorcb != null) {
