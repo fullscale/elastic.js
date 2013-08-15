@@ -108,6 +108,7 @@
         }
         
         options[oKey] = oVal;
+        return this;
       },
       
       /**

@@ -1,4 +1,4 @@
-/*! elastic.js - v1.1.1 - 2013-08-13
+/*! elastic.js - v1.1.1 - 2013-08-14
  * https://github.com/fullscale/elastic.js
  * Copyright (c) 2013 FullScale Labs, LLC; Licensed MIT */
 
@@ -112,6 +112,7 @@
         }
         
         options[oKey] = oVal;
+        return this;
       },
       
       /**
