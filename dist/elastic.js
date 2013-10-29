@@ -10848,7 +10848,7 @@
 
             <p>This operator is used to join individual query terms when no operator is 
             explicity used in the query string (i.e., <code>this AND that</code>).
-            Defaults to <code>OR</code> (<em>same as Google</em>).</p>
+            Defaults to <code>OR</code>.</p>
 
             @member ejs.FieldQuery
             @param {String} op The operator, AND or OR.
@@ -15078,7 +15078,7 @@
       /**
             Set the default <em>Boolean</em> operator. This operator is used to join individual query
             terms when no operator is explicity used in the query string (i.e., <code>this AND that</code>).
-            Defaults to <code>OR</code> (<em>same as Google</em>).
+            Defaults to <code>OR</code>.
 
             @member ejs.QueryStringQuery
             @param {String} op The operator to use, AND or OR.
