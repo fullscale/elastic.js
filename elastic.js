@@ -1,4 +1,4 @@
-/*! elastic.js - v1.1.1 - 2013-11-07
+/*! elastic.js - v1.1.1 - 2013-08-14
  * https://github.com/fullscale/elastic.js
  * Copyright (c) 2013 FullScale Labs, LLC; Licensed MIT */
 
@@ -10848,7 +10848,7 @@
 
             <p>This operator is used to join individual query terms when no operator is 
             explicity used in the query string (i.e., <code>this AND that</code>).
-            Defaults to <code>OR</code>.</p>
+            Defaults to <code>OR</code> (<em>same as Google</em>).</p>
 
             @member ejs.FieldQuery
             @param {String} op The operator, AND or OR.
@@ -15078,7 +15078,7 @@
       /**
             Set the default <em>Boolean</em> operator. This operator is used to join individual query
             terms when no operator is explicity used in the query string (i.e., <code>this AND that</code>).
-            Defaults to <code>OR</code>.
+            Defaults to <code>OR</code> (<em>same as Google</em>).
 
             @member ejs.QueryStringQuery
             @param {String} op The operator to use, AND or OR.
@@ -19591,8 +19591,8 @@
           searchUrl = searchUrl + '/' + indices.join();
         }
 
-        // join any types, except when the endpoint is _suggest
-        if (types.length > 0 && endpoint !== '_suggest') {
+        // join any types
+        if (types.length > 0) {
           searchUrl = searchUrl + '/' + types.join();
         }
         
@@ -20425,26 +20425,7 @@
         
         return ejs.client.post(getRestPath('_search'), queryData, successcb, errorcb);
       },
-            
-      /**
-            Get prefix suggestions.
-
-            @member ejs.Request
-            @param {Function} successcb A callback function that handles the response.
-            @param {Function} errorcb A callback function that handles errors.
-            @returns {Object} Returns a client specific object.
-            */
-      doSuggest: function (successcb, errorcb) {
-        var queryData = JSON.stringify(query.suggest);
       
-        // make sure the user has set a client
-        if (ejs.client == null) {
-          throw new Error("No Client Set");
-        }
-        
-        return ejs.client.post(getRestPath('_suggest'), queryData, successcb, errorcb);
-      },
-
       /**
             Executes the search request as configured but only returns back 
             the shards and nodes that the search is going to execute on.  This
@@ -21347,101 +21328,6 @@
 
   /**
     @class
-    <p>CompletionSuggester provides basic, but fast, auto-complete
-    functionality.</p>
-
-    @name ejs.CompletionSuggester
-
-    @since elasticsearch 0.90.3
-    
-    @desc
-    <p>The completion suggester is a so-called prefix suggester. 
-    It does not do spell correction like the <code>TermSuggester</code> 
-    and <code>PhraseSuggester</code> but allows basic auto-complete 
-    functionality.</p>
-
-    @param {String} name The name which be used to refer to this suggester.
-    */
-  ejs.CompletionSuggester = function (name) {
-
-    /**
-        The internal suggest object.
-        @member ejs.CompletionSuggester
-        @property {Object} suggest
-        */
-    var suggest = {};
-    suggest[name] = {completion: {}};
-
-    return {
-
-      /**
-            <p>Sets the text to get suggestions for.  If not set, the global
-            suggestion text will be used.</p>
-
-            @member ejs.CompletionSuggester
-            @param {String} txt A string to get suggestions for.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      text: function (txt) {
-        if (txt == null) {
-          return suggest[name].text;
-        }
-    
-        suggest[name].text = txt;
-        return this;
-      },
-      
-      /**
-            <p>Sets the field used to generate suggestions from.</p>
-
-            @member ejs.CompletionSuggester
-            @param {String} field A valid field name <b>of type completion</b>.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      field: function (field) {
-        if (field == null) {
-          return suggest[name].completion.field;
-        }
-    
-        suggest[name].completion.field = field;
-        return this;
-      },      
-
-      /**
-            <p>Allows you to serialize this object into a JSON encoded string.</p>
-
-            @member ejs.CompletionSuggester
-            @returns {String} returns this object as a serialized JSON string.
-            */
-      toString: function () {
-        return JSON.stringify(suggest);
-      },
-
-      /**
-            The type of ejs object.  For internal use only.
-          
-            @member ejs.CompletionSuggester
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'suggest';
-      },
-    
-      /**
-            <p>Retrieves the internal <code>suggest</code> object. This is typically used by
-               internal API functions so use with caution.</p>
-
-            @member ejs.CompletionSuggester
-            @returns {String} returns this object's internal <code>suggest</code> property.
-            */
-      _self: function () {
-        return suggest;
-      }
-    };
-  };
-
-  /**
-    @class
     <p>DirectGenerator is a candidate generator for <code>PhraseSuggester</code>.
     It generates terms based on edit distance and operators much like the
     <code>TermSuggester</code>.</p>
@@ -21809,173 +21695,6 @@
             */
       _self: function () {
         return settings;
-      }
-    };
-  };
-
-  /**
-    @class
-    <p>FuzzyCompletionSuggester provides the same functionality
-    as <code>CompletionSuggester</code> but allows fuzzy queries.</p>
-
-    @name ejs.FuzzyCompletionSuggester
-
-    @since elasticsearch 0.90.4
-    
-    @desc
-    <p>The completion suggester is a so-called prefix suggester. 
-    It does not do spell correction like the <code>TermSuggester</code> 
-    and <code>PhraseSuggester</code> but allows basic auto-complete 
-    functionality.</p>
-
-    @param {String} name The name which be used to refer to this suggester.
-    */
-  ejs.FuzzyCompletionSuggester = function (name) {
-
-    /**
-        The internal suggest object.
-        @member ejs.FuzzyCompletionSuggester
-        @property {Object} suggest
-        */
-    var suggest = {};
-    suggest[name] = {completion: { fuzzy : {}}};
-
-    return {
-
-      /**
-            <p>Sets the text to get suggestions for.  If not set, the global
-            suggestion text will be used.</p>
-
-            @member ejs.FuzzyCompletionSuggester
-            @param {String} txt A string to get suggestions for.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      text: function (txt) {
-        if (txt == null) {
-          return suggest[name].text;
-        }
-    
-        suggest[name].text = txt;
-        return this;
-      },
-      
-      /**
-            <p>Sets the field used to generate suggestions from.</p>
-
-            @member ejs.FuzzyCompletionSuggester
-            @param {String} field A valid field name <b>of type completion</b>.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      field: function (field) {
-        if (field == null) {
-          return suggest[name].completion.field;
-        }
-    
-        suggest[name].completion.field = field;
-        return this;
-      },
-      
-      /**
-            <p>The completion suggester also supports fuzzy queries.
-            <code>editDistance</code> set the aaximum edit distance, 
-            defaults to 1</p>
-
-            @member ejs.FuzzyCompletionSuggester
-            @param {Integer} distance A value for maximum edit distance.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      editDistance: function (distance) {
-        if (distance == null) {
-          return suggest[name].completion.fuzzy.edit_distance;
-        }
-    
-        suggest[name].completion.fuzzy.edit_distance = distance;
-        return this;
-      },
-
-      /**
-            <p>Sets if transpositions should be counted as one or two changes, 
-            defaults to true</p>
-
-            @member ejs.FuzzyCompletionSuggester
-            @param {Bool} transpositions Specifies if transpositions 
-            should be counted as one or two changes
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      transpositions: function (transpositions) {
-        if (transpositions == null) {
-          return suggest[name].completion.fuzzy.transpositions;
-        }
-    
-        suggest[name].completion.fuzzy.transpositions = transpositions;
-        return this;
-      },
-
-      /**
-            <p>Minimum length of the input before fuzzy suggestions are 
-            returned, defaults 3</p>
-
-            @member ejs.FuzzyCompletionSuggester
-            @param {Integer} minLength Minimum length of input before fuzzy suggestions
-            are returned
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      minLength: function (minLength) {
-        if (minLength == null) {
-          return suggest[name].completion.fuzzy.min_length;
-        }
-    
-        suggest[name].completion.fuzzy.min_length = minLength;
-        return this;
-      },
-
-      /**
-            <p>Minimum length of the input, which is not checked for 
-            fuzzy alternatives, defaults to 1</p>
-
-            @member ejs.FuzzyCompletionSuggester
-            @param {Integer} prefLength Minimum length of input not checked for 
-            fuzzy alternatives
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      prefixLength: function (prefLength) {
-        if (prefLength == null) {
-          return suggest[name].completion.fuzzy.prefix_length;
-        }
-    
-        suggest[name].completion.fuzzy.prefix_length = prefLength;
-        return this;
-      },
-
-      /**
-            <p>Allows you to serialize this object into a JSON encoded string.</p>
-
-            @member ejs.FuzzyCompletionSuggester
-            @returns {String} returns this object as a serialized JSON string.
-            */
-      toString: function () {
-        return JSON.stringify(suggest);
-      },
-
-      /**
-            The type of ejs object.  For internal use only.
-          
-            @member ejs.FuzzyCompletionSuggester
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'suggest';
-      },
-    
-      /**
-            <p>Retrieves the internal <code>suggest</code> object. This is typically used by
-               internal API functions so use with caution.</p>
-
-            @member ejs.FuzzyCompletionSuggester
-            @returns {String} returns this object's internal <code>suggest</code> property.
-            */
-      _self: function () {
-        return suggest;
       }
     };
   };

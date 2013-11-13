@@ -28,8 +28,8 @@
           searchUrl = searchUrl + '/' + indices.join();
         }
 
-        // join any types
-        if (types.length > 0) {
+        // join any types, except when the endpoint is _suggest
+        if (types.length > 0 && endpoint !== '_suggest') {
           searchUrl = searchUrl + '/' + types.join();
         }
         
@@ -862,7 +862,26 @@
         
         return ejs.client.post(getRestPath('_search'), queryData, successcb, errorcb);
       },
+            
+      /**
+            Get prefix suggestions.
+
+            @member ejs.Request
+            @param {Function} successcb A callback function that handles the response.
+            @param {Function} errorcb A callback function that handles errors.
+            @returns {Object} Returns a client specific object.
+            */
+      doSuggest: function (successcb, errorcb) {
+        var queryData = JSON.stringify(query.suggest);
       
+        // make sure the user has set a client
+        if (ejs.client == null) {
+          throw new Error("No Client Set");
+        }
+        
+        return ejs.client.post(getRestPath('_suggest'), queryData, successcb, errorcb);
+      },
+
       /**
             Executes the search request as configured but only returns back 
             the shards and nodes that the search is going to execute on.  This
