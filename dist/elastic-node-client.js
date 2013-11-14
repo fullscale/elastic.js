@@ -1,4 +1,4 @@
-/*! elastic.js - v1.1.1 - 2013-08-14
+/*! elastic.js - v1.1.1 - 2013-11-13
  * https://github.com/fullscale/elastic.js
  * Copyright (c) 2013 FullScale Labs, LLC; Licensed MIT */
 
@@ -11,6 +11,7 @@
 
     // node imports
     protocol,
+    _url = require('url'),
     http = require('http'),
     https = require('https'),
     querystring = require('querystring'),
@@ -48,7 +49,11 @@
     @param {String} proto the optional protocol to use (http or https). Default http.
     */
   ejs.NodeClient = function (host, port, proto) {
-    var 
+    var
+    
+      // path before common elasticsearch rest api
+      path = "",
+      
       // http option defaults
       options = {
         headers: {
@@ -73,12 +78,12 @@
       },
       
       // method to ensure the path always starts with a slash
-      getPath = function (path) {
-        if (path.charAt(0) !== '/') {
-          path = '/' + path;
+      getPath = function (esPath) {
+        if (esPath.charAt(0) !== '/') {
+          esPath = '/' + esPath;
         }
         
-        return path;
+        return path + esPath;
       };
     
     if (host == null) {
@@ -161,6 +166,80 @@
       },
       
       /**
+            Sets the leading url path used before the standard elasticsearch
+            REST api path.
+
+            @member ejs.NodeClient
+            @param {String} p the path.
+            @returns {Object} returns <code>this</code> so that calls can be 
+              chained. Returns {String} current value if `p` is not specified.
+            */
+      path: function (p) {
+        if (p == null) {
+          return path;
+        }
+        
+        if (p.length > 0) {
+          if (p.charAt(p.length - 1) === '/') {
+            p = p.substring(0, p.length - 1);
+          }
+          
+          path = p;
+        }
+        
+        return this;
+      },
+      
+      /**
+            Sets the host, port, protocol, and path based on the information
+            parsed out of the specified url.
+
+            @member ejs.NodeClient
+            @param {String} u the url to parse
+            @returns {Object} returns <code>this</code> so that calls can be 
+              chained. Returns {String} current value if `u` is not specified.
+            */
+      url: function (u) {
+        var urlObj;
+        
+        if (u == null) {
+          // generate a formatted url
+          return _url.format({
+            hostname: host,
+            port: port,
+            protocol: proto,
+            pathname: path
+          });
+        }
+        
+        urlObj = _url.parse(u);
+        host = urlObj.hostname == null ? host : urlObj.hostname;
+        path = urlObj.pathname == null ? path : urlObj.pathname;
+        
+        if (urlObj.protocol != null) {
+          if (urlObj.protocol.substring(0, 5) === 'https') {
+            proto = 'https';
+            protocol = https;
+          } else {
+            proto = 'http';
+            protocol = http;
+          }
+        }
+        
+        if (urlObj.port != null) {
+          port = urlObj.port;
+        } else {
+          if (proto === 'https') {
+            port = 443;
+          } else {
+            port = 80;
+          }
+        }
+        
+        return this;
+      },
+      
+      /**
             Sets a request option.
 
             @member ejs.NodeClient
@@ -199,7 +278,7 @@
           
         opt.host = host;
         opt.port = port;
-        opt.path = path + '?' + querystring.stringify(data);
+        opt.path = getPath(path) + '?' + querystring.stringify(data);
         opt.method = 'GET';
         
         req = protocol.request(opt, function (res) {
@@ -243,7 +322,7 @@
         
         opt.host = host;
         opt.port = port;
-        opt.path = path;
+        opt.path = getPath(path);
         opt.method = 'POST';
         
         req = protocol.request(opt, function (res) {
@@ -288,7 +367,7 @@
         
         opt.host = host;
         opt.port = port;
-        opt.path = path;
+        opt.path = getPath(path);
         opt.method = 'PUT';
                   
         req = protocol.request(opt, function (res) {
@@ -333,7 +412,7 @@
         
         opt.host = host;
         opt.port = port;
-        opt.path = path;
+        opt.path = getPath(path);
         opt.method = 'DELETE';
           
         req = protocol.request(opt, function (res) {
@@ -379,7 +458,7 @@
           
         opt.host = host;
         opt.port = port;
-        opt.path = path + '?' + querystring.stringify(data);
+        opt.path = getPath(path) + '?' + querystring.stringify(data);
         opt.method = 'HEAD';
           
         req = protocol.request(opt, function (res) {
