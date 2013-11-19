@@ -1,7 +1,7 @@
 {
   "name": "elastic.js",
   "description": "Javascript API for ElasticSearch",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "homepage": "https://github.com/fullscale/elastic.js",
   "keywords": [
     "elasticsearch",
@@ -30,10 +30,10 @@
     "url": "https://github.com/fullscale/elastic.js/blob/master/AUTHORS"
   },
   "files": [
-    "elastic-node-client.js",
-    "elastic.js"
+    "dist/elastic-node-client.js",
+    "dist/elastic.js"
   ],
-  "main": "elastic.js",
+  "main": "dist/elastic.js",
   "scripts": {
     "test": "grunt nodeunit",
     "prepublish": "cp dist/elastic.js dist/elastic-node-client.js ."
