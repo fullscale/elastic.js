@@ -19,7 +19,7 @@ angular.module('featured.controllers', [])
         // define our search function that will be called when a user
         // submits a search
         $scope.search = function() {
-            $scope.results = request
+            var promise = request
                 .query(ejs.IndicesQuery(
                   ejs.ConstantScoreQuery()
                     .query(ejs.MatchQuery('keywords', $scope.queryTerm || '*'))
@@ -28,7 +28,11 @@ angular.module('featured.controllers', [])
                     .noMatchQuery(
                       ejs.QueryStringQuery($scope.queryTerm || '*')))
                 .doSearch();
-                
+
+            promise.then(function(data) {
+                $scope.results = data;
+            });
+
             $location.path("/results");
             $scope.queryTerm = "";
         };

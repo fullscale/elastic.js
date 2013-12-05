@@ -8,7 +8,8 @@ angular.module('elasticjs', [
     'elasticjs.filters', 
     'elasticjs.services', 
     'elasticjs.directives', 
-    'elasticjs.service'
+    'elasticjs.service',
+    'ngRoute'
     ]).config(['$routeProvider', function($routeProvider) {
         $routeProvider
             .when('/search', {
