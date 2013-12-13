@@ -118,12 +118,12 @@
             @param {Double} l A positive double value greater than 0.0.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
-      realWorldErrorLikelihood: function (l) {
+      realWordErrorLikelihood: function (l) {
         if (l == null) {
-          return suggest[name].phrase.real_world_error_likelihood;
+          return suggest[name].phrase.real_word_error_likelihood;
         }
     
-        suggest[name].phrase.real_world_error_likelihood = l;
+        suggest[name].phrase.real_word_error_likelihood = l;
         return this;
       },
       
