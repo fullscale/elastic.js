@@ -356,7 +356,7 @@
         }
   
         t = t.toLowerCase();
-        if (t === 'fast-vector-highlighter' || t === 'highlighter') {
+        if (t === 'fast-vector-highlighter' || t === 'highlighter' || t === 'postings') {
           addOption(oField, 'type', t);
         }
         

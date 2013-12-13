@@ -428,8 +428,8 @@ exports.search = {
     expected.suggester.phrase.shard_size = 100;
     doTest();
     
-    suggester.realWorldErrorLikelihood(0.99);
-    expected.suggester.phrase.real_world_error_likelihood = 0.99;
+    suggester.realWordErrorLikelihood(0.99);
+    expected.suggester.phrase.real_word_error_likelihood = 0.99;
     doTest();
     
     suggester.confidence(0.6);
