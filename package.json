@@ -39,7 +39,8 @@
     "prepublish": "cp dist/elastic.js dist/elastic-node-client.js ."
   },
   "dependencies": {
-    "colors": "~0.6"
+    "colors": "~0.6",
+    "bluebird": "~0.11.5-1"
   },
   "devDependencies": {
     "grunt": "~0.4.1",

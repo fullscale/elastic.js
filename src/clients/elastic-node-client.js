@@ -11,7 +11,8 @@
     http = require('http'),
     https = require('https'),
     querystring = require('querystring'),
-    
+    Promise = require('bluebird'),
+
     // save reference to global object
     // `window` in browser
     // `exports` on server
@@ -270,8 +271,9 @@
             */
       get: function (path, data, successcb, errorcb) {
         var req,
-            opt = getOptions();
-          
+            opt = getOptions(),
+            deferred = Promise.defer();
+
         opt.host = host;
         opt.port = port;
         opt.path = getPath(path) + '?' + querystring.stringify(data);
@@ -286,19 +288,19 @@
           });
 
           res.on('end', function () {
-            if (successcb != null) {
-              successcb(JSON.parse(resData));
-            }
+            (successcb || deferred.resolve).call(deferred, JSON.parse(resData));
           });
-          
+
         });
-        
+
         // handle request errors
-        if (errorcb != null) {
-          req.on('error', errorcb);
-        }
-        
+        req.on('error', function(error) {
+          (errorcb || deferred.reject).call(deferred, error);
+        });
+
         req.end();
+
+        return deferred.promise;
       },
       
       /**
@@ -314,8 +316,9 @@
             */
       post: function (path, data, successcb, errorcb) {
         var req,
-            opt = getOptions();
-        
+            opt = getOptions(),
+            deferred = Promise.defer();
+
         opt.host = host;
         opt.port = port;
         opt.path = getPath(path);
@@ -330,20 +333,20 @@
           });
 
           res.on('end', function () {
-            if (successcb != null) {
-              successcb(JSON.parse(resData));
-            }
+            (successcb || deferred.resolve).call(deferred, JSON.parse(resData));
           });
           
         });
         
         // handle request errors
-        if (errorcb != null) {
-          req.on('error', errorcb);
-        }
-          
+        req.on('error', function(error) {
+          (errorcb || deferred.reject).call(deferred, error);
+        });
+
         req.write(data);
-        req.end();        
+        req.end();
+
+        return deferred.promise;
       },
       
       /**
@@ -359,8 +362,9 @@
             */
       put: function (path, data, successcb, errorcb) {
         var req,
-            opt = getOptions();
-        
+            opt = getOptions(),
+            deferred = Promise.defer();
+
         opt.host = host;
         opt.port = port;
         opt.path = getPath(path);
@@ -375,20 +379,20 @@
           });
 
           res.on('end', function () {
-            if (successcb != null) {
-              successcb(JSON.parse(resData));
-            }
+            (successcb || deferred.resolve).call(deferred, JSON.parse(resData));
           });
           
         });
         
         // handle request errors
-        if (errorcb != null) {
-          req.on('error', errorcb);
-        }
-          
+        req.on('error', function(error) {
+          (errorcb || deferred.reject).call(deferred, error);
+        });
+
         req.write(data);
-        req.end();        
+        req.end();
+
+        return deferred.promise;
       },
       
       /**
@@ -404,8 +408,9 @@
             */
       del: function (path, data, successcb, errorcb) {
         var req,
-            opt = getOptions();
-        
+            opt = getOptions(),
+            deferred = Promise.defer();
+
         opt.host = host;
         opt.port = port;
         opt.path = getPath(path);
@@ -420,20 +425,20 @@
           });
 
           res.on('end', function () {
-            if (successcb != null) {
-              successcb(JSON.parse(resData));
-            }
+            (successcb || deferred.resolve).call(deferred, JSON.parse(resData));
           });
           
         });
           
         // handle request errors
-        if (errorcb != null) {
-          req.on('error', errorcb);
-        }
-          
+        req.on('error', function(error) {
+          (errorcb || deferred.reject).call(deferred, error);
+        });
+
         req.write(data);
-        req.end();        
+        req.end();
+
+        return deferred.promise;
       },
       
       /**
@@ -450,25 +455,26 @@
             */
       head: function (path, data, successcb, errorcb) {
         var req,
-            opt = getOptions();
-          
+            opt = getOptions(),
+            deferred = Promise.defer();
+
         opt.host = host;
         opt.port = port;
         opt.path = getPath(path) + '?' + querystring.stringify(data);
         opt.method = 'HEAD';
           
         req = protocol.request(opt, function (res) {
-          if (successcb != null) {
-            successcb(res.headers);
-          }
+          (successcb || deferred.resolve).call(deferred, res.headers);
         });
         
         // handle request errors
-        if (errorcb != null) {
-          req.on('error', errorcb);
-        }
-          
-        req.end();        
+        req.on('error', function(error) {
+          (errorcb || deferred.reject).call(deferred, error);
+        });
+
+        req.end();
+
+        return deferred.promise;
       }
     };
   };
