@@ -64,55 +64,6 @@
     return -1;
   };
   
-  // Converts the stored params into parameters that will be passed
-  // to a client.  Certain parameter are skipped, and others require
-  // special processing before being sent to the client.
-  genClientParams = function (params, excludes) {
-    var 
-      clientParams = {},
-      param,
-      paramVal;
-    
-    for (param in params) {
-      if (!has(params, param)) {
-        continue;
-      }
-      
-      // skip params that don't go in the query string
-      if (indexOf(excludes, param) !== -1) {
-        continue;
-      }
-                
-      // process all other params
-      paramVal = params[param];
-      if (isArray(paramVal)) {
-        paramVal = paramVal.join();
-      }
-        
-      clientParams[param] = paramVal;
-    }
-    
-    return clientParams;
-  };
-  
-  // converts client params to a string param1=val1&param2=val1
-  genParamStr = function (params, excludes) {
-    var 
-      clientParams = genClientParams(params, excludes),
-      parts = [],
-      p;
-    
-    for (p in clientParams) {
-      if (!has(clientParams, p)) {
-        continue;
-      }
-      
-      parts.push(p + '=' + encodeURIComponent(clientParams[p]));
-    }
-    
-    return parts.join('&');
-  };
-  
   // Is a given value an array?
   // Delegates to ECMA5's native Array.isArray
   // switched to ===, not sure why underscore used ==

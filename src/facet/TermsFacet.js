@@ -13,6 +13,14 @@
        <a href="http://en.wikipedia.org/wiki/Faceted_classification">Faceted Classification</a></p<
 
     @name ejs.TermsFacet
+    @borrows ejs.FacetMixin.facetFilter as facetFilter
+    @borrows ejs.FacetMixin.global as global
+    @borrows ejs.FacetMixin.mode as mode
+    @borrows ejs.FacetMixin.cacheFilter as cacheFilter
+    @borrows ejs.FacetMixin.scope as scope
+    @borrows ejs.FacetMixin.nested as nested
+    @borrows ejs.FacetMixin._type as _type
+    @borrows ejs.FacetMixin.toJSON as toJSON
 
     @desc
     <p>A facet which returns the N most frequent terms within a collection
@@ -26,18 +34,13 @@
     */
   ejs.TermsFacet = function (name) {
 
-    /**
-        The internal facet object.
-        @member ejs.TermsFacet
-        @property {Object} facet
-        */
-    var facet = {};
+    var 
+      _common = ejs.FacetMixin(name),
+      facet = _common.toJSON();
 
-    facet[name] = {
-      terms: {}
-    };
+    facet[name].terms = {};
 
-    return {
+    return extend(_common, {
 
       /**
             Sets the field to be used to construct the this facet.  Set to
@@ -287,133 +290,7 @@
     
         facet[name].terms.execution_hint = h;
         return this;
-      },
-      
-      /**
-            <p>Allows you to reduce the documents used for computing facet results.</p>
-
-            @member ejs.TermsFacet
-            @param {Object} oFilter A valid <code>Filter</code> object.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      facetFilter: function (oFilter) {
-        if (oFilter == null) {
-          return facet[name].facet_filter;
-        }
-      
-        if (!isFilter(oFilter)) {
-          throw new TypeError('Argument must be a Filter');
-        }
-        
-        facet[name].facet_filter = oFilter.toJSON();
-        return this;
-      },
-
-      /**
-            <p>Computes values across the entire index</p>
-
-            @member ejs.TermsFacet
-            @param {Boolean} trueFalse Calculate facet counts globally or not.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      global: function (trueFalse) {
-        if (trueFalse == null) {
-          return facet[name].global;
-        }
-        
-        facet[name].global = trueFalse;
-        return this;
-      },
-      
-      /**
-            <p>Sets the mode the facet will use.<p>
-            
-            <dl>
-                <dd><code>collector</code></dd>
-                <dd><code>post</code></dd>
-            <dl>
-            
-            @member ejs.TermsFacet
-            @param {String} m The mode: collector or post.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      mode: function (m) {
-        if (m == null) {
-          return facet[name].mode;
-        }
-      
-        m = m.toLowerCase();
-        if (m === 'collector' || m === 'post') {
-          facet[name].mode = m;
-        }
-        
-        return this;
-      },
-      
-      /**
-            <p>Computes values across the the specified scope</p>
-
-            @deprecated since elasticsearch 0.90
-            @member ejs.TermsFacet
-            @param {String} scope The scope name to calculate facet counts with.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      scope: function (scope) {
-        return this;
-      },
-      
-      /**
-            <p>Enables caching of the <code>facetFilter</code></p>
-
-            @member ejs.TermsFacet
-            @param {Boolean} trueFalse If the facetFilter should be cached or not
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      cacheFilter: function (trueFalse) {
-        if (trueFalse == null) {
-          return facet[name].cache_filter;
-        }
-        
-        facet[name].cache_filter = trueFalse;
-        return this;
-      },
-      
-      /**
-            <p>Sets the path to the nested document if faceting against a
-            nested field.</p>
-
-            @member ejs.TermsFacet
-            @param {String} path The nested path
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      nested: function (path) {
-        if (path == null) {
-          return facet[name].nested;
-        }
-        
-        facet[name].nested = path;
-        return this;
-      },
-
-      /**
-            The type of ejs object.  For internal use only.
-            
-            @member ejs.TermsFacet
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'facet';
-      },
-      
-      /**
-            <p>Retrieves the internal <code>facet</code> property. This is typically used by
-               internal API functions so use with caution.</p>
-
-            @member ejs.TermsFacet
-            @returns {String} returns this object's internal <code>facet</code> property.
-            */
-      toJSON: function () {
-        return facet;
       }
-    };
+      
+    });
   };

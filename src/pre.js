@@ -30,8 +30,6 @@
     each,
     extend,
     indexOf,
-    genClientParams,
-    genParamStr,
     isArray,
     isObject,
     isString,
