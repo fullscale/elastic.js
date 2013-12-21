@@ -122,16 +122,6 @@
         filter.or._cache_key = key;
         return this;
       },
-      
-      /**
-             Returns the filter container as a JSON string
-
-             @member ejs.OrFilter
-             @returns {String} JSON representation of the orFilter object
-             */
-      toString: function () {
-        return JSON.stringify(filter);
-      },
 
       /**
             The type of ejs object.  For internal use only.

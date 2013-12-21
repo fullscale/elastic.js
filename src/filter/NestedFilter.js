@@ -180,15 +180,6 @@
         filter.nested._cache_key = key;
         return this;
       },
-    
-      /**
-             Serializes the internal <em>filter</em> object as a JSON string.
-             @member ejs.NestedFilter
-             @returns {String} Returns a JSON representation of the termFilter object.
-             */
-      toString: function () {
-        return JSON.stringify(filter);
-      },
 
       /**
             The type of ejs object.  For internal use only.

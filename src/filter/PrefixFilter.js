@@ -112,16 +112,6 @@
         filter.prefix._cache_key = key;
         return this;
       },
-      
-      /**
-             Returns the filter container as a JSON string
-
-             @member ejs.PrefixFilter
-             @returns {String} JSON representation of the prefixFilter object
-             */
-      toString: function () {
-        return JSON.stringify(filter);
-      },
 
       /**
             The type of ejs object.  For internal use only.

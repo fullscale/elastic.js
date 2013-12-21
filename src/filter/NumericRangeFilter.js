@@ -262,16 +262,6 @@
         filter.numeric_range._cache_key = key;
         return this;
       },
-      
-      /**
-             Returns the filter container as a JSON string.
-
-             @member ejs.NumericRangeFilter
-             @returns {String} JSON representation of the numericRangeFilter object
-             */
-      toString: function () {
-        return JSON.stringify(filter);
-      },
 
       /**
             The type of ejs object.  For internal use only.

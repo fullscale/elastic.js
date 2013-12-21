@@ -57,16 +57,6 @@
         filter.exists._name = name;
         return this;
       },
-      
-      /**
-             Returns the filter container as a JSON string
-
-             @member ejs.ExistsFilter
-             @returns {String} JSON representation of the existsFilter object
-             */
-      toString: function () {
-        return JSON.stringify(filter);
-      },
 
       /**
             The type of ejs object.  For internal use only.

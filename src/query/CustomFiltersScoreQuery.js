@@ -216,16 +216,6 @@
         query.custom_filters_score.boost = boost;
         return this;
       },
-      
-      /**
-            Allows you to serialize this object into a JSON encoded string.
-
-            @member ejs.CustomFiltersScoreQuery
-            @returns {String} returns this object as a serialized JSON string.
-            */
-      toString: function () {
-        return JSON.stringify(query);
-      },
 
       /**
             The type of ejs object.  For internal use only.

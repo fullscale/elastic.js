@@ -116,16 +116,6 @@
         filter.term._cache_key = key;
         return this;
       },
-      
-      /**
-             Serializes the internal filter object as a JSON string.
-             
-             @member ejs.TermFilter
-             @returns {String} Returns a JSON representation of the termFilter object.
-             */
-      toString: function () {
-        return JSON.stringify(filter);
-      },
     
       /**
             The type of ejs object.  For internal use only.

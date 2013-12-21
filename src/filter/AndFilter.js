@@ -124,16 +124,6 @@
         filter.and._cache_key = key;
         return this;
       },
-      
-      /**
-             Returns the filter container as a JSON string
-
-             @member ejs.AndFilter
-             @returns {String} JSON representation of the andFilter object
-             */
-      toString: function () {
-        return JSON.stringify(filter);
-      },
 
       /**
             The type of ejs object.  For internal use only.

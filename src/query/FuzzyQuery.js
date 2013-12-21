@@ -205,16 +205,6 @@
       },
 
       /**
-             <p>Serializes the internal <code>query</code> object as a JSON string.</p>
-
-             @member ejs.FuzzyQuery
-             @returns {String} Returns a JSON representation of the Query object.
-             */
-      toString: function () {
-        return JSON.stringify(query);
-      },
-
-      /**
             <p>The type of ejs object.  For internal use only.</p>
             
             @member ejs.FuzzyQuery

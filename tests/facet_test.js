@@ -43,7 +43,7 @@ exports.facets = {
     test.done();
   },
   TermsFacet: function (test) {
-    test.expect(34);
+    test.expect(33);
 
     var termFacet = ejs.TermsFacet('somename'),
       termFilter = ejs.TermFilter('t1', 'v1'),
@@ -165,7 +165,7 @@ exports.facets = {
     doTest();
     
     test.strictEqual(termFacet._type(), 'facet');
-    test.strictEqual(termFacet.toString(), JSON.stringify(expected));
+    
     
     test.throws(function () {
       termFacet.facetFilter('invalid');
@@ -182,7 +182,7 @@ exports.facets = {
     test.done();
   },
   GeoDistanceFacet: function (test) {
-    test.expect(31);
+    test.expect(30);
 
     var geoDistanceFacet = ejs.GeoDistanceFacet('somename'),
       termFilter = ejs.TermFilter('t1', 'v1'),
@@ -316,7 +316,7 @@ exports.facets = {
     doTest();
     
     test.strictEqual(geoDistanceFacet._type(), 'facet');
-    test.strictEqual(geoDistanceFacet.toString(), JSON.stringify(expected));
+    
     
     test.throws(function () {
       geoDistanceFacet.point('invalid');
@@ -329,7 +329,7 @@ exports.facets = {
     test.done();
   },
   StatisticalFacet: function (test) {
-    test.expect(19);
+    test.expect(18);
 
     var statisticalFacet = ejs.StatisticalFacet('somename'),
       termFilter = ejs.TermFilter('t1', 'v1'),
@@ -400,7 +400,7 @@ exports.facets = {
     doTest();
     
     test.strictEqual(statisticalFacet._type(), 'facet');
-    test.strictEqual(statisticalFacet.toString(), JSON.stringify(expected));
+    
     
     test.throws(function () {
       statisticalFacet.facetFilter('invalid');
@@ -413,7 +413,7 @@ exports.facets = {
     test.done();
   },
   TermStatsFacet: function (test) {
-    test.expect(34);
+    test.expect(33);
 
     var termStatsFacet = ejs.TermStatsFacet('somename'),
       termFilter = ejs.TermFilter('t1', 'v1'),
@@ -543,7 +543,7 @@ exports.facets = {
     doTest();
     
     test.strictEqual(termStatsFacet._type(), 'facet');
-    test.strictEqual(termStatsFacet.toString(), JSON.stringify(expected));
+    
     
     test.throws(function () {
       termStatsFacet.facetFilter('invalid');
@@ -552,7 +552,7 @@ exports.facets = {
     test.done();
   },
   DateHistogramFacet: function (test) {
-    test.expect(31);
+    test.expect(30);
 
     var dateHistogramFacet = ejs.DateHistogramFacet('somename'),
       termFilter = ejs.TermFilter('t1', 'v1'),
@@ -670,7 +670,7 @@ exports.facets = {
     doTest();
     
     test.strictEqual(dateHistogramFacet._type(), 'facet');
-    test.strictEqual(dateHistogramFacet.toString(), JSON.stringify(expected));
+    
     
     test.throws(function () {
       dateHistogramFacet.facetFilter('invalid');
@@ -679,7 +679,7 @@ exports.facets = {
     test.done();
   },
   QueryFacet: function (test) {
-    test.expect(15);
+    test.expect(14);
 
     var queryFacet = ejs.QueryFacet('somename'),
       termFilter = ejs.TermFilter('t1', 'v1'),
@@ -729,7 +729,7 @@ exports.facets = {
     doTest();
     
     test.strictEqual(queryFacet._type(), 'facet');
-    test.strictEqual(queryFacet.toString(), JSON.stringify(expected));
+    
     
     test.throws(function () {
       queryFacet.query('invalid');
@@ -742,7 +742,7 @@ exports.facets = {
     test.done();
   },
   FilterFacet: function (test) {
-    test.expect(15);
+    test.expect(14);
 
     var filterFacet = ejs.FilterFacet('somename'),
       termFilter1 = ejs.TermFilter('t1', 'v1'),
@@ -792,7 +792,7 @@ exports.facets = {
     doTest();
     
     test.strictEqual(filterFacet._type(), 'facet');
-    test.strictEqual(filterFacet.toString(), JSON.stringify(expected));
+    
     
     test.throws(function () {
       filterFacet.filter('invalid');
@@ -805,7 +805,7 @@ exports.facets = {
     test.done();
   },
   HistogramFacet: function (test) {
-    test.expect(28);
+    test.expect(27);
 
     var histogramFacet = ejs.HistogramFacet('somename'),
       termFilter = ejs.TermFilter('t1', 'v1'),
@@ -911,7 +911,7 @@ exports.facets = {
     doTest();
     
     test.strictEqual(histogramFacet._type(), 'facet');
-    test.strictEqual(histogramFacet.toString(), JSON.stringify(expected));
+    
     
     test.throws(function () {
       histogramFacet.facetFilter('invalid');
@@ -920,7 +920,7 @@ exports.facets = {
     test.done();
   },
   RangeFacet: function (test) {
-    test.expect(24);
+    test.expect(23);
 
     var rangeFacet = ejs.RangeFacet('somename'),
       termFilter = ejs.TermFilter('t1', 'v1'),
@@ -1023,7 +1023,7 @@ exports.facets = {
     doTest();
     
     test.strictEqual(rangeFacet._type(), 'facet');
-    test.strictEqual(rangeFacet.toString(), JSON.stringify(expected));
+    
     
     test.throws(function () {
       rangeFacet.facetFilter('invalid');

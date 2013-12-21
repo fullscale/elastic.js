@@ -435,16 +435,6 @@
         facet[name].nested = path;
         return this;
       },
-      
-      /**
-            <p>Allows you to serialize this object into a JSON encoded string.</p>
-
-            @member ejs.DateHistogramFacet
-            @returns {String} returns this object as a serialized JSON string.
-            */
-      toString: function () {
-        return JSON.stringify(facet);
-      },
 
       /**
             The type of ejs object.  For internal use only.

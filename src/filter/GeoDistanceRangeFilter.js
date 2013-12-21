@@ -360,15 +360,6 @@
         filter.geo_distance_range._cache_key = key;
         return this;
       },
-      /**
-             Returns the filter container as a JSON string
-
-             @member ejs.GeoDistanceRangeFilter
-             @returns {String} JSON representation of the notFilter object
-             */
-      toString: function () {
-        return JSON.stringify(filter);
-      },
 
       /**
             The type of ejs object.  For internal use only.

@@ -217,8 +217,7 @@
   isEJSObject = function (obj) {
     return (isObject(obj) &&
       has(obj, '_type') &&
-      has(obj, 'toJSON') && 
-      has(obj, 'toString'));
+      has(obj, 'toJSON'));
   };
   
   isQuery = function (obj) {
@@ -706,16 +705,6 @@
         facet[name].nested = path;
         return this;
       },
-      
-      /**
-            <p>Allows you to serialize this object into a JSON encoded string.</p>
-
-            @member ejs.DateHistogramFacet
-            @returns {String} returns this object as a serialized JSON string.
-            */
-      toString: function () {
-        return JSON.stringify(facet);
-      },
 
       /**
             The type of ejs object.  For internal use only.
@@ -905,16 +894,6 @@
         
         facet[name].nested = path;
         return this;
-      },
-      
-      /**
-            <p>Allows you to serialize this object into a JSON encoded string.</p>
-
-            @member ejs.FilterFacet
-            @returns {String} returns this object as a serialized JSON string.
-            */
-      toString: function () {
-        return JSON.stringify(facet);
       },
 
       /**
@@ -1328,16 +1307,6 @@
         facet[name].nested = path;
         return this;
       },
-      
-      /**
-            <p>Allows you to serialize this object into a JSON encoded string.</p>
-
-            @member ejs.GeoDistanceFacet
-            @returns {String} returns this object as a serialized JSON string.
-            */
-      toString: function () {
-        return JSON.stringify(facet);
-      },
 
       /**
             The type of ejs object.  For internal use only.
@@ -1728,16 +1697,6 @@
       },
 
       /**
-            <p>Allows you to serialize this object into a JSON encoded string.</p>
-
-            @member ejs.HistogramFacet
-            @returns {String} returns this object as a serialized JSON string.
-            */
-      toString: function () {
-        return JSON.stringify(facet);
-      },
-
-      /**
             The type of ejs object.  For internal use only.
             
             @member ejs.HistogramFacet
@@ -1925,16 +1884,6 @@
         
         facet[name].nested = path;
         return this;
-      },
-
-      /**
-            <p>Allows you to serialize this object into a JSON encoded string.</p>
-
-            @member ejs.QueryFacet
-            @returns {String} returns this object as a serialized JSON string.
-            */
-      toString: function () {
-        return JSON.stringify(facet);
       },
 
       /**
@@ -2287,16 +2236,6 @@
         facet[name].nested = path;
         return this;
       },
-      
-      /**
-            <p>Allows you to serialize this object into a JSON encoded string.</p>
-
-            @member ejs.RangeFacet
-            @returns {String} returns this object as a serialized JSON string.
-            */
-      toString: function () {
-        return JSON.stringify(facet);
-      },
 
       /**
             The type of ejs object.  For internal use only.
@@ -2555,16 +2494,6 @@
         
         facet[name].nested = path;
         return this;
-      },
-
-      /**
-            <p>Allows you to serialize this object into a JSON encoded string.</p>
-
-            @member ejs.StatisticalFacet
-            @returns {String} returns this object as a serialized JSON string.
-            */
-      toString: function () {
-        return JSON.stringify(facet);
       },
 
       /**
@@ -2910,16 +2839,6 @@
         
         facet[name].nested = path;
         return this;
-      },
-      
-      /**
-            <p>Allows you to serialize this object into a JSON encoded string.</p>
-
-            @member ejs.TermStatsFacet
-            @returns {String} returns this object as a serialized JSON string.
-            */
-      toString: function () {
-        return JSON.stringify(facet);
       },
 
       /**
@@ -3341,16 +3260,6 @@
         facet[name].nested = path;
         return this;
       },
-      
-      /**
-            <p>Allows you to serialize this object into a JSON encoded string.</p>
-
-            @member ejs.TermsFacet
-            @returns {String} returns this object as a serialized JSON string.
-            */
-      toString: function () {
-        return JSON.stringify(facet);
-      },
 
       /**
             The type of ejs object.  For internal use only.
@@ -3500,16 +3409,6 @@
 
         filter.and._cache_key = key;
         return this;
-      },
-      
-      /**
-             Returns the filter container as a JSON string
-
-             @member ejs.AndFilter
-             @returns {String} JSON representation of the andFilter object
-             */
-      toString: function () {
-        return JSON.stringify(filter);
       },
 
       /**
@@ -3728,16 +3627,6 @@
         filter.bool._cache_key = key;
         return this;
       },
-    
-      /**
-            Allows you to serialize this object into a JSON encoded string.
-
-            @member ejs.BoolFilter
-            @returns {String} returns this object as a serialized JSON string.
-            */
-      toString: function () {
-        return JSON.stringify(filter);
-      },
 
       /**
             The type of ejs object.  For internal use only.
@@ -3820,16 +3709,6 @@
 
         filter.exists._name = name;
         return this;
-      },
-      
-      /**
-             Returns the filter container as a JSON string
-
-             @member ejs.ExistsFilter
-             @returns {String} JSON representation of the existsFilter object
-             */
-      toString: function () {
-        return JSON.stringify(filter);
       },
 
       /**
@@ -4034,16 +3913,6 @@
 
         filter.geo_bounding_box._cache_key = key;
         return this;
-      },
-      
-      /**
-             Returns the filter container as a JSON string
-
-             @member ejs.GeoBboxFilter
-             @returns {String} JSON representation of the notFilter object
-             */
-      toString: function () {
-        return JSON.stringify(filter);
       },
 
       /**
@@ -4295,16 +4164,6 @@
 
         filter.geo_distance._cache_key = key;
         return this;
-      },
-      
-      /**
-             Returns the filter container as a JSON string
-
-             @member ejs.GeoDistanceFilter
-             @returns {String} JSON representation of the notFilter object
-             */
-      toString: function () {
-        return JSON.stringify(filter);
       },
 
       /**
@@ -4691,15 +4550,6 @@
         filter.geo_distance_range._cache_key = key;
         return this;
       },
-      /**
-             Returns the filter container as a JSON string
-
-             @member ejs.GeoDistanceRangeFilter
-             @returns {String} JSON representation of the notFilter object
-             */
-      toString: function () {
-        return JSON.stringify(filter);
-      },
 
       /**
             The type of ejs object.  For internal use only.
@@ -4876,16 +4726,6 @@
 
         filter.geo_polygon._cache_key = key;
         return this;
-      },
-      
-      /**
-             Returns the filter container as a JSON string
-
-             @member ejs.GeoPolygonFilter
-             @returns {String} JSON representation of the notFilter object
-             */
-      toString: function () {
-        return JSON.stringify(filter);
       },
 
       /**
@@ -5107,16 +4947,6 @@
         filter.geo_shape._cache_key = key;
         return this;
       },
-        
-      /**
-            Allows you to serialize this object into a JSON encoded string.
-
-            @member ejs.GeoShapeFilter
-            @returns {String} returns this object as a serialized JSON string.
-            */
-      toString: function () {
-        return JSON.stringify(filter);
-      },
 
       /**
             The type of ejs object.  For internal use only.
@@ -5307,16 +5137,6 @@
         filter.has_child._cache_key = key;
         return this;
       },
-         
-      /**
-            Allows you to serialize this object into a JSON encoded string.
-
-            @member ejs.HasChildFilter
-            @returns {String} returns this object as a serialized JSON string.
-            */
-      toString: function () {
-        return JSON.stringify(filter);
-      },
 
       /**
             The type of ejs object.  For internal use only.
@@ -5491,16 +5311,6 @@
         filter.has_parent._cache_key = key;
         return this;
       },
-          
-      /**
-            Allows you to serialize this object into a JSON encoded string.
-
-            @member ejs.HasParentFilter
-            @returns {String} returns this object as a serialized JSON string.
-            */
-      toString: function () {
-        return JSON.stringify(filter);
-      },
 
       /**
             The type of ejs object.  For internal use only.
@@ -5628,16 +5438,6 @@
 
         filter.ids._name = name;
         return this;
-      },
-             
-      /**
-            Allows you to serialize this object into a JSON encoded string.
-
-            @member ejs.IdsFilter
-            @returns {String} returns this object as a serialized JSON string.
-            */
-      toString: function () {
-        return JSON.stringify(filter);
       },
 
       /**
@@ -5779,16 +5579,6 @@
     
         return this;
       },
-    
-      /**
-            Allows you to serialize this object into a JSON encoded string.
-
-            @member ejs.IndicesFilter
-            @returns {String} returns this object as a serialized JSON string.
-            */
-      toString: function () {
-        return JSON.stringify(filter);
-      },
 
       /**
             The type of ejs object.  For internal use only.
@@ -5858,16 +5648,6 @@
         filter.limit.value = val;
         return this;
       },
-           
-      /**
-            Allows you to serialize this object into a JSON encoded string.
-
-            @member ejs.LimitFilter
-            @returns {String} returns this object as a serialized JSON string.
-            */
-      toString: function () {
-        return JSON.stringify(filter);
-      },
 
       /**
             The type of ejs object.  For internal use only.
@@ -5915,15 +5695,6 @@
     };
 
     return {
-
-      /**
-             Serializes the internal <em>filter</em> object as a JSON string.
-             @member ejs.MatchAllFilter
-             @returns {String} Returns a JSON representation of the object.
-             */
-      toString: function () {
-        return JSON.stringify(filter);
-      },
 
       /**
             The type of ejs object.  For internal use only.
@@ -6036,16 +5807,6 @@
 
         filter.missing._name = name;
         return this;
-      },
-      
-      /**
-             Returns the filter container as a JSON string
-
-             @member ejs.MissingFilter
-             @returns {String} JSON representation of the missingFilter object
-             */
-      toString: function () {
-        return JSON.stringify(filter);
       },
 
       /**
@@ -6252,15 +6013,6 @@
         filter.nested._cache_key = key;
         return this;
       },
-    
-      /**
-             Serializes the internal <em>filter</em> object as a JSON string.
-             @member ejs.NestedFilter
-             @returns {String} Returns a JSON representation of the termFilter object.
-             */
-      toString: function () {
-        return JSON.stringify(filter);
-      },
 
       /**
             The type of ejs object.  For internal use only.
@@ -6381,16 +6133,6 @@
 
         filter.not._cache_key = key;
         return this;
-      },
-      
-      /**
-             Returns the filter container as a JSON string
-
-             @member ejs.NotFilter
-             @returns {String} JSON representation of the notFilter object
-             */
-      toString: function () {
-        return JSON.stringify(filter);
       },
 
       /**
@@ -6679,16 +6421,6 @@
         filter.numeric_range._cache_key = key;
         return this;
       },
-      
-      /**
-             Returns the filter container as a JSON string.
-
-             @member ejs.NumericRangeFilter
-             @returns {String} JSON representation of the numericRangeFilter object
-             */
-      toString: function () {
-        return JSON.stringify(filter);
-      },
 
       /**
             The type of ejs object.  For internal use only.
@@ -6836,16 +6568,6 @@
         filter.or._cache_key = key;
         return this;
       },
-      
-      /**
-             Returns the filter container as a JSON string
-
-             @member ejs.OrFilter
-             @returns {String} JSON representation of the orFilter object
-             */
-      toString: function () {
-        return JSON.stringify(filter);
-      },
 
       /**
             The type of ejs object.  For internal use only.
@@ -6983,16 +6705,6 @@
         filter.prefix._cache_key = key;
         return this;
       },
-      
-      /**
-             Returns the filter container as a JSON string
-
-             @member ejs.PrefixFilter
-             @returns {String} JSON representation of the prefixFilter object
-             */
-      toString: function () {
-        return JSON.stringify(filter);
-      },
 
       /**
             The type of ejs object.  For internal use only.
@@ -7120,16 +6832,6 @@
 
         filter.fquery._cache_key = key;
         return this;
-      },
-            
-      /**
-            Allows you to serialize this object into a JSON encoded string.
-
-            @member ejs.QueryFilter
-            @returns {String} returns this object as a serialized JSON string.
-            */
-      toString: function () {
-        return JSON.stringify(filter);
       },
 
       /**
@@ -7382,16 +7084,6 @@
         filter.range._cache_key = key;
         return this;
       },
-    
-      /**
-            Allows you to serialize this object into a JSON encoded string.
-
-            @member ejs.RangeFilter
-            @returns {String} returns this object as a serialized JSON string.
-            */
-      toString: function () {
-        return JSON.stringify(filter);
-      },
 
       /**
             The type of ejs object.  For internal use only.
@@ -7576,16 +7268,6 @@
         filter.regexp._cache_key = key;
         return this;
       },
-      
-      /**
-            Allows you to serialize this object into a JSON encoded string.
-
-            @member ejs.RegexpFilter
-            @returns {String} returns this object as a serialized JSON string.
-            */
-      toString: function () {
-        return JSON.stringify(filter);
-      },
 
       /**
             The type of ejs object.  For internal use only.
@@ -7733,16 +7415,6 @@
         filter.script._cache_key = key;
         return this;
       },
-             
-      /**
-            Allows you to serialize this object into a JSON encoded string.
-
-            @member ejs.ScriptFilter
-            @returns {String} returns this object as a serialized JSON string.
-            */
-      toString: function () {
-        return JSON.stringify(filter);
-      },
 
       /**
             The type of ejs object.  For internal use only.
@@ -7884,16 +7556,6 @@
 
         filter.term._cache_key = key;
         return this;
-      },
-      
-      /**
-             Serializes the internal filter object as a JSON string.
-             
-             @member ejs.TermFilter
-             @returns {String} Returns a JSON representation of the termFilter object.
-             */
-      toString: function () {
-        return JSON.stringify(filter);
       },
     
       /**
@@ -8194,16 +7856,6 @@
         filter.terms._cache_key = key;
         return this;
       },
-    
-      /**
-            Allows you to serialize this object into a JSON encoded string.
-
-            @member ejs.TermsFilter
-            @returns {String} returns this object as a serialized JSON string.
-            */
-      toString: function () {
-        return JSON.stringify(filter);
-      },
 
       /**
             The type of ejs object.  For internal use only.
@@ -8269,16 +7921,6 @@
       
         filter.type.value = type;
         return this;
-      },
-
-      /**
-             Returns the filter container as a JSON string
-
-             @member ejs.TypeFilter
-             @returns {String} JSON representation of the notFilter object
-             */
-      toString: function () {
-        return JSON.stringify(filter);
       },
 
       /**
@@ -8513,16 +8155,6 @@
       },
 
       /**
-            Allows you to serialize this object into a JSON encoded string.
-
-            @member ejs.BoolQuery
-            @returns {String} returns this object as a serialized JSON string.
-            */
-      toString: function () {
-        return JSON.stringify(query);
-      },
-
-      /**
             The type of ejs object.  For internal use only.
             
             @member ejs.BoolQuery
@@ -8658,15 +8290,6 @@
 
         query.boosting.boost = boost;
         return this;
-      },
-
-      /**
-             Serializes the internal <em>query</em> object as a JSON string.
-             @member ejs.BoostingQuery
-             @returns {String} Returns a JSON representation of the Query object.
-             */
-      toString: function () {
-        return JSON.stringify(query);
       },
 
       /**
@@ -8940,16 +8563,6 @@
         query.common[field].boost = boost;
         return this;
       },
-    
-      /**
-            Allows you to serialize this object into a JSON encoded string.
-
-            @member ejs.CommonTermsQuery
-            @returns {String} returns this object as a serialized JSON string.
-            */
-      toString: function () {
-        return JSON.stringify(query);
-      },
 
       /**
             The type of ejs object.  For internal use only.
@@ -9095,15 +8708,6 @@
       },
 
       /**
-             Serializes the internal <em>query</em> object as a JSON string.
-             @member ejs.ConstantScoreQuery
-             @returns {String} Returns a JSON representation of the Query object.
-             */
-      toString: function () {
-        return JSON.stringify(query);
-      },
-
-      /**
             The type of ejs object.  For internal use only.
             
             @member ejs.ConstantScoreQuery
@@ -9210,16 +8814,6 @@
         return this;
       },
         
-      /**
-            Allows you to serialize this object into a JSON encoded string.
-
-            @member ejs.CustomBoostFactorQuery
-            @returns {String} returns this object as a serialized JSON string.
-            */
-      toString: function () {
-        return JSON.stringify(query);
-      },
-
       /**
             The type of ejs object.  For internal use only.
             
@@ -9461,16 +9055,6 @@
         query.custom_filters_score.boost = boost;
         return this;
       },
-      
-      /**
-            Allows you to serialize this object into a JSON encoded string.
-
-            @member ejs.CustomFiltersScoreQuery
-            @returns {String} returns this object as a serialized JSON string.
-            */
-      toString: function () {
-        return JSON.stringify(query);
-      },
 
       /**
             The type of ejs object.  For internal use only.
@@ -9639,16 +9223,6 @@
         query.custom_score.boost = boost;
         return this;
       },
-          
-      /**
-            Allows you to serialize this object into a JSON encoded string.
-
-            @member ejs.CustomScoreQuery
-            @returns {String} returns this object as a serialized JSON string.
-            */
-      toString: function () {
-        return JSON.stringify(query);
-      },
 
       /**
             The type of ejs object.  For internal use only.
@@ -9779,16 +9353,6 @@
       },
 
       /**
-            Allows you to serialize this object into a JSON encoded string.
-
-            @member ejs.DisMaxQuery
-            @returns {String} returns this object as a serialized JSON string.
-            */
-      toString: function () {
-        return JSON.stringify(query);
-      },
-
-      /**
             The type of ejs object.  For internal use only.
             
             @member ejs.DisMaxQuery
@@ -9899,16 +9463,6 @@
 
         query.field_masking_span.boost = boost;
         return this;
-      },
-    
-      /**
-            Allows you to serialize this object into a JSON encoded string.
-
-            @member ejs.FieldMaskingSpanQuery
-            @returns {String} returns this object as a serialized JSON string.
-            */
-      toString: function () {
-        return JSON.stringify(query);
       },
 
       /**
@@ -10398,16 +9952,6 @@
       },
 
       /**
-            <p>Allows you to serialize this object into a JSON encoded string.</p>
-
-            @member ejs.FieldQuery
-            @returns {String} returns this object as a serialized JSON string.
-            */
-      toString: function () {
-        return JSON.stringify(query);
-      },
-
-      /**
             <p>The type of ejs object.  For internal use only.</p>
             
             @member ejs.FieldQuery
@@ -10598,16 +10142,6 @@
 
         query.filtered.boost = boost;
         return this;
-      },
-      
-      /**
-             <p>Converts this object to a json string</p>
-
-             @member ejs.FilteredQuery
-             @returns {Object} string
-             */
-      toString: function () {
-        return JSON.stringify(query);
       },
 
       /**
@@ -10834,15 +10368,6 @@
       },
 
       /**
-             Serializes the internal <em>query</em> object as a JSON string.
-             @member ejs.FuzzyLikeThisFieldQuery
-             @returns {String} Returns a JSON representation of the Query object.
-             */
-      toString: function () {
-        return JSON.stringify(query);
-      },
-
-      /**
             The type of ejs object.  For internal use only.
             
             @member ejs.FuzzyLikeThisFieldQuery
@@ -11065,15 +10590,6 @@
 
         query.flt.boost = boost;
         return this;
-      },
-
-      /**
-             Serializes the internal <em>query</em> object as a JSON string.
-             @member ejs.FuzzyLikeThisQuery
-             @returns {String} Returns a JSON representation of the Query object.
-             */
-      toString: function () {
-        return JSON.stringify(query);
       },
 
       /**
@@ -11305,16 +10821,6 @@
       },
 
       /**
-             <p>Serializes the internal <code>query</code> object as a JSON string.</p>
-
-             @member ejs.FuzzyQuery
-             @returns {String} Returns a JSON representation of the Query object.
-             */
-      toString: function () {
-        return JSON.stringify(query);
-      },
-
-      /**
             <p>The type of ejs object.  For internal use only.</p>
             
             @member ejs.FuzzyQuery
@@ -11501,16 +11007,6 @@
 
         query.geo_shape[field].boost = boost;
         return this;
-      },
-
-      /**
-            Allows you to serialize this object into a JSON encoded string.
-
-            @member ejs.GeoShapeQuery
-            @returns {String} returns this object as a serialized JSON string.
-            */
-      toString: function () {
-        return JSON.stringify(query);
       },
 
       /**
@@ -11702,16 +11198,6 @@
         query.has_child.boost = boost;
         return this;
       },
-        
-      /**
-            Allows you to serialize this object into a JSON encoded string.
-
-            @member ejs.HasChildQuery
-            @returns {String} returns this object as a serialized JSON string.
-            */
-      toString: function () {
-        return JSON.stringify(query);
-      },
 
       /**
             The type of ejs object.  For internal use only.
@@ -11882,16 +11368,6 @@
         query.has_parent.boost = boost;
         return this;
       },
-      
-      /**
-            Allows you to serialize this object into a JSON encoded string.
-
-            @member ejs.HasParentQuery
-            @returns {String} returns this object as a serialized JSON string.
-            */
-      toString: function () {
-        return JSON.stringify(query);
-      },
 
       /**
             The type of ejs object.  For internal use only.
@@ -12019,16 +11495,6 @@
 
         query.ids.boost = boost;
         return this;
-      },
-            
-      /**
-            Allows you to serialize this object into a JSON encoded string.
-
-            @member ejs.IdsQuery
-            @returns {String} returns this object as a serialized JSON string.
-            */
-      toString: function () {
-        return JSON.stringify(query);
       },
 
       /**
@@ -12185,16 +11651,6 @@
         query.indices.boost = boost;
         return this;
       },
-      
-      /**
-            Allows you to serialize this object into a JSON encoded string.
-
-            @member ejs.IndicesQuery
-            @returns {String} returns this object as a serialized JSON string.
-            */
-      toString: function () {
-        return JSON.stringify(query);
-      },
 
       /**
             The type of ejs object.  For internal use only.
@@ -12257,15 +11713,6 @@
 
         query.match_all.boost = boost;
         return this;
-      },
-      
-      /**
-             Serializes the internal <em>query</em> object as a JSON string.
-             @member ejs.MatchAllQuery
-             @returns {String} Returns a JSON representation of the Query object.
-             */
-      toString: function () {
-        return JSON.stringify(query);
       },
 
       /**
@@ -12661,16 +12108,6 @@
         
         return this;
       },
-              
-      /**
-            Allows you to serialize this object into a JSON encoded string.
-
-            @member ejs.MatchQuery
-            @returns {String} returns this object as a serialized JSON string.
-            */
-      toString: function () {
-        return JSON.stringify(query);
-      },
 
       /**
             The type of ejs object.  For internal use only.
@@ -12968,15 +12405,6 @@
 
         query.mlt_field[field].boost = boost;
         return this;
-      },
-
-      /**
-             Serializes the internal <em>query</em> object as a JSON string.
-             @member ejs.MoreLikeThisFieldQuery
-             @returns {String} Returns a JSON representation of the Query object.
-             */
-      toString: function () {
-        return JSON.stringify(query);
       },
 
       /**
@@ -13285,15 +12713,6 @@
 
         query.mlt.boost = boost;
         return this;
-      },
-
-      /**
-             Serializes the internal <em>query</em> object as a JSON string.
-             @member ejs.MoreLikeThisQuery
-             @returns {String} Returns a JSON representation of the Query object.
-             */
-      toString: function () {
-        return JSON.stringify(query);
       },
 
       /**
@@ -13745,16 +13164,6 @@
         
         return this;
       },
-      
-      /**
-            Allows you to serialize this object into a JSON encoded string.
-
-            @member ejs.MultiMatchQuery
-            @returns {String} returns this object as a serialized JSON string.
-            */
-      toString: function () {
-        return JSON.stringify(query);
-      },
 
       /**
             The type of ejs object.  For internal use only.
@@ -13922,16 +13331,6 @@
         query.nested.boost = boost;
         return this;
       },
-      
-      /**
-             Serializes the internal <em>query</em> object as a JSON string.
-             
-             @member ejs.NestedQuery
-             @returns {String} Returns a JSON representation of the termFilter object.
-             */
-      toString: function () {
-        return JSON.stringify(query);
-      },
 
       /**
             The type of ejs object.  For internal use only.
@@ -14085,16 +13484,6 @@
 
         query.prefix[field].boost = boost;
         return this;
-      },
-      
-      /**
-            Allows you to serialize this object into a JSON encoded string.
-
-            @member ejs.PrefixQuery
-            @returns {String} returns this object as a serialized JSON string.
-            */
-      toString: function () {
-        return JSON.stringify(query);
       },
 
       /**
@@ -14639,16 +14028,6 @@
         query.query_string.lenient = trueFalse;
         return this;
       },
-      
-      /**
-            Allows you to serialize this object into a JSON encoded string.
-
-            @member ejs.QueryStringQuery
-            @returns {String} returns this object as a serialized JSON string.
-            */
-      toString: function () {
-        return JSON.stringify(query);
-      },
 
       /**
             The type of ejs object.  For internal use only.
@@ -14871,16 +14250,6 @@
         query.range[field].boost = boost;
         return this;
       },
-    
-      /**
-            Allows you to serialize this object into a JSON encoded string.
-
-            @member ejs.RangeQuery
-            @returns {String} returns this object as a serialized JSON string.
-            */
-      toString: function () {
-        return JSON.stringify(query);
-      },
 
       /**
             The type of ejs object.  For internal use only.
@@ -15081,16 +14450,6 @@
         query.regexp[field].boost = boost;
         return this;
       },
-    
-      /**
-            Allows you to serialize this object into a JSON encoded string.
-
-            @member ejs.RegexpQuery
-            @returns {String} returns this object as a serialized JSON string.
-            */
-      toString: function () {
-        return JSON.stringify(query);
-      },
 
       /**
             The type of ejs object.  For internal use only.
@@ -15203,16 +14562,6 @@
       },
       
       /**
-            Allows you to serialize this object into a JSON encoded string.
-
-            @member ejs.SpanFirstQuery
-            @returns {String} returns this object as a serialized JSON string.
-            */
-      toString: function () {
-        return JSON.stringify(query);
-      },
-
-      /**
             The type of ejs object.  For internal use only.
             
             @member ejs.SpanFirstQuery
@@ -15290,16 +14639,6 @@
     
         query.span_multi.match = mtQuery.toJSON();
         return this;
-      },
-  
-      /**
-            Allows you to serialize this object into a JSON encoded string.
-
-            @member ejs.SpanMultiTermQuery
-            @returns {String} returns this object as a serialized JSON string.
-            */
-      toString: function () {
-        return JSON.stringify(query);
       },
 
       /**
@@ -15468,16 +14807,6 @@
         query.span_near.boost = boost;
         return this;
       },
-      
-      /**
-            Allows you to serialize this object into a JSON encoded string.
-
-            @member ejs.SpanNearQuery
-            @returns {String} returns this object as a serialized JSON string.
-            */
-      toString: function () {
-        return JSON.stringify(query);
-      },
 
       /**
             The type of ejs object.  For internal use only.
@@ -15590,16 +14919,6 @@
 
         query.span_not.boost = boost;
         return this;
-      },
-      
-      /**
-            Allows you to serialize this object into a JSON encoded string.
-
-            @member ejs.SpanNotQuery
-            @returns {String} returns this object as a serialized JSON string.
-            */
-      toString: function () {
-        return JSON.stringify(query);
       },
 
       /**
@@ -15718,16 +15037,6 @@
         query.span_or.boost = boost;
         return this;
       },
-      
-      /**
-            Allows you to serialize this object into a JSON encoded string.
-
-            @member ejs.SpanOrQuery
-            @returns {String} returns this object as a serialized JSON string.
-            */
-      toString: function () {
-        return JSON.stringify(query);
-      },
 
       /**
             The type of ejs object.  For internal use only.
@@ -15837,16 +15146,6 @@
       },
 
       /**
-            Allows you to serialize this object into a JSON encoded string.
-
-            @member ejs.SpanTermQuery
-            @returns {String} returns this object as a serialized JSON string.
-            */
-      toString: function () {
-        return JSON.stringify(query);
-      },
-
-      /**
             The type of ejs object.  For internal use only.
             
             @member ejs.SpanTermQuery
@@ -15953,16 +15252,6 @@
 
         query.term[field].boost = boost;
         return this;
-      },
-
-      /**
-            Allows you to serialize this object into a JSON encoded string.
-
-            @member ejs.TermQuery
-            @returns {String} returns this object as a serialized JSON string.
-            */
-      toString: function () {
-        return JSON.stringify(query);
       },
 
       /**
@@ -16117,16 +15406,6 @@
 
         query.terms.boost = boost;
         return this;
-      },
-
-      /**
-            Allows you to serialize this object into a JSON encoded string.
-
-            @member ejs.TermsQuery
-            @returns {String} returns this object as a serialized JSON string.
-            */
-      toString: function () {
-        return JSON.stringify(query);
       },
 
       /**
@@ -16333,16 +15612,6 @@
         query.top_children.boost = boost;
         return this;
       },
-      
-      /**
-            Allows you to serialize this object into a JSON encoded string.
-
-            @member ejs.TopChildrenQuery
-            @returns {String} returns this object as a serialized JSON string.
-            */
-      toString: function () {
-        return JSON.stringify(query);
-      },
 
       /**
             The type of ejs object.  For internal use only.
@@ -16505,16 +15774,6 @@
       },
 
       /**
-            Allows you to serialize this object into a JSON encoded string.
-
-            @member ejs.WildcardQuery
-            @returns {String} returns this object as a serialized JSON string.
-            */
-      toString: function () {
-        return JSON.stringify(query);
-      },
-
-      /**
             The type of ejs object.  For internal use only.
             
             @member ejs.WildcardQuery
@@ -16666,16 +15925,6 @@
         }
       
         return this;
-      },
-    
-      /**
-            Allows you to serialize this object into a JSON encoded string.
-
-            @member ejs.GeoPoint
-            @returns {String} returns this object as a serialized JSON string.
-            */
-      toString: function () {
-        return JSON.stringify(point);
       },
 
       /**
@@ -17121,16 +16370,6 @@
         addOption(oField, 'options', opts);
         return this;
       },
-      
-      /**
-            Allows you to serialize this object into a JSON encoded string.
-
-            @member ejs.Highlight
-            @returns {String} returns this object as a serialized JSON string.
-            */
-      toString: function () {
-        return JSON.stringify(highlight);
-      },
 
       /**
             The type of ejs object.  For internal use only.
@@ -17245,16 +16484,6 @@
     
         indexedShape.shape_field_name = field;
         return this;
-      },
-              
-      /**
-            Allows you to serialize this object into a JSON encoded string.
-
-            @member ejs.IndexedShape
-            @returns {String} returns this object as a serialized JSON string.
-            */
-      toString: function () {
-        return JSON.stringify(indexedShape);
       },
 
       /**
@@ -17727,16 +16956,6 @@
       },
 
       /**
-            Allows you to serialize this object into a JSON encoded string.
-
-            @member ejs.Request
-            @returns {String} returns this object as a serialized JSON string.
-            */
-      toString: function () {
-        return JSON.stringify(query);
-      },
-
-      /**
             The type of ejs object.  For internal use only.
             
             @member ejs.Request
@@ -17903,16 +17122,6 @@
         
         return this;
       },
-      
-      /**
-            Allows you to serialize this object into a JSON encoded string.
-
-            @member ejs.Rescore
-            @returns {String} returns this object as a serialized JSON string.
-            */
-      toString: function () {
-        return JSON.stringify(rescore);
-      },
 
       /**
             The type of ejs object.  For internal use only.
@@ -18023,16 +17232,6 @@
         
         script[fieldName].ignore_failure = trueFalse;
         return this;
-      },
-      
-      /**
-            Allows you to serialize this object into a JSON encoded string.
-
-            @member ejs.ScriptField
-            @returns {String} returns this object as a serialized JSON string.
-            */
-      toString: function () {
-        return JSON.stringify(script);
       },
 
       /**
@@ -18150,16 +17349,6 @@
         
         shape.radius = r;
         return this;
-      },
-      
-      /**
-            Allows you to serialize this object into a JSON encoded string.
-
-            @member ejs.Shape
-            @returns {String} returns this object as a serialized JSON string.
-            */
-      toString: function () {
-        return JSON.stringify(shape);
       },
 
       /**
@@ -18603,16 +17792,6 @@
         sort[key].nested_filter = oFilter.toJSON();
         return this;
       },
-          
-      /**
-            Allows you to serialize this object into a JSON encoded string.
-
-            @member ejs.Sort
-            @returns {String} returns this object as a serialized JSON string.
-            */
-      toString: function () {
-        return JSON.stringify(sort);
-      },
 
       /**
             The type of ejs object.  For internal use only.
@@ -18743,16 +17922,6 @@
   
         generator.size = s;
         return this;
-      },
-    
-      /**
-            <p>Allows you to serialize this object into a JSON encoded string.</p>
-
-            @member ejs.DirectGenerator
-            @returns {String} returns this object as a serialized JSON string.
-            */
-      toString: function () {
-        return JSON.stringify(generator);
       },
 
       /**
@@ -19376,16 +18545,6 @@
 
         return this;
       },
-        
-      /**
-            <p>Allows you to serialize this object into a JSON encoded string.</p>
-
-            @member ejs.PhraseSuggester
-            @returns {String} returns this object as a serialized JSON string.
-            */
-      toString: function () {
-        return JSON.stringify(suggest);
-      },
 
       /**
             The type of ejs object.  For internal use only.
@@ -19535,16 +18694,6 @@
     
         suggest[name].term.shard_size = s;
         return this;
-      },
-      
-      /**
-            <p>Allows you to serialize this object into a JSON encoded string.</p>
-
-            @member ejs.TermSuggester
-            @returns {String} returns this object as a serialized JSON string.
-            */
-      toString: function () {
-        return JSON.stringify(suggest);
       },
 
       /**

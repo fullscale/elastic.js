@@ -42,16 +42,6 @@
       },
 
       /**
-             Returns the filter container as a JSON string
-
-             @member ejs.TypeFilter
-             @returns {String} JSON representation of the notFilter object
-             */
-      toString: function () {
-        return JSON.stringify(filter);
-      },
-
-      /**
             The type of ejs object.  For internal use only.
             
             @member ejs.TypeFilter

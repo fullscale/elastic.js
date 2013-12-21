@@ -167,16 +167,6 @@
         query.filtered.boost = boost;
         return this;
       },
-      
-      /**
-             <p>Converts this object to a json string</p>
-
-             @member ejs.FilteredQuery
-             @returns {Object} string
-             */
-      toString: function () {
-        return JSON.stringify(query);
-      },
 
       /**
             <p>The type of ejs object.  For internal use only.</p>

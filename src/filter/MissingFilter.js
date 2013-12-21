@@ -88,16 +88,6 @@
         filter.missing._name = name;
         return this;
       },
-      
-      /**
-             Returns the filter container as a JSON string
-
-             @member ejs.MissingFilter
-             @returns {String} JSON representation of the missingFilter object
-             */
-      toString: function () {
-        return JSON.stringify(filter);
-      },
 
       /**
             The type of ejs object.  For internal use only.

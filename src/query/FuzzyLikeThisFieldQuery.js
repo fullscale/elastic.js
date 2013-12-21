@@ -200,15 +200,6 @@
       },
 
       /**
-             Serializes the internal <em>query</em> object as a JSON string.
-             @member ejs.FuzzyLikeThisFieldQuery
-             @returns {String} Returns a JSON representation of the Query object.
-             */
-      toString: function () {
-        return JSON.stringify(query);
-      },
-
-      /**
             The type of ejs object.  For internal use only.
             
             @member ejs.FuzzyLikeThisFieldQuery

@@ -416,16 +416,6 @@
         sort[key].nested_filter = oFilter.toJSON();
         return this;
       },
-          
-      /**
-            Allows you to serialize this object into a JSON encoded string.
-
-            @member ejs.Sort
-            @returns {String} returns this object as a serialized JSON string.
-            */
-      toString: function () {
-        return JSON.stringify(sort);
-      },
 
       /**
             The type of ejs object.  For internal use only.

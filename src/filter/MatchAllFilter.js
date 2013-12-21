@@ -23,15 +23,6 @@
     return {
 
       /**
-             Serializes the internal <em>filter</em> object as a JSON string.
-             @member ejs.MatchAllFilter
-             @returns {String} Returns a JSON representation of the object.
-             */
-      toString: function () {
-        return JSON.stringify(filter);
-      },
-
-      /**
             The type of ejs object.  For internal use only.
             
             @member ejs.MatchAllFilter

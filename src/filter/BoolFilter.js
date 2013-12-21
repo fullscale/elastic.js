@@ -192,16 +192,6 @@
         filter.bool._cache_key = key;
         return this;
       },
-    
-      /**
-            Allows you to serialize this object into a JSON encoded string.
-
-            @member ejs.BoolFilter
-            @returns {String} returns this object as a serialized JSON string.
-            */
-      toString: function () {
-        return JSON.stringify(filter);
-      },
 
       /**
             The type of ejs object.  For internal use only.

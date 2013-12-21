@@ -364,16 +364,6 @@
       },
 
       /**
-            <p>Allows you to serialize this object into a JSON encoded string.</p>
-
-            @member ejs.HistogramFacet
-            @returns {String} returns this object as a serialized JSON string.
-            */
-      toString: function () {
-        return JSON.stringify(facet);
-      },
-
-      /**
             The type of ejs object.  For internal use only.
             
             @member ejs.HistogramFacet

@@ -105,16 +105,6 @@
         generator.size = s;
         return this;
       },
-    
-      /**
-            <p>Allows you to serialize this object into a JSON encoded string.</p>
-
-            @member ejs.DirectGenerator
-            @returns {String} returns this object as a serialized JSON string.
-            */
-      toString: function () {
-        return JSON.stringify(generator);
-      },
 
       /**
             The type of ejs object.  For internal use only.

@@ -124,16 +124,6 @@
         suggest[name].term.shard_size = s;
         return this;
       },
-      
-      /**
-            <p>Allows you to serialize this object into a JSON encoded string.</p>
-
-            @member ejs.TermSuggester
-            @returns {String} returns this object as a serialized JSON string.
-            */
-      toString: function () {
-        return JSON.stringify(suggest);
-      },
 
       /**
             The type of ejs object.  For internal use only.

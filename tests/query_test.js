@@ -73,7 +73,7 @@ exports.queries = {
     test.done();
   },
   CommonTermsQuery: function (test) {
-    test.expect(22);
+    test.expect(21);
 
     var commonQuery = ejs.CommonTermsQuery(),
       expected,
@@ -174,12 +174,12 @@ exports.queries = {
     doTest();
     
     test.strictEqual(commonQuery._type(), 'query');
-    test.strictEqual(commonQuery.toString(), JSON.stringify(expected));
+    
     
     test.done();
   },
   RegexpQuery: function (test) {
-    test.expect(17);
+    test.expect(16);
 
     var regexQuery = ejs.RegexpQuery('f1', 'regex'),
       expected,
@@ -253,12 +253,12 @@ exports.queries = {
     doTest();
     
     test.strictEqual(regexQuery._type(), 'query');
-    test.strictEqual(regexQuery.toString(), JSON.stringify(expected));
+    
 
     test.done();
   },
   GeoShapeQuery: function (test) {
-    test.expect(18);
+    test.expect(17);
 
     var geoShapeQuery = ejs.GeoShapeQuery('f1'),
       shape1 = ejs.Shape('envelope', [[-45.0, 45.0], [45.0, -45.0]]),
@@ -341,12 +341,12 @@ exports.queries = {
     doTest();
     
     test.strictEqual(geoShapeQuery._type(), 'query');
-    test.strictEqual(geoShapeQuery.toString(), JSON.stringify(expected));
+    
     
     test.done();
   },
   IndicesQuery: function (test) {
-    test.expect(20);
+    test.expect(19);
 
     var termQuery = ejs.TermQuery('t1', 'v1'),
       termQuery2 = ejs.TermQuery('t2', 'v2'),
@@ -408,7 +408,7 @@ exports.queries = {
     doTest();
     
     test.strictEqual(indicesQuery._type(), 'query');
-    test.strictEqual(indicesQuery.toString(), JSON.stringify(expected));
+    
 
     test.throws(function () {
       ejs.IndicesQuery('invalid', 'index1');
@@ -433,7 +433,7 @@ exports.queries = {
     test.done();
   },
   CustomFiltersScoreQuery: function (test) {
-    test.expect(25);
+    test.expect(24);
 
     var termQuery = ejs.TermQuery('t1', 'v1'),
       termQuery2 = ejs.TermQuery('t2', 'v2'),
@@ -551,7 +551,7 @@ exports.queries = {
     doTest();
     
     test.strictEqual(cfsQuery._type(), 'query');
-    test.strictEqual(cfsQuery.toString(), JSON.stringify(expected));
+    
 
     test.throws(function () {
       ejs.CustomFiltersScoreQuery('invalid', {filter: termFilter, boost: 1.2});
@@ -564,7 +564,7 @@ exports.queries = {
     test.done();
   },
   WildcardQuery: function (test) {
-    test.expect(15);
+    test.expect(14);
 
     var wildcardQuery = ejs.WildcardQuery('f1', 'wild*card'),
       expected,
@@ -632,12 +632,12 @@ exports.queries = {
     doTest();
     
     test.strictEqual(wildcardQuery._type(), 'query');
-    test.strictEqual(wildcardQuery.toString(), JSON.stringify(expected));
+    
 
     test.done();
   },
   TopChildrenQuery: function (test) {
-    test.expect(22);
+    test.expect(21);
 
     var termQuery = ejs.TermQuery('t1', 'v1'),
       termQuery2 = ejs.TermQuery('t2', 'v2'),
@@ -717,7 +717,7 @@ exports.queries = {
     doTest();
     
     test.strictEqual(topChildren._type(), 'query');
-    test.strictEqual(topChildren.toString(), JSON.stringify(expected));
+    
 
     test.throws(function () {
       ejs.TopChildrenQuery('invalid', 'type');
@@ -730,7 +730,7 @@ exports.queries = {
     test.done();
   },
   TermsQuery: function (test) {
-    test.expect(14);
+    test.expect(13);
 
     var termsQuery = ejs.TermsQuery('f1', ['t1', 't2']),
       expected,
@@ -787,7 +787,7 @@ exports.queries = {
     doTest();
     
     test.strictEqual(termsQuery._type(), 'query');
-    test.strictEqual(termsQuery.toString(), JSON.stringify(expected));
+    
 
     test.throws(function () {
       ejs.TermsQuery('f1', 3);
@@ -800,7 +800,7 @@ exports.queries = {
     test.done();
   },
   RangeQuery: function (test) {
-    test.expect(15);
+    test.expect(14);
 
     var rangeQuery = ejs.RangeQuery('f1'),
       expected,
@@ -865,12 +865,12 @@ exports.queries = {
     doTest();
     
     test.strictEqual(rangeQuery._type(), 'query');
-    test.strictEqual(rangeQuery.toString(), JSON.stringify(expected));
+    
 
     test.done();
   },
   PrefixQuery: function (test) {
-    test.expect(15);
+    test.expect(14);
 
     var prefixQuery = ejs.PrefixQuery('f1', 'prefix'),
       expected,
@@ -936,12 +936,12 @@ exports.queries = {
     doTest();
     
     test.strictEqual(prefixQuery._type(), 'query');
-    test.strictEqual(prefixQuery.toString(), JSON.stringify(expected));
+    
 
     test.done();
   },
   MoreLikeThisFieldQuery: function (test) {
-    test.expect(19);
+    test.expect(18);
 
     var mltQuery = ejs.MoreLikeThisFieldQuery('f1', 'like text'),
       expected,
@@ -1024,12 +1024,12 @@ exports.queries = {
     doTest();
     
     test.strictEqual(mltQuery._type(), 'query');
-    test.strictEqual(mltQuery.toString(), JSON.stringify(expected));
+    
 
     test.done();
   },
   MoreLikeThisQuery: function (test) {
-    test.expect(23);
+    test.expect(22);
 
     var mltQuery = ejs.MoreLikeThisQuery(['f', 'f2'], 'like text'),
       expected,
@@ -1118,7 +1118,7 @@ exports.queries = {
     doTest();
     
     test.strictEqual(mltQuery._type(), 'query');
-    test.strictEqual(mltQuery.toString(), JSON.stringify(expected));
+    
 
     test.throws(function () {
       ejs.MoreLikeThisQuery(9, 'like');
@@ -1131,7 +1131,7 @@ exports.queries = {
     test.done();
   },
   HasParentQuery: function (test) {
-    test.expect(16);
+    test.expect(15);
 
     var termQuery = ejs.TermQuery('t1', 'v1'),
       termQuery2 = ejs.TermQuery('t2', 'v2'),
@@ -1187,7 +1187,7 @@ exports.queries = {
     doTest();
     
     test.strictEqual(hasParentQuery._type(), 'query');
-    test.strictEqual(hasParentQuery.toString(), JSON.stringify(expected));
+    
 
     test.throws(function () {
       ejs.HasParentQuery('invalid', 'type');
@@ -1200,7 +1200,7 @@ exports.queries = {
     test.done();
   },
   HasChildQuery: function (test) {
-    test.expect(21);
+    test.expect(20);
 
     var termQuery = ejs.TermQuery('t1', 'v1'),
       termQuery2 = ejs.TermQuery('t2', 'v2'),
@@ -1276,7 +1276,7 @@ exports.queries = {
     doTest();
     
     test.strictEqual(hasChildQuery._type(), 'query');
-    test.strictEqual(hasChildQuery.toString(), JSON.stringify(expected));
+    
 
     test.throws(function () {
       ejs.HasChildQuery('invalid', 'type');
@@ -1289,7 +1289,7 @@ exports.queries = {
     test.done();
   },
   FuzzyQuery: function (test) {
-    test.expect(19);
+    test.expect(18);
 
     var fuzzyQuery = ejs.FuzzyQuery('f1', 'fuzz'),
       expected,
@@ -1371,12 +1371,12 @@ exports.queries = {
     doTest();
     
     test.strictEqual(fuzzyQuery._type(), 'query');
-    test.strictEqual(fuzzyQuery.toString(), JSON.stringify(expected));
+    
 
     test.done();
   },
   FuzzyLikeThisFieldQuery: function (test) {
-    test.expect(14);
+    test.expect(13);
 
     var fltQuery = ejs.FuzzyLikeThisFieldQuery('f1', 'like text'),
       expected,
@@ -1439,12 +1439,12 @@ exports.queries = {
     doTest();
     
     test.strictEqual(fltQuery._type(), 'query');
-    test.strictEqual(fltQuery.toString(), JSON.stringify(expected));
+    
 
     test.done();
   },
   FuzzyLikeThisQuery: function (test) {
-    test.expect(17);
+    test.expect(16);
 
     var fltQuery = ejs.FuzzyLikeThisQuery('like text'),
       expected,
@@ -1507,7 +1507,7 @@ exports.queries = {
     doTest();
     
     test.strictEqual(fltQuery._type(), 'query');
-    test.strictEqual(fltQuery.toString(), JSON.stringify(expected));
+    
 
     test.throws(function () {
       fltQuery.fields(2);
@@ -1516,7 +1516,7 @@ exports.queries = {
     test.done();
   },
   CustomBoostFactorQuery: function (test) {
-    test.expect(10);
+    test.expect(9);
 
     var termQuery = ejs.TermQuery('t1', 'v1'),
       termQuery2 = ejs.TermQuery('t2', 'v2'),
@@ -1549,7 +1549,7 @@ exports.queries = {
     doTest();
     
     test.strictEqual(cbfQuery._type(), 'query');
-    test.strictEqual(cbfQuery.toString(), JSON.stringify(expected));
+    
 
     test.throws(function () {
       ejs.CustomBoostFactorQuery('invalid');
@@ -1562,7 +1562,7 @@ exports.queries = {
     test.done();
   },
   CustomScoreQuery: function (test) {
-    test.expect(16);
+    test.expect(15);
 
     var termQuery = ejs.TermQuery('t1', 'v1'),
       termQuery2 = ejs.TermQuery('t2', 'v2'),
@@ -1623,7 +1623,7 @@ exports.queries = {
     doTest();
     
     test.strictEqual(customScoreQuery._type(), 'query');
-    test.strictEqual(customScoreQuery.toString(), JSON.stringify(expected));
+    
 
     test.throws(function () {
       ejs.CustomScoreQuery('invalid', 's');
@@ -1640,7 +1640,7 @@ exports.queries = {
     test.done();
   },
   IdsQuery: function (test) {
-    test.expect(15);
+    test.expect(14);
 
     var idsQuery = ejs.IdsQuery('id1'),
       expected,
@@ -1687,7 +1687,7 @@ exports.queries = {
     doTest();
     
     test.strictEqual(idsQuery._type(), 'query');
-    test.strictEqual(idsQuery.toString(), JSON.stringify(expected));
+    
 
     test.throws(function () {
       ejs.IdsQuery(2);
@@ -1704,7 +1704,7 @@ exports.queries = {
     test.done();
   },
   BoostingQuery: function (test) {
-    test.expect(13);
+    test.expect(12);
 
     var termQuery1 = ejs.TermQuery('t1', 'v1'),
       termQuery2 = ejs.TermQuery('t2', 'v2'),
@@ -1743,7 +1743,7 @@ exports.queries = {
     doTest();
     
     test.strictEqual(boostingQuery._type(), 'query');
-    test.strictEqual(boostingQuery.toString(), JSON.stringify(expected));
+    
 
     test.throws(function () {
       ejs.BoostingQuery('invalid', termQuery1, 0.2);
@@ -1764,7 +1764,7 @@ exports.queries = {
     test.done();
   },
   MatchQuery: function (test) {
-    test.expect(40);
+    test.expect(39);
 
     var matchQuery = ejs.MatchQuery('t1', 'v1'),
       expected,
@@ -1920,12 +1920,12 @@ exports.queries = {
     doTest();
     
     test.strictEqual(matchQuery._type(), 'query');
-    test.strictEqual(matchQuery.toString(), JSON.stringify(expected));
+    
 
     test.done();
   },
   MultiMatchQuery: function (test) {
-    test.expect(46);
+    test.expect(45);
 
     var mmQuery = ejs.MultiMatchQuery('t', 'v1'),
       expected,
@@ -2096,7 +2096,7 @@ exports.queries = {
     doTest();
     
     test.strictEqual(mmQuery._type(), 'query');
-    test.strictEqual(mmQuery.toString(), JSON.stringify(expected));
+    
 
     test.throws(function () {
       ejs.MultiMatchQuery(3, 'v');
@@ -2109,7 +2109,7 @@ exports.queries = {
     test.done();
   },
   TermQuery: function (test) {
-    test.expect(8);
+    test.expect(7);
 
     var termQuery = ejs.TermQuery('f1', 't1'),
       expected,
@@ -2149,12 +2149,12 @@ exports.queries = {
     doTest();
     
     test.strictEqual(termQuery._type(), 'query');
-    test.strictEqual(termQuery.toString(), JSON.stringify(expected));
+    
 
     test.done();
   },
   BoolQuery: function (test) {
-    test.expect(22);
+    test.expect(21);
 
     var termQuery1 = ejs.TermQuery('t1', 'v1'),
       termQuery2 = ejs.TermQuery('t2', 'v2'),
@@ -2219,7 +2219,7 @@ exports.queries = {
     doTest();
 
     test.strictEqual(boolQuery._type(), 'query');
-    test.strictEqual(boolQuery.toString(), JSON.stringify(expected));
+    
     
     test.throws(function () {
       boolQuery.must('junk');
@@ -2248,7 +2248,7 @@ exports.queries = {
     test.done();
   },
   FieldQuery: function (test) {
-    test.expect(39);
+    test.expect(38);
 
     var fieldQuery = ejs.FieldQuery('f', 'v1'),
       expected,
@@ -2408,12 +2408,12 @@ exports.queries = {
     doTest();
 
     test.strictEqual(fieldQuery._type(), 'query');
-    test.strictEqual(fieldQuery.toString(), JSON.stringify(expected));
+    
 
     test.done();
   },
   DisMaxQuery: function (test) {
-    test.expect(12);
+    test.expect(11);
 
     var disMaxQuery = ejs.DisMaxQuery(),
       termQuery1 = ejs.TermQuery('t1', 'v1').boost(1.5),
@@ -2453,7 +2453,7 @@ exports.queries = {
     doTest();
 
     test.strictEqual(disMaxQuery._type(), 'query');
-    test.strictEqual(disMaxQuery.toString(), JSON.stringify(expected));
+    
 
     test.throws(function () {
       disMaxQuery.queries('invalid');
@@ -2466,7 +2466,7 @@ exports.queries = {
     test.done();
   },
   QueryStringQuery: function (test) {
-    test.expect(45);
+    test.expect(44);
 
     var queryString = ejs.QueryStringQuery('this AND that'),
       expected,
@@ -2638,7 +2638,7 @@ exports.queries = {
     doTest();
     
     test.strictEqual(queryString._type(), 'query');
-    test.strictEqual(queryString.toString(), JSON.stringify(expected));
+    
 
     test.throws(function () {
       queryString.fields(2);
@@ -2647,7 +2647,7 @@ exports.queries = {
     test.done();
   },
   FilteredQuery: function (test) {
-    test.expect(21);
+    test.expect(20);
 
     var termQuery1 = ejs.TermQuery('t1', 'v1'),
       termQuery2 = ejs.TermQuery('t2', 'v2'),
@@ -2723,7 +2723,7 @@ exports.queries = {
     doTest();
     
     test.strictEqual(filterQuery._type(), 'query');
-    test.strictEqual(filterQuery.toString(), JSON.stringify(expected));
+    
 
     test.throws(function () {
       ejs.FilteredQuery('invalid', termFilter1);
@@ -2744,7 +2744,7 @@ exports.queries = {
     test.done();
   },
   NestedQuery: function (test) {
-    test.expect(19);
+    test.expect(18);
 
     var termQuery1 = ejs.TermQuery('t1', 'v1'),
       termQuery2 = ejs.TermQuery('t2', 'v2'),
@@ -2814,7 +2814,7 @@ exports.queries = {
     doTest();
 
     test.strictEqual(nestedQuery._type(), 'query');
-    test.strictEqual(nestedQuery.toString(), JSON.stringify(expected));
+    
 
     test.throws(function () {
       nestedQuery.query('invalid');
@@ -2827,7 +2827,7 @@ exports.queries = {
     test.done();
   },
   ConstantScoreQuery: function (test) {
-    test.expect(12);
+    test.expect(10);
 
     var termQuery1 = ejs.TermQuery('t1', 'v1'),
       termFilter1 = ejs.TermFilter('tf1', 'fv1'),
@@ -2850,7 +2850,7 @@ exports.queries = {
     doTest();
 
     test.strictEqual(constantScoreQuery._type(), 'query');
-    test.strictEqual(constantScoreQuery.toString(), JSON.stringify(expected));
+    
 
     constantScoreQuery = ejs.ConstantScoreQuery();
     constantScoreQuery.filter(termFilter1);
@@ -2869,7 +2869,7 @@ exports.queries = {
     expected.constant_score._cache_key = 'key';
     doTest();
     
-    test.strictEqual(constantScoreQuery.toString(), JSON.stringify(expected));
+    
 
     test.throws(function () {
       constantScoreQuery.query('invalid');
@@ -2882,7 +2882,7 @@ exports.queries = {
     test.done();
   },
   MatchAllQuery: function (test) {
-    test.expect(6);
+    test.expect(5);
 
     var matchAllQuery = ejs.MatchAllQuery(),
       expected,
@@ -2903,12 +2903,12 @@ exports.queries = {
     doTest();
     
     test.strictEqual(matchAllQuery._type(), 'query');
-    test.strictEqual(matchAllQuery.toString(), JSON.stringify(expected));
+    
 
     test.done();
   },
   SpanTermQuery: function (test) {
-    test.expect(8);
+    test.expect(7);
 
     var spanTermQuery = ejs.SpanTermQuery('t1', 'v1'),
       expected,
@@ -2947,12 +2947,12 @@ exports.queries = {
     doTest();
 
     test.strictEqual(spanTermQuery._type(), 'query');
-    test.strictEqual(spanTermQuery.toString(), JSON.stringify(expected));
+    
 
     test.done();
   },
   SpanNearQuery: function (test) {
-    test.expect(16);
+    test.expect(15);
 
     var spanTermQuery1 = ejs.SpanTermQuery('t1', 'v1'),
       spanTermQuery2 = ejs.SpanTermQuery('t2', 'v2'),
@@ -3009,7 +3009,7 @@ exports.queries = {
     doTest();
 
     test.strictEqual(spanNearQuery._type(), 'query');
-    test.strictEqual(spanNearQuery.toString(), JSON.stringify(expected));
+    
 
     test.throws(function () {
       ejs.SpanNearQuery('invalid', 2);
@@ -3030,7 +3030,7 @@ exports.queries = {
     test.done();
   },
   SpanNotQuery: function (test) {
-    test.expect(12);
+    test.expect(11);
 
     var spanTermQuery1 = ejs.SpanTermQuery('t1', 'v1'),
       spanTermQuery2 = ejs.SpanTermQuery('t2', 'v2'),
@@ -3066,7 +3066,7 @@ exports.queries = {
     doTest();
     
     test.strictEqual(spanNotQuery._type(), 'query');
-    test.strictEqual(spanNotQuery.toString(), JSON.stringify(expected));
+    
 
     test.throws(function () {
       ejs.SpanNotQuery('invalid', spanTermQuery1);
@@ -3087,7 +3087,7 @@ exports.queries = {
     test.done();
   },
   SpanOrQuery: function (test) {
-    test.expect(13);
+    test.expect(12);
 
     var spanTermQuery1 = ejs.SpanTermQuery('t1', 'v1'),
       spanTermQuery2 = ejs.SpanTermQuery('t2', 'v2'),
@@ -3127,7 +3127,7 @@ exports.queries = {
     doTest();
     
     test.strictEqual(spanOrQuery._type(), 'query');
-    test.strictEqual(spanOrQuery.toString(), JSON.stringify(expected));
+    
 
     test.throws(function () {
       ejs.SpanOrQuery('invalid');
@@ -3148,7 +3148,7 @@ exports.queries = {
     test.done();
   },
   SpanFirstQuery: function (test) {
-    test.expect(10);
+    test.expect(9);
 
     var spanTermQuery1 = ejs.SpanTermQuery('t1', 'v1'),
       spanTermQuery2 = ejs.SpanTermQuery('t2', 'v2'),
@@ -3182,7 +3182,7 @@ exports.queries = {
     doTest();
     
     test.strictEqual(spanFirstQuery._type(), 'query');
-    test.strictEqual(spanFirstQuery.toString(), JSON.stringify(expected));
+    
 
     test.throws(function () {
       ejs.SpanFirstQuery('invalid', 3);
@@ -3195,7 +3195,7 @@ exports.queries = {
     test.done();
   },
   SpanMultiTermQuery: function (test) {
-    test.expect(9);
+    test.expect(8);
 
     var mtQuery1 = ejs.FuzzyQuery('t1', 'v1'),
       mtQuery2 = ejs.WildcardQuery('t2', 'v2*'),
@@ -3224,7 +3224,7 @@ exports.queries = {
     doTest();
     
     test.strictEqual(spanMultiTermQuery._type(), 'query');
-    test.strictEqual(spanMultiTermQuery.toString(), JSON.stringify(expected));
+    
 
     test.throws(function () {
       ejs.SpanMultiTermQuery('invalid');
@@ -3237,7 +3237,7 @@ exports.queries = {
     test.done();
   },
   FieldMaskingSpanQuery: function (test) {
-    test.expect(10);
+    test.expect(9);
 
     var spanTermQuery1 = ejs.SpanTermQuery('t1', 'v1'),
       spanTermQuery2 = ejs.SpanTermQuery('t2', 'v2'),
@@ -3271,7 +3271,7 @@ exports.queries = {
     doTest();
     
     test.strictEqual(fieldMaskingSpanQuery._type(), 'query');
-    test.strictEqual(fieldMaskingSpanQuery.toString(), JSON.stringify(expected));
+    
 
     test.throws(function () {
       ejs.FieldMaskingSpanQuery('invalid', 'mf');

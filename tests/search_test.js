@@ -46,7 +46,7 @@ exports.search = {
     test.done();
   },
   Rescore: function (test) {
-    test.expect(23);
+    test.expect(22);
     
     var rescore = ejs.Rescore(),
       termQuery1 = ejs.TermQuery('f1', 't1'),
@@ -113,7 +113,7 @@ exports.search = {
     doTest();
     
     test.strictEqual(rescore._type(), 'rescore');
-    test.strictEqual(rescore.toString(), JSON.stringify(expected));
+    
     
     test.throws(function () {
       ejs.Rescore('invalid');
@@ -142,7 +142,7 @@ exports.search = {
     test.done();
   },
   DirectGenerator: function (test) {
-    test.expect(29);
+    test.expect(28);
     
     var generator = ejs.DirectGenerator(),
       expected,
@@ -250,12 +250,12 @@ exports.search = {
     doTest();
     
     test.strictEqual(generator._type(), 'generator');
-    test.strictEqual(generator.toString(), JSON.stringify(expected));
+    
     
     test.done();
   },
   TermSuggester: function (test) {
-    test.expect(30);
+    test.expect(29);
     
     var suggester = ejs.TermSuggester('suggester'),
       expected,
@@ -371,12 +371,12 @@ exports.search = {
     doTest();
     
     test.strictEqual(suggester._type(), 'suggest');
-    test.strictEqual(suggester.toString(), JSON.stringify(expected));
+    
     
     test.done();
   },
   PhraseSuggester: function (test) {
-    test.expect(26);
+    test.expect(25);
     
     var suggester = ejs.PhraseSuggester('suggester'),
       gen1 = ejs.DirectGenerator().field('body')
@@ -501,7 +501,7 @@ exports.search = {
     doTest();
     
     test.strictEqual(suggester._type(), 'suggest');
-    test.strictEqual(suggester.toString(), JSON.stringify(expected));
+    
     
     test.throws(function () {
       suggester.directGenerator('invalid');
@@ -514,7 +514,7 @@ exports.search = {
     test.done();
   },
   Highlight: function (test) {
-    test.expect(47);
+    test.expect(46);
     
     var highlight = ejs.Highlight(['title', 'content']),
       expected,
@@ -689,7 +689,7 @@ exports.search = {
     doTest();
     
     test.strictEqual(highlight._type(), 'highlight');
-    test.strictEqual(highlight.toString(), JSON.stringify(expected));
+    
     
     test.throws(function () {
       highlight.options('invalid');
@@ -706,7 +706,7 @@ exports.search = {
     test.done();
   },
   Sort: function (test) {
-    test.expect(37);
+    test.expect(36);
     
     var sort = ejs.Sort(),
       termFilter = ejs.TermFilter('tf1', 'tv1'),
@@ -852,7 +852,7 @@ exports.search = {
     doTest();
     
     test.strictEqual(sort._type(), 'sort');
-    test.strictEqual(sort.toString(), JSON.stringify(expected));
+    
     
     test.throws(function () {
       sort.geoDistance('invalid');
@@ -865,7 +865,7 @@ exports.search = {
     test.done();
   },
   Shape: function (test) {
-    test.expect(16);
+    test.expect(15);
     
     var shape = ejs.Shape('envelope', [[-45.0, 45.0], [45.0, -45.0]]),
       expected,
@@ -928,12 +928,12 @@ exports.search = {
     doTest();
     
     test.strictEqual(shape._type(), 'shape');
-    test.strictEqual(shape.toString(), JSON.stringify(expected));
+    
     
     test.done();
   },
   IndexedShape: function (test) {
-    test.expect(9);
+    test.expect(8);
     
     var indexedShape = ejs.IndexedShape('countries', 'New Zealand'),
       expected,
@@ -967,12 +967,12 @@ exports.search = {
     doTest();
     
     test.strictEqual(indexedShape._type(), 'indexed shape');
-    test.strictEqual(indexedShape.toString(), JSON.stringify(expected));
+    
     
     test.done();
   },
   GeoPoint: function (test) {
-    test.expect(11);
+    test.expect(10);
     
     var geoPoint = ejs.GeoPoint(),
       expected,
@@ -1013,12 +1013,12 @@ exports.search = {
     doTest();
     
     test.strictEqual(geoPoint._type(), 'geo point');
-    test.strictEqual(geoPoint.toString(), JSON.stringify(expected));
+    
     
     test.done();
   },
   ScriptField: function (test) {
-    test.expect(9);
+    test.expect(8);
     
     var cp = ejs.ScriptField('f'),
       expected,
@@ -1051,12 +1051,12 @@ exports.search = {
     doTest();
     
     test.strictEqual(cp._type(), 'script field');
-    test.strictEqual(cp.toString(), JSON.stringify(expected));
+    
     
     test.done();
   },
   Request: function (test) {
-    test.expect(46);
+    test.expect(45);
 
     var req = ejs.Request(),
       matchAll = ejs.MatchAllQuery(),
@@ -1215,7 +1215,7 @@ exports.search = {
     doTest();
     
     test.strictEqual(req._type(), 'request');
-    test.strictEqual(req.toString(), JSON.stringify(expected));
+    
 
     test.throws(function () {
       req.query('invalid');

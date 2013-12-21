@@ -151,8 +151,7 @@
   isEJSObject = function (obj) {
     return (isObject(obj) &&
       has(obj, '_type') &&
-      has(obj, 'toJSON') && 
-      has(obj, 'toString'));
+      has(obj, 'toJSON'));
   };
   
   isQuery = function (obj) {
