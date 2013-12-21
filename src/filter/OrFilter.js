@@ -3,6 +3,11 @@
     A container filter that allows Boolean OR composition of filters.
 
     @name ejs.OrFilter
+    @borrows ejs.FilterMixin.name as name
+    @borrows ejs.FilterMixin.cache as cache
+    @borrows ejs.FilterMixin.cacheKey as cacheKey
+    @borrows ejs.FilterMixin._type as _type
+    @borrows ejs.FilterMixin.toJSON as toJSON
 
     @desc
     A container Filter that allows Boolean OR composition of filters.
@@ -11,19 +16,13 @@
     */
   ejs.OrFilter = function (filters) {
 
-    /**
-         The internal filter object. Use <code>toJSON()</code>
+    var
+      i, 
+      len,
+      _common = ejs.FilterMixin('or'),
+      filter = _common.toJSON();
 
-         @member ejs.OrFilter
-         @property {Object} filter
-         */
-    var filter, i, len;
-
-    filter = {
-      or: {
-        filters: []
-      }
-    };
+    filter.or.filters = [];
 
     if (isFilter(filters)) {
       filter.or.filters.push(filters.toJSON());
@@ -39,7 +38,7 @@
       throw new TypeError('Argument must be a Filter or array of Filters');
     }
 
-    return {
+    return extend(_common, {
 
       /**
              Updates the filters.  If passed a single Filter it is added to 
@@ -73,74 +72,7 @@
         }
         
         return this;
-      },
-
-      /**
-            Sets the filter name.
-
-            @member ejs.OrFilter
-            @param {String} name A name for the filter.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      name: function (name) {
-        if (name == null) {
-          return filter.or._name;
-        }
-
-        filter.or._name = name;
-        return this;
-      },
-
-      /**
-            Enable or disable caching of the filter
-
-            @member ejs.OrFilter
-            @param {Boolean} trueFalse True to cache the filter, false otherwise.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      cache: function (trueFalse) {
-        if (trueFalse == null) {
-          return filter.or._cache;
-        }
-
-        filter.or._cache = trueFalse;
-        return this;
-      },
-
-      /**
-            Sets the cache key.
-
-            @member ejs.OrFilter
-            @param {String} key the cache key as a string.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      cacheKey: function (key) {
-        if (key == null) {
-          return filter.or._cache_key;
-        }
-
-        filter.or._cache_key = key;
-        return this;
-      },
-
-      /**
-            The type of ejs object.  For internal use only.
-            
-            @member ejs.OrFilter
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'filter';
-      },
-      
-      /**
-             Returns the filter object.
-
-             @member ejs.OrFilter
-             @returns {Object} filter object
-             */
-      toJSON: function () {
-        return filter;
       }
-    };
+      
+    });
   };

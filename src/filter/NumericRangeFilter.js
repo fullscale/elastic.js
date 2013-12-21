@@ -14,6 +14,11 @@
     filter should be used.</p>
 
     @name ejs.NumericRangeFilter
+    @borrows ejs.FilterMixin.name as name
+    @borrows ejs.FilterMixin.cache as cache
+    @borrows ejs.FilterMixin.cacheKey as cacheKey
+    @borrows ejs.FilterMixin._type as _type
+    @borrows ejs.FilterMixin.toJSON as toJSON
 
     @desc
     A Filter that only accepts numeric values within a specified range.
@@ -22,19 +27,13 @@
     */
   ejs.NumericRangeFilter = function (fieldName) {
 
-    /**
-         The internal filter object. Use <code>get()</code>
-
-         @member ejs.NumericRangeFilter
-         @property {Object} filter
-         */
-    var filter = {
-      numeric_range: {}
-    };
+    var
+      _common = ejs.FilterMixin('numeric_range'),
+      filter = _common.toJSON();
 
     filter.numeric_range[fieldName] = {};
 
-    return {
+    return extend(_common, {
 
       /**
              Returns the field name used to create this object.
@@ -213,74 +212,7 @@
         
         filter.numeric_range[fieldName].lte = val;
         return this;
-      },
-                          
-      /**
-            Sets the filter name.
-
-            @member ejs.NumericRangeFilter
-            @param {String} name A name for the filter.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      name: function (name) {
-        if (name == null) {
-          return filter.numeric_range._name;
-        }
-
-        filter.numeric_range._name = name;
-        return this;
-      },
-
-      /**
-            Enable or disable caching of the filter
-
-            @member ejs.NumericRangeFilter
-            @param {Boolean} trueFalse True to cache the filter, false otherwise.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      cache: function (trueFalse) {
-        if (trueFalse == null) {
-          return filter.numeric_range._cache;
-        }
-
-        filter.numeric_range._cache = trueFalse;
-        return this;
-      },
-
-      /**
-            Sets the cache key.
-
-            @member ejs.NumericRangeFilter
-            @param {String} key the cache key as a string.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      cacheKey: function (key) {
-        if (key == null) {
-          return filter.numeric_range._cache_key;
-        }
-
-        filter.numeric_range._cache_key = key;
-        return this;
-      },
-
-      /**
-            The type of ejs object.  For internal use only.
-            
-            @member ejs.NumericRangeFilter
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'filter';
-      },
-      
-      /**
-             Returns the filter object.
-
-             @member ejs.NumericRangeFilter
-             @returns {Object} filter object
-             */
-      toJSON: function () {
-        return filter;
       }
-    };
+      
+    });
   };

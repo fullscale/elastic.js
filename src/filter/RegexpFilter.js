@@ -5,6 +5,11 @@
     over index terms.</p>
 
     @name ejs.RegexpFilter
+    @borrows ejs.FilterMixin.name as name
+    @borrows ejs.FilterMixin.cache as cache
+    @borrows ejs.FilterMixin.cacheKey as cacheKey
+    @borrows ejs.FilterMixin._type as _type
+    @borrows ejs.FilterMixin.toJSON as toJSON
 
     @desc
     Matches documents that have fields matching a regular expression.
@@ -14,20 +19,15 @@
     */
   ejs.RegexpFilter = function (field, value) {
 
-    /**
-         The internal filter object. <code>Use get()</code>
-         @member ejs.RegexpFilter
-         @property {Object} filter
-         */
-    var filter = {
-      regexp: {}
-    };
+    var
+    _common = ejs.FilterMixin('regexp'),
+    filter = _common.toJSON();
 
     filter.regexp[field] = {
       value: value
     };
 
-    return {
+    return extend(_common, {
 
       /**
              The field to run the filter against.
@@ -109,75 +109,7 @@
 
         filter.regexp[field].flags_value = v;
         return this;
-      },
-
-      /**
-            Sets the filter name.
-
-            @member ejs.RegexpFilter
-            @param {String} name A name for the filter.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      name: function (name) {
-        if (name == null) {
-          return filter.regexp._name;
-        }
-
-        filter.regexp._name = name;
-        return this;
-      },
-
-      /**
-            Enable or disable caching of the filter
-
-            @member ejs.RegexpFilter
-            @param {Boolean} trueFalse True to cache the filter, false otherwise.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      cache: function (trueFalse) {
-        if (trueFalse == null) {
-          return filter.regexp._cache;
-        }
-
-        filter.regexp._cache = trueFalse;
-        return this;
-      },
-
-      /**
-            Sets the cache key.
-
-            @member ejs.RegexpFilter
-            @param {String} key the cache key as a string.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      cacheKey: function (key) {
-        if (key == null) {
-          return filter.regexp._cache_key;
-        }
-
-        filter.regexp._cache_key = key;
-        return this;
-      },
-
-      /**
-            The type of ejs object.  For internal use only.
-        
-            @member ejs.RegexpFilter
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'filter';
-      },
-  
-      /**
-            Retrieves the internal <code>filter</code> object. This is typically used by
-            internal API functions so use with caution.
-
-            @member ejs.RegexpFilter
-            @returns {String} returns this object's internal <code>filter</code> property.
-            */
-      toJSON: function () {
-        return filter;
       }
-    };
+      
+    });
   };

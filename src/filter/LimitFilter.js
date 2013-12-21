@@ -3,6 +3,11 @@
     <p>A limit filter limits the number of documents (per shard) to execute on.</p>
 
     @name ejs.LimitFilter
+    @borrows ejs.FilterMixin.name as name
+    @borrows ejs.FilterMixin.cache as cache
+    @borrows ejs.FilterMixin.cacheKey as cacheKey
+    @borrows ejs.FilterMixin._type as _type
+    @borrows ejs.FilterMixin.toJSON as toJSON
 
     @desc
     Limits the number of documents to execute on.
@@ -11,18 +16,13 @@
     */
   ejs.LimitFilter = function (limit) {
 
-    /**
-         The internal filter object. <code>Use get()</code>
-         @member ejs.LimitFilter
-         @property {Object} filter
-         */
-    var filter = {
-      limit: {
-        value: limit
-      }
-    };
+    var 
+      _common = ejs.FilterMixin('limit'),
+      filter = _common.toJSON();
+    
+    filter.limit.value = limit;
 
-    return {
+    return extend(_common, {
 
       /**
             Sets the limit value.
@@ -42,27 +42,7 @@
             
         filter.limit.value = val;
         return this;
-      },
-
-      /**
-            The type of ejs object.  For internal use only.
-            
-            @member ejs.LimitFilter
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'filter';
-      },
-      
-      /**
-            Retrieves the internal <code>filter</code> object. This is typically used by
-            internal API functions so use with caution.
-
-            @member ejs.LimitFilter
-            @returns {String} returns this object's internal <code>filter</code> property.
-            */
-      toJSON: function () {
-        return filter;
       }
-    };
+      
+    });
   };

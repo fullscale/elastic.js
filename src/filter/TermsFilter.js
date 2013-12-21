@@ -4,6 +4,11 @@
     terms (not analyzed)</p>
 
     @name ejs.TermsFilter
+    @borrows ejs.FilterMixin.name as name
+    @borrows ejs.FilterMixin.cache as cache
+    @borrows ejs.FilterMixin.cacheKey as cacheKey
+    @borrows ejs.FilterMixin._type as _type
+    @borrows ejs.FilterMixin.toJSON as toJSON
 
     @desc
     A Filter that matches documents containing provided terms. 
@@ -13,28 +18,23 @@
     */
   ejs.TermsFilter = function (field, terms) {
 
-    /**
-         The internal filter object. <code>Use get()</code>
-         @member ejs.TermsFilter
-         @property {Object} filter
-         */
-    var filter = {
-      terms: {}
-    },
+    var
+      _common = ejs.FilterMixin('terms'),
+      filter = _common.toJSON(),
     
-    // make sure we are setup for a list of terms
-    setupTerms = function () {
-      if (!isArray(filter.terms[field])) {
-        filter.terms[field] = [];
-      }
-    },
+      // make sure we are setup for a list of terms
+      setupTerms = function () {
+        if (!isArray(filter.terms[field])) {
+          filter.terms[field] = [];
+        }
+      },
     
-    // make sure we are setup for a terms lookup
-    setupLookup = function () {
-      if (isArray(filter.terms[field])) {
-        filter.terms[field] = {};
-      }
-    };
+      // make sure we are setup for a terms lookup
+      setupLookup = function () {
+        if (isArray(filter.terms[field])) {
+          filter.terms[field] = {};
+        }
+      };
    
     if (isArray(terms)) {
       filter.terms[field] = terms;
@@ -42,7 +42,7 @@
       filter.terms[field] = [terms];
     }
 
-    return {
+    return extend(_common, {
 
       /**
             Sets the fields to filter against.
@@ -225,75 +225,7 @@
         }
       
         return this;
-      },
-    
-      /**
-            Sets the filter name.
-
-            @member ejs.TermsFilter
-            @param {String} name A name for the filter.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      name: function (name) {
-        if (name == null) {
-          return filter.terms._name;
-        }
-
-        filter.terms._name = name;
-        return this;
-      },
-
-      /**
-            Enable or disable caching of the filter
-
-            @member ejs.TermsFilter
-            @param {Boolean} trueFalse True to cache the filter, false otherwise.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      cache: function (trueFalse) {
-        if (trueFalse == null) {
-          return filter.terms._cache;
-        }
-
-        filter.terms._cache = trueFalse;
-        return this;
-      },
-  
-      /**
-            Sets the cache key.
-
-            @member ejs.TermsFilter
-            @param {String} key the cache key as a string.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      cacheKey: function (key) {
-        if (key == null) {
-          return filter.terms._cache_key;
-        }
-
-        filter.terms._cache_key = key;
-        return this;
-      },
-
-      /**
-            The type of ejs object.  For internal use only.
-            
-            @member ejs.TermsFilter
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'filter';
-      },
-      
-      /**
-            Retrieves the internal <code>filter</code> object. This is typically used by
-            internal API functions so use with caution.
-
-            @member ejs.TermsFilter
-            @returns {String} returns this object's internal <code>filter</code> property.
-            */
-      toJSON: function () {
-        return filter;
       }
-    };
+      
+    });
   };

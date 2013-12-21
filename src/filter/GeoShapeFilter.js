@@ -10,6 +10,11 @@
     PrefixTree configuration as defined for the field.</p>
 
     @name ejs.GeoShapeFilter
+    @borrows ejs.FilterMixin.name as name
+    @borrows ejs.FilterMixin.cache as cache
+    @borrows ejs.FilterMixin.cacheKey as cacheKey
+    @borrows ejs.FilterMixin._type as _type
+    @borrows ejs.FilterMixin.toJSON as toJSON
 
     @desc
     A Filter to find documents with a geo_shapes matching a specific shape.
@@ -17,18 +22,13 @@
     */
   ejs.GeoShapeFilter = function (field) {
 
-    /**
-         The internal filter object. <code>Use toJSON()</code>
-         @member ejs.GeoShapeFilter
-         @property {Object} GeoShapeFilter
-         */
-    var filter = {
-      geo_shape: {}
-    };
-
+    var
+      _common = ejs.FilterMixin('geo_shape'),
+      filter = _common.toJSON();
+    
     filter.geo_shape[field] = {};
 
-    return {
+    return extend(_common, {
 
       /**
             Sets the field to filter against.
@@ -146,75 +146,7 @@
         }
         
         return this;
-      },
-        
-      /**
-            Sets the filter name.
-
-            @member ejs.GeoShapeFilter
-            @param {String} name A name for the filter.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      name: function (name) {
-        if (name == null) {
-          return filter.geo_shape._name;
-        }
-
-        filter.geo_shape._name = name;
-        return this;
-      },
-
-      /**
-            Enable or disable caching of the filter
-
-            @member ejs.GeoShapeFilter
-            @param {Boolean} trueFalse True to cache the filter, false otherwise.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      cache: function (trueFalse) {
-        if (trueFalse == null) {
-          return filter.geo_shape._cache;
-        }
-
-        filter.geo_shape._cache = trueFalse;
-        return this;
-      },
-    
-      /**
-            Sets the cache key.
-
-            @member ejs.GeoShapeFilter
-            @param {String} key the cache key as a string.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      cacheKey: function (key) {
-        if (key == null) {
-          return filter.geo_shape._cache_key;
-        }
-
-        filter.geo_shape._cache_key = key;
-        return this;
-      },
-
-      /**
-            The type of ejs object.  For internal use only.
-            
-            @member ejs.GeoShapeFilter
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'filter';
-      },
-      
-      /**
-            Retrieves the internal <code>filter</code> object. This is typically used by
-            internal API functions so use with caution.
-
-            @member ejs.GeoShapeFilter
-            @returns {String} returns this object's internal <code>filter</code> property.
-            */
-      toJSON: function () {
-        return filter;
       }
-    };
+      
+    });
   };

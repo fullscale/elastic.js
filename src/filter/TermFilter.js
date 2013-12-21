@@ -5,6 +5,11 @@
     terms that are not necessarily in a sequence.</p>
 
     @name ejs.TermFilter
+    @borrows ejs.FilterMixin.name as name
+    @borrows ejs.FilterMixin.cache as cache
+    @borrows ejs.FilterMixin.cacheKey as cacheKey
+    @borrows ejs.FilterMixin._type as _type
+    @borrows ejs.FilterMixin.toJSON as toJSON
 
     @desc
     Constructs a filter for docs matching the term added to this object.
@@ -14,18 +19,13 @@
     */
   ejs.TermFilter = function (fieldName, term) {
 
-    /**
-         The internal filter object. Use the get() method for access.
-         @member ejs.TermFilter
-         @property {Object} filter
-         */
-    var filter = {
-      term: {}
-    };
+    var
+      _common = ejs.FilterMixin('term'),
+      filter = _common.toJSON();
 
     filter.term[fieldName] = term;
 
-    return {
+    return extend(_common, {
 
       /**
              Provides access to the filter fieldName used to construct the 
@@ -67,74 +67,7 @@
       
         filter.term[fieldName] = v;
         return this;
-      },
-
-      /**
-            Sets the filter name.
-
-            @member ejs.TermFilter
-            @param {String} name A name for the filter.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      name: function (name) {
-        if (name == null) {
-          return filter.term._name;
-        }
-
-        filter.term._name = name;
-        return this;
-      },
-
-      /**
-            Enable or disable caching of the filter
-
-            @member ejs.TermFilter
-            @param {Boolean} trueFalse True to cache the filter, false otherwise.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      cache: function (trueFalse) {
-        if (trueFalse == null) {
-          return filter.term._cache;
-        }
-
-        filter.term._cache = trueFalse;
-        return this;
-      },
-
-      /**
-            Sets the cache key.
-
-            @member ejs.TermFilter
-            @param {String} key the cache key as a string.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      cacheKey: function (key) {
-        if (key == null) {
-          return filter.term._cache_key;
-        }
-
-        filter.term._cache_key = key;
-        return this;
-      },
-    
-      /**
-            The type of ejs object.  For internal use only.
-            
-            @member ejs.TermFilter
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'filter';
-      },
-      
-      /**
-            Returns the filter object.  For internal use only.
-            
-            @member ejs.TermFilter
-            @returns {Object} Returns the object's filter property.
-            */
-      toJSON: function () {
-        return filter;
       }
-    };
+      
+    });
   };

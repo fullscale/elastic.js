@@ -3,6 +3,11 @@
     <p>A Filter that filters results by a specified index type.</p>
 
     @name ejs.TypeFilter
+    @borrows ejs.FilterMixin.name as name
+    @borrows ejs.FilterMixin.cache as cache
+    @borrows ejs.FilterMixin.cacheKey as cacheKey
+    @borrows ejs.FilterMixin._type as _type
+    @borrows ejs.FilterMixin.toJSON as toJSON
 
     @desc
     Filter results by a specified index type.
@@ -11,22 +16,16 @@
     */
   ejs.TypeFilter = function (type) {
 
-    /**
-         The internal filter object. Use <code>get()</code>
+    var 
+    _common = ejs.FilterMixin('type'),
+    filter = _common.toJSON();
+    
+    filter.type.value = type;
 
-         @member ejs.TypeFilter
-         @property {Object} filter
-         */
-    var filter = {
-      "type": {
-        "value": type
-      }
-    };
-
-    return {
+    return extend(_common, {
 
       /**
-             * Sets the type
+             Sets the type
 
              @member ejs.TypeFilter
              @param {String} type the index type to filter on
@@ -39,26 +38,7 @@
       
         filter.type.value = type;
         return this;
-      },
-
-      /**
-            The type of ejs object.  For internal use only.
-            
-            @member ejs.TypeFilter
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'filter';
-      },
-      
-      /**
-             Returns the filter object.
-
-             @member ejs.TypeFilter
-             @returns {Object} filter object
-             */
-      toJSON: function () {
-        return filter;
       }
-    };
+      
+    });
   };

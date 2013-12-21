@@ -4,6 +4,11 @@
     contained filter.</p>
 
     @name ejs.NotFilter
+    @borrows ejs.FilterMixin.name as name
+    @borrows ejs.FilterMixin.cache as cache
+    @borrows ejs.FilterMixin.cacheKey as cacheKey
+    @borrows ejs.FilterMixin._type as _type
+    @borrows ejs.FilterMixin.toJSON as toJSON
 
     @desc
     Container filter that excludes the matched documents of the contained filter.
@@ -16,17 +21,13 @@
       throw new TypeError('Argument must be a Filter');
     }
     
-    /**
-         The internal filter object. Use <code>toJSON()</code>
+    var 
+      _common = ejs.FilterMixin('not'),
+      filter = _common.toJSON();
+    
+    filter.not = oFilter.toJSON();
 
-         @member ejs.NotFilter
-         @property {Object} filter
-         */
-    var filter = {
-      not: oFilter.toJSON()
-    };
-
-    return {
+    return extend(_common, {
 
       /**
              Sets the filter
@@ -46,74 +47,7 @@
         
         filter.not = fltr.toJSON();
         return this;
-      },
-
-      /**
-            Sets the filter name.
-
-            @member ejs.NotFilter
-            @param {String} name A name for the filter.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      name: function (name) {
-        if (name == null) {
-          return filter.not._name;
-        }
-
-        filter.not._name = name;
-        return this;
-      },
-
-      /**
-            Enable or disable caching of the filter
-
-            @member ejs.NotFilter
-            @param {Boolean} trueFalse True to cache the filter, false otherwise.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      cache: function (trueFalse) {
-        if (trueFalse == null) {
-          return filter.not._cache;
-        }
-
-        filter.not._cache = trueFalse;
-        return this;
-      },
-    
-      /**
-            Sets the cache key.
-
-            @member ejs.NotFilter
-            @param {String} key the cache key as a string.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      cacheKey: function (key) {
-        if (key == null) {
-          return filter.not._cache_key;
-        }
-
-        filter.not._cache_key = key;
-        return this;
-      },
-
-      /**
-            The type of ejs object.  For internal use only.
-            
-            @member ejs.NotFilter
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'filter';
-      },
-      
-      /**
-             Returns the filter object.
-
-             @member ejs.NotFilter
-             @returns {Object} filter object
-             */
-      toJSON: function () {
-        return filter;
       }
-    };
+      
+    });
   };

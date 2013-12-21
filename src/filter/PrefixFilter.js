@@ -4,6 +4,11 @@
     to phrase query, except that it acts as a filter. Can be placed within queries that accept a filter.</p>
 
     @name ejs.PrefixFilter
+    @borrows ejs.FilterMixin.name as name
+    @borrows ejs.FilterMixin.cache as cache
+    @borrows ejs.FilterMixin.cacheKey as cacheKey
+    @borrows ejs.FilterMixin._type as _type
+    @borrows ejs.FilterMixin.toJSON as toJSON
 
     @desc
     Filters documents that have fields containing terms with a specified prefix.
@@ -13,19 +18,13 @@
     */
   ejs.PrefixFilter = function (fieldName, prefix) {
 
-    /**
-         The internal filter object. Use <code>get()</code>
-
-         @member ejs.PrefixFilter
-         @property {Object} filter
-         */
-    var filter = {
-      prefix: {}
-    };
+    var
+      _common = ejs.FilterMixin('prefix'),
+      filter = _common.toJSON();
 
     filter.prefix[fieldName] = prefix;
     
-    return {
+    return extend(_common, {
 
       /**
              Returns the field name used to create this object.
@@ -63,74 +62,7 @@
       
         filter.prefix[fieldName] = value;
         return this;
-      },
-
-      /**
-            Sets the filter name.
-
-            @member ejs.PrefixFilter
-            @param {String} name A name for the filter.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      name: function (name) {
-        if (name == null) {
-          return filter.prefix._name;
-        }
-
-        filter.prefix._name = name;
-        return this;
-      },
-
-      /**
-            Enable or disable caching of the filter
-
-            @member ejs.PrefixFilter
-            @param {Boolean} trueFalse True to cache the filter, false otherwise.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      cache: function (trueFalse) {
-        if (trueFalse == null) {
-          return filter.prefix._cache;
-        }
-
-        filter.prefix._cache = trueFalse;
-        return this;
-      },
-
-      /**
-            Sets the cache key.
-
-            @member ejs.PrefixFilter
-            @param {String} key the cache key as a string.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      cacheKey: function (key) {
-        if (key == null) {
-          return filter.prefix._cache_key;
-        }
-
-        filter.prefix._cache_key = key;
-        return this;
-      },
-
-      /**
-            The type of ejs object.  For internal use only.
-            
-            @member ejs.PrefixFilter
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'filter';
-      },
-      
-      /**
-             Returns the filter object.
-
-             @member ejs.PrefixFilter
-             @returns {Object} filter object
-             */
-      toJSON: function () {
-        return filter;
       }
-    };
+      
+    });
   };

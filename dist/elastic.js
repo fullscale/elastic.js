@@ -719,6 +719,14 @@
     </div>
 
     @name ejs.FilterFacet
+    @borrows ejs.FacetMixin.facetFilter as facetFilter
+    @borrows ejs.FacetMixin.global as global
+    @borrows ejs.FacetMixin.mode as mode
+    @borrows ejs.FacetMixin.cacheFilter as cacheFilter
+    @borrows ejs.FacetMixin.scope as scope
+    @borrows ejs.FacetMixin.nested as nested
+    @borrows ejs.FacetMixin._type as _type
+    @borrows ejs.FacetMixin.toJSON as toJSON
 
     @desc
     <p>A facet that return a count of the hits matching the given filter.</p>
@@ -780,6 +788,14 @@
     </div>
 
     @name ejs.GeoDistanceFacet
+    @borrows ejs.FacetMixin.facetFilter as facetFilter
+    @borrows ejs.FacetMixin.global as global
+    @borrows ejs.FacetMixin.mode as mode
+    @borrows ejs.FacetMixin.cacheFilter as cacheFilter
+    @borrows ejs.FacetMixin.scope as scope
+    @borrows ejs.FacetMixin.nested as nested
+    @borrows ejs.FacetMixin._type as _type
+    @borrows ejs.FacetMixin.toJSON as toJSON
 
     @desc
     <p>A facet which provides information over a range of distances from a provided point.</p>
@@ -1061,6 +1077,14 @@
     </div>
 
     @name ejs.HistogramFacet
+    @borrows ejs.FacetMixin.facetFilter as facetFilter
+    @borrows ejs.FacetMixin.global as global
+    @borrows ejs.FacetMixin.mode as mode
+    @borrows ejs.FacetMixin.cacheFilter as cacheFilter
+    @borrows ejs.FacetMixin.scope as scope
+    @borrows ejs.FacetMixin.nested as nested
+    @borrows ejs.FacetMixin._type as _type
+    @borrows ejs.FacetMixin.toJSON as toJSON
 
     @desc
     <p>A facet which returns the N most frequent terms within a collection
@@ -1317,6 +1341,14 @@
     </div>
 
     @name ejs.QueryFacet
+    @borrows ejs.FacetMixin.facetFilter as facetFilter
+    @borrows ejs.FacetMixin.global as global
+    @borrows ejs.FacetMixin.mode as mode
+    @borrows ejs.FacetMixin.cacheFilter as cacheFilter
+    @borrows ejs.FacetMixin.scope as scope
+    @borrows ejs.FacetMixin.nested as nested
+    @borrows ejs.FacetMixin._type as _type
+    @borrows ejs.FacetMixin.toJSON as toJSON
 
     @desc
     <p>A facet that return a count of the hits matching the given query.</p>
@@ -1377,6 +1409,14 @@
     </div>
 
     @name ejs.RangeFacet
+    @borrows ejs.FacetMixin.facetFilter as facetFilter
+    @borrows ejs.FacetMixin.global as global
+    @borrows ejs.FacetMixin.mode as mode
+    @borrows ejs.FacetMixin.cacheFilter as cacheFilter
+    @borrows ejs.FacetMixin.scope as scope
+    @borrows ejs.FacetMixin.nested as nested
+    @borrows ejs.FacetMixin._type as _type
+    @borrows ejs.FacetMixin.toJSON as toJSON
 
     @desc
     <p>A facet which provides information over a range of numeric intervals.</p>
@@ -1597,6 +1637,14 @@
     </div>
 
     @name ejs.StatisticalFacet
+    @borrows ejs.FacetMixin.facetFilter as facetFilter
+    @borrows ejs.FacetMixin.global as global
+    @borrows ejs.FacetMixin.mode as mode
+    @borrows ejs.FacetMixin.cacheFilter as cacheFilter
+    @borrows ejs.FacetMixin.scope as scope
+    @borrows ejs.FacetMixin.nested as nested
+    @borrows ejs.FacetMixin._type as _type
+    @borrows ejs.FacetMixin.toJSON as toJSON
 
     @desc
     <p>A facet which returns statistical information about a numeric field</p>
@@ -1725,6 +1773,14 @@
     </div>
 
     @name ejs.TermStatsFacet
+    @borrows ejs.FacetMixin.facetFilter as facetFilter
+    @borrows ejs.FacetMixin.global as global
+    @borrows ejs.FacetMixin.mode as mode
+    @borrows ejs.FacetMixin.cacheFilter as cacheFilter
+    @borrows ejs.FacetMixin.scope as scope
+    @borrows ejs.FacetMixin.nested as nested
+    @borrows ejs.FacetMixin._type as _type
+    @borrows ejs.FacetMixin.toJSON as toJSON
 
     @desc
     <p>A facet which computes statistical data based on an aggregate key.</p>
@@ -1935,6 +1991,14 @@
        <a href="http://en.wikipedia.org/wiki/Faceted_classification">Faceted Classification</a></p<
 
     @name ejs.TermsFacet
+    @borrows ejs.FacetMixin.facetFilter as facetFilter
+    @borrows ejs.FacetMixin.global as global
+    @borrows ejs.FacetMixin.mode as mode
+    @borrows ejs.FacetMixin.cacheFilter as cacheFilter
+    @borrows ejs.FacetMixin.scope as scope
+    @borrows ejs.FacetMixin.nested as nested
+    @borrows ejs.FacetMixin._type as _type
+    @borrows ejs.FacetMixin.toJSON as toJSON
 
     @desc
     <p>A facet which returns the N most frequent terms within a collection
@@ -2214,6 +2278,11 @@
     A container Filter that allows Boolean AND composition of Filters.
 
     @name ejs.AndFilter
+    @borrows ejs.FilterMixin.name as name
+    @borrows ejs.FilterMixin.cache as cache
+    @borrows ejs.FilterMixin.cacheKey as cacheKey
+    @borrows ejs.FilterMixin._type as _type
+    @borrows ejs.FilterMixin.toJSON as toJSON
 
     @desc
     A container Filter that allows Boolean AND composition of Filters.
@@ -2223,20 +2292,14 @@
     */
   ejs.AndFilter = function (f) {
 
-    /**
-         The internal filter object. Use <code>toJSON()</code>
-
-         @member ejs.AndFilter
-         @property {Object} filter
-         */
-    var i,
+    var
+      i,
       len,
-      filter = {
-        and: {
-          filters: []
-        }
-      };
-
+      _common = ejs.FilterMixin('and'),
+      filter = _common.toJSON();
+    
+    filter.and.filters = [];
+    
     if (isFilter(f)) {
       filter.and.filters.push(f.toJSON());
     } else if (isArray(f)) {
@@ -2251,7 +2314,7 @@
       throw new TypeError('Argument must be a Filter or Array of Filters');
     }
 
-    return {
+    return extend(_common, {
 
       /**
              Sets the filters for the filter.  If fltr is a single 
@@ -2286,76 +2349,9 @@
         }
         
         return this;
-      },
-
-      /**
-            Sets the filter name.
-
-            @member ejs.AndFilter
-            @param {String} name A name for the filter.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      name: function (name) {
-        if (name == null) {
-          return filter.and._name;
-        }
-
-        filter.and._name = name;
-        return this;
-      },
-
-      /**
-            Enable or disable caching of the filter
-
-            @member ejs.AndFilter
-            @param {Boolean} trueFalse True to cache the filter, false otherwise.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      cache: function (trueFalse) {
-        if (trueFalse == null) {
-          return filter.and._cache;
-        }
-
-        filter.and._cache = trueFalse;
-        return this;
-      },
-  
-      /**
-            Sets the cache key.
-
-            @member ejs.AndFilter
-            @param {String} key the cache key as a string.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      cacheKey: function (key) {
-        if (key == null) {
-          return filter.and._cache_key;
-        }
-
-        filter.and._cache_key = key;
-        return this;
-      },
-
-      /**
-            The type of ejs object.  For internal use only.
-            
-            @member ejs.AndFilter
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'filter';
-      },
-      
-      /**
-             Returns the filter object.
-
-             @member ejs.AndFilter
-             @returns {Object} filter object
-             */
-      toJSON: function () {
-        return filter;
       }
-    };
+      
+    });
   };
 
   /**
@@ -2366,6 +2362,11 @@
     filter.
   
     @name ejs.BoolFilter
+    @borrows ejs.FilterMixin.name as name
+    @borrows ejs.FilterMixin.cache as cache
+    @borrows ejs.FilterMixin.cacheKey as cacheKey
+    @borrows ejs.FilterMixin._type as _type
+    @borrows ejs.FilterMixin.toJSON as toJSON
 
     @desc
     A Filter that matches documents matching boolean combinations of other
@@ -2374,16 +2375,11 @@
     */
   ejs.BoolFilter = function () {
 
-    /**
-         The internal filter object. <code>Use toJSON()</code>
-         @member ejs.BoolFilter
-         @property {Object} filter
-         */
-    var filter = {
-      bool: {}
-    };
+    var
+      _common = ejs.FilterMixin('bool'),
+      filter = _common.toJSON();
 
-    return {
+    return extend(_common, {
 
       /**
              Adds filter to boolean container. Given filter "must" appear in 
@@ -2503,77 +2499,9 @@
         }
         
         return this;
-      },
-
-      /**
-            Sets the filter name.
-
-            @member ejs.BoolFilter
-            @param {String} name A name for the filter.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      name: function (name) {
-        if (name == null) {
-          return filter.bool._name;
-        }
-
-        filter.bool._name = name;
-        return this;
-      },
-
-      /**
-            Enable or disable caching of the filter
-
-            @member ejs.BoolFilter
-            @param {Boolean} trueFalse True to cache the filter, false otherwise.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      cache: function (trueFalse) {
-        if (trueFalse == null) {
-          return filter.bool._cache;
-        }
-
-        filter.bool._cache = trueFalse;
-        return this;
-      },
-  
-      /**
-            Sets the cache key.
-
-            @member ejs.BoolFilter
-            @param {String} key the cache key as a string.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      cacheKey: function (key) {
-        if (key == null) {
-          return filter.bool._cache_key;
-        }
-
-        filter.bool._cache_key = key;
-        return this;
-      },
-
-      /**
-            The type of ejs object.  For internal use only.
-            
-            @member ejs.BoolFilter
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'filter';
-      },
-      
-      /**
-            Retrieves the internal <code>filter</code> object. This is typically used by
-            internal API functions so use with caution.
-
-            @member ejs.BoolFilter
-            @returns {String} returns this object's internal <code>filter</code> property.
-            */
-      toJSON: function () {
-        return filter;
       }
-    };
+      
+    });
   };
 
   /**
@@ -2582,6 +2510,11 @@
     and the field contains a legitimate value.</p>
 
     @name ejs.ExistsFilter
+    @borrows ejs.FilterMixin.name as name
+    @borrows ejs.FilterMixin.cache as cache
+    @borrows ejs.FilterMixin.cacheKey as cacheKey
+    @borrows ejs.FilterMixin._type as _type
+    @borrows ejs.FilterMixin.toJSON as toJSON
 
     @desc
     Filters documents where a specified field exists and contains a value.
@@ -2590,19 +2523,13 @@
     */
   ejs.ExistsFilter = function (fieldName) {
 
-    /**
-         The internal filter object. Use <code>get()</code>
+    var 
+      _common = ejs.FilterMixin('exists'),
+      filter = _common.toJSON();
+    
+    filter.exists.field = fieldName;
 
-         @member ejs.ExistsFilter
-         @property {Object} filter
-         */
-    var filter = {
-      exists: {
-        field: fieldName
-      }
-    };
-
-    return {
+    return extend(_common, {
 
       /**
             Sets the field to check for missing values.
@@ -2618,43 +2545,94 @@
 
         filter.exists.field = name;
         return this;
-      },
+      }
       
+    });
+  };
+
+  /**
+    @mixin
+    <p>The FilterMixin provides support for common options used across 
+    various <code>Filter</code> implementations.  This object should not be 
+    used directly.</p>
+
+    @name ejs.FilterMixin
+    */
+  ejs.FilterMixin = function (type) {
+
+    var filter = {};
+    filter[type] = {};
+
+    return {
+
       /**
             Sets the filter name.
 
-            @member ejs.ExistsFilter
+            @member ejs.FilterMixin
             @param {String} name A name for the filter.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       name: function (name) {
         if (name == null) {
-          return filter.exists._name;
+          return filter[type]._name;
         }
 
-        filter.exists._name = name;
+        filter[type]._name = name;
+        return this;
+      },
+
+      /**
+            Enable or disable caching of the filter
+
+            @member ejs.FilterMixin
+            @param {Boolean} trueFalse True to cache the filter, false otherwise.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      cache: function (trueFalse) {
+        if (trueFalse == null) {
+          return filter[type]._cache;
+        }
+
+        filter[type]._cache = trueFalse;
+        return this;
+      },
+
+      /**
+            Sets the cache key.
+
+            @member ejs.FilterMixin
+            @param {String} key the cache key as a string.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      cacheKey: function (key) {
+        if (key == null) {
+          return filter[type]._cache_key;
+        }
+
+        filter[type]._cache_key = key;
         return this;
       },
 
       /**
             The type of ejs object.  For internal use only.
-            
-            @member ejs.ExistsFilter
+          
+            @member ejs.FilterMixin
             @returns {String} the type of object
             */
       _type: function () {
         return 'filter';
       },
-      
+    
       /**
              Returns the filter object.
 
-             @member ejs.ExistsFilter
+             @member ejs.FilterMixin
              @returns {Object} filter object
              */
       toJSON: function () {
         return filter;
       }
+    
     };
   };
 
@@ -2664,6 +2642,11 @@
     the specified lon and lat coordinates. The format conforms with the GeoJSON specification.</p>
 
     @name ejs.GeoBboxFilter
+    @borrows ejs.FilterMixin.name as name
+    @borrows ejs.FilterMixin.cache as cache
+    @borrows ejs.FilterMixin.cacheKey as cacheKey
+    @borrows ejs.FilterMixin._type as _type
+    @borrows ejs.FilterMixin.toJSON as toJSON
 
     @desc
     Filter results to those which are contained within the defined bounding box.
@@ -2673,19 +2656,13 @@
     */
   ejs.GeoBboxFilter = function (fieldName) {
 
-    /**
-         The internal filter object. Use <code>toJSON()</code>
-
-         @member ejs.GeoBboxFilter
-         @property {Object} filter
-         */
-    var filter = {
-      geo_bounding_box: {}
-    };
-
+    var
+      _common = ejs.FilterMixin('geo_bounding_box'),
+      filter = _common.toJSON();
+    
     filter.geo_bounding_box[fieldName] = {};
 
-    return {
+    return extend(_common, {
 
       /**
             Sets the fields to filter against.
@@ -2790,76 +2767,9 @@
 
         filter.geo_bounding_box.normalize = trueFalse;
         return this;
-      },
-      
-      /**
-            Sets the filter name.
-
-            @member ejs.GeoBboxFilter
-            @param {String} name A name for the filter.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      name: function (name) {
-        if (name == null) {
-          return filter.geo_bounding_box._name;
-        }
-
-        filter.geo_bounding_box._name = name;
-        return this;
-      },
-
-      /**
-            Enable or disable caching of the filter
-
-            @member ejs.GeoBboxFilter
-            @param {Boolean} trueFalse True to cache the filter, false otherwise.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      cache: function (trueFalse) {
-        if (trueFalse == null) {
-          return filter.geo_bounding_box._cache;
-        }
-
-        filter.geo_bounding_box._cache = trueFalse;
-        return this;
-      },
-    
-      /**
-            Sets the cache key.
-
-            @member ejs.GeoBboxFilter
-            @param {String} key the cache key as a string.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      cacheKey: function (key) {
-        if (key == null) {
-          return filter.geo_bounding_box._cache_key;
-        }
-
-        filter.geo_bounding_box._cache_key = key;
-        return this;
-      },
-
-      /**
-            The type of ejs object.  For internal use only.
-            
-            @member ejs.GeoBboxFilter
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'filter';
-      },
-      
-      /**
-             Returns the filter object.
-
-             @member ejs.GeoBboxFilter
-             @returns {Object} filter object
-             */
-      toJSON: function () {
-        return filter;
       }
-    };
+      
+    });
   };
 
   /**
@@ -2868,6 +2778,11 @@
     point of origin. The format conforms with the GeoJSON specification.</p>
 
     @name ejs.GeoDistanceFilter
+    @borrows ejs.FilterMixin.name as name
+    @borrows ejs.FilterMixin.cache as cache
+    @borrows ejs.FilterMixin.cacheKey as cacheKey
+    @borrows ejs.FilterMixin._type as _type
+    @borrows ejs.FilterMixin.toJSON as toJSON
 
     @desc
     Filter results to those which fall within the given distance of the point of origin.
@@ -2877,20 +2792,13 @@
     */
   ejs.GeoDistanceFilter = function (fieldName) {
 
-    /**
-         The internal filter object. Use <code>toJSON()</code>
-
-         @member ejs.GeoDistanceFilter
-         @property {Object} filter
-         */
-    var filter = {
-      geo_distance: {
-      }
-    };
+    var
+      _common = ejs.FilterMixin('geo_distance'),
+      filter = _common.toJSON();
 
     filter.geo_distance[fieldName] = [0, 0];
     
-    return {
+    return extend(_common, {
 
       /**
             Sets the fields to filter against.
@@ -3041,76 +2949,9 @@
         }
         
         return this;
-      },
-      
-      /**
-            Sets the filter name.
-
-            @member ejs.GeoDistanceFilter
-            @param {String} name A name for the filter.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      name: function (name) {
-        if (name == null) {
-          return filter.geo_distance._name;
-        }
-
-        filter.geo_distance._name = name;
-        return this;
-      },
-
-      /**
-            Enable or disable caching of the filter
-
-            @member ejs.GeoDistanceFilter
-            @param {Boolean} trueFalse True to cache the filter, false otherwise.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      cache: function (trueFalse) {
-        if (trueFalse == null) {
-          return filter.geo_distance._cache;
-        }
-
-        filter.geo_distance._cache = trueFalse;
-        return this;
-      },
-    
-      /**
-            Sets the cache key.
-
-            @member ejs.GeoDistanceFilter
-            @param {String} key the cache key as a string.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      cacheKey: function (key) {
-        if (key == null) {
-          return filter.geo_distance._cache_key;
-        }
-
-        filter.geo_distance._cache_key = key;
-        return this;
-      },
-
-      /**
-            The type of ejs object.  For internal use only.
-            
-            @member ejs.GeoDistanceFilter
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'filter';
-      },
-      
-      /**
-             Returns the filter object.
-
-             @member ejs.GeoDistanceFilter
-             @returns {Object} filter object
-             */
-      toJSON: function () {
-        return filter;
       }
-    };
+      
+    });
   };
 
   /**
@@ -3119,6 +2960,11 @@
     point of origin. The format conforms with the GeoJSON specification.</p>
 
     @name ejs.GeoDistanceRangeFilter
+    @borrows ejs.FilterMixin.name as name
+    @borrows ejs.FilterMixin.cache as cache
+    @borrows ejs.FilterMixin.cacheKey as cacheKey
+    @borrows ejs.FilterMixin._type as _type
+    @borrows ejs.FilterMixin.toJSON as toJSON
 
     @desc
     Filter results to those which fall within the given distance range of the point of origin.
@@ -3128,19 +2974,13 @@
     */
   ejs.GeoDistanceRangeFilter = function (fieldName) {
 
-    /**
-         The internal filter object. Use <code>toJSON()</code>
-
-         @member ejs.GeoDistanceRangeFilter
-         @property {Object} filter
-         */
-    var filter = {
-      geo_distance_range: {}
-    };
+    var
+      _common = ejs.FilterMixin('geo_distance_range'),
+      filter = _common.toJSON();
 
     filter.geo_distance_range[fieldName] = [0, 0];
     
-    return {
+    return extend(_common, {
 
      /**
             Sets the fields to filter against.
@@ -3426,76 +3266,9 @@
         }
         
         return this;
-      },
-      
-      /**
-            Sets the filter name.
-
-            @member ejs.GeoDistanceRangeFilter
-            @param {String} name A name for the filter.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      name: function (name) {
-        if (name == null) {
-          return filter.geo_distance_range._name;
-        }
-
-        filter.geo_distance_range._name = name;
-        return this;
-      },
-
-      /**
-            Enable or disable caching of the filter
-
-            @member ejs.GeoDistanceRangeFilter
-            @param {Boolean} trueFalse True to cache the filter, false otherwise.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      cache: function (trueFalse) {
-        if (trueFalse == null) {
-          return filter.geo_distance_range._cache;
-        }
-
-        filter.geo_distance_range._cache = trueFalse;
-        return this;
-      },
-    
-      /**
-            Sets the cache key.
-
-            @member ejs.GeoDistanceRangeFilter
-            @param {String} key the cache key as a string.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      cacheKey: function (key) {
-        if (key == null) {
-          return filter.geo_distance_range._cache_key;
-        }
-
-        filter.geo_distance_range._cache_key = key;
-        return this;
-      },
-
-      /**
-            The type of ejs object.  For internal use only.
-            
-            @member ejs.GeoDistanceRangeFilter
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'filter';
-      },
-      
-      /**
-             Returns the filter object.
-
-             @member ejs.GeoDistanceRangeFilter
-             @returns {Object} filter object
-             */
-      toJSON: function () {
-        return filter;
       }
-    };
+      
+    });
   };
 
   /**
@@ -3504,6 +3277,11 @@
     for each document as a Geo Point type. The format conforms with the GeoJSON specification.</p>
 
     @name ejs.GeoPolygonFilter
+    @borrows ejs.FilterMixin.name as name
+    @borrows ejs.FilterMixin.cache as cache
+    @borrows ejs.FilterMixin.cacheKey as cacheKey
+    @borrows ejs.FilterMixin._type as _type
+    @borrows ejs.FilterMixin.toJSON as toJSON
 
     @desc
     Filter results to those which are contained within the polygon of points.
@@ -3512,21 +3290,15 @@
     */
   ejs.GeoPolygonFilter = function (fieldName) {
 
-    /**
-         The internal filter object. Use <code>toJSON()</code>
-
-         @member ejs.GeoPolygonFilter
-         @property {Object} filter
-         */
-    var filter = {
-      geo_polygon: {}
-    };
+    var
+      _common = ejs.FilterMixin('geo_polygon'),
+      filter = _common.toJSON(); 
 
     filter.geo_polygon[fieldName] = {
       points: []
     };
 
-    return {
+    return extend(_common, {
 
       /**
            Sets the fields to filter against.
@@ -3603,76 +3375,9 @@
 
         filter.geo_polygon.normalize = trueFalse;
         return this;
-      },
-      
-      /**
-            Sets the filter name.
-
-            @member ejs.GeoPolygonFilter
-            @param {String} name A name for the filter.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      name: function (name) {
-        if (name == null) {
-          return filter.geo_polygon._name;
-        }
-
-        filter.geo_polygon._name = name;
-        return this;
-      },
-
-      /**
-            Enable or disable caching of the filter
-
-            @member ejs.GeoPolygonFilter
-            @param {Boolean} trueFalse True to cache the filter, false otherwise.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      cache: function (trueFalse) {
-        if (trueFalse == null) {
-          return filter.geo_polygon._cache;
-        }
-
-        filter.geo_polygon._cache = trueFalse;
-        return this;
-      },
-    
-      /**
-            Sets the cache key.
-
-            @member ejs.GeoPolygonFilter
-            @param {String} key the cache key as a string.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      cacheKey: function (key) {
-        if (key == null) {
-          return filter.geo_polygon._cache_key;
-        }
-
-        filter.geo_polygon._cache_key = key;
-        return this;
-      },
-
-      /**
-            The type of ejs object.  For internal use only.
-            
-            @member ejs.GeoPolygonFilter
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'filter';
-      },
-      
-      /**
-             Returns the filter object.
-
-             @member ejs.GeoPolygonFilter
-             @returns {Object} filter object
-             */
-      toJSON: function () {
-        return filter;
       }
-    };
+      
+    });
   };
 
   /**
@@ -3687,6 +3392,11 @@
     PrefixTree configuration as defined for the field.</p>
 
     @name ejs.GeoShapeFilter
+    @borrows ejs.FilterMixin.name as name
+    @borrows ejs.FilterMixin.cache as cache
+    @borrows ejs.FilterMixin.cacheKey as cacheKey
+    @borrows ejs.FilterMixin._type as _type
+    @borrows ejs.FilterMixin.toJSON as toJSON
 
     @desc
     A Filter to find documents with a geo_shapes matching a specific shape.
@@ -3694,18 +3404,13 @@
     */
   ejs.GeoShapeFilter = function (field) {
 
-    /**
-         The internal filter object. <code>Use toJSON()</code>
-         @member ejs.GeoShapeFilter
-         @property {Object} GeoShapeFilter
-         */
-    var filter = {
-      geo_shape: {}
-    };
-
+    var
+      _common = ejs.FilterMixin('geo_shape'),
+      filter = _common.toJSON();
+    
     filter.geo_shape[field] = {};
 
-    return {
+    return extend(_common, {
 
       /**
             Sets the field to filter against.
@@ -3823,77 +3528,9 @@
         }
         
         return this;
-      },
-        
-      /**
-            Sets the filter name.
-
-            @member ejs.GeoShapeFilter
-            @param {String} name A name for the filter.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      name: function (name) {
-        if (name == null) {
-          return filter.geo_shape._name;
-        }
-
-        filter.geo_shape._name = name;
-        return this;
-      },
-
-      /**
-            Enable or disable caching of the filter
-
-            @member ejs.GeoShapeFilter
-            @param {Boolean} trueFalse True to cache the filter, false otherwise.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      cache: function (trueFalse) {
-        if (trueFalse == null) {
-          return filter.geo_shape._cache;
-        }
-
-        filter.geo_shape._cache = trueFalse;
-        return this;
-      },
-    
-      /**
-            Sets the cache key.
-
-            @member ejs.GeoShapeFilter
-            @param {String} key the cache key as a string.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      cacheKey: function (key) {
-        if (key == null) {
-          return filter.geo_shape._cache_key;
-        }
-
-        filter.geo_shape._cache_key = key;
-        return this;
-      },
-
-      /**
-            The type of ejs object.  For internal use only.
-            
-            @member ejs.GeoShapeFilter
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'filter';
-      },
-      
-      /**
-            Retrieves the internal <code>filter</code> object. This is typically used by
-            internal API functions so use with caution.
-
-            @member ejs.GeoShapeFilter
-            @returns {String} returns this object's internal <code>filter</code> property.
-            */
-      toJSON: function () {
-        return filter;
       }
-    };
+      
+    });
   };
 
   /**
@@ -3902,6 +3539,11 @@
     matching the query being returned.</p>
 
     @name ejs.HasChildFilter
+    @borrows ejs.FilterMixin.name as name
+    @borrows ejs.FilterMixin.cache as cache
+    @borrows ejs.FilterMixin.cacheKey as cacheKey
+    @borrows ejs.FilterMixin._type as _type
+    @borrows ejs.FilterMixin.toJSON as toJSON
 
     @desc
     Returns results that have child documents matching the filter.
@@ -3915,19 +3557,14 @@
       throw new TypeError('No Query object found');
     }
     
-    /**
-         The internal query object. <code>Use toJSON()</code>
-         @member ejs.HasChildFilter
-         @property {Object} query
-         */
-    var filter = {
-      has_child: {
-        query: qry.toJSON(),
-        type: type
-      }
-    };
+    var 
+      _common = ejs.FilterMixin('has_child'),
+      filter = _common.toJSON();
+    
+    filter.has_child.query = qry.toJSON();
+    filter.has_child.type = type;
 
-    return {
+    return extend(_common, {
 
       /**
             Sets the query
@@ -4013,77 +3650,9 @@
             */
       scope: function (s) {
         return this;
-      },
-
-      /**
-            Sets the filter name.
-
-            @member ejs.HasChildFilter
-            @param {String} name A name for the filter.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      name: function (name) {
-        if (name == null) {
-          return filter.has_child._name;
-        }
-
-        filter.has_child._name = name;
-        return this;
-      },
-
-      /**
-            Enable or disable caching of the filter
-
-            @member ejs.HasChildFilter
-            @param {Boolean} trueFalse True to cache the filter, false otherwise.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      cache: function (trueFalse) {
-        if (trueFalse == null) {
-          return filter.has_child._cache;
-        }
-
-        filter.has_child._cache = trueFalse;
-        return this;
-      },
-  
-      /**
-            Sets the cache key.
-
-            @member ejs.HasChildFilter
-            @param {String} key the cache key as a string.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      cacheKey: function (key) {
-        if (key == null) {
-          return filter.has_child._cache_key;
-        }
-
-        filter.has_child._cache_key = key;
-        return this;
-      },
-
-      /**
-            The type of ejs object.  For internal use only.
-            
-            @member ejs.HasChildFilter
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'filter';
-      },
-      
-      /**
-            Retrieves the internal <code>filter</code> object. This is typically used by
-            internal API functions so use with caution.
-
-            @member ejs.HasChildFilter
-            @returns {String} returns this object's internal <code>filter</code> property.
-            */
-      toJSON: function () {
-        return filter;
       }
-    };
+      
+    });
   };
 
   /**
@@ -4092,6 +3661,11 @@
     the query being returned.</p>
 
     @name ejs.HasParentFilter
+    @borrows ejs.FilterMixin.name as name
+    @borrows ejs.FilterMixin.cache as cache
+    @borrows ejs.FilterMixin.cacheKey as cacheKey
+    @borrows ejs.FilterMixin._type as _type
+    @borrows ejs.FilterMixin.toJSON as toJSON
 
     @desc
     Returns results that have parent documents matching the filter.
@@ -4105,19 +3679,14 @@
       throw new TypeError('No Query object found');
     }
     
-    /**
-         The internal filter object. <code>Use toJSON()</code>
-         @member ejs.HasParentFilter
-         @property {Object} query
-         */
-    var filter = {
-      has_parent: {
-        query: qry.toJSON(),
-        parent_type: parentType
-      }
-    };
+    var 
+      _common = ejs.FilterMixin('has_parent'),
+      filter = _common.toJSON();
+    
+    filter.has_parent.query = qry.toJSON();
+    filter.has_parent.parent_type = parentType;
 
-    return {
+    return extend(_common, {
 
       /**
             Sets the query
@@ -4187,77 +3756,9 @@
             */
       scope: function (s) {
         return this;
-      },
-    
-      /**
-            Sets the filter name.
-
-            @member ejs.HasParentFilter
-            @param {String} name A name for the filter.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      name: function (name) {
-        if (name == null) {
-          return filter.has_parent._name;
-        }
-
-        filter.has_parent._name = name;
-        return this;
-      },
-
-      /**
-            Enable or disable caching of the filter
-
-            @member ejs.HasParentFilter
-            @param {Boolean} trueFalse True to cache the filter, false otherwise.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      cache: function (trueFalse) {
-        if (trueFalse == null) {
-          return filter.has_parent._cache;
-        }
-
-        filter.has_parent._cache = trueFalse;
-        return this;
-      },
-  
-      /**
-            Sets the cache key.
-
-            @member ejs.HasParentFilter
-            @param {String} key the cache key as a string.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      cacheKey: function (key) {
-        if (key == null) {
-          return filter.has_parent._cache_key;
-        }
-
-        filter.has_parent._cache_key = key;
-        return this;
-      },
-
-      /**
-            The type of ejs object.  For internal use only.
-            
-            @member ejs.HasParentFilter
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'filter';
-      },
-      
-      /**
-            Retrieves the internal <code>filter</code> object. This is typically used by
-            internal API functions so use with caution.
-
-            @member ejs.HasParentFilter
-            @returns {String} returns this object's internal <code>filter</code> property.
-            */
-      toJSON: function () {
-        return filter;
       }
-    };
+      
+    });
   };
 
   /**
@@ -4267,6 +3768,11 @@
     _uid field.</p>
 
     @name ejs.IdsFilter
+    @borrows ejs.FilterMixin.name as name
+    @borrows ejs.FilterMixin.cache as cache
+    @borrows ejs.FilterMixin.cacheKey as cacheKey
+    @borrows ejs.FilterMixin._type as _type
+    @borrows ejs.FilterMixin.toJSON as toJSON
 
     @desc
     Matches documents with the specified id(s).
@@ -4275,14 +3781,9 @@
     */
   ejs.IdsFilter = function (ids) {
 
-    /**
-         The internal filter object. <code>Use get()</code>
-         @member ejs.IdsFilter
-         @property {Object} filter
-         */
-    var filter = {
-      ids: {}
-    };
+    var
+      _common = ejs.FilterMixin('ids'),
+      filter = _common.toJSON(); 
   
     if (isString(ids)) {
       filter.ids.values = [ids];
@@ -4292,7 +3793,7 @@
       throw new TypeError('Argument must be a string or an array');
     }
 
-    return {
+    return extend(_common, {
 
       /**
             Sets the values array or adds a new value. if val is a string, it
@@ -4347,45 +3848,9 @@
         }
       
         return this;
-      },
-
-      /**
-            Sets the filter name.
-
-            @member ejs.IdsFilter
-            @param {String} name A name for the filter.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      name: function (name) {
-        if (name == null) {
-          return filter.ids._name;
-        }
-
-        filter.ids._name = name;
-        return this;
-      },
-
-      /**
-            The type of ejs object.  For internal use only.
-            
-            @member ejs.IdsFilter
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'filter';
-      },
-      
-      /**
-            Retrieves the internal <code>filter</code> object. This is typically used by
-            internal API functions so use with caution.
-
-            @member ejs.IdsFilter
-            @returns {String} returns this object's internal <code>filter</code> property.
-            */
-      toJSON: function () {
-        return filter;
       }
-    };
+      
+    });
   };
 
   /**
@@ -4396,6 +3861,11 @@
     is executed on an index that does not match the listed indices.</p>
 
     @name ejs.IndicesFilter
+    @borrows ejs.FilterMixin.name as name
+    @borrows ejs.FilterMixin.cache as cache
+    @borrows ejs.FilterMixin.cacheKey as cacheKey
+    @borrows ejs.FilterMixin._type as _type
+    @borrows ejs.FilterMixin.toJSON as toJSON
 
     @desc
     A configurable filter that is dependent on the index name.
@@ -4410,16 +3880,11 @@
       throw new TypeError('Argument must be a Filter');
     }
   
-    /**
-         The internal filter object. <code>Use toJSON()</code>
-         @member ejs.IndicesFilter
-         @property {Object} filter
-         */
-    var filter = {
-      indices: {
-        filter: fltr.toJSON()
-      }
-    };
+    var 
+      _common = ejs.FilterMixin('indices'),
+      filter = _common.toJSON();
+    
+    filter.indices.filter = fltr.toJSON();
 
     if (isString(indices)) {
       filter.indices.indices = [indices];
@@ -4429,7 +3894,7 @@
       throw new TypeError('Argument must be a string or array');
     }
 
-    return {
+    return extend(_common, {
 
       /**
             Sets the indicies the filter should match.  When passed a string,
@@ -4503,29 +3968,9 @@
         }
     
         return this;
-      },
-
-      /**
-            The type of ejs object.  For internal use only.
-            
-            @member ejs.IndicesFilter
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'filter';
-      },
-      
-      /**
-            Retrieves the internal <code>filter</code> object. This is typically used by
-            internal API functions so use with caution.
-
-            @member ejs.IndicesFilter
-            @returns {String} returns this object's internal <code>filter</code> property.
-            */
-      toJSON: function () {
-        return filter;
       }
-    };
+      
+    });
   };
 
   /**
@@ -4533,6 +3978,11 @@
     <p>A limit filter limits the number of documents (per shard) to execute on.</p>
 
     @name ejs.LimitFilter
+    @borrows ejs.FilterMixin.name as name
+    @borrows ejs.FilterMixin.cache as cache
+    @borrows ejs.FilterMixin.cacheKey as cacheKey
+    @borrows ejs.FilterMixin._type as _type
+    @borrows ejs.FilterMixin.toJSON as toJSON
 
     @desc
     Limits the number of documents to execute on.
@@ -4541,18 +3991,13 @@
     */
   ejs.LimitFilter = function (limit) {
 
-    /**
-         The internal filter object. <code>Use get()</code>
-         @member ejs.LimitFilter
-         @property {Object} filter
-         */
-    var filter = {
-      limit: {
-        value: limit
-      }
-    };
+    var 
+      _common = ejs.FilterMixin('limit'),
+      filter = _common.toJSON();
+    
+    filter.limit.value = limit;
 
-    return {
+    return extend(_common, {
 
       /**
             Sets the limit value.
@@ -4572,29 +4017,9 @@
             
         filter.limit.value = val;
         return this;
-      },
-
-      /**
-            The type of ejs object.  For internal use only.
-            
-            @member ejs.LimitFilter
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'filter';
-      },
-      
-      /**
-            Retrieves the internal <code>filter</code> object. This is typically used by
-            internal API functions so use with caution.
-
-            @member ejs.LimitFilter
-            @returns {String} returns this object's internal <code>filter</code> property.
-            */
-      toJSON: function () {
-        return filter;
       }
-    };
+      
+    });
   };
 
   /**
@@ -4603,6 +4028,11 @@
     in a given set of collections and/or types.</p>
 
     @name ejs.MatchAllFilter
+    @borrows ejs.FilterMixin.name as name
+    @borrows ejs.FilterMixin.cache as cache
+    @borrows ejs.FilterMixin.cacheKey as cacheKey
+    @borrows ejs.FilterMixin._type as _type
+    @borrows ejs.FilterMixin.toJSON as toJSON
 
     @desc
     <p>A filter that matches on all documents</p>
@@ -4610,37 +4040,11 @@
      */
   ejs.MatchAllFilter = function () {
 
-    /**
-         The internal Query object. Use <code>get()</code>.
-         @member ejs.MatchAllFilter
-         @property {Object} filter
-         */
-    var filter = {
-      match_all: {}
-    };
+    var 
+    _common = ejs.FilterMixin('match_all'),
+    filter = _common.toJSON();
 
-    return {
-
-      /**
-            The type of ejs object.  For internal use only.
-            
-            @member ejs.MatchAllFilter
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'filter';
-      },
-      
-      /**
-            This method is used to retrieve the raw filter object. It's designed
-            for internal use when composing and serializing queries.
-            @member ejs.MatchAllFilter
-            @returns {Object} Returns the object's <em>filter</em> property.
-            */
-      toJSON: function () {
-        return filter;
-      }
-    };
+    return _common;
   };
 
   /**
@@ -4648,6 +4052,11 @@
     <p>An missingFilter matches documents where the specified field contains no legitimate value.</p>
 
     @name ejs.MissingFilter
+    @borrows ejs.FilterMixin.name as name
+    @borrows ejs.FilterMixin.cache as cache
+    @borrows ejs.FilterMixin.cacheKey as cacheKey
+    @borrows ejs.FilterMixin._type as _type
+    @borrows ejs.FilterMixin.toJSON as toJSON
 
     @desc
     Filters documents where a specific field has no value present.
@@ -4656,19 +4065,14 @@
     */
   ejs.MissingFilter = function (fieldName) {
 
-    /**
-         The internal filter object. Use <code>get()</code>
+    
+    var 
+      _common = ejs.FilterMixin('missing'),
+      filter = _common.toJSON();
+    
+    filter.missing.field = fieldName;
 
-         @member ejs.MissingFilter
-         @property {Object} filter
-         */
-    var filter = {
-      missing: {
-        field: fieldName
-      }
-    };
-
-    return {
+    return extend(_common, {
 
       /**
             Sets the field to check for missing values.
@@ -4716,44 +4120,9 @@
 
         filter.missing.null_value = trueFalse;
         return this;
-      },
-            
-      /**
-            Sets the filter name.
-
-            @member ejs.MissingFilter
-            @param {String} name A name for the filter.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      name: function (name) {
-        if (name == null) {
-          return filter.missing._name;
-        }
-
-        filter.missing._name = name;
-        return this;
-      },
-
-      /**
-            The type of ejs object.  For internal use only.
-            
-            @member ejs.MissingFilter
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'filter';
-      },
-      
-      /**
-             Returns the filter object.
-
-             @member ejs.MissingFilter
-             @returns {Object} filter object
-             */
-      toJSON: function () {
-        return filter;
       }
-    };
+      
+    });
   };
 
   /**
@@ -4768,6 +4137,11 @@
     parent doc (or parent nested mapping).</p>
   
     @name ejs.NestedFilter
+    @borrows ejs.FilterMixin.name as name
+    @borrows ejs.FilterMixin.cache as cache
+    @borrows ejs.FilterMixin.cacheKey as cacheKey
+    @borrows ejs.FilterMixin._type as _type
+    @borrows ejs.FilterMixin.toJSON as toJSON
 
     @desc
     <p>Constructs a filter that is capable of executing a filter against objects
@@ -4778,18 +4152,13 @@
      */
   ejs.NestedFilter = function (path) {
 
-    /**
-         The internal Filter object. Use <code>toJSON()</code>.
-         @member ejs.NestedFilter
-         @property {Object} filter
-         */
-    var filter = {
-      nested: {
-        path: path
-      }
-    };
+    var 
+      _common = ejs.FilterMixin('nested'),
+      filter = _common.toJSON();
+    
+    filter.nested.path = path;
 
-    return {
+    return extend(_common, {
     
       /**
              Sets the root context for the nested filter.
@@ -4889,77 +4258,9 @@
             */
       scope: function (s) {
         return this;
-      },
-      
-      /**
-            Sets the filter name.
-
-            @member ejs.NestedFilter
-            @param {String} name A name for the filter.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      name: function (name) {
-        if (name == null) {
-          return filter.nested._name;
-        }
-
-        filter.nested._name = name;
-        return this;
-      },
-
-      /**
-            Enable or disable caching of the filter
-
-            @member ejs.NestedFilter
-            @param {Boolean} trueFalse True to cache the filter, false otherwise.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      cache: function (trueFalse) {
-        if (trueFalse == null) {
-          return filter.nested._cache;
-        }
-
-        filter.nested._cache = trueFalse;
-        return this;
-      },
-  
-      /**
-            Sets the cache key.
-
-            @member ejs.NestedFilter
-            @param {String} key the cache key as a string.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      cacheKey: function (key) {
-        if (key == null) {
-          return filter.nested._cache_key;
-        }
-
-        filter.nested._cache_key = key;
-        return this;
-      },
-
-      /**
-            The type of ejs object.  For internal use only.
-            
-            @member ejs.NestedFilter
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'filter';
-      },
-      
-      /**
-            This method is used to retrieve the raw filter object. It's designed
-            for internal use when composing and serializing filters.
-            
-            @member ejs.NestedFilter
-            @returns {Object} Returns the object's <em>filter</em> property.
-            */
-      toJSON: function () {
-        return filter;
       }
-    };
+      
+    });
   };
 
   /**
@@ -4968,6 +4269,11 @@
     contained filter.</p>
 
     @name ejs.NotFilter
+    @borrows ejs.FilterMixin.name as name
+    @borrows ejs.FilterMixin.cache as cache
+    @borrows ejs.FilterMixin.cacheKey as cacheKey
+    @borrows ejs.FilterMixin._type as _type
+    @borrows ejs.FilterMixin.toJSON as toJSON
 
     @desc
     Container filter that excludes the matched documents of the contained filter.
@@ -4980,17 +4286,13 @@
       throw new TypeError('Argument must be a Filter');
     }
     
-    /**
-         The internal filter object. Use <code>toJSON()</code>
+    var 
+      _common = ejs.FilterMixin('not'),
+      filter = _common.toJSON();
+    
+    filter.not = oFilter.toJSON();
 
-         @member ejs.NotFilter
-         @property {Object} filter
-         */
-    var filter = {
-      not: oFilter.toJSON()
-    };
-
-    return {
+    return extend(_common, {
 
       /**
              Sets the filter
@@ -5010,76 +4312,9 @@
         
         filter.not = fltr.toJSON();
         return this;
-      },
-
-      /**
-            Sets the filter name.
-
-            @member ejs.NotFilter
-            @param {String} name A name for the filter.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      name: function (name) {
-        if (name == null) {
-          return filter.not._name;
-        }
-
-        filter.not._name = name;
-        return this;
-      },
-
-      /**
-            Enable or disable caching of the filter
-
-            @member ejs.NotFilter
-            @param {Boolean} trueFalse True to cache the filter, false otherwise.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      cache: function (trueFalse) {
-        if (trueFalse == null) {
-          return filter.not._cache;
-        }
-
-        filter.not._cache = trueFalse;
-        return this;
-      },
-    
-      /**
-            Sets the cache key.
-
-            @member ejs.NotFilter
-            @param {String} key the cache key as a string.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      cacheKey: function (key) {
-        if (key == null) {
-          return filter.not._cache_key;
-        }
-
-        filter.not._cache_key = key;
-        return this;
-      },
-
-      /**
-            The type of ejs object.  For internal use only.
-            
-            @member ejs.NotFilter
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'filter';
-      },
-      
-      /**
-             Returns the filter object.
-
-             @member ejs.NotFilter
-             @returns {Object} filter object
-             */
-      toJSON: function () {
-        return filter;
       }
-    };
+      
+    });
   };
 
   /**
@@ -5098,6 +4333,11 @@
     filter should be used.</p>
 
     @name ejs.NumericRangeFilter
+    @borrows ejs.FilterMixin.name as name
+    @borrows ejs.FilterMixin.cache as cache
+    @borrows ejs.FilterMixin.cacheKey as cacheKey
+    @borrows ejs.FilterMixin._type as _type
+    @borrows ejs.FilterMixin.toJSON as toJSON
 
     @desc
     A Filter that only accepts numeric values within a specified range.
@@ -5106,19 +4346,13 @@
     */
   ejs.NumericRangeFilter = function (fieldName) {
 
-    /**
-         The internal filter object. Use <code>get()</code>
-
-         @member ejs.NumericRangeFilter
-         @property {Object} filter
-         */
-    var filter = {
-      numeric_range: {}
-    };
+    var
+      _common = ejs.FilterMixin('numeric_range'),
+      filter = _common.toJSON();
 
     filter.numeric_range[fieldName] = {};
 
-    return {
+    return extend(_common, {
 
       /**
              Returns the field name used to create this object.
@@ -5297,76 +4531,9 @@
         
         filter.numeric_range[fieldName].lte = val;
         return this;
-      },
-                          
-      /**
-            Sets the filter name.
-
-            @member ejs.NumericRangeFilter
-            @param {String} name A name for the filter.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      name: function (name) {
-        if (name == null) {
-          return filter.numeric_range._name;
-        }
-
-        filter.numeric_range._name = name;
-        return this;
-      },
-
-      /**
-            Enable or disable caching of the filter
-
-            @member ejs.NumericRangeFilter
-            @param {Boolean} trueFalse True to cache the filter, false otherwise.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      cache: function (trueFalse) {
-        if (trueFalse == null) {
-          return filter.numeric_range._cache;
-        }
-
-        filter.numeric_range._cache = trueFalse;
-        return this;
-      },
-
-      /**
-            Sets the cache key.
-
-            @member ejs.NumericRangeFilter
-            @param {String} key the cache key as a string.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      cacheKey: function (key) {
-        if (key == null) {
-          return filter.numeric_range._cache_key;
-        }
-
-        filter.numeric_range._cache_key = key;
-        return this;
-      },
-
-      /**
-            The type of ejs object.  For internal use only.
-            
-            @member ejs.NumericRangeFilter
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'filter';
-      },
-      
-      /**
-             Returns the filter object.
-
-             @member ejs.NumericRangeFilter
-             @returns {Object} filter object
-             */
-      toJSON: function () {
-        return filter;
       }
-    };
+      
+    });
   };
 
   /**
@@ -5374,6 +4541,11 @@
     A container filter that allows Boolean OR composition of filters.
 
     @name ejs.OrFilter
+    @borrows ejs.FilterMixin.name as name
+    @borrows ejs.FilterMixin.cache as cache
+    @borrows ejs.FilterMixin.cacheKey as cacheKey
+    @borrows ejs.FilterMixin._type as _type
+    @borrows ejs.FilterMixin.toJSON as toJSON
 
     @desc
     A container Filter that allows Boolean OR composition of filters.
@@ -5382,19 +4554,13 @@
     */
   ejs.OrFilter = function (filters) {
 
-    /**
-         The internal filter object. Use <code>toJSON()</code>
+    var
+      i, 
+      len,
+      _common = ejs.FilterMixin('or'),
+      filter = _common.toJSON();
 
-         @member ejs.OrFilter
-         @property {Object} filter
-         */
-    var filter, i, len;
-
-    filter = {
-      or: {
-        filters: []
-      }
-    };
+    filter.or.filters = [];
 
     if (isFilter(filters)) {
       filter.or.filters.push(filters.toJSON());
@@ -5410,7 +4576,7 @@
       throw new TypeError('Argument must be a Filter or array of Filters');
     }
 
-    return {
+    return extend(_common, {
 
       /**
              Updates the filters.  If passed a single Filter it is added to 
@@ -5444,76 +4610,9 @@
         }
         
         return this;
-      },
-
-      /**
-            Sets the filter name.
-
-            @member ejs.OrFilter
-            @param {String} name A name for the filter.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      name: function (name) {
-        if (name == null) {
-          return filter.or._name;
-        }
-
-        filter.or._name = name;
-        return this;
-      },
-
-      /**
-            Enable or disable caching of the filter
-
-            @member ejs.OrFilter
-            @param {Boolean} trueFalse True to cache the filter, false otherwise.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      cache: function (trueFalse) {
-        if (trueFalse == null) {
-          return filter.or._cache;
-        }
-
-        filter.or._cache = trueFalse;
-        return this;
-      },
-
-      /**
-            Sets the cache key.
-
-            @member ejs.OrFilter
-            @param {String} key the cache key as a string.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      cacheKey: function (key) {
-        if (key == null) {
-          return filter.or._cache_key;
-        }
-
-        filter.or._cache_key = key;
-        return this;
-      },
-
-      /**
-            The type of ejs object.  For internal use only.
-            
-            @member ejs.OrFilter
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'filter';
-      },
-      
-      /**
-             Returns the filter object.
-
-             @member ejs.OrFilter
-             @returns {Object} filter object
-             */
-      toJSON: function () {
-        return filter;
       }
-    };
+      
+    });
   };
 
   /**
@@ -5522,6 +4621,11 @@
     to phrase query, except that it acts as a filter. Can be placed within queries that accept a filter.</p>
 
     @name ejs.PrefixFilter
+    @borrows ejs.FilterMixin.name as name
+    @borrows ejs.FilterMixin.cache as cache
+    @borrows ejs.FilterMixin.cacheKey as cacheKey
+    @borrows ejs.FilterMixin._type as _type
+    @borrows ejs.FilterMixin.toJSON as toJSON
 
     @desc
     Filters documents that have fields containing terms with a specified prefix.
@@ -5531,19 +4635,13 @@
     */
   ejs.PrefixFilter = function (fieldName, prefix) {
 
-    /**
-         The internal filter object. Use <code>get()</code>
-
-         @member ejs.PrefixFilter
-         @property {Object} filter
-         */
-    var filter = {
-      prefix: {}
-    };
+    var
+      _common = ejs.FilterMixin('prefix'),
+      filter = _common.toJSON();
 
     filter.prefix[fieldName] = prefix;
     
-    return {
+    return extend(_common, {
 
       /**
              Returns the field name used to create this object.
@@ -5581,76 +4679,9 @@
       
         filter.prefix[fieldName] = value;
         return this;
-      },
-
-      /**
-            Sets the filter name.
-
-            @member ejs.PrefixFilter
-            @param {String} name A name for the filter.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      name: function (name) {
-        if (name == null) {
-          return filter.prefix._name;
-        }
-
-        filter.prefix._name = name;
-        return this;
-      },
-
-      /**
-            Enable or disable caching of the filter
-
-            @member ejs.PrefixFilter
-            @param {Boolean} trueFalse True to cache the filter, false otherwise.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      cache: function (trueFalse) {
-        if (trueFalse == null) {
-          return filter.prefix._cache;
-        }
-
-        filter.prefix._cache = trueFalse;
-        return this;
-      },
-
-      /**
-            Sets the cache key.
-
-            @member ejs.PrefixFilter
-            @param {String} key the cache key as a string.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      cacheKey: function (key) {
-        if (key == null) {
-          return filter.prefix._cache_key;
-        }
-
-        filter.prefix._cache_key = key;
-        return this;
-      },
-
-      /**
-            The type of ejs object.  For internal use only.
-            
-            @member ejs.PrefixFilter
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'filter';
-      },
-      
-      /**
-             Returns the filter object.
-
-             @member ejs.PrefixFilter
-             @returns {Object} filter object
-             */
-      toJSON: function () {
-        return filter;
       }
-    };
+      
+    });
   };
 
   /**
@@ -5666,6 +4697,11 @@
     caching (since it needs to satisfy different queries).</p>
   
     @name ejs.QueryFilter
+    @borrows ejs.FilterMixin.name as name
+    @borrows ejs.FilterMixin.cache as cache
+    @borrows ejs.FilterMixin.cacheKey as cacheKey
+    @borrows ejs.FilterMixin._type as _type
+    @borrows ejs.FilterMixin.toJSON as toJSON
 
     @desc
     Filters documents matching the wrapped query.
@@ -5678,18 +4714,13 @@
       throw new TypeError('Argument must be a Query');
     }
     
-    /**
-         The internal query object. <code>Use toJSON()</code>
-         @member ejs.QueryFilter
-         @property {Object} query
-         */
-    var filter = {
-      fquery: {
-        query: qry.toJSON()
-      }
-    };
+    var
+      _common = ejs.FilterMixin('fquery'),
+      filter = _common.toJSON();
+    
+    filter.fquery.query = qry.toJSON();
 
-    return {
+    return extend(_common, {
 
       /**
             Sets the query
@@ -5709,77 +4740,9 @@
         
         filter.fquery.query = q.toJSON();
         return this;
-      },
-
-      /**
-            Sets the filter name.
-
-            @member ejs.QueryFilter
-            @param {String} name A name for the filter.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      name: function (name) {
-        if (name == null) {
-          return filter.fquery._name;
-        }
-
-        filter.fquery._name = name;
-        return this;
-      },
-
-      /**
-            Enable or disable caching of the filter
-
-            @member ejs.QueryFilter
-            @param {Boolean} trueFalse True to cache the filter, false otherwise.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      cache: function (trueFalse) {
-        if (trueFalse == null) {
-          return filter.fquery._cache;
-        }
-
-        filter.fquery._cache = trueFalse;
-        return this;
-      },
-  
-      /**
-            Sets the cache key.
-
-            @member ejs.QueryFilter
-            @param {String} key the cache key as a string.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      cacheKey: function (key) {
-        if (key == null) {
-          return filter.fquery._cache_key;
-        }
-
-        filter.fquery._cache_key = key;
-        return this;
-      },
-
-      /**
-            The type of ejs object.  For internal use only.
-            
-            @member ejs.QueryFilter
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'filter';
-      },
-      
-      /**
-            Retrieves the internal <code>filter</code> object. This is typically used by
-            internal API functions so use with caution.
-
-            @member ejs.QueryFilter
-            @returns {String} returns this object's internal <code>filter</code> property.
-            */
-      toJSON: function () {
-        return filter;
       }
-    };
+      
+    });
   };
 
   /**
@@ -5787,6 +4750,11 @@
     <p>Matches documents with fields that have terms within a certain range.</p>
 
     @name ejs.RangeFilter
+    @borrows ejs.FilterMixin.name as name
+    @borrows ejs.FilterMixin.cache as cache
+    @borrows ejs.FilterMixin.cacheKey as cacheKey
+    @borrows ejs.FilterMixin._type as _type
+    @borrows ejs.FilterMixin.toJSON as toJSON
 
     @desc
     Filters documents with fields that have terms within a certain range.
@@ -5795,18 +4763,13 @@
     */
   ejs.RangeFilter = function (field) {
 
-    /**
-         The internal filter object. <code>Use get()</code>
-         @member ejs.RangeFilter
-         @property {Object} filter
-         */
-    var filter = {
-      range: {}
-    };
+    var
+      _common = ejs.FilterMixin('range'),
+      filter = _common.toJSON();
 
     filter.range[field] = {};
 
-    return {
+    return extend(_common, {
 
       /**
              The field to run the filter against.
@@ -5960,77 +4923,9 @@
 
         filter.range[field].lte = val;
         return this;
-      },
-                          
-      /**
-            Sets the filter name.
-
-            @member ejs.RangeFilter
-            @param {String} name A name for the filter.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      name: function (name) {
-        if (name == null) {
-          return filter.range._name;
-        }
-
-        filter.range._name = name;
-        return this;
-      },
-
-      /**
-            Enable or disable caching of the filter
-
-            @member ejs.RangeFilter
-            @param {Boolean} trueFalse True to cache the filter, false otherwise.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      cache: function (trueFalse) {
-        if (trueFalse == null) {
-          return filter.range._cache;
-        }
-
-        filter.range._cache = trueFalse;
-        return this;
-      },
-
-      /**
-            Sets the cache key.
-
-            @member ejs.RangeFilter
-            @param {String} key the cache key as a string.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      cacheKey: function (key) {
-        if (key == null) {
-          return filter.range._cache_key;
-        }
-
-        filter.range._cache_key = key;
-        return this;
-      },
-
-      /**
-            The type of ejs object.  For internal use only.
-            
-            @member ejs.RangeFilter
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'filter';
-      },
-      
-      /**
-            Retrieves the internal <code>filter</code> object. This is typically used by
-            internal API functions so use with caution.
-
-            @member ejs.RangeFilter
-            @returns {String} returns this object's internal <code>filter</code> property.
-            */
-      toJSON: function () {
-        return filter;
       }
-    };
+      
+    });
   };
 
   /**
@@ -6040,6 +4935,11 @@
     over index terms.</p>
 
     @name ejs.RegexpFilter
+    @borrows ejs.FilterMixin.name as name
+    @borrows ejs.FilterMixin.cache as cache
+    @borrows ejs.FilterMixin.cacheKey as cacheKey
+    @borrows ejs.FilterMixin._type as _type
+    @borrows ejs.FilterMixin.toJSON as toJSON
 
     @desc
     Matches documents that have fields matching a regular expression.
@@ -6049,20 +4949,15 @@
     */
   ejs.RegexpFilter = function (field, value) {
 
-    /**
-         The internal filter object. <code>Use get()</code>
-         @member ejs.RegexpFilter
-         @property {Object} filter
-         */
-    var filter = {
-      regexp: {}
-    };
+    var
+    _common = ejs.FilterMixin('regexp'),
+    filter = _common.toJSON();
 
     filter.regexp[field] = {
       value: value
     };
 
-    return {
+    return extend(_common, {
 
       /**
              The field to run the filter against.
@@ -6144,77 +5039,9 @@
 
         filter.regexp[field].flags_value = v;
         return this;
-      },
-
-      /**
-            Sets the filter name.
-
-            @member ejs.RegexpFilter
-            @param {String} name A name for the filter.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      name: function (name) {
-        if (name == null) {
-          return filter.regexp._name;
-        }
-
-        filter.regexp._name = name;
-        return this;
-      },
-
-      /**
-            Enable or disable caching of the filter
-
-            @member ejs.RegexpFilter
-            @param {Boolean} trueFalse True to cache the filter, false otherwise.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      cache: function (trueFalse) {
-        if (trueFalse == null) {
-          return filter.regexp._cache;
-        }
-
-        filter.regexp._cache = trueFalse;
-        return this;
-      },
-
-      /**
-            Sets the cache key.
-
-            @member ejs.RegexpFilter
-            @param {String} key the cache key as a string.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      cacheKey: function (key) {
-        if (key == null) {
-          return filter.regexp._cache_key;
-        }
-
-        filter.regexp._cache_key = key;
-        return this;
-      },
-
-      /**
-            The type of ejs object.  For internal use only.
-        
-            @member ejs.RegexpFilter
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'filter';
-      },
-  
-      /**
-            Retrieves the internal <code>filter</code> object. This is typically used by
-            internal API functions so use with caution.
-
-            @member ejs.RegexpFilter
-            @returns {String} returns this object's internal <code>filter</code> property.
-            */
-      toJSON: function () {
-        return filter;
       }
-    };
+      
+    });
   };
 
   /**
@@ -6222,6 +5049,11 @@
     <p>A filter allowing to define scripts as filters</p>
 
     @name ejs.ScriptFilter
+    @borrows ejs.FilterMixin.name as name
+    @borrows ejs.FilterMixin.cache as cache
+    @borrows ejs.FilterMixin.cacheKey as cacheKey
+    @borrows ejs.FilterMixin._type as _type
+    @borrows ejs.FilterMixin.toJSON as toJSON
 
     @desc
     A filter allowing to define scripts as filters.
@@ -6230,18 +5062,13 @@
     */
   ejs.ScriptFilter = function (script) {
 
-    /**
-         The internal filter object. <code>Use get()</code>
-         @member ejs.ScriptFilter
-         @property {Object} filter
-         */
-    var filter = {
-      script: {
-        script: script
-      }
-    };
+    var
+      _common = ejs.FilterMixin('script'),
+      filter = _common.toJSON();
+    
+    filter.script.script = script;
 
-    return {
+    return extend(_common, {
 
       /**
             Sets the script.
@@ -6291,77 +5118,9 @@
   
         filter.script.lang = lang;
         return this;
-      },
-    
-      /**
-            Sets the filter name.
-
-            @member ejs.ScriptFilter
-            @param {String} name A name for the filter.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      name: function (name) {
-        if (name == null) {
-          return filter.script._name;
-        }
-
-        filter.script._name = name;
-        return this;
-      },
-
-      /**
-            Enable or disable caching of the filter
-
-            @member ejs.ScriptFilter
-            @param {Boolean} trueFalse True to cache the filter, false otherwise.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      cache: function (trueFalse) {
-        if (trueFalse == null) {
-          return filter.script._cache;
-        }
-
-        filter.script._cache = trueFalse;
-        return this;
-      },
-
-      /**
-            Sets the cache key.
-
-            @member ejs.ScriptFilter
-            @param {String} key the cache key as a string.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      cacheKey: function (key) {
-        if (key == null) {
-          return filter.script._cache_key;
-        }
-
-        filter.script._cache_key = key;
-        return this;
-      },
-
-      /**
-            The type of ejs object.  For internal use only.
-            
-            @member ejs.ScriptFilter
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'filter';
-      },
-      
-      /**
-            Retrieves the internal <code>filter</code> object. This is typically used by
-            internal API functions so use with caution.
-
-            @member ejs.ScriptFilter
-            @returns {String} returns this object's internal <code>filter</code> property.
-            */
-      toJSON: function () {
-        return filter;
       }
-    };
+      
+    });
   };
 
   /**
@@ -6371,6 +5130,11 @@
     terms that are not necessarily in a sequence.</p>
 
     @name ejs.TermFilter
+    @borrows ejs.FilterMixin.name as name
+    @borrows ejs.FilterMixin.cache as cache
+    @borrows ejs.FilterMixin.cacheKey as cacheKey
+    @borrows ejs.FilterMixin._type as _type
+    @borrows ejs.FilterMixin.toJSON as toJSON
 
     @desc
     Constructs a filter for docs matching the term added to this object.
@@ -6380,18 +5144,13 @@
     */
   ejs.TermFilter = function (fieldName, term) {
 
-    /**
-         The internal filter object. Use the get() method for access.
-         @member ejs.TermFilter
-         @property {Object} filter
-         */
-    var filter = {
-      term: {}
-    };
+    var
+      _common = ejs.FilterMixin('term'),
+      filter = _common.toJSON();
 
     filter.term[fieldName] = term;
 
-    return {
+    return extend(_common, {
 
       /**
              Provides access to the filter fieldName used to construct the 
@@ -6433,76 +5192,9 @@
       
         filter.term[fieldName] = v;
         return this;
-      },
-
-      /**
-            Sets the filter name.
-
-            @member ejs.TermFilter
-            @param {String} name A name for the filter.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      name: function (name) {
-        if (name == null) {
-          return filter.term._name;
-        }
-
-        filter.term._name = name;
-        return this;
-      },
-
-      /**
-            Enable or disable caching of the filter
-
-            @member ejs.TermFilter
-            @param {Boolean} trueFalse True to cache the filter, false otherwise.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      cache: function (trueFalse) {
-        if (trueFalse == null) {
-          return filter.term._cache;
-        }
-
-        filter.term._cache = trueFalse;
-        return this;
-      },
-
-      /**
-            Sets the cache key.
-
-            @member ejs.TermFilter
-            @param {String} key the cache key as a string.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      cacheKey: function (key) {
-        if (key == null) {
-          return filter.term._cache_key;
-        }
-
-        filter.term._cache_key = key;
-        return this;
-      },
-    
-      /**
-            The type of ejs object.  For internal use only.
-            
-            @member ejs.TermFilter
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'filter';
-      },
-      
-      /**
-            Returns the filter object.  For internal use only.
-            
-            @member ejs.TermFilter
-            @returns {Object} Returns the object's filter property.
-            */
-      toJSON: function () {
-        return filter;
       }
-    };
+      
+    });
   };
 
   /**
@@ -6511,6 +5203,11 @@
     terms (not analyzed)</p>
 
     @name ejs.TermsFilter
+    @borrows ejs.FilterMixin.name as name
+    @borrows ejs.FilterMixin.cache as cache
+    @borrows ejs.FilterMixin.cacheKey as cacheKey
+    @borrows ejs.FilterMixin._type as _type
+    @borrows ejs.FilterMixin.toJSON as toJSON
 
     @desc
     A Filter that matches documents containing provided terms. 
@@ -6520,28 +5217,23 @@
     */
   ejs.TermsFilter = function (field, terms) {
 
-    /**
-         The internal filter object. <code>Use get()</code>
-         @member ejs.TermsFilter
-         @property {Object} filter
-         */
-    var filter = {
-      terms: {}
-    },
+    var
+      _common = ejs.FilterMixin('terms'),
+      filter = _common.toJSON(),
     
-    // make sure we are setup for a list of terms
-    setupTerms = function () {
-      if (!isArray(filter.terms[field])) {
-        filter.terms[field] = [];
-      }
-    },
+      // make sure we are setup for a list of terms
+      setupTerms = function () {
+        if (!isArray(filter.terms[field])) {
+          filter.terms[field] = [];
+        }
+      },
     
-    // make sure we are setup for a terms lookup
-    setupLookup = function () {
-      if (isArray(filter.terms[field])) {
-        filter.terms[field] = {};
-      }
-    };
+      // make sure we are setup for a terms lookup
+      setupLookup = function () {
+        if (isArray(filter.terms[field])) {
+          filter.terms[field] = {};
+        }
+      };
    
     if (isArray(terms)) {
       filter.terms[field] = terms;
@@ -6549,7 +5241,7 @@
       filter.terms[field] = [terms];
     }
 
-    return {
+    return extend(_common, {
 
       /**
             Sets the fields to filter against.
@@ -6732,77 +5424,9 @@
         }
       
         return this;
-      },
-    
-      /**
-            Sets the filter name.
-
-            @member ejs.TermsFilter
-            @param {String} name A name for the filter.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      name: function (name) {
-        if (name == null) {
-          return filter.terms._name;
-        }
-
-        filter.terms._name = name;
-        return this;
-      },
-
-      /**
-            Enable or disable caching of the filter
-
-            @member ejs.TermsFilter
-            @param {Boolean} trueFalse True to cache the filter, false otherwise.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      cache: function (trueFalse) {
-        if (trueFalse == null) {
-          return filter.terms._cache;
-        }
-
-        filter.terms._cache = trueFalse;
-        return this;
-      },
-  
-      /**
-            Sets the cache key.
-
-            @member ejs.TermsFilter
-            @param {String} key the cache key as a string.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      cacheKey: function (key) {
-        if (key == null) {
-          return filter.terms._cache_key;
-        }
-
-        filter.terms._cache_key = key;
-        return this;
-      },
-
-      /**
-            The type of ejs object.  For internal use only.
-            
-            @member ejs.TermsFilter
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'filter';
-      },
-      
-      /**
-            Retrieves the internal <code>filter</code> object. This is typically used by
-            internal API functions so use with caution.
-
-            @member ejs.TermsFilter
-            @returns {String} returns this object's internal <code>filter</code> property.
-            */
-      toJSON: function () {
-        return filter;
       }
-    };
+      
+    });
   };
 
   /**
@@ -6810,6 +5434,11 @@
     <p>A Filter that filters results by a specified index type.</p>
 
     @name ejs.TypeFilter
+    @borrows ejs.FilterMixin.name as name
+    @borrows ejs.FilterMixin.cache as cache
+    @borrows ejs.FilterMixin.cacheKey as cacheKey
+    @borrows ejs.FilterMixin._type as _type
+    @borrows ejs.FilterMixin.toJSON as toJSON
 
     @desc
     Filter results by a specified index type.
@@ -6818,22 +5447,16 @@
     */
   ejs.TypeFilter = function (type) {
 
-    /**
-         The internal filter object. Use <code>get()</code>
+    var 
+    _common = ejs.FilterMixin('type'),
+    filter = _common.toJSON();
+    
+    filter.type.value = type;
 
-         @member ejs.TypeFilter
-         @property {Object} filter
-         */
-    var filter = {
-      "type": {
-        "value": type
-      }
-    };
-
-    return {
+    return extend(_common, {
 
       /**
-             * Sets the type
+             Sets the type
 
              @member ejs.TypeFilter
              @param {String} type the index type to filter on
@@ -6846,28 +5469,9 @@
       
         filter.type.value = type;
         return this;
-      },
-
-      /**
-            The type of ejs object.  For internal use only.
-            
-            @member ejs.TypeFilter
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'filter';
-      },
-      
-      /**
-             Returns the filter object.
-
-             @member ejs.TypeFilter
-             @returns {Object} filter object
-             */
-      toJSON: function () {
-        return filter;
       }
-    };
+      
+    });
   };
 
   /**

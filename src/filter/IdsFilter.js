@@ -5,6 +5,11 @@
     _uid field.</p>
 
     @name ejs.IdsFilter
+    @borrows ejs.FilterMixin.name as name
+    @borrows ejs.FilterMixin.cache as cache
+    @borrows ejs.FilterMixin.cacheKey as cacheKey
+    @borrows ejs.FilterMixin._type as _type
+    @borrows ejs.FilterMixin.toJSON as toJSON
 
     @desc
     Matches documents with the specified id(s).
@@ -13,14 +18,9 @@
     */
   ejs.IdsFilter = function (ids) {
 
-    /**
-         The internal filter object. <code>Use get()</code>
-         @member ejs.IdsFilter
-         @property {Object} filter
-         */
-    var filter = {
-      ids: {}
-    };
+    var
+      _common = ejs.FilterMixin('ids'),
+      filter = _common.toJSON(); 
   
     if (isString(ids)) {
       filter.ids.values = [ids];
@@ -30,7 +30,7 @@
       throw new TypeError('Argument must be a string or an array');
     }
 
-    return {
+    return extend(_common, {
 
       /**
             Sets the values array or adds a new value. if val is a string, it
@@ -85,43 +85,7 @@
         }
       
         return this;
-      },
-
-      /**
-            Sets the filter name.
-
-            @member ejs.IdsFilter
-            @param {String} name A name for the filter.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      name: function (name) {
-        if (name == null) {
-          return filter.ids._name;
-        }
-
-        filter.ids._name = name;
-        return this;
-      },
-
-      /**
-            The type of ejs object.  For internal use only.
-            
-            @member ejs.IdsFilter
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'filter';
-      },
-      
-      /**
-            Retrieves the internal <code>filter</code> object. This is typically used by
-            internal API functions so use with caution.
-
-            @member ejs.IdsFilter
-            @returns {String} returns this object's internal <code>filter</code> property.
-            */
-      toJSON: function () {
-        return filter;
       }
-    };
+      
+    });
   };

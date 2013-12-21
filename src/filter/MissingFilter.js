@@ -3,6 +3,11 @@
     <p>An missingFilter matches documents where the specified field contains no legitimate value.</p>
 
     @name ejs.MissingFilter
+    @borrows ejs.FilterMixin.name as name
+    @borrows ejs.FilterMixin.cache as cache
+    @borrows ejs.FilterMixin.cacheKey as cacheKey
+    @borrows ejs.FilterMixin._type as _type
+    @borrows ejs.FilterMixin.toJSON as toJSON
 
     @desc
     Filters documents where a specific field has no value present.
@@ -11,19 +16,14 @@
     */
   ejs.MissingFilter = function (fieldName) {
 
-    /**
-         The internal filter object. Use <code>get()</code>
+    
+    var 
+      _common = ejs.FilterMixin('missing'),
+      filter = _common.toJSON();
+    
+    filter.missing.field = fieldName;
 
-         @member ejs.MissingFilter
-         @property {Object} filter
-         */
-    var filter = {
-      missing: {
-        field: fieldName
-      }
-    };
-
-    return {
+    return extend(_common, {
 
       /**
             Sets the field to check for missing values.
@@ -71,42 +71,7 @@
 
         filter.missing.null_value = trueFalse;
         return this;
-      },
-            
-      /**
-            Sets the filter name.
-
-            @member ejs.MissingFilter
-            @param {String} name A name for the filter.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      name: function (name) {
-        if (name == null) {
-          return filter.missing._name;
-        }
-
-        filter.missing._name = name;
-        return this;
-      },
-
-      /**
-            The type of ejs object.  For internal use only.
-            
-            @member ejs.MissingFilter
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'filter';
-      },
-      
-      /**
-             Returns the filter object.
-
-             @member ejs.MissingFilter
-             @returns {Object} filter object
-             */
-      toJSON: function () {
-        return filter;
       }
-    };
+      
+    });
   };

@@ -11,6 +11,11 @@
     caching (since it needs to satisfy different queries).</p>
   
     @name ejs.QueryFilter
+    @borrows ejs.FilterMixin.name as name
+    @borrows ejs.FilterMixin.cache as cache
+    @borrows ejs.FilterMixin.cacheKey as cacheKey
+    @borrows ejs.FilterMixin._type as _type
+    @borrows ejs.FilterMixin.toJSON as toJSON
 
     @desc
     Filters documents matching the wrapped query.
@@ -23,18 +28,13 @@
       throw new TypeError('Argument must be a Query');
     }
     
-    /**
-         The internal query object. <code>Use toJSON()</code>
-         @member ejs.QueryFilter
-         @property {Object} query
-         */
-    var filter = {
-      fquery: {
-        query: qry.toJSON()
-      }
-    };
+    var
+      _common = ejs.FilterMixin('fquery'),
+      filter = _common.toJSON();
+    
+    filter.fquery.query = qry.toJSON();
 
-    return {
+    return extend(_common, {
 
       /**
             Sets the query
@@ -54,75 +54,7 @@
         
         filter.fquery.query = q.toJSON();
         return this;
-      },
-
-      /**
-            Sets the filter name.
-
-            @member ejs.QueryFilter
-            @param {String} name A name for the filter.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      name: function (name) {
-        if (name == null) {
-          return filter.fquery._name;
-        }
-
-        filter.fquery._name = name;
-        return this;
-      },
-
-      /**
-            Enable or disable caching of the filter
-
-            @member ejs.QueryFilter
-            @param {Boolean} trueFalse True to cache the filter, false otherwise.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      cache: function (trueFalse) {
-        if (trueFalse == null) {
-          return filter.fquery._cache;
-        }
-
-        filter.fquery._cache = trueFalse;
-        return this;
-      },
-  
-      /**
-            Sets the cache key.
-
-            @member ejs.QueryFilter
-            @param {String} key the cache key as a string.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      cacheKey: function (key) {
-        if (key == null) {
-          return filter.fquery._cache_key;
-        }
-
-        filter.fquery._cache_key = key;
-        return this;
-      },
-
-      /**
-            The type of ejs object.  For internal use only.
-            
-            @member ejs.QueryFilter
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'filter';
-      },
-      
-      /**
-            Retrieves the internal <code>filter</code> object. This is typically used by
-            internal API functions so use with caution.
-
-            @member ejs.QueryFilter
-            @returns {String} returns this object's internal <code>filter</code> property.
-            */
-      toJSON: function () {
-        return filter;
       }
-    };
+      
+    });
   };

@@ -4,6 +4,11 @@
     and the field contains a legitimate value.</p>
 
     @name ejs.ExistsFilter
+    @borrows ejs.FilterMixin.name as name
+    @borrows ejs.FilterMixin.cache as cache
+    @borrows ejs.FilterMixin.cacheKey as cacheKey
+    @borrows ejs.FilterMixin._type as _type
+    @borrows ejs.FilterMixin.toJSON as toJSON
 
     @desc
     Filters documents where a specified field exists and contains a value.
@@ -12,19 +17,13 @@
     */
   ejs.ExistsFilter = function (fieldName) {
 
-    /**
-         The internal filter object. Use <code>get()</code>
+    var 
+      _common = ejs.FilterMixin('exists'),
+      filter = _common.toJSON();
+    
+    filter.exists.field = fieldName;
 
-         @member ejs.ExistsFilter
-         @property {Object} filter
-         */
-    var filter = {
-      exists: {
-        field: fieldName
-      }
-    };
-
-    return {
+    return extend(_common, {
 
       /**
             Sets the field to check for missing values.
@@ -40,42 +39,7 @@
 
         filter.exists.field = name;
         return this;
-      },
-      
-      /**
-            Sets the filter name.
-
-            @member ejs.ExistsFilter
-            @param {String} name A name for the filter.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      name: function (name) {
-        if (name == null) {
-          return filter.exists._name;
-        }
-
-        filter.exists._name = name;
-        return this;
-      },
-
-      /**
-            The type of ejs object.  For internal use only.
-            
-            @member ejs.ExistsFilter
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'filter';
-      },
-      
-      /**
-             Returns the filter object.
-
-             @member ejs.ExistsFilter
-             @returns {Object} filter object
-             */
-      toJSON: function () {
-        return filter;
       }
-    };
+      
+    });
   };

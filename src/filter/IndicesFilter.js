@@ -6,6 +6,11 @@
     is executed on an index that does not match the listed indices.</p>
 
     @name ejs.IndicesFilter
+    @borrows ejs.FilterMixin.name as name
+    @borrows ejs.FilterMixin.cache as cache
+    @borrows ejs.FilterMixin.cacheKey as cacheKey
+    @borrows ejs.FilterMixin._type as _type
+    @borrows ejs.FilterMixin.toJSON as toJSON
 
     @desc
     A configurable filter that is dependent on the index name.
@@ -20,16 +25,11 @@
       throw new TypeError('Argument must be a Filter');
     }
   
-    /**
-         The internal filter object. <code>Use toJSON()</code>
-         @member ejs.IndicesFilter
-         @property {Object} filter
-         */
-    var filter = {
-      indices: {
-        filter: fltr.toJSON()
-      }
-    };
+    var 
+      _common = ejs.FilterMixin('indices'),
+      filter = _common.toJSON();
+    
+    filter.indices.filter = fltr.toJSON();
 
     if (isString(indices)) {
       filter.indices.indices = [indices];
@@ -39,7 +39,7 @@
       throw new TypeError('Argument must be a string or array');
     }
 
-    return {
+    return extend(_common, {
 
       /**
             Sets the indicies the filter should match.  When passed a string,
@@ -113,27 +113,7 @@
         }
     
         return this;
-      },
-
-      /**
-            The type of ejs object.  For internal use only.
-            
-            @member ejs.IndicesFilter
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'filter';
-      },
-      
-      /**
-            Retrieves the internal <code>filter</code> object. This is typically used by
-            internal API functions so use with caution.
-
-            @member ejs.IndicesFilter
-            @returns {String} returns this object's internal <code>filter</code> property.
-            */
-      toJSON: function () {
-        return filter;
       }
-    };
+      
+    });
   };

@@ -3,6 +3,11 @@
     <p>A filter allowing to define scripts as filters</p>
 
     @name ejs.ScriptFilter
+    @borrows ejs.FilterMixin.name as name
+    @borrows ejs.FilterMixin.cache as cache
+    @borrows ejs.FilterMixin.cacheKey as cacheKey
+    @borrows ejs.FilterMixin._type as _type
+    @borrows ejs.FilterMixin.toJSON as toJSON
 
     @desc
     A filter allowing to define scripts as filters.
@@ -11,18 +16,13 @@
     */
   ejs.ScriptFilter = function (script) {
 
-    /**
-         The internal filter object. <code>Use get()</code>
-         @member ejs.ScriptFilter
-         @property {Object} filter
-         */
-    var filter = {
-      script: {
-        script: script
-      }
-    };
+    var
+      _common = ejs.FilterMixin('script'),
+      filter = _common.toJSON();
+    
+    filter.script.script = script;
 
-    return {
+    return extend(_common, {
 
       /**
             Sets the script.
@@ -72,75 +72,7 @@
   
         filter.script.lang = lang;
         return this;
-      },
-    
-      /**
-            Sets the filter name.
-
-            @member ejs.ScriptFilter
-            @param {String} name A name for the filter.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      name: function (name) {
-        if (name == null) {
-          return filter.script._name;
-        }
-
-        filter.script._name = name;
-        return this;
-      },
-
-      /**
-            Enable or disable caching of the filter
-
-            @member ejs.ScriptFilter
-            @param {Boolean} trueFalse True to cache the filter, false otherwise.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      cache: function (trueFalse) {
-        if (trueFalse == null) {
-          return filter.script._cache;
-        }
-
-        filter.script._cache = trueFalse;
-        return this;
-      },
-
-      /**
-            Sets the cache key.
-
-            @member ejs.ScriptFilter
-            @param {String} key the cache key as a string.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      cacheKey: function (key) {
-        if (key == null) {
-          return filter.script._cache_key;
-        }
-
-        filter.script._cache_key = key;
-        return this;
-      },
-
-      /**
-            The type of ejs object.  For internal use only.
-            
-            @member ejs.ScriptFilter
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'filter';
-      },
-      
-      /**
-            Retrieves the internal <code>filter</code> object. This is typically used by
-            internal API functions so use with caution.
-
-            @member ejs.ScriptFilter
-            @returns {String} returns this object's internal <code>filter</code> property.
-            */
-      toJSON: function () {
-        return filter;
       }
-    };
+      
+    });
   };

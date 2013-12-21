@@ -10,6 +10,11 @@
     parent doc (or parent nested mapping).</p>
   
     @name ejs.NestedFilter
+    @borrows ejs.FilterMixin.name as name
+    @borrows ejs.FilterMixin.cache as cache
+    @borrows ejs.FilterMixin.cacheKey as cacheKey
+    @borrows ejs.FilterMixin._type as _type
+    @borrows ejs.FilterMixin.toJSON as toJSON
 
     @desc
     <p>Constructs a filter that is capable of executing a filter against objects
@@ -20,18 +25,13 @@
      */
   ejs.NestedFilter = function (path) {
 
-    /**
-         The internal Filter object. Use <code>toJSON()</code>.
-         @member ejs.NestedFilter
-         @property {Object} filter
-         */
-    var filter = {
-      nested: {
-        path: path
-      }
-    };
+    var 
+      _common = ejs.FilterMixin('nested'),
+      filter = _common.toJSON();
+    
+    filter.nested.path = path;
 
-    return {
+    return extend(_common, {
     
       /**
              Sets the root context for the nested filter.
@@ -131,75 +131,7 @@
             */
       scope: function (s) {
         return this;
-      },
-      
-      /**
-            Sets the filter name.
-
-            @member ejs.NestedFilter
-            @param {String} name A name for the filter.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      name: function (name) {
-        if (name == null) {
-          return filter.nested._name;
-        }
-
-        filter.nested._name = name;
-        return this;
-      },
-
-      /**
-            Enable or disable caching of the filter
-
-            @member ejs.NestedFilter
-            @param {Boolean} trueFalse True to cache the filter, false otherwise.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      cache: function (trueFalse) {
-        if (trueFalse == null) {
-          return filter.nested._cache;
-        }
-
-        filter.nested._cache = trueFalse;
-        return this;
-      },
-  
-      /**
-            Sets the cache key.
-
-            @member ejs.NestedFilter
-            @param {String} key the cache key as a string.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      cacheKey: function (key) {
-        if (key == null) {
-          return filter.nested._cache_key;
-        }
-
-        filter.nested._cache_key = key;
-        return this;
-      },
-
-      /**
-            The type of ejs object.  For internal use only.
-            
-            @member ejs.NestedFilter
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'filter';
-      },
-      
-      /**
-            This method is used to retrieve the raw filter object. It's designed
-            for internal use when composing and serializing filters.
-            
-            @member ejs.NestedFilter
-            @returns {Object} Returns the object's <em>filter</em> property.
-            */
-      toJSON: function () {
-        return filter;
       }
-    };
+      
+    });
   };

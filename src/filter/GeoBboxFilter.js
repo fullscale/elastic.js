@@ -4,6 +4,11 @@
     the specified lon and lat coordinates. The format conforms with the GeoJSON specification.</p>
 
     @name ejs.GeoBboxFilter
+    @borrows ejs.FilterMixin.name as name
+    @borrows ejs.FilterMixin.cache as cache
+    @borrows ejs.FilterMixin.cacheKey as cacheKey
+    @borrows ejs.FilterMixin._type as _type
+    @borrows ejs.FilterMixin.toJSON as toJSON
 
     @desc
     Filter results to those which are contained within the defined bounding box.
@@ -13,19 +18,13 @@
     */
   ejs.GeoBboxFilter = function (fieldName) {
 
-    /**
-         The internal filter object. Use <code>toJSON()</code>
-
-         @member ejs.GeoBboxFilter
-         @property {Object} filter
-         */
-    var filter = {
-      geo_bounding_box: {}
-    };
-
+    var
+      _common = ejs.FilterMixin('geo_bounding_box'),
+      filter = _common.toJSON();
+    
     filter.geo_bounding_box[fieldName] = {};
 
-    return {
+    return extend(_common, {
 
       /**
             Sets the fields to filter against.
@@ -130,74 +129,7 @@
 
         filter.geo_bounding_box.normalize = trueFalse;
         return this;
-      },
-      
-      /**
-            Sets the filter name.
-
-            @member ejs.GeoBboxFilter
-            @param {String} name A name for the filter.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      name: function (name) {
-        if (name == null) {
-          return filter.geo_bounding_box._name;
-        }
-
-        filter.geo_bounding_box._name = name;
-        return this;
-      },
-
-      /**
-            Enable or disable caching of the filter
-
-            @member ejs.GeoBboxFilter
-            @param {Boolean} trueFalse True to cache the filter, false otherwise.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      cache: function (trueFalse) {
-        if (trueFalse == null) {
-          return filter.geo_bounding_box._cache;
-        }
-
-        filter.geo_bounding_box._cache = trueFalse;
-        return this;
-      },
-    
-      /**
-            Sets the cache key.
-
-            @member ejs.GeoBboxFilter
-            @param {String} key the cache key as a string.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      cacheKey: function (key) {
-        if (key == null) {
-          return filter.geo_bounding_box._cache_key;
-        }
-
-        filter.geo_bounding_box._cache_key = key;
-        return this;
-      },
-
-      /**
-            The type of ejs object.  For internal use only.
-            
-            @member ejs.GeoBboxFilter
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'filter';
-      },
-      
-      /**
-             Returns the filter object.
-
-             @member ejs.GeoBboxFilter
-             @returns {Object} filter object
-             */
-      toJSON: function () {
-        return filter;
       }
-    };
+      
+    });
   };

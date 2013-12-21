@@ -3,6 +3,11 @@
     <p>Matches documents with fields that have terms within a certain range.</p>
 
     @name ejs.RangeFilter
+    @borrows ejs.FilterMixin.name as name
+    @borrows ejs.FilterMixin.cache as cache
+    @borrows ejs.FilterMixin.cacheKey as cacheKey
+    @borrows ejs.FilterMixin._type as _type
+    @borrows ejs.FilterMixin.toJSON as toJSON
 
     @desc
     Filters documents with fields that have terms within a certain range.
@@ -11,18 +16,13 @@
     */
   ejs.RangeFilter = function (field) {
 
-    /**
-         The internal filter object. <code>Use get()</code>
-         @member ejs.RangeFilter
-         @property {Object} filter
-         */
-    var filter = {
-      range: {}
-    };
+    var
+      _common = ejs.FilterMixin('range'),
+      filter = _common.toJSON();
 
     filter.range[field] = {};
 
-    return {
+    return extend(_common, {
 
       /**
              The field to run the filter against.
@@ -176,75 +176,7 @@
 
         filter.range[field].lte = val;
         return this;
-      },
-                          
-      /**
-            Sets the filter name.
-
-            @member ejs.RangeFilter
-            @param {String} name A name for the filter.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      name: function (name) {
-        if (name == null) {
-          return filter.range._name;
-        }
-
-        filter.range._name = name;
-        return this;
-      },
-
-      /**
-            Enable or disable caching of the filter
-
-            @member ejs.RangeFilter
-            @param {Boolean} trueFalse True to cache the filter, false otherwise.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      cache: function (trueFalse) {
-        if (trueFalse == null) {
-          return filter.range._cache;
-        }
-
-        filter.range._cache = trueFalse;
-        return this;
-      },
-
-      /**
-            Sets the cache key.
-
-            @member ejs.RangeFilter
-            @param {String} key the cache key as a string.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      cacheKey: function (key) {
-        if (key == null) {
-          return filter.range._cache_key;
-        }
-
-        filter.range._cache_key = key;
-        return this;
-      },
-
-      /**
-            The type of ejs object.  For internal use only.
-            
-            @member ejs.RangeFilter
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'filter';
-      },
-      
-      /**
-            Retrieves the internal <code>filter</code> object. This is typically used by
-            internal API functions so use with caution.
-
-            @member ejs.RangeFilter
-            @returns {String} returns this object's internal <code>filter</code> property.
-            */
-      toJSON: function () {
-        return filter;
       }
-    };
+      
+    });
   };

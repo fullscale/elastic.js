@@ -3,6 +3,11 @@
     A container Filter that allows Boolean AND composition of Filters.
 
     @name ejs.AndFilter
+    @borrows ejs.FilterMixin.name as name
+    @borrows ejs.FilterMixin.cache as cache
+    @borrows ejs.FilterMixin.cacheKey as cacheKey
+    @borrows ejs.FilterMixin._type as _type
+    @borrows ejs.FilterMixin.toJSON as toJSON
 
     @desc
     A container Filter that allows Boolean AND composition of Filters.
@@ -12,20 +17,14 @@
     */
   ejs.AndFilter = function (f) {
 
-    /**
-         The internal filter object. Use <code>toJSON()</code>
-
-         @member ejs.AndFilter
-         @property {Object} filter
-         */
-    var i,
+    var
+      i,
       len,
-      filter = {
-        and: {
-          filters: []
-        }
-      };
-
+      _common = ejs.FilterMixin('and'),
+      filter = _common.toJSON();
+    
+    filter.and.filters = [];
+    
     if (isFilter(f)) {
       filter.and.filters.push(f.toJSON());
     } else if (isArray(f)) {
@@ -40,7 +39,7 @@
       throw new TypeError('Argument must be a Filter or Array of Filters');
     }
 
-    return {
+    return extend(_common, {
 
       /**
              Sets the filters for the filter.  If fltr is a single 
@@ -75,74 +74,7 @@
         }
         
         return this;
-      },
-
-      /**
-            Sets the filter name.
-
-            @member ejs.AndFilter
-            @param {String} name A name for the filter.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      name: function (name) {
-        if (name == null) {
-          return filter.and._name;
-        }
-
-        filter.and._name = name;
-        return this;
-      },
-
-      /**
-            Enable or disable caching of the filter
-
-            @member ejs.AndFilter
-            @param {Boolean} trueFalse True to cache the filter, false otherwise.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      cache: function (trueFalse) {
-        if (trueFalse == null) {
-          return filter.and._cache;
-        }
-
-        filter.and._cache = trueFalse;
-        return this;
-      },
-  
-      /**
-            Sets the cache key.
-
-            @member ejs.AndFilter
-            @param {String} key the cache key as a string.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      cacheKey: function (key) {
-        if (key == null) {
-          return filter.and._cache_key;
-        }
-
-        filter.and._cache_key = key;
-        return this;
-      },
-
-      /**
-            The type of ejs object.  For internal use only.
-            
-            @member ejs.AndFilter
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'filter';
-      },
-      
-      /**
-             Returns the filter object.
-
-             @member ejs.AndFilter
-             @returns {Object} filter object
-             */
-      toJSON: function () {
-        return filter;
       }
-    };
+      
+    });
   };

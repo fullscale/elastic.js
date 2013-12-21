@@ -4,42 +4,16 @@
     in a given set of collections and/or types.</p>
 
     @name ejs.MatchAllFilter
+    @borrows ejs.FilterMixin.name as name
+    @borrows ejs.FilterMixin.cache as cache
+    @borrows ejs.FilterMixin.cacheKey as cacheKey
+    @borrows ejs.FilterMixin._type as _type
+    @borrows ejs.FilterMixin.toJSON as toJSON
 
     @desc
     <p>A filter that matches on all documents</p>
 
      */
   ejs.MatchAllFilter = function () {
-
-    /**
-         The internal Query object. Use <code>get()</code>.
-         @member ejs.MatchAllFilter
-         @property {Object} filter
-         */
-    var filter = {
-      match_all: {}
-    };
-
-    return {
-
-      /**
-            The type of ejs object.  For internal use only.
-            
-            @member ejs.MatchAllFilter
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'filter';
-      },
-      
-      /**
-            This method is used to retrieve the raw filter object. It's designed
-            for internal use when composing and serializing queries.
-            @member ejs.MatchAllFilter
-            @returns {Object} Returns the object's <em>filter</em> property.
-            */
-      toJSON: function () {
-        return filter;
-      }
-    };
+    return ejs.FilterMixin('match_all');
   };
