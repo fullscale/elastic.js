@@ -19,7 +19,7 @@
     }
 
     /**
-         The internal query object. <code>Use _self()</code>
+         The internal query object. <code>Use toJSON()</code>
          @member ejs.SpanMultiTermQuery
          @property {Object} query
          */
@@ -30,7 +30,7 @@
     };
 
     if (qry != null) {
-      query.span_multi.match = qry._self();
+      query.span_multi.match = qry.toJSON();
     }
 
     return {
@@ -51,7 +51,7 @@
           throw new TypeError('Argument must be a MultiTermQuery');
         }
     
-        query.span_multi.match = mtQuery._self();
+        query.span_multi.match = mtQuery.toJSON();
         return this;
       },
   
@@ -82,7 +82,7 @@
             @member ejs.SpanMultiTermQuery
             @returns {String} returns this object's internal <code>query</code> property.
             */
-      _self: function () {
+      toJSON: function () {
         return query;
       }
     };

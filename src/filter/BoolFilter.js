@@ -15,7 +15,7 @@
   ejs.BoolFilter = function () {
 
     /**
-         The internal filter object. <code>Use _self()</code>
+         The internal filter object. <code>Use toJSON()</code>
          @member ejs.BoolFilter
          @property {Object} filter
          */
@@ -48,7 +48,7 @@
         }
 
         if (isFilter(oFilter)) {
-          filter.bool.must.push(oFilter._self());
+          filter.bool.must.push(oFilter.toJSON());
         } else if (isArray(oFilter)) {
           filter.bool.must = [];
           for (i = 0, len = oFilter.length; i < len; i++) {
@@ -56,7 +56,7 @@
               throw new TypeError('Argument must be an array of Filters');
             }
             
-            filter.bool.must.push(oFilter[i]._self());
+            filter.bool.must.push(oFilter[i].toJSON());
           }
         } else {
           throw new TypeError('Argument must be a Filter or array of Filters');
@@ -88,7 +88,7 @@
         }
     
         if (isFilter(oFilter)) {
-          filter.bool.must_not.push(oFilter._self());
+          filter.bool.must_not.push(oFilter.toJSON());
         } else if (isArray(oFilter)) {
           filter.bool.must_not = [];
           for (i = 0, len = oFilter.length; i < len; i++) {
@@ -96,7 +96,7 @@
               throw new TypeError('Argument must be an array of Filters');
             }
             
-            filter.bool.must_not.push(oFilter[i]._self());
+            filter.bool.must_not.push(oFilter[i].toJSON());
           }
         } else {
           throw new TypeError('Argument must be a Filter or array of Filters');
@@ -128,7 +128,7 @@
         }
     
         if (isFilter(oFilter)) {
-          filter.bool.should.push(oFilter._self());
+          filter.bool.should.push(oFilter.toJSON());
         } else if (isArray(oFilter)) {
           filter.bool.should = [];
           for (i = 0, len = oFilter.length; i < len; i++) {
@@ -136,7 +136,7 @@
               throw new TypeError('Argument must be an array of Filters');
             }
             
-            filter.bool.should.push(oFilter[i]._self());
+            filter.bool.should.push(oFilter[i].toJSON());
           }
         } else {
           throw new TypeError('Argument must be a Filter or array of Filters');
@@ -220,7 +220,7 @@
             @member ejs.BoolFilter
             @returns {String} returns this object's internal <code>filter</code> property.
             */
-      _self: function () {
+      toJSON: function () {
         return filter;
       }
     };

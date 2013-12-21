@@ -23,13 +23,13 @@
     }
     
     /**
-         The internal query object. <code>Use _self()</code>
+         The internal query object. <code>Use toJSON()</code>
          @member ejs.TopChildrenQuery
          @property {Object} query
          */
     var query = {
       top_children: {
-        query: qry._self(),
+        query: qry.toJSON(),
         type: type
       }
     };
@@ -52,7 +52,7 @@
           throw new TypeError('Argument must be a Query');
         }
         
-        query.top_children.query = q._self();
+        query.top_children.query = q.toJSON();
         return this;
       },
 
@@ -207,7 +207,7 @@
             @member ejs.TopChildrenQuery
             @returns {String} returns this object's internal <code>query</code> property.
             */
-      _self: function () {
+      toJSON: function () {
         return query;
       }
     };

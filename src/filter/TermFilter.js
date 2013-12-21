@@ -143,7 +143,7 @@
             @member ejs.TermFilter
             @returns {Object} Returns the object's filter property.
             */
-      _self: function () {
+      toJSON: function () {
         return filter;
       }
     };

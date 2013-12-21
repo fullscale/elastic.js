@@ -22,14 +22,14 @@
     }
     
     /**
-         The internal Query object. Use <code>_self()</code>.
+         The internal Query object. Use <code>toJSON()</code>.
          @member ejs.BoostingQuery
          @property {Object} BoostingQuery
          */
     var query = {
       boosting: {
-        positive: positiveQry._self(),
-        negative: negativeQry._self(),
+        positive: positiveQry.toJSON(),
+        negative: negativeQry.toJSON(),
         negative_boost: negativeBoost
       }
     };
@@ -54,7 +54,7 @@
           throw new TypeError('Argument must be a Query');
         }
         
-        query.boosting.positive = oQuery._self();
+        query.boosting.positive = oQuery.toJSON();
         return this;
       },
 
@@ -77,7 +77,7 @@
           throw new TypeError('Argument must be a Query');
         }
         
-        query.boosting.negative = oQuery._self();
+        query.boosting.negative = oQuery.toJSON();
         return this;
       },
    
@@ -139,7 +139,7 @@
             @member ejs.BoostingQuery
             @returns {Object} Returns the object's <em>query</em> property.
             */
-      _self: function () {
+      toJSON: function () {
         return query;
       }
     };

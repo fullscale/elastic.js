@@ -13,7 +13,7 @@
   ejs.GeoPolygonFilter = function (fieldName) {
 
     /**
-         The internal filter object. Use <code>_self()</code>
+         The internal filter object. Use <code>toJSON()</code>
 
          @member ejs.GeoPolygonFilter
          @property {Object} filter
@@ -67,7 +67,7 @@
         }
       
         if (isGeoPoint(p)) {
-          filter.geo_polygon[fieldName].points.push(p._self());
+          filter.geo_polygon[fieldName].points.push(p.toJSON());
         } else if (isArray(p)) {
           filter.geo_polygon[fieldName].points = [];
           for (i = 0, len = p.length; i < len; i++) {
@@ -75,7 +75,7 @@
               throw new TypeError('Argument must be Array of GeoPoints');
             }
             
-            filter.geo_polygon[fieldName].points.push(p[i]._self());
+            filter.geo_polygon[fieldName].points.push(p[i].toJSON());
           }
         } else {
           throw new TypeError('Argument must be a GeoPoint or Array of GeoPoints');
@@ -179,7 +179,7 @@
              @member ejs.GeoPolygonFilter
              @returns {Object} filter object
              */
-      _self: function () {
+      toJSON: function () {
         return filter;
       }
     };

@@ -24,13 +24,13 @@
     }
     
     /**
-         The internal query object. <code>Use _self()</code>
+         The internal query object. <code>Use toJSON()</code>
          @member ejs.QueryFilter
          @property {Object} query
          */
     var filter = {
       fquery: {
-        query: qry._self()
+        query: qry.toJSON()
       }
     };
 
@@ -52,7 +52,7 @@
           throw new TypeError('Argument must be a Query');
         }
         
-        filter.fquery.query = q._self();
+        filter.fquery.query = q.toJSON();
         return this;
       },
 
@@ -131,7 +131,7 @@
             @member ejs.QueryFilter
             @returns {String} returns this object's internal <code>filter</code> property.
             */
-      _self: function () {
+      toJSON: function () {
         return filter;
       }
     };

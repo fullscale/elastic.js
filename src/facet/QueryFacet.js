@@ -55,7 +55,7 @@
           throw new TypeError('Argument must be a Query');
         }
         
-        facet[name].query = oQuery._self();
+        facet[name].query = oQuery.toJSON();
         return this;
       },
 
@@ -75,7 +75,7 @@
           throw new TypeError('Argumnet must be a Filter');
         }
         
-        facet[name].facet_filter = oFilter._self();
+        facet[name].facet_filter = oFilter.toJSON();
         return this;
       },
 
@@ -192,7 +192,7 @@
             @member ejs.QueryFacet
             @returns {String} returns this object's internal <code>facet</code> property.
             */
-      _self: function () {
+      toJSON: function () {
         return facet;
       }
     };

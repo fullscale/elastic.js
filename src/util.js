@@ -147,11 +147,11 @@
   }
   
   // Is a given value an ejs object?
-  // Yes if object and has "_type", "_self", and "toString" properties
+  // Yes if object and has "_type", "toJSON", and "toString" properties
   isEJSObject = function (obj) {
     return (isObject(obj) &&
       has(obj, '_type') &&
-      has(obj, '_self') && 
+      has(obj, 'toJSON') && 
       has(obj, 'toString'));
   };
   
@@ -201,29 +201,5 @@
   
   isGenerator = function (obj) {
     return (isEJSObject(obj) && obj._type() === 'generator');
-  };
-  
-  isClusterHealth = function (obj) {
-    return (isEJSObject(obj) && obj._type() === 'cluster health');
-  };
-  
-  isClusterState = function (obj) {
-    return (isEJSObject(obj) && obj._type() === 'cluster state');
-  };
-  
-  isNodeStats = function (obj) {
-    return (isEJSObject(obj) && obj._type() === 'node stats');
-  };
-  
-  isNodeInfo = function (obj) {
-    return (isEJSObject(obj) && obj._type() === 'node info');
-  };
-  
-  isRequest = function (obj) {
-    return (isEJSObject(obj) && obj._type() === 'request');
-  };
-
-  isMultiSearchRequest = function (obj) {
-    return (isEJSObject(obj) && obj._type() === 'multi search request');
   };
  

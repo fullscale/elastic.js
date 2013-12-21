@@ -49,7 +49,7 @@ exports.facets = {
       termFilter = ejs.TermFilter('t1', 'v1'),
       expected,
       doTest = function () {
-        test.deepEqual(termFacet._self(), expected);
+        test.deepEqual(termFacet.toJSON(), expected);
       };
 
     expected = {
@@ -59,7 +59,7 @@ exports.facets = {
     };
 
     test.ok(termFacet, 'TermsFacet exists');
-    test.ok(termFacet._self(), '_self() works');
+    test.ok(termFacet.toJSON(), 'toJSON() works');
     doTest();
 
     termFacet.field('thefield');
@@ -134,7 +134,7 @@ exports.facets = {
     doTest();
     
     termFacet.facetFilter(termFilter);
-    expected.somename.facet_filter = termFilter._self();
+    expected.somename.facet_filter = termFilter.toJSON();
     doTest();
 
     termFacet.allTerms(false);
@@ -189,7 +189,7 @@ exports.facets = {
       point1 = ejs.GeoPoint([40, -70]),
       expected,
       doTest = function () {
-        test.deepEqual(geoDistanceFacet._self(), expected);
+        test.deepEqual(geoDistanceFacet.toJSON(), expected);
       };
 
     expected = {
@@ -202,7 +202,7 @@ exports.facets = {
     };
 
     test.ok(geoDistanceFacet, 'geoDistanceFacet exists');
-    test.ok(geoDistanceFacet._self(), '_self() works');
+    test.ok(geoDistanceFacet.toJSON(), 'toJSON() works');
     doTest();
 
     geoDistanceFacet.field('location2');
@@ -217,7 +217,7 @@ exports.facets = {
     doTest();
 
     geoDistanceFacet.point(point1);
-    expected.somename.geo_distance.location2 = point1._self();
+    expected.somename.geo_distance.location2 = point1.toJSON();
     doTest();
 
     geoDistanceFacet.addUnboundedTo(10);
@@ -289,7 +289,7 @@ exports.facets = {
     doTest();
     
     geoDistanceFacet.facetFilter(termFilter);
-    expected.somename.facet_filter = termFilter._self();
+    expected.somename.facet_filter = termFilter.toJSON();
     doTest();
 
     geoDistanceFacet.global(true);
@@ -335,7 +335,7 @@ exports.facets = {
       termFilter = ejs.TermFilter('t1', 'v1'),
       expected,
       doTest = function () {
-        test.deepEqual(statisticalFacet._self(), expected);
+        test.deepEqual(statisticalFacet.toJSON(), expected);
       };
 
     expected = {
@@ -345,7 +345,7 @@ exports.facets = {
     };
 
     test.ok(statisticalFacet, 'statisticalFacet exists');
-    test.ok(statisticalFacet._self(), '_self() works');
+    test.ok(statisticalFacet.toJSON(), 'toJSON() works');
     doTest();
 
     statisticalFacet.field('field1');
@@ -365,7 +365,7 @@ exports.facets = {
     doTest();
 
     statisticalFacet.facetFilter(termFilter);
-    expected.somename.facet_filter = termFilter._self();
+    expected.somename.facet_filter = termFilter.toJSON();
     doTest();
 
     statisticalFacet.params({
@@ -419,7 +419,7 @@ exports.facets = {
       termFilter = ejs.TermFilter('t1', 'v1'),
       expected,
       doTest = function () {
-        test.deepEqual(termStatsFacet._self(), expected);
+        test.deepEqual(termStatsFacet.toJSON(), expected);
       };
 
     expected = {
@@ -429,7 +429,7 @@ exports.facets = {
     };
 
     test.ok(termStatsFacet, 'termStatsFacet exists');
-    test.ok(termStatsFacet._self(), '_self() works');
+    test.ok(termStatsFacet.toJSON(), 'toJSON() works');
     doTest();
 
     termStatsFacet.keyField('product');
@@ -512,7 +512,7 @@ exports.facets = {
     doTest();
     
     termStatsFacet.facetFilter(termFilter);
-    expected.somename.facet_filter = termFilter._self();
+    expected.somename.facet_filter = termFilter.toJSON();
     doTest();
 
     termStatsFacet.size(5);
@@ -558,7 +558,7 @@ exports.facets = {
       termFilter = ejs.TermFilter('t1', 'v1'),
       expected,
       doTest = function () {
-        test.deepEqual(dateHistogramFacet._self(), expected);
+        test.deepEqual(dateHistogramFacet.toJSON(), expected);
       };
 
     expected = {
@@ -568,7 +568,7 @@ exports.facets = {
     };
 
     test.ok(dateHistogramFacet, 'dateHistogramFacet exists');
-    test.ok(dateHistogramFacet._self(), '_self() works');
+    test.ok(dateHistogramFacet.toJSON(), 'toJSON() works');
     doTest();
 
     dateHistogramFacet.field('pubdate');
@@ -580,7 +580,7 @@ exports.facets = {
     doTest();
 
     dateHistogramFacet.facetFilter(termFilter);
-    expected.somename.facet_filter = termFilter._self();
+    expected.somename.facet_filter = termFilter.toJSON();
     doTest();
 
     dateHistogramFacet.timeZone(5);
@@ -686,7 +686,7 @@ exports.facets = {
       termQuery = ejs.TermQuery('t2', 'v2'),
       expected,
       doTest = function () {
-        test.deepEqual(queryFacet._self(), expected);
+        test.deepEqual(queryFacet.toJSON(), expected);
       };
 
     expected = {
@@ -694,15 +694,15 @@ exports.facets = {
     };
 
     test.ok(queryFacet, 'QueryFacet exists');
-    test.ok(queryFacet._self(), '_self() works');
+    test.ok(queryFacet.toJSON(), 'toJSON() works');
     doTest();
 
     queryFacet.query(termQuery);
-    expected.somename.query = termQuery._self();
+    expected.somename.query = termQuery.toJSON();
     doTest();
 
     queryFacet.facetFilter(termFilter);
-    expected.somename.facet_filter = termFilter._self();
+    expected.somename.facet_filter = termFilter.toJSON();
     doTest();
     
     queryFacet.global(true);
@@ -749,7 +749,7 @@ exports.facets = {
       termFilter2 = ejs.TermFilter('t2', 'v2'),
       expected,
       doTest = function () {
-        test.deepEqual(filterFacet._self(), expected);
+        test.deepEqual(filterFacet.toJSON(), expected);
       };
 
     expected = {
@@ -757,15 +757,15 @@ exports.facets = {
     };
 
     test.ok(filterFacet, 'FilterFacet exists');
-    test.ok(filterFacet._self(), '_self() works');
+    test.ok(filterFacet.toJSON(), 'toJSON() works');
     doTest();
 
     filterFacet.filter(termFilter1);
-    expected.somename.filter = termFilter1._self();
+    expected.somename.filter = termFilter1.toJSON();
     doTest();
 
     filterFacet.facetFilter(termFilter2);
-    expected.somename.facet_filter = termFilter2._self();
+    expected.somename.facet_filter = termFilter2.toJSON();
     doTest();
     
     filterFacet.global(true);
@@ -811,7 +811,7 @@ exports.facets = {
       termFilter = ejs.TermFilter('t1', 'v1'),
       expected,
       doTest = function () {
-        test.deepEqual(histogramFacet._self(), expected);
+        test.deepEqual(histogramFacet.toJSON(), expected);
       };
 
     expected = {
@@ -821,7 +821,7 @@ exports.facets = {
     };
 
     test.ok(histogramFacet, 'HistogramFacet exists');
-    test.ok(histogramFacet._self(), '_self() works');
+    test.ok(histogramFacet.toJSON(), 'toJSON() works');
     doTest();
 
     histogramFacet.field('price');
@@ -884,7 +884,7 @@ exports.facets = {
     doTest();
     
     histogramFacet.facetFilter(termFilter);
-    expected.somename.facet_filter = termFilter._self();
+    expected.somename.facet_filter = termFilter.toJSON();
     doTest();
     
     histogramFacet.global(true);
@@ -926,7 +926,7 @@ exports.facets = {
       termFilter = ejs.TermFilter('t1', 'v1'),
       expected,
       doTest = function () {
-        test.deepEqual(rangeFacet._self(), expected);
+        test.deepEqual(rangeFacet.toJSON(), expected);
       };
 
     expected = {
@@ -938,7 +938,7 @@ exports.facets = {
     };
 
     test.ok(rangeFacet, 'RangeFacet exists');
-    test.ok(rangeFacet._self(), '_self() works');
+    test.ok(rangeFacet.toJSON(), 'toJSON() works');
     doTest();
 
     rangeFacet.field('price');
@@ -990,7 +990,7 @@ exports.facets = {
     doTest();
 
     rangeFacet.facetFilter(termFilter);
-    expected.somename.facet_filter = termFilter._self();
+    expected.somename.facet_filter = termFilter.toJSON();
     doTest();
 
     rangeFacet.addUnboundedFrom(30);

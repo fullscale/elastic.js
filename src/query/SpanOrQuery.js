@@ -14,7 +14,7 @@
   ejs.SpanOrQuery = function (clauses) {
 
     /**
-         The internal query object. <code>Use _self()</code>
+         The internal query object. <code>Use toJSON()</code>
          @member ejs.SpanOrQuery
          @property {Object} query
          */
@@ -27,14 +27,14 @@
       };
 
     if (isQuery(clauses)) {
-      query.span_or.clauses.push(clauses._self());
+      query.span_or.clauses.push(clauses.toJSON());
     } else if (isArray(clauses)) {
       for (i = 0, len = clauses.length; i < len; i++) {
         if (!isQuery(clauses[i])) {
           throw new TypeError('Argument must be array of SpanQueries');
         }
         
-        query.span_or.clauses.push(clauses[i]._self());
+        query.span_or.clauses.push(clauses[i].toJSON());
       }
     } else {
       throw new TypeError('Argument must be SpanQuery or array of SpanQueries');
@@ -59,7 +59,7 @@
         }
       
         if (isQuery(clauses)) {
-          query.span_or.clauses.push(clauses._self());
+          query.span_or.clauses.push(clauses.toJSON());
         } else if (isArray(clauses)) {
           query.span_or.clauses = [];
           for (i = 0, len = clauses.length; i < len; i++) {
@@ -67,7 +67,7 @@
               throw new TypeError('Argument must be array of SpanQueries');
             }
 
-            query.span_or.clauses.push(clauses[i]._self());
+            query.span_or.clauses.push(clauses[i].toJSON());
           }
         } else {
           throw new TypeError('Argument must be SpanQuery or array of SpanQueries');
@@ -119,7 +119,7 @@
             @member ejs.SpanOrQuery
             @returns {String} returns this object's internal <code>query</code> property.
             */
-      _self: function () {
+      toJSON: function () {
         return query;
       }
     };

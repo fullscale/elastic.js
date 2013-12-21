@@ -41,7 +41,7 @@
 
     facet[name] = {
       geo_distance: {
-        location: point._self(),
+        location: point.toJSON(),
         ranges: []
       }
     };
@@ -87,7 +87,7 @@
         }
         
         point = p;
-        facet[name].geo_distance[field] = p._self();
+        facet[name].geo_distance[field] = p.toJSON();
         return this;
       },
 
@@ -297,7 +297,7 @@
           throw new TypeError('Argument must be a Filter');
         }
         
-        facet[name].facet_filter = oFilter._self();
+        facet[name].facet_filter = oFilter.toJSON();
         return this;
       },
 
@@ -414,7 +414,7 @@
             @member ejs.GeoDistanceFacet
             @returns {String} returns this object's internal <code>facet</code> property.
             */
-      _self: function () {
+      toJSON: function () {
         return facet;
       }
     };

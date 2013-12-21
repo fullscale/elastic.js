@@ -14,7 +14,7 @@
   ejs.GeoBboxFilter = function (fieldName) {
 
     /**
-         The internal filter object. Use <code>_self()</code>
+         The internal filter object. Use <code>toJSON()</code>
 
          @member ejs.GeoBboxFilter
          @property {Object} filter
@@ -61,7 +61,7 @@
         }
       
         if (isGeoPoint(p)) {
-          filter.geo_bounding_box[fieldName].top_left = p._self();
+          filter.geo_bounding_box[fieldName].top_left = p.toJSON();
         } else {
           throw new TypeError('Argument must be a GeoPoint');
         }
@@ -82,7 +82,7 @@
         }
       
         if (isGeoPoint(p)) {
-          filter.geo_bounding_box[fieldName].bottom_right = p._self();
+          filter.geo_bounding_box[fieldName].bottom_right = p.toJSON();
         } else {
           throw new TypeError('Argument must be a GeoPoint');
         }
@@ -206,7 +206,7 @@
              @member ejs.GeoBboxFilter
              @returns {Object} filter object
              */
-      _self: function () {
+      toJSON: function () {
         return filter;
       }
     };

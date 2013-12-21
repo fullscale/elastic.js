@@ -15,7 +15,7 @@
   ejs.SpanNearQuery = function (clauses, slop) {
 
     /**
-         The internal query object. <code>Use _self()</code>
+         The internal query object. <code>Use toJSON()</code>
          @member ejs.SpanNearQuery
          @property {Object} query
          */
@@ -28,14 +28,14 @@
       };
     
     if (isQuery(clauses)) {
-      query.span_near.clauses.push(clauses._self());
+      query.span_near.clauses.push(clauses.toJSON());
     } else if (isArray(clauses)) {
       for (i = 0, len = clauses.length; i < len; i++) {
         if (!isQuery(clauses[i])) {
           throw new TypeError('Argument must be array of SpanQueries');
         }
         
-        query.span_near.clauses.push(clauses[i]._self());
+        query.span_near.clauses.push(clauses[i].toJSON());
       }
     } else {
       throw new TypeError('Argument must be SpanQuery or array of SpanQueries');
@@ -60,7 +60,7 @@
         }
       
         if (isQuery(clauses)) {
-          query.span_near.clauses.push(clauses._self());
+          query.span_near.clauses.push(clauses.toJSON());
         } else if (isArray(clauses)) {
           query.span_near.clauses = [];
           for (i = 0, len = clauses.length; i < len; i++) {
@@ -68,7 +68,7 @@
               throw new TypeError('Argument must be array of SpanQueries');
             }
 
-            query.span_near.clauses.push(clauses[i]._self());
+            query.span_near.clauses.push(clauses[i].toJSON());
           }
         } else {
           throw new TypeError('Argument must be SpanQuery or array of SpanQueries');
@@ -169,7 +169,7 @@
             @member ejs.SpanNearQuery
             @returns {String} returns this object's internal <code>query</code> property.
             */
-      _self: function () {
+      toJSON: function () {
         return query;
       }
     };

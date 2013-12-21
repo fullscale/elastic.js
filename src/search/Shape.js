@@ -119,7 +119,7 @@
             @member ejs.Shape
             @returns {String} returns this object's internal object representation.
             */
-      _self: function () {
+      toJSON: function () {
         return shape;
       }
     };

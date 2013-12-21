@@ -64,7 +64,7 @@
             @member ejs.MatchAllQuery
             @returns {Object} Returns the object's <em>query</em> property.
             */
-      _self: function () {
+      toJSON: function () {
         return query;
       }
     };

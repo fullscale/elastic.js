@@ -224,7 +224,7 @@
             @member ejs.DirectSettingsMixin
             @returns {String} returns this object's internal <code>settings</code> property.
             */
-      _self: function () {
+      toJSON: function () {
         return settings;
       }
     };

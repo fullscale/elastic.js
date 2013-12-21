@@ -21,7 +21,7 @@
   ejs.NestedFilter = function (path) {
 
     /**
-         The internal Filter object. Use <code>_self()</code>.
+         The internal Filter object. Use <code>toJSON()</code>.
          @member ejs.NestedFilter
          @property {Object} filter
          */
@@ -63,7 +63,7 @@
           throw new TypeError('Argument must be a Query object');
         }
         
-        filter.nested.query = oQuery._self();
+        filter.nested.query = oQuery.toJSON();
         return this;
       },
 
@@ -83,7 +83,7 @@
           throw new TypeError('Argument must be a Filter object');
         }
         
-        filter.nested.filter = oFilter._self();
+        filter.nested.filter = oFilter.toJSON();
         return this;
       },
 
@@ -207,7 +207,7 @@
             @member ejs.NestedFilter
             @returns {Object} Returns the object's <em>filter</em> property.
             */
-      _self: function () {
+      toJSON: function () {
         return filter;
       }
     };

@@ -20,13 +20,13 @@
     }
     
     /**
-         The internal query object. <code>Use _self()</code>
+         The internal query object. <code>Use toJSON()</code>
          @member ejs.SpanFirstQuery
          @property {Object} query
          */
     var query = {
       span_first: {
-        match: spanQry._self(),
+        match: spanQry.toJSON(),
         end: end
       }
     };
@@ -49,7 +49,7 @@
           throw new TypeError('Argument must be a SpanQuery');
         }
         
-        query.span_first.match = spanQuery._self();
+        query.span_first.match = spanQuery.toJSON();
         return this;
       },
 
@@ -112,7 +112,7 @@
             @member ejs.SpanFirstQuery
             @returns {String} returns this object's internal <code>query</code> property.
             */
-      _self: function () {
+      toJSON: function () {
         return query;
       }
     };

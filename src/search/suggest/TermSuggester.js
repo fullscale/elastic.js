@@ -39,7 +39,7 @@
     _common = ejs.DirectSettingsMixin();
     
     // setup correct term suggestor format
-    suggest[name] = {term: _common._self()};
+    suggest[name] = {term: _common.toJSON()};
 
     return extend(_common, {
 
@@ -152,7 +152,7 @@
             @member ejs.TermSuggester
             @returns {String} returns this object's internal <code>suggest</code> property.
             */
-      _self: function () {
+      toJSON: function () {
         return suggest;
       }
     });

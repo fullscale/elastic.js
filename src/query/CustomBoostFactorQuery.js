@@ -18,13 +18,13 @@
     }
     
     /**
-         The internal query object. <code>Use _self()</code>
+         The internal query object. <code>Use toJSON()</code>
          @member ejs.CustomBoostFactorQuery
          @property {Object} query
          */
     var query = {
       custom_boost_factor: {
-        query: qry._self()
+        query: qry.toJSON()
       }
     };
 
@@ -46,7 +46,7 @@
           throw new TypeError('Argument must be a Query');
         }
         
-        query.custom_boost_factor.query = q._self();
+        query.custom_boost_factor.query = q.toJSON();
         return this;
       },
   
@@ -109,7 +109,7 @@
             @member ejs.CustomBoostFactorQuery
             @returns {String} returns this object's internal <code>query</code> property.
             */
-      _self: function () {
+      toJSON: function () {
         return query;
       }
     };

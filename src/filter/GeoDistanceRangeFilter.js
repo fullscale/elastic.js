@@ -14,7 +14,7 @@
   ejs.GeoDistanceRangeFilter = function (fieldName) {
 
     /**
-         The internal filter object. Use <code>_self()</code>
+         The internal filter object. Use <code>toJSON()</code>
 
          @member ejs.GeoDistanceRangeFilter
          @property {Object} filter
@@ -239,7 +239,7 @@
         }
       
         if (isGeoPoint(p)) {
-          filter.geo_distance_range[fieldName] = p._self();
+          filter.geo_distance_range[fieldName] = p.toJSON();
         } else {
           throw new TypeError('Argument must be a GeoPoint');
         }
@@ -386,7 +386,7 @@
              @member ejs.GeoDistanceRangeFilter
              @returns {Object} filter object
              */
-      _self: function () {
+      toJSON: function () {
         return filter;
       }
     };

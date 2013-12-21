@@ -73,7 +73,7 @@
         delete sort[key];
         key = geo_key;
         sort[key] = oldValue;
-        sort[key][fieldName] = point._self();
+        sort[key][fieldName] = point.toJSON();
       
         return this;
       },
@@ -413,7 +413,7 @@
           throw new TypeError('Argument must be a Filter');
         }
         
-        sort[key].nested_filter = oFilter._self();
+        sort[key].nested_filter = oFilter.toJSON();
         return this;
       },
           
@@ -444,7 +444,7 @@
             @member ejs.Sort
             @returns {String} returns this object's internal object representation.
             */
-      _self: function () {
+      toJSON: function () {
         return sort;
       }
     };

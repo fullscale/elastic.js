@@ -18,7 +18,7 @@
   ejs.GeoShapeFilter = function (field) {
 
     /**
-         The internal filter object. <code>Use _self()</code>
+         The internal filter object. <code>Use toJSON()</code>
          @member ejs.GeoShapeFilter
          @property {Object} GeoShapeFilter
          */
@@ -67,7 +67,7 @@
           delete filter.geo_shape[field].indexed_shape;
         }
       
-        filter.geo_shape[field].shape = shape._self();
+        filter.geo_shape[field].shape = shape.toJSON();
         return this;
       },
 
@@ -88,7 +88,7 @@
           delete filter.geo_shape[field].shape;
         }
       
-        filter.geo_shape[field].indexed_shape = indexedShape._self();
+        filter.geo_shape[field].indexed_shape = indexedShape.toJSON();
         return this;
       },
 
@@ -223,7 +223,7 @@
             @member ejs.GeoShapeFilter
             @returns {String} returns this object's internal <code>filter</code> property.
             */
-      _self: function () {
+      toJSON: function () {
         return filter;
       }
     };

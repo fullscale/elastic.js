@@ -28,7 +28,7 @@ exports.search = {
     done();
   },
   exists: function (test) {
-    test.expect(13);
+    test.expect(12);
 
     test.ok(ejs.Request, 'Request');
     test.ok(ejs.ScriptField, 'ScriptField');
@@ -41,7 +41,6 @@ exports.search = {
     test.ok(ejs.PhraseSuggester, 'PhraseSuggester');
     test.ok(ejs.DirectSettingsMixin, 'DirectSettingsMixin');
     test.ok(ejs.DirectGenerator, 'DirectGenerator');
-    test.ok(ejs.MultiSearchRequest, 'MultiSearchRequest');
     test.ok(ejs.Rescore, 'Rescore');
     
     test.done();
@@ -54,7 +53,7 @@ exports.search = {
       termQuery2 = ejs.TermQuery('f2', 't2'),
       expected,
       doTest = function () {
-        test.deepEqual(rescore._self(), expected);
+        test.deepEqual(rescore.toJSON(), expected);
       };
     
     expected = {
@@ -62,7 +61,7 @@ exports.search = {
     };
     
     test.ok(rescore, 'Rescore exists');
-    test.ok(rescore._self(), '_self() works');
+    test.ok(rescore.toJSON(), 'toJSON() works');
     doTest();
     
     rescore = ejs.Rescore(100);
@@ -71,7 +70,7 @@ exports.search = {
     
     rescore = ejs.Rescore(1000, termQuery1);
     expected.window_size = 1000;
-    expected.query.rescore_query = termQuery1._self();
+    expected.query.rescore_query = termQuery1.toJSON();
     doTest();
     
     rescore.windowSize(100);
@@ -79,7 +78,7 @@ exports.search = {
     doTest();
     
     rescore.rescoreQuery(termQuery2);
-    expected.query.rescore_query = termQuery2._self();
+    expected.query.rescore_query = termQuery2.toJSON();
     doTest();
     
     rescore.queryWeight(2);
@@ -148,13 +147,13 @@ exports.search = {
     var generator = ejs.DirectGenerator(),
       expected,
       doTest = function () {
-        test.deepEqual(generator._self(), expected);
+        test.deepEqual(generator.toJSON(), expected);
       };
     
     expected = {};
     
     test.ok(generator, 'DirectGenerator exists');
-    test.ok(generator._self(), '_self() works');
+    test.ok(generator.toJSON(), 'toJSON() works');
     doTest();
     
     generator.preFilter('pre analyzer');
@@ -261,7 +260,7 @@ exports.search = {
     var suggester = ejs.TermSuggester('suggester'),
       expected,
       doTest = function () {
-        test.deepEqual(suggester._self(), expected);
+        test.deepEqual(suggester.toJSON(), expected);
       };
     
     expected = {
@@ -271,7 +270,7 @@ exports.search = {
     };
     
     test.ok(suggester, 'TermSuggester exists');
-    test.ok(suggester._self(), '_self() works');
+    test.ok(suggester.toJSON(), 'toJSON() works');
     doTest();
     
     suggester.text('sugest termz');
@@ -395,7 +394,7 @@ exports.search = {
         .size(100),
       expected,
       doTest = function () {
-        test.deepEqual(suggester._self(), expected);
+        test.deepEqual(suggester.toJSON(), expected);
       };
     
     expected = {
@@ -405,7 +404,7 @@ exports.search = {
     };
     
     test.ok(suggester, 'PhraseSuggester exists');
-    test.ok(suggester._self(), '_self() works');
+    test.ok(suggester.toJSON(), 'toJSON() works');
     doTest();
     
     suggester.text('sugest termz');
@@ -490,15 +489,15 @@ exports.search = {
     doTest();
     
     suggester.directGenerator(gen1);
-    expected.suggester.phrase.direct_generator = [gen1._self()];
+    expected.suggester.phrase.direct_generator = [gen1.toJSON()];
     doTest();
     
     suggester.directGenerator(gen2);
-    expected.suggester.phrase.direct_generator.push(gen2._self());
+    expected.suggester.phrase.direct_generator.push(gen2.toJSON());
     doTest();
     
     suggester.directGenerator([gen3, gen1]);
-    expected.suggester.phrase.direct_generator = [gen3._self(), gen1._self()];
+    expected.suggester.phrase.direct_generator = [gen3.toJSON(), gen1.toJSON()];
     doTest();
     
     test.strictEqual(suggester._type(), 'suggest');
@@ -520,7 +519,7 @@ exports.search = {
     var highlight = ejs.Highlight(['title', 'content']),
       expected,
       doTest = function () {
-        test.deepEqual(highlight._self(), expected);
+        test.deepEqual(highlight.toJSON(), expected);
       };
     
     expected = {
@@ -531,7 +530,7 @@ exports.search = {
     };  
     
     test.ok(highlight, 'Highlight exists');
-    test.ok(highlight._self(), '_self() works');
+    test.ok(highlight.toJSON(), 'toJSON() works');
     doTest();
     
     highlight.fields('teaser');
@@ -714,7 +713,7 @@ exports.search = {
       geoPoint = ejs.GeoPoint([37.7819288, -122.396480]),
       expected,
       doTest = function () {
-        test.deepEqual(sort._self(), expected);
+        test.deepEqual(sort.toJSON(), expected);
       };
     
     expected = {
@@ -722,7 +721,7 @@ exports.search = {
     };  
     
     test.ok(sort, 'Sort exists');
-    test.ok(sort._self(), '_self() works');
+    test.ok(sort.toJSON(), 'toJSON() works');
     doTest();
     
     sort.field('title');
@@ -786,14 +785,14 @@ exports.search = {
     doTest();
     
     sort.nestedFilter(termFilter);
-    expected.title.nested_filter = termFilter._self();
+    expected.title.nested_filter = termFilter.toJSON();
     doTest();
     
     // geo distance sorting tests
     sort = ejs.Sort('location').geoDistance(geoPoint);
     expected = {
       _geo_distance: {
-        location: geoPoint._self()
+        location: geoPoint.toJSON()
       }
     };
     doTest();
@@ -871,7 +870,7 @@ exports.search = {
     var shape = ejs.Shape('envelope', [[-45.0, 45.0], [45.0, -45.0]]),
       expected,
       doTest = function () {
-        test.deepEqual(shape._self(), expected);
+        test.deepEqual(shape.toJSON(), expected);
       };
     
     expected = {
@@ -880,7 +879,7 @@ exports.search = {
     };  
     
     test.ok(shape, 'Shape exists');
-    test.ok(shape._self(), '_self() works');
+    test.ok(shape.toJSON(), 'toJSON() works');
     doTest();
     
     shape.type('point');
@@ -939,7 +938,7 @@ exports.search = {
     var indexedShape = ejs.IndexedShape('countries', 'New Zealand'),
       expected,
       doTest = function () {
-        test.deepEqual(indexedShape._self(), expected);
+        test.deepEqual(indexedShape.toJSON(), expected);
       };
     
     expected = {
@@ -948,7 +947,7 @@ exports.search = {
     };  
     
     test.ok(indexedShape, 'IndexedShape exists');
-    test.ok(indexedShape._self(), '_self() works');
+    test.ok(indexedShape.toJSON(), 'toJSON() works');
     doTest();
     
     indexedShape.type('state');
@@ -978,13 +977,13 @@ exports.search = {
     var geoPoint = ejs.GeoPoint(),
       expected,
       doTest = function () {
-        test.deepEqual(geoPoint._self(), expected);
+        test.deepEqual(geoPoint.toJSON(), expected);
       };
     
     expected = [0, 0];
     
     test.ok(geoPoint, 'GeoPoint exists');
-    test.ok(geoPoint._self(), '_self() works');
+    test.ok(geoPoint.toJSON(), 'toJSON() works');
     doTest();
     
     // [lat, lon] constructor converted to GeoJSON [lon, lat]
@@ -1024,7 +1023,7 @@ exports.search = {
     var cp = ejs.ScriptField('f'),
       expected,
       doTest = function () {
-        test.deepEqual(cp._self(), expected);
+        test.deepEqual(cp.toJSON(), expected);
       };
     
     expected = {
@@ -1032,7 +1031,7 @@ exports.search = {
     };  
     
     test.ok(cp, 'ScriptField exists');
-    test.ok(cp._self(), '_self() works');
+    test.ok(cp.toJSON(), 'toJSON() works');
     doTest();
     
     cp.lang('mvel');
@@ -1057,9 +1056,9 @@ exports.search = {
     test.done();
   },
   Request: function (test) {
-    test.expect(165);
+    test.expect(46);
 
-    var req = ejs.Request({indices: ['index1'], types: ['type1']}),
+    var req = ejs.Request(),
       matchAll = ejs.MatchAllQuery(),
       termQuery = ejs.TermQuery('t', 'v'),
       termFilter = ejs.TermFilter('tf', 'vf'),
@@ -1075,308 +1074,75 @@ exports.search = {
       phraseSuggest = ejs.PhraseSuggester('my_phrase_suggester'),
       rescore = ejs.Rescore(1000, termQuery).queryWeight(3),
       expected,
-      mockClient,
-      expectedPath = '',
-      expectedData = '',
-      expectedMethod = '',
-      doTest = function (method, path, data, cb) {
-        if (expectedPath !== '') {
-          test.strictEqual(path, expectedPath);
-          expectedPath = '';
-        }
-        
-        if (expectedData !== '') {
-          test.deepEqual(data, expectedData);
-          expectedData = '';
-        }
-        
-        if (expectedMethod !== '') {
-          test.strictEqual(method, expectedMethod);
-          expectedMethod = '';
-        }
-        
-        test.deepEqual(req._self(), expected);
+      doTest = function () {
+        test.deepEqual(req.toJSON(), expected);
       };
-
-    // setup fake client to call doTest
-    ejs.client = mockClient = {
-      get: function (path, data, cb) {
-        doTest('get', path, data, cb);
-      },
-      post: function (path, data, cb) {
-        doTest('post', path, data, cb);
-      },
-      put: function (path, data, cb) {
-        doTest('put', path, data, cb);
-      },
-      del: function (path, data, cb) {
-        doTest('delete', path, data, cb);
-      },
-      head: function (path, data, cb) {
-        doTest('head', path, data, cb);
-      }
-    };
     
     expected = {};
-
-    test.deepEqual(req.indices(), ['index1']);
-    test.deepEqual(req.types(), ['type1']);
-    expectedMethod = 'post';
-    expectedPath = '/index1/type1/_search';
-    expectedData = JSON.stringify(expected);
-    req.doSearch();
-
-    req.indices([]);
-    test.deepEqual(req.indices(), ['_all']);
-    expectedPath = '/_all/type1/_search';
-    req.doSearch();
-
-    req.types([]);
-    test.deepEqual(req.types(), []);
-    expectedPath = '/_all/_search';
-    req.doSearch();
-
-    req.indices([]);
-    test.deepEqual(req.indices(), []);
-    expectedPath = '/_search';
-    req.doSearch();
-
-    req.indices(['index1', 'index2']);
-    test.deepEqual(req.indices(), ['index1', 'index2']);
-    expectedPath = '/index1,index2/_search';
-    req.doSearch();
-
-    req.types(['type1', 'type2']);
-    test.deepEqual(req.types(), ['type1', 'type2']);
-    expectedPath = '/index1,index2/type1,type2/_search';
-    req.doSearch();
-
-    req = ejs.Request({});
-    test.deepEqual(req.indices(), []);
-    test.deepEqual(req.types(), []);
-    expectedPath = '/_search';
-    req.doSearch();
     
-    req = ejs.Request({
-      indices: 'index1',
-      types: 'type1'
-    });
-    test.deepEqual(req.indices(), ['index1']);
-    test.deepEqual(req.types(), ['type1']);
-    expectedPath = '/index1/type1/_search';
-    req.doSearch();
-
-    req = ejs.Request({
-      types: 'type1'
-    });
-    test.deepEqual(req.indices(), ['_all']);
-    test.deepEqual(req.types(), ['type1']);
-    expectedPath = '/_all/type1/_search';
-    req.doSearch();
-
-    req = ejs.Request({routing: 'route1'});
-    test.deepEqual(req.routing(), 'route1');
-    expectedPath = '/_search?routing=route1';
-    req.doSearch();
-    
-    req.routing('');
-    test.deepEqual(req.routing(), '');
-    expectedPath = '/_search';
-    req.doSearch();
-    
-    req.routing('route2,route3');
-    test.deepEqual(req.routing(), 'route2,route3');
-    expectedPath = '/_search?routing=route2%2Croute3';
-    req.doSearch();
+    req = ejs.Request().query(matchAll);  
+    expected = {
+      query: matchAll.toJSON()
+    };
+    doTest();
     
     req.timeout(5000);
-    expectedPath = '/_search?routing=route2%2Croute3&timeout=5000';
-    req.doSearch();
-    
-    req.replication('async');
-    test.strictEqual(req.replication(), 'async');
-    expectedPath = '/_search?routing=route2%2Croute3&timeout=5000&replication=async';
-    req.doSearch();
-    
-    req.replication('invalid');
-    test.strictEqual(req.replication(), 'async');
-    expectedPath = '/_search?routing=route2%2Croute3&timeout=5000&replication=async';
-    req.doSearch();
-    
-    req.replication('SYNC');
-    test.strictEqual(req.replication(), 'sync');
-    expectedPath = '/_search?routing=route2%2Croute3&timeout=5000&replication=sync';
-    req.doSearch();
-    
-    req.replication('default');
-    test.strictEqual(req.replication(), 'default');
-    expectedPath = '/_search?routing=route2%2Croute3&timeout=5000&replication=default';
-    req.doSearch();
-    
-    req.consistency('default');
-    test.strictEqual(req.consistency(), 'default');
-    expectedPath = '/_search?routing=route2%2Croute3&timeout=5000&replication=default&consistency=default';
-    req.doSearch();
-    
-    req.consistency('invalid');
-    test.strictEqual(req.consistency(), 'default');
-    expectedPath = '/_search?routing=route2%2Croute3&timeout=5000&replication=default&consistency=default';
-    req.doSearch();
-    
-    req.consistency('ONE');
-    test.strictEqual(req.consistency(), 'one');
-    expectedPath = '/_search?routing=route2%2Croute3&timeout=5000&replication=default&consistency=one';
-    req.doSearch();
-    
-    req.consistency('quorum');
-    test.strictEqual(req.consistency(), 'quorum');
-    expectedPath = '/_search?routing=route2%2Croute3&timeout=5000&replication=default&consistency=quorum';
-    req.doSearch();
-    
-    req.consistency('ALL');
-    test.strictEqual(req.consistency(), 'all');
-    expectedPath = '/_search?routing=route2%2Croute3&timeout=5000&replication=default&consistency=all';
-    req.doSearch();
-    
-    req.preference('_primary');
-    test.strictEqual(req.preference(), '_primary');
-    expectedPath = '/_search?routing=route2%2Croute3&timeout=5000&replication=default&consistency=all&preference=_primary';
-    req.doSearch();
-    
-    req.ignoreIndices('none');
-    test.strictEqual(req.ignoreIndices(), 'none');
-    expectedPath = '/_search?routing=route2%2Croute3&timeout=5000&replication=default&consistency=all&preference=_primary&ignore_indices=none';
-    req.doSearch();
-    
-    req.ignoreIndices('INVALID');
-    test.strictEqual(req.ignoreIndices(), 'none');
-    expectedPath = '/_search?routing=route2%2Croute3&timeout=5000&replication=default&consistency=all&preference=_primary&ignore_indices=none';
-    req.doSearch();
-    
-    req.ignoreIndices('MISSING');
-    test.strictEqual(req.ignoreIndices(), 'missing');
-    expectedPath = '/_search?routing=route2%2Croute3&timeout=5000&replication=default&consistency=all&preference=_primary&ignore_indices=missing';
-    req.doSearch();
-    
-    req.searchType('dfs_query_then_fetch');
-    test.strictEqual(req.searchType(), 'dfs_query_then_fetch');
-    expectedPath = '/_search?routing=route2%2Croute3&timeout=5000&replication=default&consistency=all&preference=_primary&ignore_indices=missing&search_type=dfs_query_then_fetch';
-    req.doSearch();
-    
-    req.searchType('INVALID');
-    test.strictEqual(req.searchType(), 'dfs_query_then_fetch');
-    expectedPath = '/_search?routing=route2%2Croute3&timeout=5000&replication=default&consistency=all&preference=_primary&ignore_indices=missing&search_type=dfs_query_then_fetch';
-    req.doSearch();
-    
-    req.searchType('DFS_QUERY_AND_FETCH');
-    test.strictEqual(req.searchType(), 'dfs_query_and_fetch');
-    expectedPath = '/_search?routing=route2%2Croute3&timeout=5000&replication=default&consistency=all&preference=_primary&ignore_indices=missing&search_type=dfs_query_and_fetch';
-    req.doSearch();
-    
-    req.searchType('Query_then_Fetch');
-    test.strictEqual(req.searchType(), 'query_then_fetch');
-    expectedPath = '/_search?routing=route2%2Croute3&timeout=5000&replication=default&consistency=all&preference=_primary&ignore_indices=missing&search_type=query_then_fetch';
-    req.doSearch();
-    
-    req.searchType('query_and_fetch');
-    test.strictEqual(req.searchType(), 'query_and_fetch');
-    expectedPath = '/_search?routing=route2%2Croute3&timeout=5000&replication=default&consistency=all&preference=_primary&ignore_indices=missing&search_type=query_and_fetch';
-    req.doSearch();
-    
-    req.searchType('scan');
-    test.strictEqual(req.searchType(), 'scan');
-    expectedPath = '/_search?routing=route2%2Croute3&timeout=5000&replication=default&consistency=all&preference=_primary&ignore_indices=missing&search_type=scan';
-    req.doSearch();
-    
-    req.searchType('count');
-    test.strictEqual(req.searchType(), 'count');
-    expectedPath = '/_search?routing=route2%2Croute3&timeout=5000&replication=default&consistency=all&preference=_primary&ignore_indices=missing&search_type=count';
-    req.doSearch();
-    
-    req.local(true);
-    test.strictEqual(req.local(), true);
-    expectedPath = '/_search?routing=route2%2Croute3&timeout=5000&replication=default&consistency=all&preference=_primary&ignore_indices=missing&search_type=count&local=true';
-    req.doSearch();
-    
-    req = ejs.Request({indices: 'index', types: 'type'}).query(matchAll);  
-    expected = {
-      query: matchAll._self()
-    };
-    expectedPath = '/index/type/_search';
-    expectedData = JSON.stringify(expected);
-    req.doSearch();
-    
-    // test count request
-    expectedPath = '/index/type/_count';
-    expectedMethod = 'post';
-    expectedData = JSON.stringify(matchAll._self());
-    req.doCount();
-    
-    // test delete by query request
-    expectedPath = '/index/type/_query';
-    expectedMethod = 'delete';
-    expectedData = JSON.stringify(matchAll._self());
-    req.doDeleteByQuery();
-    
-    // test search shards
-    expectedPath = '/index/type/_search_shards';
-    expectedMethod = 'post';
-    expectedData = '';
-    req.doSearchShards();
+    expected.timeout = 5000;
+    doTest();
     
     req.sort('field1');
     expected.sort = ['field1'];
-    req.doSearch();
+    doTest();
     
     req.sort('field2', 'asc');
     expected.sort.push({field2: {order: 'asc'}});
-    req.doSearch();
+    doTest();
     
     req.sort('field3', 'invalid');
-    req.doSearch();
+    doTest();
     
     req.sort('field3', 'DESC');
     expected.sort.push({field3: {order: 'desc'}});
-    req.doSearch();
+    doTest();
     
     req.sort(ejs.Sort('field4').asc());
     expected.sort.push({field4: {order: 'asc'}});
-    req.doSearch();
+    doTest();
     
     var geoSort = ejs.Sort('location')
       .geoDistance(ejs.GeoPoint([37.7819288, -122.396480]))
       .unit('mi').normalize(true);
     req.sort(geoSort);
-    expected.sort.push(geoSort._self());
-    req.doSearch();
+    expected.sort.push(geoSort.toJSON());
+    doTest();
     
     req.sort(['field5', geoSort]);
-    expected.sort = ['field5', geoSort._self()];
-    req.doSearch();
+    expected.sort = ['field5', geoSort.toJSON()];
+    doTest();
     
     test.deepEqual(req.sort(), expected.sort);
     
     req.trackScores(true);
     expected.track_scores = true;
-    req.doSearch();
+    doTest();
     
     req.fields('field1');
     expected.fields = ['field1'];
-    req.doSearch();
+    doTest();
     
     req.fields('field2');
     expected.fields.push('field2');
-    req.doSearch();
+    doTest();
     
     req.fields(['field3', 'field4']);
     expected.fields = ['field3', 'field4'];
-    req.doSearch();
+    doTest();
     
     var hlt = ejs.Highlight('body').fragmentSize(500, 'body');
     
     req.highlight(hlt);
-    expected.highlight = hlt._self();
-    req.doSearch();
+    expected.highlight = hlt.toJSON();
+    doTest();
     
     req.size(20);
     expected.size = 20;
@@ -1387,21 +1153,21 @@ exports.search = {
     doTest();
     
     req.query(termQuery);
-    expected.query = termQuery._self();
+    expected.query = termQuery.toJSON();
     doTest();
     
     req.facet(filterFacet);
-    expected.facets = filterFacet._self();
+    expected.facets = filterFacet.toJSON();
     doTest();
     
     req.facet(termsFacet);
     // extend is not avaiable in tests so just set place the facet
     // value into the existing facets object
-    expected.facets.my_terms_facet = termsFacet._self().my_terms_facet;
+    expected.facets.my_terms_facet = termsFacet.toJSON().my_terms_facet;
     doTest();
     
     req.filter(termFilter);
-    expected.filter = termFilter._self();
+    expected.filter = termFilter.toJSON();
     doTest();
     
     req.suggest("global suggest text");
@@ -1409,23 +1175,23 @@ exports.search = {
     doTest();
     
     req.suggest(termSuggest);
-    expected.suggest.my_term_suggester = termSuggest._self().my_term_suggester;
+    expected.suggest.my_term_suggester = termSuggest.toJSON().my_term_suggester;
     doTest();
     
     req.suggest(phraseSuggest);
-    expected.suggest.my_phrase_suggester = phraseSuggest._self().my_phrase_suggester;
+    expected.suggest.my_phrase_suggester = phraseSuggest.toJSON().my_phrase_suggester;
     doTest();
     
     req.rescore(rescore);
-    expected.rescore = rescore._self();
+    expected.rescore = rescore.toJSON();
     doTest();
     
     req.scriptField(scriptField);
-    expected.script_fields = scriptField._self();
+    expected.script_fields = scriptField.toJSON();
     doTest();
     
     req.scriptField(scriptField2);
-    expected.script_fields.my_script_field2 = scriptField2._self().my_script_field2;
+    expected.script_fields.my_script_field2 = scriptField2.toJSON().my_script_field2;
     doTest();
     
     req.indexBoost('index', 5.0);
@@ -1497,226 +1263,6 @@ exports.search = {
     
     test.throws(function () {
       req.rescore('invalid');
-    }, TypeError);
-    
-    test.done();
-  },
-  MultiSearchRequest: function (test) {
-    test.expect(77);
-
-    var mreq = ejs.MultiSearchRequest({indices: ['index1'], types: ['type1']}), 
-      req = ejs.Request({indices: ['index1'], types: ['type1']})
-        .query(ejs.MatchAllQuery()),
-      req2 = ejs.Request().preference('_local').timeout(300)
-        .query(ejs.TermQuery('t', 'v'))
-        .filter(ejs.TermFilter('tf', 'vf')),
-      req3 = ejs.Request({types: 'type2'}).routing('abc')
-        .ignoreIndices('ignored')
-        .query(ejs.MatchAllQuery())
-        .facet(ejs.TermsFacet('my_terms_facet').field('author')),
-      req4 = ejs.Request().searchType('dfs_query_and_fetch')
-        .query(ejs.MatchAllQuery()),
-      rawReq,
-      expected,
-      mockClient,
-      expectedPath = '',
-      expectedData = '',
-      expectedMethod = '',
-      doTest = function (method, path, data, cb) {
-        if (expectedPath !== '') {
-          test.strictEqual(path, expectedPath);
-          expectedPath = '';
-        }
-        
-        if (expectedData !== '') {
-          test.deepEqual(data, expectedData);
-          expectedData = '';
-        }
-        
-        if (expectedMethod !== '') {
-          test.strictEqual(method, expectedMethod);
-          expectedMethod = '';
-        }
-        
-        test.deepEqual(mreq._self(), expected);
-      };
-
-    // setup fake client to call doTest
-    ejs.client = mockClient = {
-      get: function (path, data, cb) {
-        doTest('get', path, data, cb);
-      },
-      post: function (path, data, cb) {
-        doTest('post', path, data, cb);
-      },
-      put: function (path, data, cb) {
-        doTest('put', path, data, cb);
-      },
-      del: function (path, data, cb) {
-        doTest('delete', path, data, cb);
-      },
-      head: function (path, data, cb) {
-        doTest('head', path, data, cb);
-      }
-    };
-    
-    expected = [];
-
-    test.deepEqual(mreq.indices(), ['index1']);
-    test.deepEqual(mreq.types(), ['type1']);
-    expectedMethod = 'post';
-    expectedPath = '/index1/type1/_msearch';
-    mreq.doSearch();
-
-
-    mreq.indices([]);
-    test.deepEqual(mreq.indices(), ['_all']);
-    expectedPath = '/_all/type1/_msearch';
-    mreq.doSearch();
-
-    mreq.types([]);
-    test.deepEqual(mreq.types(), []);
-    expectedPath = '/_all/_msearch';
-    mreq.doSearch();
-
-    mreq.indices([]);
-    test.deepEqual(mreq.indices(), []);
-    expectedPath = '/_msearch';
-    mreq.doSearch();
-
-    mreq.indices(['index1', 'index2']);
-    test.deepEqual(mreq.indices(), ['index1', 'index2']);
-    expectedPath = '/index1,index2/_msearch';
-    mreq.doSearch();
-
-    mreq.types(['type1', 'type2']);
-    test.deepEqual(mreq.types(), ['type1', 'type2']);
-    expectedPath = '/index1,index2/type1,type2/_msearch';
-    mreq.doSearch();
-
-    mreq = ejs.MultiSearchRequest({});
-    test.deepEqual(mreq.indices(), []);
-    test.deepEqual(mreq.types(), []);
-    expectedPath = '/_msearch';
-    mreq.doSearch();
-    
-    mreq = ejs.MultiSearchRequest({
-      indices: 'index1',
-      types: 'type1'
-    });
-    test.deepEqual(mreq.indices(), ['index1']);
-    test.deepEqual(mreq.types(), ['type1']);
-    expectedPath = '/index1/type1/_msearch';
-    mreq.doSearch();
-
-    mreq = ejs.MultiSearchRequest({
-      types: 'type1'
-    });
-    test.deepEqual(mreq.indices(), ['_all']);
-    test.deepEqual(mreq.types(), ['type1']);
-    expectedPath = '/_all/type1/_msearch';
-    mreq.doSearch();
-    
-    mreq = ejs.MultiSearchRequest().requests(req);
-    expected = [req._self()];
-    expectedData = 
-      JSON.stringify({indices: req.indices(), types: req.types()}) +
-      '\n' + req.toString() + '\n';
-    test.deepEqual(mreq.requests(), [req]);
-    mreq.doSearch();
-    
-    mreq.requests(req2);
-    expected.push(req2._self());
-    rawReq = req2._self();
-    rawReq.timeout = 300;
-    expectedData = 
-      JSON.stringify({indices: req.indices(), types: req.types()}) +
-      '\n' + req.toString() + '\n' +
-      JSON.stringify({preference: req2.preference()}) +
-      '\n' + JSON.stringify(rawReq) + '\n';
-    test.deepEqual(mreq.requests(), [req, req2]);
-    mreq.doSearch();
-    
-    mreq.requests([req3, req4]);
-    expected = [req3._self(), req4._self()];
-    expectedData = 
-      JSON.stringify({indices: req3.indices(), types: req3.types(),
-        routing: req3.routing(), ignore_indices: req3.ignoreIndices()}) +
-      '\n' + req3.toString() + '\n' +
-      JSON.stringify({search_type: req4.searchType()}) +
-      '\n' + req4.toString() + '\n';
-    test.deepEqual(mreq.requests(), [req3, req4]);
-    mreq.doSearch();
-    
-    mreq.requests(req2);
-    expected.push(req2._self());
-    expectedData = 
-      JSON.stringify({indices: req3.indices(), types: req3.types(),
-        routing: req3.routing(), ignore_indices: req3.ignoreIndices()}) +
-      '\n' + req3.toString() + '\n' +
-      JSON.stringify({search_type: req4.searchType()}) +
-      '\n' + req4.toString() + '\n' + 
-      JSON.stringify({preference: req2.preference()}) +
-      '\n' + JSON.stringify(rawReq) + '\n';
-    test.deepEqual(mreq.requests(), [req3, req4, req2]);
-    mreq.doSearch();
-    
-    mreq = ejs.MultiSearchRequest().ignoreIndices('none');
-    test.strictEqual(mreq.ignoreIndices(), 'none');
-    expected = [];
-    expectedPath = '/_msearch?ignore_indices=none';
-    mreq.doSearch();
-    
-    mreq.ignoreIndices('INVALID');
-    test.strictEqual(mreq.ignoreIndices(), 'none');
-    expectedPath = '/_msearch?ignore_indices=none';
-    mreq.doSearch();
-    
-    mreq.ignoreIndices('MISSING');
-    test.strictEqual(mreq.ignoreIndices(), 'missing');
-    expectedPath = '/_msearch?ignore_indices=missing';
-    mreq.doSearch();
-    
-    mreq.searchType('dfs_query_then_fetch');
-    test.strictEqual(mreq.searchType(), 'dfs_query_then_fetch');
-    expectedPath = '/_msearch?ignore_indices=missing&search_type=dfs_query_then_fetch';
-    mreq.doSearch();
-    
-    mreq.searchType('INVALID');
-    test.strictEqual(mreq.searchType(), 'dfs_query_then_fetch');
-    expectedPath = '/_msearch?ignore_indices=missing&search_type=dfs_query_then_fetch';
-    mreq.doSearch();
-    
-    mreq.searchType('DFS_QUERY_AND_FETCH');
-    test.strictEqual(mreq.searchType(), 'dfs_query_and_fetch');
-    expectedPath = '/_msearch?ignore_indices=missing&search_type=dfs_query_and_fetch';
-    mreq.doSearch();
-    
-    mreq.searchType('Query_then_Fetch');
-    test.strictEqual(mreq.searchType(), 'query_then_fetch');
-    expectedPath = '/_msearch?ignore_indices=missing&search_type=query_then_fetch';
-    mreq.doSearch();
-    
-    mreq.searchType('query_and_fetch');
-    test.strictEqual(mreq.searchType(), 'query_and_fetch');
-    expectedPath = '/_msearch?ignore_indices=missing&search_type=query_and_fetch';
-    mreq.doSearch();
-    
-    mreq.searchType('scan');
-    test.strictEqual(mreq.searchType(), 'scan');
-    expectedPath = '/_msearch?ignore_indices=missing&search_type=scan';
-    mreq.doSearch();
-    
-    mreq.searchType('count');
-    test.strictEqual(mreq.searchType(), 'count');
-    expectedPath = '/_msearch?ignore_indices=missing&search_type=count';
-    mreq.doSearch();
-    
-    test.strictEqual(mreq._type(), 'multi search request');
-    test.strictEqual(mreq.toString(), JSON.stringify(expected));
-
-    test.throws(function () {
-      mreq.requests('invalid');
     }, TypeError);
     
     test.done();

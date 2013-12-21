@@ -545,7 +545,7 @@
             @member ejs.QueryStringQuery
             @returns {String} returns this object's internal <code>query</code> property.
             */
-      _self: function () {
+      toJSON: function () {
         return query;
       }
     };

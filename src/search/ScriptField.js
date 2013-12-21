@@ -114,7 +114,7 @@
             @member ejs.ScriptField
             @returns {String} returns this object's internal <code>facet</code> property.
             */
-      _self: function () {
+      toJSON: function () {
         return script;
       }
     };

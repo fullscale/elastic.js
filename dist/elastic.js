@@ -1,4 +1,4 @@
-/*! elastic.js - v1.1.1 - 2013-08-14
+/*! elastic.js - v1.1.1 - 2013-12-20
  * https://github.com/fullscale/elastic.js
  * Copyright (c) 2013 FullScale Labs, LLC; Licensed MIT */
 
@@ -54,12 +54,6 @@
     isHighlight, // checks valid ejs Highlight object
     isSuggest, // checks valid ejs Suggest object
     isGenerator, // checks valid ejs Generator object
-    isClusterHealth, // checks valid ejs ClusterHealth object
-    isClusterState, // checks valid ejs ClusterState object
-    isNodeStats, // checks valid ejs NodeStats object
-    isNodeInfo, // checks valid ejs NodeInfo object
-    isRequest, // checks valid ejs Request object
-    isMultiSearchRequest, // checks valid ejs MultiSearchRequest object
     
     // create ejs object
     ejs;
@@ -219,11 +213,11 @@
   }
   
   // Is a given value an ejs object?
-  // Yes if object and has "_type", "_self", and "toString" properties
+  // Yes if object and has "_type", "toJSON", and "toString" properties
   isEJSObject = function (obj) {
     return (isObject(obj) &&
       has(obj, '_type') &&
-      has(obj, '_self') && 
+      has(obj, 'toJSON') && 
       has(obj, 'toString'));
   };
   
@@ -273,30 +267,6 @@
   
   isGenerator = function (obj) {
     return (isEJSObject(obj) && obj._type() === 'generator');
-  };
-  
-  isClusterHealth = function (obj) {
-    return (isEJSObject(obj) && obj._type() === 'cluster health');
-  };
-  
-  isClusterState = function (obj) {
-    return (isEJSObject(obj) && obj._type() === 'cluster state');
-  };
-  
-  isNodeStats = function (obj) {
-    return (isEJSObject(obj) && obj._type() === 'node stats');
-  };
-  
-  isNodeInfo = function (obj) {
-    return (isEJSObject(obj) && obj._type() === 'node info');
-  };
-  
-  isRequest = function (obj) {
-    return (isEJSObject(obj) && obj._type() === 'request');
-  };
-
-  isMultiSearchRequest = function (obj) {
-    return (isEJSObject(obj) && obj._type() === 'multi search request');
   };
  
   /**
@@ -647,7 +617,7 @@
           throw new TypeError('Argument must be a Filter');
         }
         
-        facet[name].facet_filter = oFilter._self();
+        facet[name].facet_filter = oFilter.toJSON();
         return this;
       },
 
@@ -764,7 +734,7 @@
             @member ejs.DateHistogramFacet
             @returns {String} returns this object's internal <code>facet</code> property.
             */
-      _self: function () {
+      toJSON: function () {
         return facet;
       }
     };
@@ -827,7 +797,7 @@
           throw new TypeError('Argument must be a Filter');
         }
         
-        facet[name].filter = oFilter._self();
+        facet[name].filter = oFilter.toJSON();
         return this;
       },
 
@@ -847,7 +817,7 @@
           throw new TypeError('Argument must be a Filter');
         }
         
-        facet[name].facet_filter = oFilter._self();
+        facet[name].facet_filter = oFilter.toJSON();
         return this;
       },
 
@@ -964,7 +934,7 @@
             @member ejs.FilterFacet
             @returns {String} returns this object's internal <code>facet</code> property.
             */
-      _self: function () {
+      toJSON: function () {
         return facet;
       }
     };
@@ -1013,7 +983,7 @@
 
     facet[name] = {
       geo_distance: {
-        location: point._self(),
+        location: point.toJSON(),
         ranges: []
       }
     };
@@ -1059,7 +1029,7 @@
         }
         
         point = p;
-        facet[name].geo_distance[field] = p._self();
+        facet[name].geo_distance[field] = p.toJSON();
         return this;
       },
 
@@ -1269,7 +1239,7 @@
           throw new TypeError('Argument must be a Filter');
         }
         
-        facet[name].facet_filter = oFilter._self();
+        facet[name].facet_filter = oFilter.toJSON();
         return this;
       },
 
@@ -1386,7 +1356,7 @@
             @member ejs.GeoDistanceFacet
             @returns {String} returns this object's internal <code>facet</code> property.
             */
-      _self: function () {
+      toJSON: function () {
         return facet;
       }
     };
@@ -1667,7 +1637,7 @@
           throw new TypeError('Argument must be a Filter');
         }
         
-        facet[name].facet_filter = oFilter._self();
+        facet[name].facet_filter = oFilter.toJSON();
         return this;
       },
 
@@ -1784,7 +1754,7 @@
             @member ejs.HistogramFacet
             @returns {String} returns this object's internal <code>facet</code> property.
             */
-      _self: function () {
+      toJSON: function () {
         return facet;
       }
     };
@@ -1847,7 +1817,7 @@
           throw new TypeError('Argument must be a Query');
         }
         
-        facet[name].query = oQuery._self();
+        facet[name].query = oQuery.toJSON();
         return this;
       },
 
@@ -1867,7 +1837,7 @@
           throw new TypeError('Argumnet must be a Filter');
         }
         
-        facet[name].facet_filter = oFilter._self();
+        facet[name].facet_filter = oFilter.toJSON();
         return this;
       },
 
@@ -1984,7 +1954,7 @@
             @member ejs.QueryFacet
             @returns {String} returns this object's internal <code>facet</code> property.
             */
-      _self: function () {
+      toJSON: function () {
         return facet;
       }
     };
@@ -2228,7 +2198,7 @@
           throw new TypeError('Argument must be a Filter');
         }
         
-        facet[name].facet_filter = oFilter._self();
+        facet[name].facet_filter = oFilter.toJSON();
         return this;
       },
 
@@ -2345,7 +2315,7 @@
             @member ejs.RangeFacet
             @returns {String} returns this object's internal <code>facet</code> property.
             */
-      _self: function () {
+      toJSON: function () {
         return facet;
       }
     };
@@ -2497,7 +2467,7 @@
           throw new TypeError('Argument must be a Filter');
         }
         
-        facet[name].facet_filter = oFilter._self();
+        facet[name].facet_filter = oFilter.toJSON();
         return this;
       },
 
@@ -2614,7 +2584,7 @@
             @member ejs.StatisticalFacet
             @returns {String} returns this object's internal <code>facet</code> property.
             */
-      _self: function () {
+      toJSON: function () {
         return facet;
       }
     };
@@ -2852,7 +2822,7 @@
           throw new TypeError('Argument must be a Filter');
         }
         
-        facet[name].facet_filter = oFilter._self();
+        facet[name].facet_filter = oFilter.toJSON();
         return this;
       },
 
@@ -2969,7 +2939,7 @@
             @member ejs.TermStatsFacet
             @returns {String} returns this object's internal <code>facet</code> property.
             */
-      _self: function () {
+      toJSON: function () {
         return facet;
       }
     };
@@ -3282,7 +3252,7 @@
           throw new TypeError('Argument must be a Filter');
         }
         
-        facet[name].facet_filter = oFilter._self();
+        facet[name].facet_filter = oFilter.toJSON();
         return this;
       },
 
@@ -3399,7 +3369,7 @@
             @member ejs.TermsFacet
             @returns {String} returns this object's internal <code>facet</code> property.
             */
-      _self: function () {
+      toJSON: function () {
         return facet;
       }
     };
@@ -3420,7 +3390,7 @@
   ejs.AndFilter = function (f) {
 
     /**
-         The internal filter object. Use <code>_self()</code>
+         The internal filter object. Use <code>toJSON()</code>
 
          @member ejs.AndFilter
          @property {Object} filter
@@ -3434,14 +3404,14 @@
       };
 
     if (isFilter(f)) {
-      filter.and.filters.push(f._self());
+      filter.and.filters.push(f.toJSON());
     } else if (isArray(f)) {
       for (i = 0, len = f.length; i < len; i++) {
         if (!isFilter(f[i])) {
           throw new TypeError('Array must contain only Filter objects');
         }
         
-        filter.and.filters.push(f[i]._self());
+        filter.and.filters.push(f[i].toJSON());
       }
     } else {
       throw new TypeError('Argument must be a Filter or Array of Filters');
@@ -3467,7 +3437,7 @@
         }
       
         if (isFilter(fltr)) {
-          filter.and.filters.push(fltr._self());
+          filter.and.filters.push(fltr.toJSON());
         } else if (isArray(fltr)) {
           filter.and.filters = [];
           for (i = 0, len = fltr.length; i < len; i++) {
@@ -3475,7 +3445,7 @@
               throw new TypeError('Array must contain only Filter objects');
             }
             
-            filter.and.filters.push(fltr[i]._self());
+            filter.and.filters.push(fltr[i].toJSON());
           }
         } else {
           throw new TypeError('Argument must be a Filter or an Array of Filters');
@@ -3558,7 +3528,7 @@
              @member ejs.AndFilter
              @returns {Object} filter object
              */
-      _self: function () {
+      toJSON: function () {
         return filter;
       }
     };
@@ -3581,7 +3551,7 @@
   ejs.BoolFilter = function () {
 
     /**
-         The internal filter object. <code>Use _self()</code>
+         The internal filter object. <code>Use toJSON()</code>
          @member ejs.BoolFilter
          @property {Object} filter
          */
@@ -3614,7 +3584,7 @@
         }
 
         if (isFilter(oFilter)) {
-          filter.bool.must.push(oFilter._self());
+          filter.bool.must.push(oFilter.toJSON());
         } else if (isArray(oFilter)) {
           filter.bool.must = [];
           for (i = 0, len = oFilter.length; i < len; i++) {
@@ -3622,7 +3592,7 @@
               throw new TypeError('Argument must be an array of Filters');
             }
             
-            filter.bool.must.push(oFilter[i]._self());
+            filter.bool.must.push(oFilter[i].toJSON());
           }
         } else {
           throw new TypeError('Argument must be a Filter or array of Filters');
@@ -3654,7 +3624,7 @@
         }
     
         if (isFilter(oFilter)) {
-          filter.bool.must_not.push(oFilter._self());
+          filter.bool.must_not.push(oFilter.toJSON());
         } else if (isArray(oFilter)) {
           filter.bool.must_not = [];
           for (i = 0, len = oFilter.length; i < len; i++) {
@@ -3662,7 +3632,7 @@
               throw new TypeError('Argument must be an array of Filters');
             }
             
-            filter.bool.must_not.push(oFilter[i]._self());
+            filter.bool.must_not.push(oFilter[i].toJSON());
           }
         } else {
           throw new TypeError('Argument must be a Filter or array of Filters');
@@ -3694,7 +3664,7 @@
         }
     
         if (isFilter(oFilter)) {
-          filter.bool.should.push(oFilter._self());
+          filter.bool.should.push(oFilter.toJSON());
         } else if (isArray(oFilter)) {
           filter.bool.should = [];
           for (i = 0, len = oFilter.length; i < len; i++) {
@@ -3702,7 +3672,7 @@
               throw new TypeError('Argument must be an array of Filters');
             }
             
-            filter.bool.should.push(oFilter[i]._self());
+            filter.bool.should.push(oFilter[i].toJSON());
           }
         } else {
           throw new TypeError('Argument must be a Filter or array of Filters');
@@ -3786,7 +3756,7 @@
             @member ejs.BoolFilter
             @returns {String} returns this object's internal <code>filter</code> property.
             */
-      _self: function () {
+      toJSON: function () {
         return filter;
       }
     };
@@ -3878,7 +3848,7 @@
              @member ejs.ExistsFilter
              @returns {Object} filter object
              */
-      _self: function () {
+      toJSON: function () {
         return filter;
       }
     };
@@ -3900,7 +3870,7 @@
   ejs.GeoBboxFilter = function (fieldName) {
 
     /**
-         The internal filter object. Use <code>_self()</code>
+         The internal filter object. Use <code>toJSON()</code>
 
          @member ejs.GeoBboxFilter
          @property {Object} filter
@@ -3947,7 +3917,7 @@
         }
       
         if (isGeoPoint(p)) {
-          filter.geo_bounding_box[fieldName].top_left = p._self();
+          filter.geo_bounding_box[fieldName].top_left = p.toJSON();
         } else {
           throw new TypeError('Argument must be a GeoPoint');
         }
@@ -3968,7 +3938,7 @@
         }
       
         if (isGeoPoint(p)) {
-          filter.geo_bounding_box[fieldName].bottom_right = p._self();
+          filter.geo_bounding_box[fieldName].bottom_right = p.toJSON();
         } else {
           throw new TypeError('Argument must be a GeoPoint');
         }
@@ -4092,7 +4062,7 @@
              @member ejs.GeoBboxFilter
              @returns {Object} filter object
              */
-      _self: function () {
+      toJSON: function () {
         return filter;
       }
     };
@@ -4114,7 +4084,7 @@
   ejs.GeoDistanceFilter = function (fieldName) {
 
     /**
-         The internal filter object. Use <code>_self()</code>
+         The internal filter object. Use <code>toJSON()</code>
 
          @member ejs.GeoDistanceFilter
          @property {Object} filter
@@ -4205,7 +4175,7 @@
         }
       
         if (isGeoPoint(p)) {
-          filter.geo_distance[fieldName] = p._self();
+          filter.geo_distance[fieldName] = p.toJSON();
         } else {
           throw new TypeError('Argument must be a GeoPoint');
         }
@@ -4353,7 +4323,7 @@
              @member ejs.GeoDistanceFilter
              @returns {Object} filter object
              */
-      _self: function () {
+      toJSON: function () {
         return filter;
       }
     };
@@ -4375,7 +4345,7 @@
   ejs.GeoDistanceRangeFilter = function (fieldName) {
 
     /**
-         The internal filter object. Use <code>_self()</code>
+         The internal filter object. Use <code>toJSON()</code>
 
          @member ejs.GeoDistanceRangeFilter
          @property {Object} filter
@@ -4600,7 +4570,7 @@
         }
       
         if (isGeoPoint(p)) {
-          filter.geo_distance_range[fieldName] = p._self();
+          filter.geo_distance_range[fieldName] = p.toJSON();
         } else {
           throw new TypeError('Argument must be a GeoPoint');
         }
@@ -4747,7 +4717,7 @@
              @member ejs.GeoDistanceRangeFilter
              @returns {Object} filter object
              */
-      _self: function () {
+      toJSON: function () {
         return filter;
       }
     };
@@ -4768,7 +4738,7 @@
   ejs.GeoPolygonFilter = function (fieldName) {
 
     /**
-         The internal filter object. Use <code>_self()</code>
+         The internal filter object. Use <code>toJSON()</code>
 
          @member ejs.GeoPolygonFilter
          @property {Object} filter
@@ -4822,7 +4792,7 @@
         }
       
         if (isGeoPoint(p)) {
-          filter.geo_polygon[fieldName].points.push(p._self());
+          filter.geo_polygon[fieldName].points.push(p.toJSON());
         } else if (isArray(p)) {
           filter.geo_polygon[fieldName].points = [];
           for (i = 0, len = p.length; i < len; i++) {
@@ -4830,7 +4800,7 @@
               throw new TypeError('Argument must be Array of GeoPoints');
             }
             
-            filter.geo_polygon[fieldName].points.push(p[i]._self());
+            filter.geo_polygon[fieldName].points.push(p[i].toJSON());
           }
         } else {
           throw new TypeError('Argument must be a GeoPoint or Array of GeoPoints');
@@ -4934,7 +4904,7 @@
              @member ejs.GeoPolygonFilter
              @returns {Object} filter object
              */
-      _self: function () {
+      toJSON: function () {
         return filter;
       }
     };
@@ -4960,7 +4930,7 @@
   ejs.GeoShapeFilter = function (field) {
 
     /**
-         The internal filter object. <code>Use _self()</code>
+         The internal filter object. <code>Use toJSON()</code>
          @member ejs.GeoShapeFilter
          @property {Object} GeoShapeFilter
          */
@@ -5009,7 +4979,7 @@
           delete filter.geo_shape[field].indexed_shape;
         }
       
-        filter.geo_shape[field].shape = shape._self();
+        filter.geo_shape[field].shape = shape.toJSON();
         return this;
       },
 
@@ -5030,7 +5000,7 @@
           delete filter.geo_shape[field].shape;
         }
       
-        filter.geo_shape[field].indexed_shape = indexedShape._self();
+        filter.geo_shape[field].indexed_shape = indexedShape.toJSON();
         return this;
       },
 
@@ -5165,7 +5135,7 @@
             @member ejs.GeoShapeFilter
             @returns {String} returns this object's internal <code>filter</code> property.
             */
-      _self: function () {
+      toJSON: function () {
         return filter;
       }
     };
@@ -5191,13 +5161,13 @@
     }
     
     /**
-         The internal query object. <code>Use _self()</code>
+         The internal query object. <code>Use toJSON()</code>
          @member ejs.HasChildFilter
          @property {Object} query
          */
     var filter = {
       has_child: {
-        query: qry._self(),
+        query: qry.toJSON(),
         type: type
       }
     };
@@ -5220,7 +5190,7 @@
           throw new TypeError('Argument must be a Query object');
         }
         
-        filter.has_child.query = q._self();
+        filter.has_child.query = q.toJSON();
         return this;
       },
 
@@ -5241,7 +5211,7 @@
           throw new TypeError('Argument must be a Filter object');
         }
         
-        filter.has_child.filter = f._self();
+        filter.has_child.filter = f.toJSON();
         return this;
       },
 
@@ -5365,7 +5335,7 @@
             @member ejs.HasChildFilter
             @returns {String} returns this object's internal <code>filter</code> property.
             */
-      _self: function () {
+      toJSON: function () {
         return filter;
       }
     };
@@ -5391,13 +5361,13 @@
     }
     
     /**
-         The internal filter object. <code>Use _self()</code>
+         The internal filter object. <code>Use toJSON()</code>
          @member ejs.HasParentFilter
          @property {Object} query
          */
     var filter = {
       has_parent: {
-        query: qry._self(),
+        query: qry.toJSON(),
         parent_type: parentType
       }
     };
@@ -5420,7 +5390,7 @@
           throw new TypeError('Argument must be a Query object');
         }
         
-        filter.has_parent.query = q._self();
+        filter.has_parent.query = q.toJSON();
         return this;
       },
       
@@ -5441,7 +5411,7 @@
           throw new TypeError('Argument must be a Filter object');
         }
         
-        filter.has_parent.filter = f._self();
+        filter.has_parent.filter = f.toJSON();
         return this;
       },
 
@@ -5549,7 +5519,7 @@
             @member ejs.HasParentFilter
             @returns {String} returns this object's internal <code>filter</code> property.
             */
-      _self: function () {
+      toJSON: function () {
         return filter;
       }
     };
@@ -5687,7 +5657,7 @@
             @member ejs.IdsFilter
             @returns {String} returns this object's internal <code>filter</code> property.
             */
-      _self: function () {
+      toJSON: function () {
         return filter;
       }
     };
@@ -5716,13 +5686,13 @@
     }
   
     /**
-         The internal filter object. <code>Use _self()</code>
+         The internal filter object. <code>Use toJSON()</code>
          @member ejs.IndicesFilter
          @property {Object} filter
          */
     var filter = {
       indices: {
-        filter: fltr._self()
+        filter: fltr.toJSON()
       }
     };
 
@@ -5778,7 +5748,7 @@
           throw new TypeError('Argument must be a Filter');
         }
       
-        filter.indices.filter = f._self();
+        filter.indices.filter = f.toJSON();
         return this;
       },
 
@@ -5802,7 +5772,7 @@
             filter.indices.no_match_filter = f;
           }
         } else if (isFilter(f)) {
-          filter.indices.no_match_filter = f._self();
+          filter.indices.no_match_filter = f.toJSON();
         } else {
           throw new TypeError('Argument must be string or Filter');
         }
@@ -5837,7 +5807,7 @@
             @member ejs.IndicesFilter
             @returns {String} returns this object's internal <code>filter</code> property.
             */
-      _self: function () {
+      toJSON: function () {
         return filter;
       }
     };
@@ -5916,7 +5886,7 @@
             @member ejs.LimitFilter
             @returns {String} returns this object's internal <code>filter</code> property.
             */
-      _self: function () {
+      toJSON: function () {
         return filter;
       }
     };
@@ -5971,7 +5941,7 @@
             @member ejs.MatchAllFilter
             @returns {Object} Returns the object's <em>filter</em> property.
             */
-      _self: function () {
+      toJSON: function () {
         return filter;
       }
     };
@@ -6094,7 +6064,7 @@
              @member ejs.MissingFilter
              @returns {Object} filter object
              */
-      _self: function () {
+      toJSON: function () {
         return filter;
       }
     };
@@ -6123,7 +6093,7 @@
   ejs.NestedFilter = function (path) {
 
     /**
-         The internal Filter object. Use <code>_self()</code>.
+         The internal Filter object. Use <code>toJSON()</code>.
          @member ejs.NestedFilter
          @property {Object} filter
          */
@@ -6165,7 +6135,7 @@
           throw new TypeError('Argument must be a Query object');
         }
         
-        filter.nested.query = oQuery._self();
+        filter.nested.query = oQuery.toJSON();
         return this;
       },
 
@@ -6185,7 +6155,7 @@
           throw new TypeError('Argument must be a Filter object');
         }
         
-        filter.nested.filter = oFilter._self();
+        filter.nested.filter = oFilter.toJSON();
         return this;
       },
 
@@ -6309,7 +6279,7 @@
             @member ejs.NestedFilter
             @returns {Object} Returns the object's <em>filter</em> property.
             */
-      _self: function () {
+      toJSON: function () {
         return filter;
       }
     };
@@ -6334,13 +6304,13 @@
     }
     
     /**
-         The internal filter object. Use <code>_self()</code>
+         The internal filter object. Use <code>toJSON()</code>
 
          @member ejs.NotFilter
          @property {Object} filter
          */
     var filter = {
-      not: oFilter._self()
+      not: oFilter.toJSON()
     };
 
     return {
@@ -6361,7 +6331,7 @@
           throw new TypeError('Argument must be a Filter');
         }
         
-        filter.not = fltr._self();
+        filter.not = fltr.toJSON();
         return this;
       },
 
@@ -6439,7 +6409,7 @@
              @member ejs.NotFilter
              @returns {Object} filter object
              */
-      _self: function () {
+      toJSON: function () {
         return filter;
       }
     };
@@ -6736,7 +6706,7 @@
              @member ejs.NumericRangeFilter
              @returns {Object} filter object
              */
-      _self: function () {
+      toJSON: function () {
         return filter;
       }
     };
@@ -6756,7 +6726,7 @@
   ejs.OrFilter = function (filters) {
 
     /**
-         The internal filter object. Use <code>_self()</code>
+         The internal filter object. Use <code>toJSON()</code>
 
          @member ejs.OrFilter
          @property {Object} filter
@@ -6770,14 +6740,14 @@
     };
 
     if (isFilter(filters)) {
-      filter.or.filters.push(filters._self());
+      filter.or.filters.push(filters.toJSON());
     } else if (isArray(filters)) {
       for (i = 0, len = filters.length; i < len; i++) {
         if (!isFilter(filters[i])) {
           throw new TypeError('Argument must be array of Filters');
         }
         
-        filter.or.filters.push(filters[i]._self());
+        filter.or.filters.push(filters[i].toJSON());
       }
     } else {
       throw new TypeError('Argument must be a Filter or array of Filters');
@@ -6802,7 +6772,7 @@
         }
       
         if (isFilter(fltr)) {
-          filter.or.filters.push(fltr._self());
+          filter.or.filters.push(fltr.toJSON());
         } else if (isArray(fltr)) {
           filter.or.filters = [];
           for (i = 0, len = fltr.length; i < len; i++) {
@@ -6810,7 +6780,7 @@
               throw new TypeError('Argument must be an array of Filters');
             }
             
-            filter.or.filters.push(fltr[i]._self());
+            filter.or.filters.push(fltr[i].toJSON());
           }
         } else {
           throw new TypeError('Argument must be a Filter or array of Filters');
@@ -6893,7 +6863,7 @@
              @member ejs.OrFilter
              @returns {Object} filter object
              */
-      _self: function () {
+      toJSON: function () {
         return filter;
       }
     };
@@ -7040,7 +7010,7 @@
              @member ejs.PrefixFilter
              @returns {Object} filter object
              */
-      _self: function () {
+      toJSON: function () {
         return filter;
       }
     };
@@ -7072,13 +7042,13 @@
     }
     
     /**
-         The internal query object. <code>Use _self()</code>
+         The internal query object. <code>Use toJSON()</code>
          @member ejs.QueryFilter
          @property {Object} query
          */
     var filter = {
       fquery: {
-        query: qry._self()
+        query: qry.toJSON()
       }
     };
 
@@ -7100,7 +7070,7 @@
           throw new TypeError('Argument must be a Query');
         }
         
-        filter.fquery.query = q._self();
+        filter.fquery.query = q.toJSON();
         return this;
       },
 
@@ -7179,7 +7149,7 @@
             @member ejs.QueryFilter
             @returns {String} returns this object's internal <code>filter</code> property.
             */
-      _self: function () {
+      toJSON: function () {
         return filter;
       }
     };
@@ -7440,7 +7410,7 @@
             @member ejs.RangeFilter
             @returns {String} returns this object's internal <code>filter</code> property.
             */
-      _self: function () {
+      toJSON: function () {
         return filter;
       }
     };
@@ -7634,7 +7604,7 @@
             @member ejs.RegexpFilter
             @returns {String} returns this object's internal <code>filter</code> property.
             */
-      _self: function () {
+      toJSON: function () {
         return filter;
       }
     };
@@ -7791,7 +7761,7 @@
             @member ejs.ScriptFilter
             @returns {String} returns this object's internal <code>filter</code> property.
             */
-      _self: function () {
+      toJSON: function () {
         return filter;
       }
     };
@@ -7942,7 +7912,7 @@
             @member ejs.TermFilter
             @returns {Object} Returns the object's filter property.
             */
-      _self: function () {
+      toJSON: function () {
         return filter;
       }
     };
@@ -8252,7 +8222,7 @@
             @member ejs.TermsFilter
             @returns {String} returns this object's internal <code>filter</code> property.
             */
-      _self: function () {
+      toJSON: function () {
         return filter;
       }
     };
@@ -8327,823 +8297,11 @@
              @member ejs.TypeFilter
              @returns {Object} filter object
              */
-      _self: function () {
+      toJSON: function () {
         return filter;
       }
     };
   };
-
-  /**
-    @class
-    <p>The <code>Document</code> object provides an interface for working with
-    Documents.  Some example operations avaiable are storing documents,
-    retreiving documents, updating documents, and deleting documents from an
-    index.</p>
-
-    @name ejs.Document
-
-    @desc
-    Object used to create, replace, update, and delete documents
-
-    <div class="alert-message block-message info">
-        <p>
-            <strong>Tip: </strong>
-            It is not necessary to first create a index or content-type. If either of these
-            do not exist, they will be automatically created when you attempt to store the document.
-        </p>
-    </div>
-    
-    @param {String} index The index the document belongs to.
-    @param {String} type The type the document belongs to.
-    @param {String} id The id of the document.  The id is required except 
-      for indexing.  If no id is specified during indexing, one will be
-      created for you.
-      
-    */
-  ejs.Document = function (index, type, id) {
-
-    var 
-      params = {},
-      paramExcludes = ['upsert', 'source', 'script', 'lang', 'params'];
-      
-    return {
-
-      /**
-             Sets the index the document belongs to.
-
-             @member ejs.Document
-             @param {String} idx The index name
-             @returns {Object} returns <code>this</code> so that calls can be chained.
-             */
-      index: function (idx) {
-        if (idx == null) {
-          return index;
-        }
-        
-        index = idx;
-        return this;
-      },
-      
-      /**
-             Sets the type of the document.
-
-             @member ejs.Document
-             @param {String} t The type name
-             @returns {Object} returns <code>this</code> so that calls can be chained.
-             */
-      type: function (t) {
-        if (t == null) {
-          return type;
-        }
-        
-        type = t;
-        return this;
-      },
-      
-      /**
-             Sets the id of the document.
-
-             @member ejs.Document
-             @param {String} i The document id
-             @returns {Object} returns <code>this</code> so that calls can be chained.
-             */
-      id: function (i) {
-        if (i == null) {
-          return id;
-        }
-        
-        id = i;
-        return this;
-      },
-      
-      /**
-             <p>Sets the routing value.<p> 
-
-             <p>By default, the shard the document is placed on is controlled by using a 
-             hash of the document’s id value. For more explicit control, this routing value 
-             will be fed into the hash function used by the router.</p>
-             
-             <p>This option is valid during the following operations:
-                <code>index, delete, get, and update</code></p>
-
-             @member ejs.Document
-             @param {String} route The routing value
-             @returns {Object} returns <code>this</code> so that calls can be chained.
-             */
-      routing: function (route) {
-        if (route == null) {
-          return params.routing;
-        }
-        
-        params.routing = route;
-        return this;
-      },
-      
-      /**
-             <p>Sets parent value for a child document.</p>  
-
-             <p>When indexing a child document, the routing value is automatically set to be 
-             the same as it’s parent, unless the routing value is explicitly specified 
-             using the routing parameter.</p>
-             
-             <p>This option is valid during the following operations:
-                 <code>index, delete, get, and update.</code></p>
-
-             @member ejs.Document
-             @param {String} parent The parent value
-             @returns {Object} returns <code>this</code> so that calls can be chained.
-             */
-      parent: function (parent) {
-        if (parent == null) {
-          return params.parent;
-        }
-        
-        params.parent = parent;
-        return this;
-      },
-      
-      /**
-             <p>Sets timestamp of the document.</p>  
-
-             <p>By default the timestamp will be set to the time the docuement was indexed.</p>
-             
-             <p>This option is valid during the following operations:
-                <code>index</code> and <code>update</code></p>
-
-             @member ejs.Document
-             @param {String} parent The parent value
-             @returns {Object} returns <code>this</code> so that calls can be chained.
-             */
-      timestamp: function (ts) {
-        if (ts == null) {
-          return params.timestamp;
-        }
-        
-        params.timestamp = ts;
-        return this;
-      },
-      
-      /**
-             </p>Sets the documents time to live (ttl).</p>  
-
-             The expiration date that will be set for a document with a provided ttl is relative 
-             to the timestamp of the document, meaning it can be based on the time of indexing or 
-             on any time provided.</p> 
-
-             <p>The provided ttl must be strictly positive and can be a number (in milliseconds) 
-             or any valid time value such as <code>"1d", "2h", "5m",</code> etc.</p>
-             
-             <p>This option is valid during the following operations:
-                <code>index</code> and <code>update</code></p>
-
-             @member ejs.Document
-             @param {String} length The amount of time after which the document
-              will expire.
-             @returns {Object} returns <code>this</code> so that calls can be chained.
-             */
-      ttl: function (length) {
-        if (length == null) {
-          return params.ttl;
-        }
-        
-        params.ttl = length;
-        return this;
-      },
-      
-      /**
-             <p>Set's a timeout for the given operation.</p>  
-
-             If the primary shard has not completed the operation before this value, an error will
-             occur.  The default timeout is 1 minute. The provided timeout must be strictly positive 
-             and can be a number (in milliseconds) or any valid time value such as 
-             <code>"1d", "2h", "5m",</code> etc.</p>
-             
-             <p>This option is valid during the following operations:
-                <code>index, delete,</code> and <code>update</code></p>
-
-             @member ejs.Document
-             @param {String} length The amount of time after which the operation
-              will timeout.
-             @returns {Object} returns <code>this</code> so that calls can be chained.
-             */
-      timeout: function (length) {
-        if (length == null) {
-          return params.timeout;
-        }
-        
-        params.timeout = length;
-        return this;
-      },
-      
-      /**
-             <p>Enables the index to be refreshed immediately after the operation
-             occurs. This is an advanced setting and can lead to performance
-             issues.</p>
-             
-             <p>This option is valid during the following operations:
-                <code>index, delete, get,</code> and <code>update</code></p>
-
-             @member ejs.Document
-             @param {Boolean} trueFalse If the index should be refreshed or not.
-             @returns {Object} returns <code>this</code> so that calls can be chained.
-             */
-      refresh: function (trueFalse) {
-        if (trueFalse == null) {
-          return params.refresh;
-        }
-        
-        params.refresh = trueFalse;
-        return this;
-      },
-      
-      /**
-             <p>Sets the document version.</p>  
-
-             Used for optimistic concurrency control when set.  If the version of the currently 
-             indexed document is less-than or equal to the version specified, an error is produced, 
-             otherwise the operation is permitted.</p>
-
-             <p>By default, internal versioning is used that starts at <code>1</code> and 
-             increments with each update.</p>
-             
-             <p>This option is valid during the following operations:
-                <code>get, index, delete,</code> and <code>update</code></p>
-
-             @member ejs.Document
-             @param {Long} version A positive long value
-             @returns {Object} returns <code>this</code> so that calls can be chained.
-             */
-      version: function (version) {
-        if (version == null) {
-          return params.version;
-        }
-        
-        params.version = version;
-        return this;
-      },
-      
-      /**
-             <p>Sets the version type.</p>  
-
-             </p>Possible values are:</p>
-             
-             <dl>
-                <dd><code>internal</code> - the default</dd>
-                <dd><code>external</code> - to use your own version (ie. version number from a database)</dd>
-             </dl>
-             
-             <p>This option is valid during the following operations:
-                <code>get, index, delete,</code> and <code>update</code></p>
-
-             @member ejs.Document
-             @param {String} vt A version type (internal or external)
-             @returns {Object} returns <code>this</code> so that calls can be chained.
-             */
-      versionType: function (vt) {
-        // internal or external
-        if (vt == null) {
-          return params.version_type;
-        }
-        
-        vt = vt.toLowerCase();
-        if (vt === 'internal' || vt === 'external') {
-          params.version_type = vt;
-        }
-        
-        return this;
-      },
-      
-      /**
-             <p>Sets the indexing operation type.</p>  
-
-             <p>Valid values are:</p>
-             
-             <dl>
-                <dd><code>index</code> - the default, create or replace</dd>
-                <dd><code>create</code> - create only</dd>
-             </dl>
-             
-             <p>This option is valid during the following operations:
-                <code>index</code></p>
-
-             @member ejs.Document
-             @param {String} op The operation type (index or create)
-             @returns {Object} returns <code>this</code> so that calls can be chained.
-             */
-      opType: function (op) {
-        if (op == null) {
-          return params.op_type;
-        }
-        
-        op = op.toLowerCase();
-        if (op === 'index' || op === 'create') {
-          params.op_type = op;
-        }
-        
-        return this;
-      },
-      
-      /**
-             <p>Sets the replication mode.</p>  
-
-             <p>Valid values are:</p>
-             
-             <dl>
-                <dd><code>async</code> - asynchronous replication to slaves</dd>
-                <dd><code>sync</code> - synchronous replication to the slaves</dd>
-                <dd><code>default</code> - the currently configured system default.</dd> 
-             </dl>
-             
-             <p>This option is valid during the following operations:
-                <code>index, delete,</code> and <code>update</code></p>
-
-             @member ejs.Document
-             @param {String} r The replication mode (async, sync, or default)
-             @returns {Object} returns <code>this</code> so that calls can be chained.
-             */
-      replication: function (r) {
-        if (r == null) {
-          return params.replication;
-        }
-        
-        r = r.toLowerCase();
-        if (r === 'async' || r === 'sync' || r === 'default') {
-          params.replication = r;
-        }
-        
-        return this;
-      },
-      
-      /**
-             <p>Sets the write consistency.</p>  
-
-             <p>Valid values are:</p>
-             
-             <dl>
-                <dd><code>one - only requires write to one shard</dd>
-                <dd><code>quorum - requires writes to quorum <code>(N/2 + 1)</code></dd>
-                <dd><code>all - requires write to succeed on all shards</dd>
-                <dd><code>default - the currently configured system default</dd>
-             </dl>
-             
-             <p>This option is valid during the following operations:
-                <code>index, delete,</code> and <code>update</code></p>
-
-             @member ejs.Document
-             @param {String} c The write consistency (one, quorum, all, or default)
-             @returns {Object} returns <code>this</code> so that calls can be chained.
-             */
-      consistency: function (c) {
-        if (c == null) {
-          return params.consistency;
-        }
-        
-        c = c.toLowerCase();
-        if (c === 'default' || c === 'one' || c === 'quorum' || c === 'all') {
-          params.consistency = c;
-        }
-        
-        return this;
-      },
-      
-      /**
-             <p>Sets the preference of which shard replicas to execute the get 
-             request on.</p> 
-
-             <p>By default, the operation is randomized between the shard replicas.  
-             This value can be:</p>
-             
-             <dl>
-                <dd><code>_primary</code> - execute only on the primary shard</dd>
-                <dd><code>_local</code> - the local shard if possible</dd>
-                <dd><code>any string value</code> - to guarentee the same shards will always be used</dd>
-             </dl>
-             
-             <p>This option is valid during the following operations:
-                <code>get</code></p>
-
-             @member ejs.Document
-             @param {String} p The preference value as a string
-             @returns {Object} returns <code>this</code> so that calls can be chained.
-             */
-      preference: function (p) {
-        if (p == null) {
-          return params.preference;
-        }
-        
-        params.preference = p;
-        return this;
-      },
-      
-      /**
-             <p>Sets if the get request is performed in realtime or waits for
-             the indexing operations to complete.  By default it is realtime.</p>
-             
-             <p>This option is valid during the following operations:
-                <code>get</code></p>
-
-             @member ejs.Document
-             @param {Boolean} trueFalse If realtime get is used or not.
-             @returns {Object} returns <code>this</code> so that calls can be chained.
-             */
-      realtime: function (trueFalse) {
-        if (trueFalse == null) {
-          return params.realtime;
-        }
-        
-        params.realtime = trueFalse;
-        return this;
-      },
-      
-      /**
-             <p>Sets the fields of the document to return.</p>  
-
-             <p>By default the <code>_source</code> field is returned.  Pass a single value 
-             to append to the current list of fields, pass an array to overwrite the current
-             list of fields.  The returned fields will either be loaded if they are stored, 
-             or fetched from the <code>_source</code></p>
-             
-             <p>This option is valid during the following operations:
-                <code>get</code> and <code>update</code></p>
-
-             @member ejs.Document
-             @param {String || Array} fields a single field name or array of field names.
-             @returns {Object} returns <code>this</code> so that calls can be chained.
-             */
-      fields: function (fields) {
-        if (params.fields == null) {
-          params.fields = [];
-        }
-        
-        if (fields == null) {
-          return params.fields;
-        }
-        
-        if (isString(fields)) {
-          params.fields.push(fields);
-        } else if (isArray(fields)) {
-          params.fields = fields;
-        } else {
-          throw new TypeError('Argument must be string or array');
-        }
-        
-        return this;
-      },
-      
-      /**
-             <p>Sets the update script.</p>
-             
-             <p>This option is valid during the following operations:
-                <code>update</code></p>
-
-             @member ejs.Document
-             @param {String} script a script to use for docuement updates
-             @returns {Object} returns <code>this</code> so that calls can be chained.
-             */
-      script: function (script) {
-        if (script == null) {
-          return params.script;
-        }
-        
-        params.script = script;
-        return this;
-      },
-      
-      /**
-             <p>Sets the update script lanauge.  Defaults to <code>mvel</code></p>.
-             
-             <p>This option is valid during the following operations:
-                <code>update</code></p>
-
-             @member ejs.Document
-             @param {String} lang a valid script lanauge type such as mvel.
-             @returns {Object} returns <code>this</code> so that calls can be chained.
-             */
-      lang: function (lang) {
-        if (lang == null) {
-          return params.lang;
-        }
-        
-        params.lang = lang;
-        return this;
-      },
-      
-      /**
-             <p>Sets the parameters sent to the update script.</p>  
-
-             <p>The params must be an object where the key is the parameter name and 
-             the value is the parameter value to use in the script.</p>
-             
-             <p>This option is valid during the following operations:
-                <code>update</code></p>
-
-             @member ejs.Document
-             @param {Object} p a object with script parameters.
-             @returns {Object} returns <code>this</code> so that calls can be chained.
-             */
-      params: function (p) {
-        // accept object, prefix keys as sp_{key}
-        if (p == null) {
-          return params.params;
-        }
-        
-        if (!isObject(p)) {
-          throw new TypeError('Argument must be an object');
-        }
-        
-        params.params = p;
-        return this;
-      },
-      
-       /**
-               <p>Sets how many times to retry if there is a version conflict 
-               between getting the document and indexing / deleting it.</p>
-
-               <p>Defaults to <code>0</code>.<p>
-
-               <p>This option is valid during the following operations:
-                <code>update</code></p>
-
-               @member ejs.Document
-               @param {Integer} num the number of times to retry operation.
-               @returns {Object} returns <code>this</code> so that calls can be chained.
-               */
-      retryOnConflict: function (num) {
-        if (num == null) {
-          return params.retry_on_conflict;
-        }
-        
-        params.retry_on_conflict = num;
-        return this;
-      },
-      
-      /**
-               <p>Sets the upsert document.</p>  
-        
-               <p>The upsert document is used during updates when the specified document 
-               you are attempting to update does not exist.</p>
-
-               <p>This option is valid during the following operations:
-                    <code>update</code></p>
-
-               @member ejs.Document
-               @param {Object} doc the upset document.
-               @returns {Object} returns <code>this</code> so that calls can be chained.
-               */
-      upsert: function (doc) {
-        if (doc == null) {
-          return params.upsert;
-        }
-        
-        if (!isObject(doc)) {
-          throw new TypeError('Argument must be an object');
-        }
-        
-        params.upsert = doc;
-        return this;
-      },
-      
-      /**
-             <p>Sets if doc (source) should be used for the upsert value.</p>
-             
-             <p>This option is valid during the following operations:
-                <code>update</code></p>
-
-             @member ejs.Document
-             @param {Boolean} trueFalse If realtime get is used or not.
-             @returns {Object} returns <code>this</code> so that calls can be chained.
-             */
-      docAsUpsert: function (trueFalse) {
-        if (trueFalse == null) {
-          return params.doc_as_upsert;
-        }
-        
-        params.doc_as_upsert = trueFalse;
-        return this;
-      },
-      
-      /**
-               <p>Sets the source document.</p>  
-
-               <p>When set during an update operation, it is used as the partial update document.</p>
-
-               <p>This option is valid during the following operations:
-                    <code>index</code> and <code>update</code></p>
-
-               @member ejs.Document
-               @param {Object} doc the source document.
-               @returns {Object} returns <code>this</code> so that calls can be chained.
-               */
-      source: function (doc) {
-        if (doc == null) {
-          return params.source;
-        }
-        
-        if (!isObject(doc)) {
-          throw new TypeError('Argument must be an object');
-        }
-        
-        params.source = doc;
-        return this;
-      },
-      
-      /**
-            <p>Allows you to serialize this object into a JSON encoded string.</p>
-
-            @member ejs.Document
-            @returns {String} returns this object as a serialized JSON string.
-            */
-      toString: function () {
-        return JSON.stringify(params);
-      },
-      
-      /**
-            <p>The type of ejs object.  For internal use only.</p>
-            
-            @member ejs.Document
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'document';
-      },
-      
-      /**
-            <p>Retrieves the internal <code>document</code> object. This is 
-            typically used by internal API functions so use with caution.</p>
-
-            @member ejs.Document
-            @returns {Object} returns this object's internal object.
-            */
-      _self: function () {
-        return params;
-      },
-      
-      /**
-            <p>Retrieves a document from the given index and type.</p>
-
-            @member ejs.Document
-            @param {Function} successcb A callback function that handles the response.
-            @param {Function} errorcb A callback function that handles errors.
-            @returns {Object} The return value is dependent on client implementation.
-            */
-      doGet: function (successcb, errorcb) {
-        // make sure the user has set a client
-        if (ejs.client == null) {
-          throw new Error("No Client Set");
-        }
-        
-        if (index == null || type == null || id == null) {
-          throw new Error('Index, Type, and ID must be set');
-        }
-        
-        // we don't need to convert the client params to a string
-        // on get requests, just create the url and pass the client
-        // params as the data
-        var url = '/' + index + '/' + type + '/' + id;
-        
-        return ejs.client.get(url, genClientParams(params, paramExcludes), 
-                                                          successcb, errorcb);
-      },
-
-      /**
-            <p>Stores a document in the given index and type.  If no id 
-            is set, one is created during indexing.</p>
-
-            @member ejs.Document
-            @param {Function} successcb A callback function that handles the response.
-            @param {Function} errorcb A callback function that handles errors.
-            @returns {Object} The return value is dependent on client implementation.
-            */
-      doIndex: function (successcb, errorcb) {
-        // make sure the user has set a client
-        if (ejs.client == null) {
-          throw new Error("No Client Set");
-        }
-        
-        if (index == null || type == null) {
-          throw new Error('Index and Type must be set');
-        }
-        
-        if (params.source == null) {
-          throw new Error('No source document found');
-        }
-        
-        var url = '/' + index + '/' + type,
-          data = JSON.stringify(params.source),
-          paramStr = genParamStr(params, paramExcludes),
-          response;
-          
-        if (id != null) {
-          url = url + '/' + id;
-        }
-        
-        if (paramStr !== '') {
-          url = url + '?' + paramStr;
-        }
-        
-        // do post if id not set so one is created
-        if (id == null) {
-          response = ejs.client.post(url, data, successcb, errorcb);
-        } else {
-          // put when id is specified
-          response = ejs.client.put(url, data, successcb, errorcb);
-        }
-        
-        return response;
-      },
-
-      /**
-            <p>Updates a document in the given index and type.</p>  
-
-            <p>If the document is not found in the index, the "upsert" value is used
-            if set.  The document is updated via an update script or partial document.</p>
-
-            <p>To use a script, set the script option, to use a 
-            partial document, set the source with the partial document.</p>
-
-            @member ejs.Document
-            @param {Function} successcb A callback function that handles the response.
-            @param {Function} errorcb A callback function that handles errors.
-            @returns {Object} The return value is dependent on client implementation.
-            */
-      doUpdate: function (successcb, errorcb) {
-        // make sure the user has set a client
-        if (ejs.client == null) {
-          throw new Error("No Client Set");
-        }
-        
-        if (index == null || type == null || id == null) {
-          throw new Error('Index, Type, and ID must be set');
-        }
-        
-        if (params.script == null && params.source == null) {
-          throw new Error('Update script or document required');
-        }
-        
-        var url = '/' + index + '/' + type + '/' + id + '/_update',
-          data = {},
-          paramStr = genParamStr(params, paramExcludes);
-        
-        if (paramStr !== '') {
-          url = url + '?' + paramStr;
-        }
-        
-        if (params.script != null) {
-          data.script = params.script;
-        }
-        
-        if (params.lang != null) {
-          data.lang = params.lang;
-        }
-        
-        if (params.params != null) {
-          data.params = params.params;
-        }
-        
-        if (params.upsert != null) {
-          data.upsert = params.upsert;
-        }
-        
-        if (params.source != null) {
-          data.doc = params.source;
-        }
-        
-        return ejs.client.post(url, JSON.stringify(data), successcb, errorcb);
-      },
-
-      /**
-            <p>Deletes the document from the given index and type using the 
-            speciifed id.</p>
-
-            @member ejs.Document
-            @param {Function} successcb A callback function that handles the response.
-            @param {Function} errorcb A callback function that handles errors.
-            @returns {void} Returns the value of the callback when executing on the server.
-            */
-      doDelete: function (successcb, errorcb) {
-        // make sure the user has set a client
-        if (ejs.client == null) {
-          throw new Error("No Client Set");
-        }
-        
-        if (index == null || type == null || id == null) {
-          throw new Error('Index, Type, and ID must be set');
-        }
-        
-        var url = '/' + index + '/' + type + '/' + id,
-          data = '',
-          paramStr = genParamStr(params, paramExcludes);
-        
-        if (paramStr !== '') {
-          url = url + '?' + paramStr;
-        }
-        
-        return ejs.client.del(url, data, successcb, errorcb);
-      }
-
-    };
-  };
-
 
   /**
     @class
@@ -9161,7 +8319,7 @@
   ejs.BoolQuery = function () {
 
     /**
-         The internal query object. <code>Use _self()</code>
+         The internal query object. <code>Use toJSON()</code>
          @member ejs.BoolQuery
          @property {Object} query
          */
@@ -9190,7 +8348,7 @@
         }
 
         if (isQuery(oQuery)) {
-          query.bool.must.push(oQuery._self());
+          query.bool.must.push(oQuery.toJSON());
         } else if (isArray(oQuery)) {
           query.bool.must = [];
           for (i = 0, len = oQuery.length; i < len; i++) {
@@ -9198,7 +8356,7 @@
               throw new TypeError('Argument must be an array of Queries');
             }
             
-            query.bool.must.push(oQuery[i]._self());
+            query.bool.must.push(oQuery[i].toJSON());
           }
         } else {
           throw new TypeError('Argument must be a Query or array of Queries');
@@ -9226,7 +8384,7 @@
         }
     
         if (isQuery(oQuery)) {
-          query.bool.must_not.push(oQuery._self());
+          query.bool.must_not.push(oQuery.toJSON());
         } else if (isArray(oQuery)) {
           query.bool.must_not = [];
           for (i = 0, len = oQuery.length; i < len; i++) {
@@ -9234,7 +8392,7 @@
               throw new TypeError('Argument must be an array of Queries');
             }
             
-            query.bool.must_not.push(oQuery[i]._self());
+            query.bool.must_not.push(oQuery[i].toJSON());
           }
         } else {
           throw new TypeError('Argument must be a Query or array of Queries');
@@ -9262,7 +8420,7 @@
         }
     
         if (isQuery(oQuery)) {
-          query.bool.should.push(oQuery._self());
+          query.bool.should.push(oQuery.toJSON());
         } else if (isArray(oQuery)) {
           query.bool.should = [];
           for (i = 0, len = oQuery.length; i < len; i++) {
@@ -9270,7 +8428,7 @@
               throw new TypeError('Argument must be an array of Queries');
             }
             
-            query.bool.should.push(oQuery[i]._self());
+            query.bool.should.push(oQuery[i].toJSON());
           }
         } else {
           throw new TypeError('Argument must be a Query or array of Queries');
@@ -9381,7 +8539,7 @@
             @member ejs.BoolQuery
             @returns {String} returns this object's internal <code>query</code> property.
             */
-      _self: function () {
+      toJSON: function () {
         return query;
       }
     };
@@ -9411,14 +8569,14 @@
     }
     
     /**
-         The internal Query object. Use <code>_self()</code>.
+         The internal Query object. Use <code>toJSON()</code>.
          @member ejs.BoostingQuery
          @property {Object} BoostingQuery
          */
     var query = {
       boosting: {
-        positive: positiveQry._self(),
-        negative: negativeQry._self(),
+        positive: positiveQry.toJSON(),
+        negative: negativeQry.toJSON(),
         negative_boost: negativeBoost
       }
     };
@@ -9443,7 +8601,7 @@
           throw new TypeError('Argument must be a Query');
         }
         
-        query.boosting.positive = oQuery._self();
+        query.boosting.positive = oQuery.toJSON();
         return this;
       },
 
@@ -9466,7 +8624,7 @@
           throw new TypeError('Argument must be a Query');
         }
         
-        query.boosting.negative = oQuery._self();
+        query.boosting.negative = oQuery.toJSON();
         return this;
       },
    
@@ -9528,7 +8686,7 @@
             @member ejs.BoostingQuery
             @returns {Object} Returns the object's <em>query</em> property.
             */
-      _self: function () {
+      toJSON: function () {
         return query;
       }
     };
@@ -9810,7 +8968,7 @@
             @member ejs.CommonTermsQuery
             @returns {String} returns this object's internal <code>query</code> property.
             */
-      _self: function () {
+      toJSON: function () {
         return query;
       }
     };
@@ -9839,7 +8997,7 @@
   ejs.ConstantScoreQuery = function () {
 
     /**
-         The internal Query object. Use <code>_self()</code>.
+         The internal Query object. Use <code>toJSON()</code>.
          @member ejs.ConstantScoreQuery
          @property {Object} query
          */
@@ -9864,7 +9022,7 @@
           throw new TypeError('Argument must be a Query');
         }
         
-        query.constant_score.query = oQuery._self();
+        query.constant_score.query = oQuery.toJSON();
         return this;
       },
 
@@ -9884,7 +9042,7 @@
           throw new TypeError('Argument must be a Filter');
         }
         
-        query.constant_score.filter = oFilter._self();
+        query.constant_score.filter = oFilter.toJSON();
         return this;
       },
 
@@ -9962,7 +9120,7 @@
             @member ejs.ConstantScoreQuery
             @returns {Object} Returns the object's <em>query</em> property.
             */
-      _self: function () {
+      toJSON: function () {
         return query;
       }
     };
@@ -9988,13 +9146,13 @@
     }
     
     /**
-         The internal query object. <code>Use _self()</code>
+         The internal query object. <code>Use toJSON()</code>
          @member ejs.CustomBoostFactorQuery
          @property {Object} query
          */
     var query = {
       custom_boost_factor: {
-        query: qry._self()
+        query: qry.toJSON()
       }
     };
 
@@ -10016,7 +9174,7 @@
           throw new TypeError('Argument must be a Query');
         }
         
-        query.custom_boost_factor.query = q._self();
+        query.custom_boost_factor.query = q.toJSON();
         return this;
       },
   
@@ -10079,7 +9237,7 @@
             @member ejs.CustomBoostFactorQuery
             @returns {String} returns this object's internal <code>query</code> property.
             */
-      _self: function () {
+      toJSON: function () {
         return query;
       }
     };
@@ -10113,13 +9271,13 @@
     }
     
     /**
-         The internal query object. <code>Use _self()</code>
+         The internal query object. <code>Use toJSON()</code>
          @member ejs.CustomFiltersScoreQuery
          @property {Object} query
          */
     var query = {
       custom_filters_score: {
-        query: qry._self(),
+        query: qry.toJSON(),
         filters: []
       }
     },
@@ -10131,7 +9289,7 @@
     
       if (filter.filter && isFilter(filter.filter)) {
         obj = {
-          filter: filter.filter._self()
+          filter: filter.filter.toJSON()
         };
       
         if (filter.boost) {
@@ -10172,7 +9330,7 @@
           throw new TypeError('Argument must be a Query');
         }
         
-        query.custom_filters_score.query = q._self();
+        query.custom_filters_score.query = q.toJSON();
         return this;
       },
 
@@ -10331,7 +9489,7 @@
             @member ejs.CustomFiltersScoreQuery
             @returns {String} returns this object's internal <code>query</code> property.
             */
-      _self: function () {
+      toJSON: function () {
         return query;
       }
     };
@@ -10358,7 +9516,7 @@
     }
     
     /**
-         The internal query object. <code>Use _self()</code>
+         The internal query object. <code>Use toJSON()</code>
          @member ejs.CustomScoreQuery
          @property {Object} query
          */
@@ -10369,9 +9527,9 @@
     };
 
     if (isQuery(qry)) {
-      query.custom_score.query = qry._self();
+      query.custom_score.query = qry.toJSON();
     } else if (isFilter(qry)) {
-      query.custom_score.filter = qry._self();
+      query.custom_score.filter = qry.toJSON();
     }
     
     return {
@@ -10392,7 +9550,7 @@
           throw new TypeError('Argument must be a Query');
         }
         
-        query.custom_score.query = q._self();
+        query.custom_score.query = q.toJSON();
         return this;
       },
 
@@ -10412,7 +9570,7 @@
           throw new TypeError('Argument must be a Filter');
         }
         
-        query.custom_score.filter = f._self();
+        query.custom_score.filter = f.toJSON();
         return this;
       },
       
@@ -10509,7 +9667,7 @@
             @member ejs.CustomScoreQuery
             @returns {String} returns this object's internal <code>query</code> property.
             */
-      _self: function () {
+      toJSON: function () {
         return query;
       }
     };
@@ -10532,7 +9690,7 @@
   ejs.DisMaxQuery = function () {
 
     /**
-         The internal query object. <code>Use _self()</code>
+         The internal query object. <code>Use toJSON()</code>
          @member ejs.DisMaxQuery
          @property {Object} query
          */
@@ -10563,7 +9721,7 @@
         }
         
         if (isQuery(qs)) {
-          query.dis_max.queries.push(qs._self());
+          query.dis_max.queries.push(qs.toJSON());
         } else if (isArray(qs)) {
           query.dis_max.queries = [];
           for (i = 0, len = qs.length; i < len; i++) {
@@ -10571,7 +9729,7 @@
               throw new TypeError('Argument must be array of Queries');
             }
             
-            query.dis_max.queries.push(qs[i]._self());
+            query.dis_max.queries.push(qs[i].toJSON());
           }
         } else {
           throw new TypeError('Argument must be a Query or array of Queries');
@@ -10647,7 +9805,7 @@
             @member ejs.DisMaxQuery
             @returns {String} returns this object's internal <code>query</code> property.
             */
-      _self: function () {
+      toJSON: function () {
         return query;
       }
     };
@@ -10678,13 +9836,13 @@
     }
   
     /**
-         The internal query object. <code>Use _self()</code>
+         The internal query object. <code>Use toJSON()</code>
          @member ejs.FieldMaskingSpanQuery
          @property {Object} query
          */
     var query = {
       field_masking_span: {
-        query: spanQry._self(),
+        query: spanQry.toJSON(),
         field: field
       }
     };
@@ -10707,7 +9865,7 @@
           throw new TypeError('Argument must be a SpanQuery');
         }
       
-        query.field_masking_span.query = spanQuery._self();
+        query.field_masking_span.query = spanQuery.toJSON();
         return this;
       },
 
@@ -10770,7 +9928,7 @@
             @member ejs.FieldMaskingSpanQuery
             @returns {String} returns this object's internal <code>query</code> property.
             */
-      _self: function () {
+      toJSON: function () {
         return query;
       }
     };
@@ -11266,7 +10424,7 @@
             @member ejs.FieldQuery
             @returns {String} returns this object's internal <code>query</code> property.
             */
-      _self: function () {
+      toJSON: function () {
         return query;
       }
     };
@@ -11301,18 +10459,18 @@
     }
     
     /**
-         The internal query object. Use <code>_self()</code>
+         The internal query object. Use <code>toJSON()</code>
          @member ejs.FilteredQuery
          @property {Object} query
          */
     var query = {
       filtered: {
-        query: someQuery._self()
+        query: someQuery.toJSON()
       }
     };
 
     if (someFilter != null) {
-      query.filtered.filter = someFilter._self();
+      query.filtered.filter = someFilter.toJSON();
     }
     
     return {
@@ -11333,7 +10491,7 @@
           throw new TypeError('Argument must be a Query');
         }
         
-        query.filtered.query = oQuery._self();
+        query.filtered.query = oQuery.toJSON();
         return this;
       },
 
@@ -11353,7 +10511,7 @@
           throw new TypeError('Argument must be a Filter');
         }
         
-        query.filtered.filter = oFilter._self();
+        query.filtered.filter = oFilter.toJSON();
         return this;
       },
 
@@ -11468,7 +10626,7 @@
              @member ejs.FilteredQuery
              @returns {Object} query object
              */
-      _self: function () {
+      toJSON: function () {
         return query;
       }
     };
@@ -11700,7 +10858,7 @@
             @member ejs.FuzzyLikeThisFieldQuery
             @returns {Object} Returns the object's <em>query</em> property.
             */
-      _self: function () {
+      toJSON: function () {
         return query;
       }
     };
@@ -11934,7 +11092,7 @@
             @member ejs.FuzzyLikeThisQuery
             @returns {Object} Returns the object's <em>query</em> property.
             */
-      _self: function () {
+      toJSON: function () {
         return query;
       }
     };
@@ -12173,7 +11331,7 @@
             @member ejs.FuzzyQuery
             @returns {Object} Returns the object's <em>query</em> property.
             */
-      _self: function () {
+      toJSON: function () {
         return query;
       }
     };
@@ -12199,7 +11357,7 @@
   ejs.GeoShapeQuery = function (field) {
 
     /**
-         The internal query object. <code>Use _self()</code>
+         The internal query object. <code>Use toJSON()</code>
          @member ejs.GeoShapeQuery
          @property {Object} GeoShapeQuery
          */
@@ -12248,7 +11406,7 @@
           delete query.geo_shape[field].indexed_shape;
         }
         
-        query.geo_shape[field].shape = shape._self();
+        query.geo_shape[field].shape = shape.toJSON();
         return this;
       },
 
@@ -12269,7 +11427,7 @@
           delete query.geo_shape[field].shape;
         }
         
-        query.geo_shape[field].indexed_shape = indexedShape._self();
+        query.geo_shape[field].indexed_shape = indexedShape.toJSON();
         return this;
       },
 
@@ -12372,7 +11530,7 @@
             @member ejs.GeoShapeQuery
             @returns {String} returns this object's internal <code>query</code> property.
             */
-      _self: function () {
+      toJSON: function () {
         return query;
       }
     };
@@ -12399,13 +11557,13 @@
     }
     
     /**
-         The internal query object. <code>Use _self()</code>
+         The internal query object. <code>Use toJSON()</code>
          @member ejs.HasChildQuery
          @property {Object} query
          */
     var query = {
       has_child: {
-        query: qry._self(),
+        query: qry.toJSON(),
         type: type
       }
     };
@@ -12428,7 +11586,7 @@
           throw new TypeError('Argument must be a valid Query');
         }
         
-        query.has_child.query = q._self();
+        query.has_child.query = q.toJSON();
         return this;
       },
 
@@ -12572,7 +11730,7 @@
             @member ejs.HasChildQuery
             @returns {String} returns this object's internal <code>query</code> property.
             */
-      _self: function () {
+      toJSON: function () {
         return query;
       }
     };
@@ -12599,13 +11757,13 @@
     }
     
     /**
-         The internal query object. <code>Use _self()</code>
+         The internal query object. <code>Use toJSON()</code>
          @member ejs.HasParentQuery
          @property {Object} query
          */
     var query = {
       has_parent: {
-        query: qry._self(),
+        query: qry.toJSON(),
         parent_type: parentType
       }
     };
@@ -12628,7 +11786,7 @@
           throw new TypeError('Argument must be a Query');
         }
         
-        query.has_parent.query = q._self();
+        query.has_parent.query = q.toJSON();
         return this;
       },
 
@@ -12752,7 +11910,7 @@
             @member ejs.HasParentQuery
             @returns {String} returns this object's internal <code>query</code> property.
             */
-      _self: function () {
+      toJSON: function () {
         return query;
       }
     };
@@ -12890,7 +12048,7 @@
             @member ejs.IdsQuery
             @returns {String} returns this object's internal <code>query</code> property.
             */
-      _self: function () {
+      toJSON: function () {
         return query;
       }
     };
@@ -12919,13 +12077,13 @@
     }
     
     /**
-         The internal query object. <code>Use _self()</code>
+         The internal query object. <code>Use toJSON()</code>
          @member ejs.IndicesQuery
          @property {Object} query
          */
     var query = {
       indices: {
-        query: qry._self()
+        query: qry.toJSON()
       }
     };
 
@@ -12980,7 +12138,7 @@
           throw new TypeError('Argument must be a Query');
         }
         
-        query.indices.query = q._self();
+        query.indices.query = q.toJSON();
         return this;
       },
 
@@ -13004,7 +12162,7 @@
             query.indices.no_match_query = q;
           }
         } else if (isQuery(q)) {
-          query.indices.no_match_query = q._self();
+          query.indices.no_match_query = q.toJSON();
         } else {
           throw new TypeError('Argument must be string or Query');
         }
@@ -13055,7 +12213,7 @@
             @member ejs.IndicesQuery
             @returns {String} returns this object's internal <code>query</code> property.
             */
-      _self: function () {
+      toJSON: function () {
         return query;
       }
     };
@@ -13127,7 +12285,7 @@
             @member ejs.MatchAllQuery
             @returns {Object} Returns the object's <em>query</em> property.
             */
-      _self: function () {
+      toJSON: function () {
         return query;
       }
     };
@@ -13531,7 +12689,7 @@
             @member ejs.MatchQuery
             @returns {String} returns this object's internal <code>query</code> property.
             */
-      _self: function () {
+      toJSON: function () {
         return query;
       }
     };
@@ -13837,7 +12995,7 @@
             @member ejs.MoreLikeThisFieldQuery
             @returns {Object} Returns the object's <em>query</em> property.
             */
-      _self: function () {
+      toJSON: function () {
         return query;
       }
     };
@@ -14154,7 +13312,7 @@
             @member ejs.MoreLikeThisQuery
             @returns {Object} Returns the object's <em>query</em> property.
             */
-      _self: function () {
+      toJSON: function () {
         return query;
       }
     };
@@ -14615,7 +13773,7 @@
             @member ejs.MultiMatchQuery
             @returns {String} returns this object's internal <code>query</code> property.
             */
-      _self: function () {
+      toJSON: function () {
         return query;
       }
     };
@@ -14643,7 +13801,7 @@
   ejs.NestedQuery = function (path) {
 
     /**
-         The internal Query object. Use <code>_self()</code>.
+         The internal Query object. Use <code>toJSON()</code>.
          
          @member ejs.NestedQuery
          @property {Object} query
@@ -14688,7 +13846,7 @@
           throw new TypeError('Argument must be a Query');
         }
         
-        query.nested.query = oQuery._self();
+        query.nested.query = oQuery.toJSON();
         return this;
       },
 
@@ -14709,7 +13867,7 @@
           throw new TypeError('Argument must be a Filter');
         }
         
-        query.nested.filter = oFilter._self();
+        query.nested.filter = oFilter.toJSON();
         return this;
       },
 
@@ -14792,7 +13950,7 @@
             @member ejs.NestedQuery
             @returns {Object} Returns the object's <em>query</em> property.
             */
-      _self: function () {
+      toJSON: function () {
         return query;
       }
     };
@@ -14956,7 +14114,7 @@
             @member ejs.PrefixQuery
             @returns {String} returns this object's internal <code>query</code> property.
             */
-      _self: function () {
+      toJSON: function () {
         return query;
       }
     };
@@ -15509,7 +14667,7 @@
             @member ejs.QueryStringQuery
             @returns {String} returns this object's internal <code>query</code> property.
             */
-      _self: function () {
+      toJSON: function () {
         return query;
       }
     };
@@ -15741,7 +14899,7 @@
             @member ejs.RangeQuery
             @returns {String} returns this object's internal <code>query</code> property.
             */
-      _self: function () {
+      toJSON: function () {
         return query;
       }
     };
@@ -15951,7 +15109,7 @@
             @member ejs.RegexpQuery
             @returns {String} returns this object's internal <code>query</code> property.
             */
-      _self: function () {
+      toJSON: function () {
         return query;
       }
     };
@@ -15979,13 +15137,13 @@
     }
     
     /**
-         The internal query object. <code>Use _self()</code>
+         The internal query object. <code>Use toJSON()</code>
          @member ejs.SpanFirstQuery
          @property {Object} query
          */
     var query = {
       span_first: {
-        match: spanQry._self(),
+        match: spanQry.toJSON(),
         end: end
       }
     };
@@ -16008,7 +15166,7 @@
           throw new TypeError('Argument must be a SpanQuery');
         }
         
-        query.span_first.match = spanQuery._self();
+        query.span_first.match = spanQuery.toJSON();
         return this;
       },
 
@@ -16071,7 +15229,7 @@
             @member ejs.SpanFirstQuery
             @returns {String} returns this object's internal <code>query</code> property.
             */
-      _self: function () {
+      toJSON: function () {
         return query;
       }
     };
@@ -16098,7 +15256,7 @@
     }
 
     /**
-         The internal query object. <code>Use _self()</code>
+         The internal query object. <code>Use toJSON()</code>
          @member ejs.SpanMultiTermQuery
          @property {Object} query
          */
@@ -16109,7 +15267,7 @@
     };
 
     if (qry != null) {
-      query.span_multi.match = qry._self();
+      query.span_multi.match = qry.toJSON();
     }
 
     return {
@@ -16130,7 +15288,7 @@
           throw new TypeError('Argument must be a MultiTermQuery');
         }
     
-        query.span_multi.match = mtQuery._self();
+        query.span_multi.match = mtQuery.toJSON();
         return this;
       },
   
@@ -16161,7 +15319,7 @@
             @member ejs.SpanMultiTermQuery
             @returns {String} returns this object's internal <code>query</code> property.
             */
-      _self: function () {
+      toJSON: function () {
         return query;
       }
     };
@@ -16184,7 +15342,7 @@
   ejs.SpanNearQuery = function (clauses, slop) {
 
     /**
-         The internal query object. <code>Use _self()</code>
+         The internal query object. <code>Use toJSON()</code>
          @member ejs.SpanNearQuery
          @property {Object} query
          */
@@ -16197,14 +15355,14 @@
       };
     
     if (isQuery(clauses)) {
-      query.span_near.clauses.push(clauses._self());
+      query.span_near.clauses.push(clauses.toJSON());
     } else if (isArray(clauses)) {
       for (i = 0, len = clauses.length; i < len; i++) {
         if (!isQuery(clauses[i])) {
           throw new TypeError('Argument must be array of SpanQueries');
         }
         
-        query.span_near.clauses.push(clauses[i]._self());
+        query.span_near.clauses.push(clauses[i].toJSON());
       }
     } else {
       throw new TypeError('Argument must be SpanQuery or array of SpanQueries');
@@ -16229,7 +15387,7 @@
         }
       
         if (isQuery(clauses)) {
-          query.span_near.clauses.push(clauses._self());
+          query.span_near.clauses.push(clauses.toJSON());
         } else if (isArray(clauses)) {
           query.span_near.clauses = [];
           for (i = 0, len = clauses.length; i < len; i++) {
@@ -16237,7 +15395,7 @@
               throw new TypeError('Argument must be array of SpanQueries');
             }
 
-            query.span_near.clauses.push(clauses[i]._self());
+            query.span_near.clauses.push(clauses[i].toJSON());
           }
         } else {
           throw new TypeError('Argument must be SpanQuery or array of SpanQueries');
@@ -16338,7 +15496,7 @@
             @member ejs.SpanNearQuery
             @returns {String} returns this object's internal <code>query</code> property.
             */
-      _self: function () {
+      toJSON: function () {
         return query;
       }
     };
@@ -16365,14 +15523,14 @@
     }
     
     /**
-         The internal query object. <code>Use _self()</code>
+         The internal query object. <code>Use toJSON()</code>
          @member ejs.SpanNotQuery
          @property {Object} query
          */
     var query = {
       span_not: {
-        include: includeQry._self(),
-        exclude: excludeQry._self()
+        include: includeQry.toJSON(),
+        exclude: excludeQry.toJSON()
       }
     };
 
@@ -16394,7 +15552,7 @@
           throw new TypeError('Argument must be a SpanQuery');
         }
         
-        query.span_not.include = spanQuery._self();
+        query.span_not.include = spanQuery.toJSON();
         return this;
       },
 
@@ -16414,7 +15572,7 @@
           throw new TypeError('Argument must be a SpanQuery');
         }
         
-        query.span_not.exclude = spanQuery._self();
+        query.span_not.exclude = spanQuery.toJSON();
         return this;
       },
 
@@ -16461,7 +15619,7 @@
             @member ejs.SpanNotQuery
             @returns {String} returns this object's internal <code>query</code> property.
             */
-      _self: function () {
+      toJSON: function () {
         return query;
       }
     };
@@ -16483,7 +15641,7 @@
   ejs.SpanOrQuery = function (clauses) {
 
     /**
-         The internal query object. <code>Use _self()</code>
+         The internal query object. <code>Use toJSON()</code>
          @member ejs.SpanOrQuery
          @property {Object} query
          */
@@ -16496,14 +15654,14 @@
       };
 
     if (isQuery(clauses)) {
-      query.span_or.clauses.push(clauses._self());
+      query.span_or.clauses.push(clauses.toJSON());
     } else if (isArray(clauses)) {
       for (i = 0, len = clauses.length; i < len; i++) {
         if (!isQuery(clauses[i])) {
           throw new TypeError('Argument must be array of SpanQueries');
         }
         
-        query.span_or.clauses.push(clauses[i]._self());
+        query.span_or.clauses.push(clauses[i].toJSON());
       }
     } else {
       throw new TypeError('Argument must be SpanQuery or array of SpanQueries');
@@ -16528,7 +15686,7 @@
         }
       
         if (isQuery(clauses)) {
-          query.span_or.clauses.push(clauses._self());
+          query.span_or.clauses.push(clauses.toJSON());
         } else if (isArray(clauses)) {
           query.span_or.clauses = [];
           for (i = 0, len = clauses.length; i < len; i++) {
@@ -16536,7 +15694,7 @@
               throw new TypeError('Argument must be array of SpanQueries');
             }
 
-            query.span_or.clauses.push(clauses[i]._self());
+            query.span_or.clauses.push(clauses[i].toJSON());
           }
         } else {
           throw new TypeError('Argument must be SpanQuery or array of SpanQueries');
@@ -16588,7 +15746,7 @@
             @member ejs.SpanOrQuery
             @returns {String} returns this object's internal <code>query</code> property.
             */
-      _self: function () {
+      toJSON: function () {
         return query;
       }
     };
@@ -16705,7 +15863,7 @@
             @member ejs.SpanTermQuery
             @returns {String} returns this object's internal <code>query</code> property.
             */
-      _self: function () {
+      toJSON: function () {
         return query;
       }
     };
@@ -16824,7 +15982,7 @@
             @member ejs.TermQuery
             @returns {String} returns this object's internal <code>query</code> property.
             */
-      _self: function () {
+      toJSON: function () {
         return query;
       }
     };
@@ -16988,7 +16146,7 @@
             @member ejs.TermsQuery
             @returns {String} returns this object's internal <code>query</code> property.
             */
-      _self: function () {
+      toJSON: function () {
         return query;
       }
     };
@@ -17019,13 +16177,13 @@
     }
     
     /**
-         The internal query object. <code>Use _self()</code>
+         The internal query object. <code>Use toJSON()</code>
          @member ejs.TopChildrenQuery
          @property {Object} query
          */
     var query = {
       top_children: {
-        query: qry._self(),
+        query: qry.toJSON(),
         type: type
       }
     };
@@ -17048,7 +16206,7 @@
           throw new TypeError('Argument must be a Query');
         }
         
-        query.top_children.query = q._self();
+        query.top_children.query = q.toJSON();
         return this;
       },
 
@@ -17203,7 +16361,7 @@
             @member ejs.TopChildrenQuery
             @returns {String} returns this object's internal <code>query</code> property.
             */
-      _self: function () {
+      toJSON: function () {
         return query;
       }
     };
@@ -17373,1096 +16531,12 @@
             @member ejs.WildcardQuery
             @returns {String} returns this object's internal <code>query</code> property.
             */
-      _self: function () {
+      toJSON: function () {
         return query;
       }
     };
   };
 
-  /**
-    @class
-    <p>The <code>ClusterHealth</code> object provides an interface for accessing
-    the health information of your cluster.</p>
-
-    @name ejs.ClusterHealth
-
-    @desc Access the health of your cluster.
-    */
-  ejs.ClusterHealth = function () {
-
-    var 
-      params = {},
-      paramExcludes = ['indices'];
-  
-    return {
-  
-      /**
-             <p>Set's the indices to get the health information for.  If a 
-             single value is passed in it will be appended to the current list 
-             of indices.  If an array is passed in it will replace all existing 
-             indices.</p>  
-         
-             @member ejs.ClusterHealth
-             @param {String || Array} i An index name or list of index names.
-             @returns {Object} returns <code>this</code> so that calls can be chained.
-             */
-      indices: function (i) {
-        if (params.indices == null) {
-          params.indices = [];
-        }
-    
-        if (i == null) {
-          return params.indices;
-        }
-    
-        if (isString(i)) {
-          params.indices.push(i);
-        } else if (isArray(i)) {
-          params.indices = i;
-        } else {
-          throw new TypeError('Argument must be string or array');
-        }
-    
-        return this;
-      },
-  
-      /**
-             <p>If the operation will run on the local node only</p>  
-
-             @member ejs.ClusterHealth
-             @param {Boolean} trueFalse True to run on local node only
-             @returns {Object} returns <code>this</code> so that calls can be chained.
-             */
-      local: function (trueFalse) {
-        if (trueFalse == null) {
-          return params.local;
-        }
-    
-        params.local = trueFalse;
-        return this;
-      },
-    
-      /**
-             <p>Set's a timeout for the response from the master node.</p>  
-
-             @member ejs.ClusterHealth
-             @param {String} length The amount of time after which the operation
-              will timeout.
-             @returns {Object} returns <code>this</code> so that calls can be chained.
-             */
-      masterTimeout: function (length) {
-        if (length == null) {
-          return params.master_timeout;
-        }
-    
-        params.master_timeout = length;
-        return this;
-      },
-    
-      /**
-             <p>Set's a timeout to use during any of the waitFor* options.</p>  
-
-             @member ejs.ClusterHealth
-             @param {String} length The amount of time after which the operation
-              will timeout.
-             @returns {Object} returns <code>this</code> so that calls can be chained.
-             */
-      timeout: function (length) {
-        if (length == null) {
-          return params.timeout;
-        }
-    
-        params.timeout = length;
-        return this;
-      },
-  
-      /**
-             <p>Set the cluster status to wait for (or until timeout).  Valid 
-             values are:</p>  
-         
-             <dl>
-                 <dd><code>green</code></dd>
-                 <dd><code>yellow</code></dd>
-                 <dd><code>red</code></dd>
-             </dl>
-
-             @member ejs.ClusterHealth
-             @param {String} status The status to wait for (green, yellow, or red).
-             @returns {Object} returns <code>this</code> so that calls can be chained.
-             */
-      waitForStatus: function (status) {
-        if (status == null) {
-          return params.wait_for_status;
-        }
-    
-        status = status.toLowerCase();
-        if (status === 'green' || status === 'yellow' || status === 'red') {
-          params.wait_for_status = status;
-        }
-      
-        return this;
-      },
-    
-      /**
-             <p>Set's the number of shards that can be relocating before
-             proceeding with the operation.  Typically set to 0 meaning we
-             must wait for all shards to be done relocating.</p>  
-
-             @member ejs.ClusterHealth
-             @param {Integer} num The number of acceptable relocating shards.
-             @returns {Object} returns <code>this</code> so that calls can be chained.
-             */
-      waitForRelocatingShards: function (num) {
-        if (num == null) {
-          return params.wait_for_relocating_shards;
-        }
-    
-        params.wait_for_relocating_shards = num;
-        return this;
-      },
-    
-      /**
-             <p>Set's the number of shards that should be active before
-             proceeding with the operation.</p>  
-
-             @member ejs.ClusterHealth
-             @param {Integer} num The number of active shards.
-             @returns {Object} returns <code>this</code> so that calls can be chained.
-             */
-      waitForActiveShards: function (num) {
-        if (num == null) {
-          return params.wait_for_active_shards;
-        }
-    
-        params.wait_for_active_shards = num;
-        return this;
-      },
-    
-      /**
-             <p>Set's the number of nodes that must be available before
-             proceeding with the operation.  The value can be specified
-             as an integer or as values such as >=N, <=N, >N, <N, ge(N), 
-             le(N), gt(N) and lt(N).</p>  
-
-             @member ejs.ClusterHealth
-             @param {String} num The number of avaiable nodes
-             @returns {Object} returns <code>this</code> so that calls can be chained.
-             */
-      waitForNodes: function (num) {
-        if (num == null) {
-          return params.wait_for_nodes;
-        }
-    
-        params.wait_for_nodes = num;
-        return this;
-      },
-    
-      /**
-             <p>Set the level of details for the operation.  Possible values
-             for the level are:</p>  
-         
-             <dl>
-                 <dd><code>cluster</code></dd>
-                 <dd><code>indices</code></dd>
-                 <dd><code>shards</code></dd>
-             </dl>
-
-             @member ejs.ClusterHealth
-             @param {String} l The details level (cluster, indices, or shards)
-             @returns {Object} returns <code>this</code> so that calls can be chained.
-             */
-      level: function (l) {
-        if (l == null) {
-          return params.level;
-        }
-    
-        l = l.toLowerCase();
-        if (l === 'cluster' || l === 'indices' || l === 'shards') {
-          params.level = l;
-        }
-      
-        return this;
-      },
-    
-      /**
-            <p>Allows you to serialize this object into a JSON encoded string.</p>
-
-            @member ejs.ClusterHealth
-            @returns {String} returns this object as a serialized JSON string.
-            */
-      toString: function () {
-        return JSON.stringify(params);
-      },
-  
-      /**
-            <p>The type of ejs object.  For internal use only.</p>
-        
-            @member ejs.ClusterHealth
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'cluster health';
-      },
-  
-      /**
-            <p>Retrieves the internal <code>document</code> object. This is 
-            typically used by internal API functions so use with caution.</p>
-
-            @member ejs.ClusterHealth
-            @returns {Object} returns this object's internal object.
-            */
-      _self: function () {
-        return params;
-      },
-  
-      /**
-            <p>Retrieves very simple status on the health of the cluster.</p>
-
-            @member ejs.ClusterHealth
-            @param {Function} successcb A callback function that handles the response.
-            @param {Function} errorcb A callback function that handles errors.
-            @returns {Object} The return value is dependent on client implementation.
-            */
-      doHealth: function (successcb, errorcb) {
-        // make sure the user has set a client
-        if (ejs.client == null) {
-          throw new Error("No Client Set");
-        }
-    
-        var url = '/_cluster/health';
-      
-        if (params.indices && params.indices.length > 0) {
-          url = url + '/' + params.indices.join();
-        }
-      
-        return ejs.client.get(url, genClientParams(params, paramExcludes), 
-                                                          successcb, errorcb);
-      }
-    
-    };
-  };
-  /**
-    @class
-    <p>The <code>ClusterState</code> object provides an interface for 
-    accessing the state of your cluster.</p>
-
-    @name ejs.ClusterState
-
-    @desc Retrieves comprehensive state information of your cluster.
-     
-    */
-  ejs.ClusterState = function () {
-
-    var 
-      params = {},
-      paramExcludes = [];
-    
-    return {
-    
-      /**
-             <p>If the operation will run on the local node only</p>  
-
-             @member ejs.ClusterState
-             @param {Boolean} trueFalse True to run on local node only
-             @returns {Object} returns <code>this</code> so that calls can be chained.
-             */
-      local: function (trueFalse) {
-        if (trueFalse == null) {
-          return params.local;
-        }
-      
-        params.local = trueFalse;
-        return this;
-      },
-      
-      /**
-             <p>Set's a timeout for the response from the master node.</p>  
-
-             @member ejs.ClusterState
-             @param {String} length The amount of time after which the operation
-              will timeout.
-             @returns {Object} returns <code>this</code> so that calls can be chained.
-             */
-      masterTimeout: function (length) {
-        if (length == null) {
-          return params.master_timeout;
-        }
-      
-        params.master_timeout = length;
-        return this;
-      },
-            
-      /**
-             <p>Sets if we should filter out the nodes part of the state
-             response.</p>  
-
-             @member ejs.ClusterState
-             @param {Boolean} trueFalse True to filter out the nodes state
-             @returns {Object} returns <code>this</code> so that calls can be chained.
-             */
-      filterNodes: function (trueFalse) {
-        if (trueFalse == null) {
-          return params.filter_nodes;
-        }
-      
-        params.filter_nodes = trueFalse;
-        return this;
-      },
-      
-      /**
-             <p>Sets if we should filter out the routing table part of the 
-             state response.</p>  
-
-             @member ejs.ClusterState
-             @param {Boolean} trueFalse True to filter out the routing table
-             @returns {Object} returns <code>this</code> so that calls can be chained.
-             */
-      filterRoutingTable: function (trueFalse) {
-        if (trueFalse == null) {
-          return params.filter_routing_table;
-        }
-      
-        params.filter_routing_table = trueFalse;
-        return this;
-      },
-      
-      /**
-             <p>Sets if we should filter out the metadata part of the 
-             state response.</p>  
-
-             @member ejs.ClusterState
-             @param {Boolean} trueFalse True to filter out the metadata 
-             @returns {Object} returns <code>this</code> so that calls can be chained.
-             */
-      filterMetadata: function (trueFalse) {
-        if (trueFalse == null) {
-          return params.filter_metadata;
-        }
-      
-        params.filter_metadata = trueFalse;
-        return this;
-      },
-      
-      /**
-             <p>Sets if we should filter out the blocks part of the state
-             response.</p>  
-
-             @member ejs.ClusterState
-             @param {Boolean} trueFalse True to filter out the blocks response
-             @returns {Object} returns <code>this</code> so that calls can be chained.
-             */
-      filterBlocks: function (trueFalse) {
-        if (trueFalse == null) {
-          return params.filter_blocks;
-        }
-      
-        params.filter_blocks = trueFalse;
-        return this;
-      },
-      
-      /**
-             <p>When not filtering metadata, a list of indices to include in 
-             the metadata response.  If a single value is passed in it
-             will be appended to the current list of indices.  If an array is
-             passed in it will replace all existing indices.</p>  
-
-             @member ejs.ClusterState
-             @param {String || Array} i An index name or list of index names.
-             @returns {Object} returns <code>this</code> so that calls can be chained.
-             */
-      filterIndices: function (i) {
-        if (params.filter_indices == null) {
-          params.filter_indices = [];
-        }
-      
-        if (i == null) {
-          return params.filter_indices;
-        }
-      
-        if (isString(i)) {
-          params.filter_indices.push(i);
-        } else if (isArray(i)) {
-          params.filter_indices = i;
-        } else {
-          throw new TypeError('Argument must be string or array');
-        }
-      
-        return this;
-      },
-      
-      /**
-             <p>When not filtering metadata, a list of index templates to 
-             include in the metadata response.  If a single value is passed in 
-             it will be appended to the current list of templates.  If an 
-             array is passed in it will replace all existing templates.</p>  
-
-             @member ejs.ClusterState
-             @param {String || Array} i A template name or list of template names.
-             @returns {Object} returns <code>this</code> so that calls can be chained.
-             */
-      filterIndexTemplates: function (i) {
-        if (params.filter_index_templates == null) {
-          params.filter_index_templates = [];
-        }
-      
-        if (i == null) {
-          return params.filter_index_templates;
-        }
-      
-        if (isString(i)) {
-          params.filter_index_templates.push(i);
-        } else if (isArray(i)) {
-          params.filter_index_templates = i;
-        } else {
-          throw new TypeError('Argument must be string or array');
-        }
-      
-        return this;
-      },
-      
-      /**
-            <p>Allows you to serialize this object into a JSON encoded string.</p>
-
-            @member ejs.ClusterState
-            @returns {String} returns this object as a serialized JSON string.
-            */
-      toString: function () {
-        return JSON.stringify(params);
-      },
-    
-      /**
-            <p>The type of ejs object.  For internal use only.</p>
-          
-            @member ejs.ClusterState
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'cluster state';
-      },
-    
-      /**
-            <p>Retrieves the internal <code>document</code> object. This is 
-            typically used by internal API functions so use with caution.</p>
-
-            @member ejs.ClusterState
-            @returns {Object} returns this object's internal object.
-            */
-      _self: function () {
-        return params;
-      },
-      
-      /**
-            <p>Retrieves comprehensive state information of the whole cluster.</p>
-
-            @member ejs.ClusterState
-            @param {Function} successcb A callback function that handles the response.
-            @param {Function} errorcb A callback function that handles errors.
-            @returns {Object} The return value is dependent on client implementation.
-            */
-      doState: function (successcb, errorcb) {
-        // make sure the user has set a client
-        if (ejs.client == null) {
-          throw new Error("No Client Set");
-        }
-      
-        var url = '/_cluster/state';
-        
-        return ejs.client.get(url, genClientParams(params, paramExcludes), 
-                                                          successcb, errorcb);
-      }
-
-    };
-  };
-  /**
-    @class
-    <p>The <code>NodeInfo</code> object provides an interface for accessing
-    the information for one or more (or all) nodes in your cluster.  Information 
-    is available for settings, os, process, jvm, thread pool, network, plugins,
-    transport, and http.</p>
-
-    @name ejs.NodeInfo
-
-    @desc Retrieve one or more (or all) node info.
-    */
-  ejs.NodeInfo = function () {
-
-    var 
-      params = {},
-      paramExcludes = ['nodes'];
-
-    return {
-
-      /**
-             <p>Set's the nodes to get the information for.  If a 
-             single value is passed in it will be appended to the current list 
-             of nodes.  If an array is passed in it will replace all existing 
-             nodes.  Nodes can be identified in the APIs either using their 
-             internal node id, the node name, address, custom attributes, or 
-             _local for only the node receiving the request.</p>  
-     
-             @member ejs.NodeInfo
-             @param {String || Array} n A node identifier (id, name, etc).
-             @returns {Object} returns <code>this</code> so that calls can be chained.
-             */
-      nodes: function (n) {
-        if (params.nodes == null) {
-          params.nodes = [];
-        }
-
-        if (n == null) {
-          return params.nodes;
-        }
-
-        if (isString(n)) {
-          params.nodes.push(n);
-        } else if (isArray(n)) {
-          params.nodes = n;
-        } else {
-          throw new TypeError('Argument must be string or array');
-        }
-
-        return this;
-      },
-
-      /**
-             <p>Clears all the flags (first). Useful, if you only want to 
-             retrieve specific information.</p>  
-
-             @member ejs.NodeInfo
-             @param {Boolean} trueFalse True to clear all flags
-             @returns {Object} returns <code>this</code> so that calls can be chained.
-             */
-      clear: function (trueFalse) {
-        if (trueFalse == null) {
-          return params.clear;
-        }
-
-        params.clear = trueFalse;
-        return this;
-      },
-
-      /**
-             <p>Enables all information flags.</p>  
-
-             @member ejs.NodeInfo
-             @param {Boolean} trueFalse True to get all available stats
-             @returns {Object} returns <code>this</code> so that calls can be chained.
-             */
-      all: function (trueFalse) {
-        if (trueFalse == null) {
-          return params.all;
-        }
-
-        params.all = trueFalse;
-        return this;
-      },
-  
-      /**
-             <p>Get information about node settings.</p>  
-
-             @member ejs.NodeInfo
-             @param {Boolean} trueFalse True to get settings information
-             @returns {Object} returns <code>this</code> so that calls can be chained.
-             */
-      settings: function (trueFalse) {
-        if (trueFalse == null) {
-          return params.settings;
-        }
-
-        params.settings = trueFalse;
-        return this;
-      },
-  
-      /**
-             <p>If stats about the os should be returned.</p>  
-
-             @member ejs.NodeInfo
-             @param {Boolean} trueFalse True to get os stats
-             @returns {Object} returns <code>this</code> so that calls can be chained.
-             */
-      os: function (trueFalse) {
-        if (trueFalse == null) {
-          return params.os;
-        }
-
-        params.os = trueFalse;
-        return this;
-      },
-  
-      /**
-             <p>If information about the process should be returned.</p>  
-
-             @member ejs.NodeInfo
-             @param {Boolean} trueFalse True to get process information
-             @returns {Object} returns <code>this</code> so that calls can be chained.
-             */
-      process: function (trueFalse) {
-        if (trueFalse == null) {
-          return params.process;
-        }
-
-        params.process = trueFalse;
-        return this;
-      },
-  
-      /**
-             <p>If information about the jvm should be returned.</p>  
-
-             @member ejs.NodeInfo
-             @param {Boolean} trueFalse True to get jvm information
-             @returns {Object} returns <code>this</code> so that calls can be chained.
-             */
-      jvm: function (trueFalse) {
-        if (trueFalse == null) {
-          return params.jvm;
-        }
-
-        params.jvm = trueFalse;
-        return this;
-      },
-  
-      /**
-             <p>If information about the thread pool should be returned.</p>  
-
-             @member ejs.NodeInfo
-             @param {Boolean} trueFalse True to get thread pool information
-             @returns {Object} returns <code>this</code> so that calls can be chained.
-             */
-      threadPool: function (trueFalse) {
-        if (trueFalse == null) {
-          return params.thread_pool;
-        }
-
-        params.thread_pool = trueFalse;
-        return this;
-      },
-  
-      /**
-             <p>If information about the network should be returned.</p>  
-
-             @member ejs.NodeInfo
-             @param {Boolean} trueFalse True to get network information
-             @returns {Object} returns <code>this</code> so that calls can be chained.
-             */
-      network: function (trueFalse) {
-        if (trueFalse == null) {
-          return params.network;
-        }
-
-        params.network = trueFalse;
-        return this;
-      },
-  
-      /**
-             <p>If information about the transport should be returned.</p>  
-
-             @member ejs.NodeInfo
-             @param {Boolean} trueFalse True to get transport information
-             @returns {Object} returns <code>this</code> so that calls can be chained.
-             */
-      transport: function (trueFalse) {
-        if (trueFalse == null) {
-          return params.transport;
-        }
-
-        params.transport = trueFalse;
-        return this;
-      },
-  
-      /**
-             <p>If information about the http should be returned.</p>  
-
-             @member ejs.NodeInfo
-             @param {Boolean} trueFalse True to get http information
-             @returns {Object} returns <code>this</code> so that calls can be chained.
-             */
-      http: function (trueFalse) {
-        if (trueFalse == null) {
-          return params.http;
-        }
-
-        params.http = trueFalse;
-        return this;
-      },
-  
-      /**
-             <p>If information about plugins should be returned.</p>  
-
-             @member ejs.NodeInfo
-             @param {Boolean} trueFalse True to get plugin information
-             @returns {Object} returns <code>this</code> so that calls can be chained.
-             */
-      plugin: function (trueFalse) {
-        if (trueFalse == null) {
-          return params.plugin;
-        }
-
-        params.plugin = trueFalse;
-        return this;
-      },
-    
-      /**
-             <p>Set's a timeout for the info operation</p>  
-
-             @member ejs.NodeInfo
-             @param {String} length The amount of time after which the operation
-              will timeout.
-             @returns {Object} returns <code>this</code> so that calls can be chained.
-             */
-      timeout: function (length) {
-        if (length == null) {
-          return params.timeout;
-        }
-    
-        params.timeout = length;
-        return this;
-      },
-      
-      /**
-            <p>Allows you to serialize this object into a JSON encoded string.</p>
-
-            @member ejs.NodeInfo
-            @returns {String} returns this object as a serialized JSON string.
-            */
-      toString: function () {
-        return JSON.stringify(params);
-      },
-
-      /**
-            <p>The type of ejs object.  For internal use only.</p>
-    
-            @member ejs.NodeInfo
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'node info';
-      },
-
-      /**
-            <p>Retrieves the internal <code>document</code> object. This is 
-            typically used by internal API functions so use with caution.</p>
-
-            @member ejs.NodeInfo
-            @returns {Object} returns this object's internal object.
-            */
-      _self: function () {
-        return params;
-      },
-
-      /**
-            <p>Retrieves very simple status on the health of the cluster.</p>
-
-            @member ejs.NodeInfo
-            @param {Function} successcb A callback function that handles the response.
-            @param {Function} errorcb A callback function that handles errors.
-            @returns {Object} The return value is dependent on client implementation.
-            */
-      doInfo: function (successcb, errorcb) {
-        // make sure the user has set a client
-        if (ejs.client == null) {
-          throw new Error("No Client Set");
-        }
-
-        var url = '/_nodes';
-  
-        if (params.nodes && params.nodes.length > 0) {
-          url = url + '/' + params.nodes.join();
-        }
-    
-        return ejs.client.get(url, genClientParams(params, paramExcludes), 
-                                                          successcb, errorcb);
-      }
-
-    };
-  };
-  /**
-    @class
-    <p>The <code>NodeStats</code> object provides an interface for accessing
-    the stats for one or more (or all) nodes in your cluster.  Stats are 
-    available for indicies, os, process, jvm, thread pool, network, filesystem,
-    transport, and http.</p>
-
-    @name ejs.NodeStats
-
-    @desc Retrieve one or more (or all) of the cluster nodes statistics.
-    */
-  ejs.NodeStats = function () {
-
-    var 
-      params = {},
-      paramExcludes = ['nodes'];
-
-    return {
-
-      /**
-             <p>Set's the nodes to get the stats information for.  If a 
-             single value is passed in it will be appended to the current list 
-             of nodes.  If an array is passed in it will replace all existing 
-             nodes.  Nodes can be identified in the APIs either using their 
-             internal node id, the node name, address, custom attributes, or 
-             _local for only the node receiving the request.</p>  
-       
-             @member ejs.NodeStats
-             @param {String || Array} n A node identifier (id, name, etc).
-             @returns {Object} returns <code>this</code> so that calls can be chained.
-             */
-      nodes: function (n) {
-        if (params.nodes == null) {
-          params.nodes = [];
-        }
-  
-        if (n == null) {
-          return params.nodes;
-        }
-  
-        if (isString(n)) {
-          params.nodes.push(n);
-        } else if (isArray(n)) {
-          params.nodes = n;
-        } else {
-          throw new TypeError('Argument must be string or array');
-        }
-  
-        return this;
-      },
-
-      /**
-             <p>Clears all the flags (first). Useful, if you only want to 
-             retrieve specific stats.</p>  
-
-             @member ejs.NodeStats
-             @param {Boolean} trueFalse True to clear all flags
-             @returns {Object} returns <code>this</code> so that calls can be chained.
-             */
-      clear: function (trueFalse) {
-        if (trueFalse == null) {
-          return params.clear;
-        }
-  
-        params.clear = trueFalse;
-        return this;
-      },
-  
-      /**
-             <p>Enables all stats flags.</p>  
-
-             @member ejs.NodeStats
-             @param {Boolean} trueFalse True to get all available stats
-             @returns {Object} returns <code>this</code> so that calls can be chained.
-             */
-      all: function (trueFalse) {
-        if (trueFalse == null) {
-          return params.all;
-        }
-  
-        params.all = trueFalse;
-        return this;
-      },
-    
-      /**
-             <p>If stats about indices should be returned.  This is enabled
-             by default.</p>  
-
-             @member ejs.NodeStats
-             @param {Boolean} trueFalse True to get indicies stats
-             @returns {Object} returns <code>this</code> so that calls can be chained.
-             */
-      indices: function (trueFalse) {
-        if (trueFalse == null) {
-          return params.indices;
-        }
-  
-        params.indices = trueFalse;
-        return this;
-      },
-    
-      /**
-             <p>If stats about the os should be returned.</p>  
-
-             @member ejs.NodeStats
-             @param {Boolean} trueFalse True to get os stats
-             @returns {Object} returns <code>this</code> so that calls can be chained.
-             */
-      os: function (trueFalse) {
-        if (trueFalse == null) {
-          return params.os;
-        }
-  
-        params.os = trueFalse;
-        return this;
-      },
-    
-      /**
-             <p>If stats about the process should be returned.</p>  
-
-             @member ejs.NodeStats
-             @param {Boolean} trueFalse True to get process stats
-             @returns {Object} returns <code>this</code> so that calls can be chained.
-             */
-      process: function (trueFalse) {
-        if (trueFalse == null) {
-          return params.process;
-        }
-  
-        params.process = trueFalse;
-        return this;
-      },
-    
-      /**
-             <p>If stats about the jvm should be returned.</p>  
-
-             @member ejs.NodeStats
-             @param {Boolean} trueFalse True to get jvm stats
-             @returns {Object} returns <code>this</code> so that calls can be chained.
-             */
-      jvm: function (trueFalse) {
-        if (trueFalse == null) {
-          return params.jvm;
-        }
-  
-        params.jvm = trueFalse;
-        return this;
-      },
-    
-      /**
-             <p>If stats about the thread pool should be returned.</p>  
-
-             @member ejs.NodeStats
-             @param {Boolean} trueFalse True to get thread pool stats
-             @returns {Object} returns <code>this</code> so that calls can be chained.
-             */
-      threadPool: function (trueFalse) {
-        if (trueFalse == null) {
-          return params.thread_pool;
-        }
-  
-        params.thread_pool = trueFalse;
-        return this;
-      },
-    
-      /**
-             <p>If stats about the network should be returned.</p>  
-
-             @member ejs.NodeStats
-             @param {Boolean} trueFalse True to get network stats
-             @returns {Object} returns <code>this</code> so that calls can be chained.
-             */
-      network: function (trueFalse) {
-        if (trueFalse == null) {
-          return params.network;
-        }
-  
-        params.network = trueFalse;
-        return this;
-      },
-    
-      /**
-             <p>If stats about the file system (fs) should be returned.</p>  
-
-             @member ejs.NodeStats
-             @param {Boolean} trueFalse True to get file system stats
-             @returns {Object} returns <code>this</code> so that calls can be chained.
-             */
-      fs: function (trueFalse) {
-        if (trueFalse == null) {
-          return params.fs;
-        }
-  
-        params.fs = trueFalse;
-        return this;
-      },
-    
-      /**
-             <p>If stats about the transport should be returned.</p>  
-
-             @member ejs.NodeStats
-             @param {Boolean} trueFalse True to get transport stats
-             @returns {Object} returns <code>this</code> so that calls can be chained.
-             */
-      transport: function (trueFalse) {
-        if (trueFalse == null) {
-          return params.transport;
-        }
-  
-        params.transport = trueFalse;
-        return this;
-      },
-    
-      /**
-             <p>If stats about the http should be returned.</p>  
-
-             @member ejs.NodeStats
-             @param {Boolean} trueFalse True to get http stats
-             @returns {Object} returns <code>this</code> so that calls can be chained.
-             */
-      http: function (trueFalse) {
-        if (trueFalse == null) {
-          return params.http;
-        }
-  
-        params.http = trueFalse;
-        return this;
-      },
-    
-      /**
-            <p>Allows you to serialize this object into a JSON encoded string.</p>
-
-            @member ejs.NodeStats
-            @returns {String} returns this object as a serialized JSON string.
-            */
-      toString: function () {
-        return JSON.stringify(params);
-      },
-
-      /**
-            <p>The type of ejs object.  For internal use only.</p>
-      
-            @member ejs.NodeStats
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'node stats';
-      },
-
-      /**
-            <p>Retrieves the internal <code>document</code> object. This is 
-            typically used by internal API functions so use with caution.</p>
-
-            @member ejs.NodeStats
-            @returns {Object} returns this object's internal object.
-            */
-      _self: function () {
-        return params;
-      },
-
-      /**
-            <p>Retrieves very simple status on the health of the cluster.</p>
-
-            @member ejs.NodeStats
-            @param {Function} successcb A callback function that handles the response.
-            @param {Function} errorcb A callback function that handles errors.
-            @returns {Object} The return value is dependent on client implementation.
-            */
-      doStats: function (successcb, errorcb) {
-        // make sure the user has set a client
-        if (ejs.client == null) {
-          throw new Error("No Client Set");
-        }
-  
-        var url = '/_nodes';
-    
-        if (params.nodes && params.nodes.length > 0) {
-          url = url + '/' + params.nodes.join();
-        }
-    
-        url = url + '/stats';
-      
-        return ejs.client.get(url, genClientParams(params, paramExcludes), 
-                                                          successcb, errorcb);
-      }
-  
-    };
-  };
   /**
     @class
     <p>A GeoPoint object that can be used in queries and filters that 
@@ -18621,7 +16695,7 @@
             @member ejs.GeoPoint
             @returns {String} returns this object's internal object representation.
             */
-      _self: function () {
+      toJSON: function () {
         return point;
       }
     };
@@ -19075,7 +17149,7 @@
             @member ejs.Highlight
             @returns {String} returns this object's internal object representation.
             */
-      _self: function () {
+      toJSON: function () {
         return highlight;
       }
     };
@@ -19200,7 +17274,7 @@
             @member ejs.IndexedShape
             @returns {String} returns this object's internal object representation.
             */
-      _self: function () {
+      toJSON: function () {
         return indexedShape;
       }
     };
@@ -19208,368 +17282,12 @@
 
   /**
     @class
-    <p>The <code>MultiSearchRequest</code> object provides methods generating and 
-    executing search requests.</p>
-
-    @name ejs.MultiSearchRequest
-
-    @desc
-    <p>Provides methods for executing search requests</p>
-
-    @param {Object} conf A configuration object containing the initilization
-      parameters.  The following parameters can be set in the conf object:
-        indices - single index name or array of index names
-        types - single type name or array of types
-        routing - the shard routing value
-    */
-  ejs.MultiSearchRequest = function (conf) {
-
-    var requests, indices, types, params = {},
-  
-      // gernerates the correct url to the specified REST endpoint
-      getRestPath = function () {
-        var searchUrl = '', 
-          parts = [];
-      
-        // join any indices
-        if (indices.length > 0) {
-          searchUrl = searchUrl + '/' + indices.join();
-        }
-
-        // join any types
-        if (types.length > 0) {
-          searchUrl = searchUrl + '/' + types.join();
-        }
-      
-        // add _msearch endpoint
-        searchUrl = searchUrl + '/_msearch';
-      
-        for (var p in params) {
-          if (!has(params, p) || params[p] === '') {
-            continue;
-          }
-        
-          parts.push(p + '=' + encodeURIComponent(params[p]));
-        }
-      
-        if (parts.length > 0) {
-          searchUrl = searchUrl + '?' + parts.join('&');
-        }
-      
-        return searchUrl;
-      };
-
-    /**
-        The internal requests object.
-        @member ejs.MultiSearchRequest
-        @property {Object} requests
-        */
-    requests = [];
-
-    conf = conf || {};
-    // check if we are searching across any specific indeices        
-    if (conf.indices == null) {
-      indices = [];
-    } else if (isString(conf.indices)) {
-      indices = [conf.indices];
-    } else {
-      indices = conf.indices;
-    }
-
-    // check if we are searching across any specific types
-    if (conf.types == null) {
-      types = [];
-    } else if (isString(conf.types)) {
-      types = [conf.types];
-    } else {
-      types = conf.types;
-    }
-
-    // check that an index is specified when a type is
-    // if not, search across _all indices
-    if (indices.length === 0 && types.length > 0) {
-      indices = ["_all"];
-    }
-
-    return {
-    
-      /**
-            Sets the requests to execute.  If passed a single value it is
-            added to the existing list of requests.  If passed an array of 
-            requests, they overwite all existing values.
-
-            @member ejs.MultiSearchRequest
-            @param {Request || Array} r A single request or list of requests to execute.
-            @returns {Object} returns <code>this</code> so that calls can be 
-              chained. Returns {Array} current value not specified.
-            */
-      requests: function (r) {
-        if (r == null) {
-          return requests;
-        }
-
-        if (isRequest(r)) {
-          requests.push(r);
-        } else if (isArray(r)) {
-          requests = r;
-        } else {
-          throw new TypeError('Argument must be request or array');
-        }
-      
-        return this;
-      },
-    
-      /**
-             <p>Sets the search execution type for the request.</p>  
-
-             <p>Valid values are:</p>
-           
-             <dl>
-                <dd><code>dfs_query_then_fetch</code> - same as query_then_fetch, 
-                  except distributed term frequencies are calculated first.</dd>
-                <dd><code>dfs_query_and_fetch</code> - same as query_and_fetch,
-                  except distributed term frequencies are calculated first.</dd>
-                <dd><code>query_then_fetch</code> - executed against all 
-                  shards, but only enough information is returned.  When ready,
-                  only the relevant shards are asked for the actual document 
-                  content</dd>
-                <dd><code>query_and_fetch</code> - execute the query on all 
-                  relevant shards and return the results, including content.</dd>
-                <dd><code>scan</code> - efficiently scroll a large result set</dd>
-                <dd><code>count</code> -  special search type that returns the 
-                  count that matched the search request without any docs </dd>
-             </dl>
-           
-             <p>This option is valid during the following operations:
-                <code>search</code></p>
-
-             @member ejs.MultiSearchRequest
-             @param {String} t The search execution type
-             @returns {Object} returns <code>this</code> so that calls can be chained.
-             */
-      searchType: function (t) {
-        if (t == null) {
-          return params.search_type;
-        }
-      
-        t = t.toLowerCase();
-        if (t === 'dfs_query_then_fetch' || t === 'dfs_query_and_fetch' || 
-          t === 'query_then_fetch' || t === 'query_and_fetch' || 
-          t === 'scan' || t === 'count') {
-          
-          params.search_type = t;
-        }
-      
-        return this;
-      },
-
-      /**
-            Allows you to set the specified indices on this request object. This is the
-            set of indices that will be used when the search is executed.
-
-            @member ejs.MultiSearchRequest
-            @param {Array} indexArray An array of collection names.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      indices: function (indexArray) {
-        if (indexArray == null) {
-          return indices;
-        } else if (isString(indexArray)) {
-          indices = [indexArray];
-        } else if (isArray(indexArray)) {
-          indices = indexArray;
-        } else {
-          throw new TypeError('Argument must be a string or array');
-        }
-
-        // check that an index is specified when a type is
-        // if not, search across _all indices
-        if (indices.length === 0 && types.length > 0) {
-          indices = ["_all"];
-        }
-
-        return this;
-      },
-
-      /**
-            Allows you to set the specified content-types on this request object. This is the
-            set of indices that will be used when the search is executed.
-
-            @member ejs.MultiSearchRequest
-            @param {Array} typeArray An array of content-type names.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      types: function (typeArray) {
-        if (typeArray == null) {
-          return types;
-        } else if (isString(typeArray)) {
-          types = [typeArray];
-        } else if (isArray(typeArray)) {
-          types = typeArray;
-        } else {
-          throw new TypeError('Argument must be a string or array');
-        }
-
-        // check that an index is specified when a type is
-        // if not, search across _all indices
-        if (indices.length === 0 && types.length > 0) {
-          indices = ["_all"];
-        }
-
-        return this;
-      },
-    
-      /**
-            <p>Determines what type of indices to exclude from a request.  The
-            value can be one of the following:</p>
-
-            <dl>
-                <dd><code>none</code> - No indices / aliases will be excluded from a request</dd>
-                <dd><code>missing</code> - Indices / aliases that are missing will be excluded from a request</dd>
-            </dl>
-
-            <p>This option is valid during the following operations:
-                <code>search, search shards, count</code> and 
-                <code>delete by query</code></p>
-              
-            @member ejs.MultiSearchRequest
-            @param {String} ignoreType the type of ignore (none or missing).
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      ignoreIndices: function (ignoreType) {
-        if (ignoreType == null) {
-          return params.ignore_indices;
-        }
-    
-        ignoreType = ignoreType.toLowerCase();
-        if (ignoreType === 'none' || ignoreType === 'missing') {
-          params.ignore_indices = ignoreType;
-        }
-      
-        return this;
-      },
-
-      /**
-            Allows you to serialize this object into a JSON encoded string.
-
-            @member ejs.MultiSearchRequest
-            @returns {String} returns this object as a serialized JSON string.
-            */
-      toString: function () {
-        var i, len, reqs = [];
-        for (i = 0, len = requests.length; i < len; i++) {
-          reqs.push(requests[i]._self());
-        }
-        return JSON.stringify(reqs);
-      },
-
-      /**
-            The type of ejs object.  For internal use only.
-          
-            @member ejs.MultiSearchRequest
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'multi search request';
-      },
-    
-      /**
-            Retrieves the internal <code>query</code> object. This is typically used by
-            internal API functions so use with caution.
-
-            @member ejs.MultiSearchRequest
-            @returns {String} returns this object's internal object representation.
-            */
-      _self: function () {
-        var i, len, reqs = [];
-        for (i = 0, len = requests.length; i < len; i++) {
-          reqs.push(requests[i]._self());
-        }
-        return reqs;
-      },
-          
-      /**
-            Executes the search. 
-
-            @member ejs.MultiSearchRequest
-            @param {Function} successcb A callback function that handles the search response.
-            @param {Function} errorcb A callback function that handles errors.
-            @returns {Object} Returns a client specific object.
-            */
-      doSearch: function (successcb, errorcb) {
-        var i, len, request, query, header, data = '';
-    
-        // make sure the user has set a client
-        if (ejs.client == null) {
-          throw new Error("No Client Set");
-        }
-     
-        // generate the data
-        // data consists of a header for each request + newline + request + newline
-        for (i = 0, len = requests.length; i < len; i++) {
-          request = requests[i];
-          header = {};
-        
-          // add indices
-          if (request.indices().length > 0) {
-            header.indices = request.indices();
-          }
-        
-          // add types
-          if (request.types().length > 0) {
-            header.types = request.types();
-          }
-        
-          // add search type
-          if (request.searchType() != null) {
-            header.search_type = request.searchType();
-          }
-        
-          // add preference
-          if (request.preference() != null) {
-            header.preference = request.preference();
-          }
-        
-          // add routing
-          if (request.routing() != null) {
-            header.routing = request.routing();
-          }
-        
-          // add ignore indices
-          if (request.ignoreIndices() != null) {
-            header.ignore_indices = request.ignoreIndices();
-          }
-        
-          // add the generated header
-          data = data + JSON.stringify(header) + '\n';
-        
-          // certain params need to be moved into the query body from request
-          // params, do that here
-          query = request._self();
-          if (request.timeout() != null) {
-            query.timeout = request.timeout();
-          }
-        
-          // add the query to the data
-          data = data + JSON.stringify(query) + '\n';
-        }
-      
-      
-        return ejs.client.post(getRestPath(), data, successcb, errorcb);
-      }
-    
-    };
-  };
-
-  /**
-    @class
-    <p>The <code>Request</code> object provides methods generating and 
-    executing search requests.</p>
+    <p>The <code>Request</code> object provides methods generating an elasticsearch request body.</p>
 
     @name ejs.Request
 
     @desc
-    <p>Provides methods for executing search requests</p>
+    <p>Provides methods for generating request bodies.</p>
 
     @param {Object} conf A configuration object containing the initilization
       parameters.  The following parameters can be set in the conf object:
@@ -19577,82 +17295,14 @@
         types - single type name or array of types
         routing - the shard routing value
     */
-  ejs.Request = function (conf) {
-
-    var query, indices, types, params = {},
+  ejs.Request = function () {
     
-      // gernerates the correct url to the specified REST endpoint
-      getRestPath = function (endpoint) {
-        var searchUrl = '', 
-          parts = [];
-        
-        // join any indices
-        if (indices.length > 0) {
-          searchUrl = searchUrl + '/' + indices.join();
-        }
-
-        // join any types
-        if (types.length > 0) {
-          searchUrl = searchUrl + '/' + types.join();
-        }
-        
-        // add the endpoint
-        if (endpoint.length > 0 && endpoint[0] !== '/') {
-          searchUrl = searchUrl + '/';
-        }
-        
-        searchUrl = searchUrl + endpoint;
-        
-        for (var p in params) {
-          if (!has(params, p) || params[p] === '') {
-            continue;
-          }
-          
-          parts.push(p + '=' + encodeURIComponent(params[p]));
-        }
-        
-        if (parts.length > 0) {
-          searchUrl = searchUrl + '?' + parts.join('&');
-        }
-        
-        return searchUrl;
-      };
-
     /**
         The internal query object.
         @member ejs.Request
         @property {Object} query
         */
-    query = {};
-
-    conf = conf || {};
-    // check if we are searching across any specific indeices        
-    if (conf.indices == null) {
-      indices = [];
-    } else if (isString(conf.indices)) {
-      indices = [conf.indices];
-    } else {
-      indices = conf.indices;
-    }
-
-    // check if we are searching across any specific types
-    if (conf.types == null) {
-      types = [];
-    } else if (isString(conf.types)) {
-      types = [conf.types];
-    } else {
-      types = conf.types;
-    }
-
-    // check that an index is specified when a type is
-    // if not, search across _all indices
-    if (indices.length === 0 && types.length > 0) {
-      indices = ["_all"];
-    }
-
-    if (conf.routing != null) {
-      params.routing = conf.routing;
-    }
+    var query = {};
     
     return {
 
@@ -19698,7 +17348,7 @@
             query.sort.push(sortVal);
           } else if (isSort(sortVal)) {
             // add the Sort object
-            query.sort.push(sortVal._self());
+            query.sort.push(sortVal.toJSON());
           } else if (isArray(sortVal)) {
             // replace with all values in the array
             // the values must be a fieldName (string) or a
@@ -19708,7 +17358,7 @@
               if (isString(sortVal[i])) {
                 query.sort.push(sortVal[i]);
               } else if (isSort(sortVal[i])) {
-                query.sort.push(sortVal[i]._self());
+                query.sort.push(sortVal[i].toJSON());
               } else {
                 throw new TypeError('Invalid object in array');
               }
@@ -19751,6 +17401,25 @@
         query.track_scores = trueFalse;
         return this;
       },
+    
+      /**
+            A search result set could be very large (think Google). Setting the
+            <code>from</code> parameter allows you to page through the result set
+            by making multiple request. This parameters specifies the starting
+            result/document number point. Combine with <code>size()</code> to achieve paging.
+
+            @member ejs.Request
+            @param {Array} f The offset at which to start fetching results/documents from the result set.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      from: function (f) {
+        if (f == null) {
+          return query.from;
+        }
+        
+        query.from = f;
+        return this;
+      },
       
       /**
             Sets the number of results/documents to be returned. This is set on a per page basis.
@@ -19781,141 +17450,13 @@
             */
       timeout: function (t) {
         if (t == null) {
-          return params.timeout;
+          return query.timeout;
         }
       
-        params.timeout = t;
+        query.timeout = t;
         return this;
       },
                   
-      /**
-            Sets the shard routing parameter.  Only shards matching routing
-            values will be searched.  Set to an empty string to disable routing.
-            Disabled by default.
-
-            <p>This option is valid during the following operations:
-                <code>search, search shards, count</code> and 
-                <code>delete by query</code></p>
-    
-            @member ejs.Request
-            @param {String} route The routing values as a comma-separated string.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      routing: function (route) {
-        if (route == null) {
-          return params.routing;
-        }
-      
-        params.routing = route;
-        return this;
-      },
-
-      /**
-             <p>Sets the replication mode.</p>  
-
-             <p>Valid values are:</p>
-             
-             <dl>
-                <dd><code>async</code> - asynchronous replication to slaves</dd>
-                <dd><code>sync</code> - synchronous replication to the slaves</dd>
-                <dd><code>default</code> - the currently configured system default.</dd> 
-             </dl>
-             
-             <p>This option is valid during the following operations:
-                <code>delete by query</code></p>
-
-             @member ejs.Request
-             @param {String} r The replication mode (async, sync, or default)
-             @returns {Object} returns <code>this</code> so that calls can be chained.
-             */
-      replication: function (r) {
-        if (r == null) {
-          return params.replication;
-        }
-        
-        r = r.toLowerCase();
-        if (r === 'async' || r === 'sync' || r === 'default') {
-          params.replication = r;
-        }
-        
-        return this;
-      },
-      
-      /**
-             <p>Sets the write consistency.</p>  
-
-             <p>Valid values are:</p>
-             
-             <dl>
-                <dd><code>one</code> - only requires write to one shard</dd>
-                <dd><code>quorum</code> - requires writes to quorum <code>(N/2 + 1)</code></dd>
-                <dd><code>all</code> - requires write to succeed on all shards</dd>
-                <dd><code>default</code> - the currently configured system default</dd>
-             </dl>
-             
-             <p>This option is valid during the following operations:
-                <code>delete by query</code></p>
-
-             @member ejs.Request
-             @param {String} c The write consistency (one, quorum, all, or default)
-             @returns {Object} returns <code>this</code> so that calls can be chained.
-             */
-      consistency: function (c) {
-        if (c == null) {
-          return params.consistency;
-        }
-        
-        c = c.toLowerCase();
-        if (c === 'default' || c === 'one' || c === 'quorum' || c === 'all') {
-          params.consistency = c;
-        }
-        
-        return this;
-      },
-      
-      /**
-             <p>Sets the search execution type for the request.</p>  
-
-             <p>Valid values are:</p>
-             
-             <dl>
-                <dd><code>dfs_query_then_fetch</code> - same as query_then_fetch, 
-                  except distributed term frequencies are calculated first.</dd>
-                <dd><code>dfs_query_and_fetch</code> - same as query_and_fetch,
-                  except distributed term frequencies are calculated first.</dd>
-                <dd><code>query_then_fetch</code> - executed against all 
-                  shards, but only enough information is returned.  When ready,
-                  only the relevant shards are asked for the actual document 
-                  content</dd>
-                <dd><code>query_and_fetch</code> - execute the query on all 
-                  relevant shards and return the results, including content.</dd>
-                <dd><code>scan</code> - efficiently scroll a large result set</dd>
-                <dd><code>count</code> -  special search type that returns the 
-                  count that matched the search request without any docs </dd>
-             </dl>
-             
-             <p>This option is valid during the following operations:
-                <code>search</code></p>
-
-             @member ejs.Request
-             @param {String} t The search execution type
-             @returns {Object} returns <code>this</code> so that calls can be chained.
-             */
-      searchType: function (t) {
-        if (t == null) {
-          return params.search_type;
-        }
-        
-        t = t.toLowerCase();
-        if (t === 'dfs_query_then_fetch' || t === 'dfs_query_and_fetch' || 
-          t === 'query_then_fetch' || t === 'query_and_fetch' || 
-          t === 'scan' || t === 'count') {
-            
-          params.search_type = t;
-        }
-        
-        return this;
-      },
       
       /**
             By default, searches return full documents, meaning every property or field.
@@ -19966,27 +17507,8 @@
           throw new TypeError('Argument must be a Rescore');
         }
 
-        query.rescore = r._self();
+        query.rescore = r.toJSON();
 
-        return this;
-      },
-
-      /**
-            A search result set could be very large (think Google). Setting the
-            <code>from</code> parameter allows you to page through the result set
-            by making multiple request. This parameters specifies the starting
-            result/document number point. Combine with <code>size()</code> to achieve paging.
-
-            @member ejs.Request
-            @param {Array} f The offset at which to start fetching results/documents from the result set.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      from: function (f) {
-        if (f == null) {
-          return query.from;
-        }
-        
-        query.from = f;
         return this;
       },
 
@@ -20007,63 +17529,7 @@
           throw new TypeError('Argument must be a Query');
         }
         
-        query.query = someQuery._self();
-        return this;
-      },
-
-      /**
-            Allows you to set the specified indices on this request object. This is the
-            set of indices that will be used when the search is executed.
-
-            @member ejs.Request
-            @param {Array} indexArray An array of collection names.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      indices: function (indexArray) {
-        if (indexArray == null) {
-          return indices;
-        } else if (isString(indexArray)) {
-          indices = [indexArray];
-        } else if (isArray(indexArray)) {
-          indices = indexArray;
-        } else {
-          throw new TypeError('Argument must be a string or array');
-        }
-
-        // check that an index is specified when a type is
-        // if not, search across _all indices
-        if (indices.length === 0 && types.length > 0) {
-          indices = ["_all"];
-        }
-
-        return this;
-      },
-
-      /**
-            Allows you to set the specified content-types on this request object. This is the
-            set of indices that will be used when the search is executed.
-
-            @member ejs.Request
-            @param {Array} typeArray An array of content-type names.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      types: function (typeArray) {
-        if (typeArray == null) {
-          return types;
-        } else if (isString(typeArray)) {
-          types = [typeArray];
-        } else if (isArray(typeArray)) {
-          types = typeArray;
-        } else {
-          throw new TypeError('Argument must be a string or array');
-        }
-
-        // check that an index is specified when a type is
-        // if not, search across _all indices
-        if (indices.length === 0 && types.length > 0) {
-          indices = ["_all"];
-        }
-
+        query.query = someQuery.toJSON();
         return this;
       },
 
@@ -20088,7 +17554,7 @@
           throw new TypeError('Argument must be a Facet');
         }
         
-        extend(query.facets, facet._self());
+        extend(query.facets, facet.toJSON());
 
         return this;
       },
@@ -20109,7 +17575,7 @@
           throw new TypeError('Argument must be a Filter');
         }
         
-        query.filter = filter._self();
+        query.filter = filter.toJSON();
         return this;
       },
 
@@ -20130,7 +17596,7 @@
           throw new TypeError('Argument must be a Highlight object');
         }
 
-        query.highlight = h._self();
+        query.highlight = h.toJSON();
         return this;
       },
 
@@ -20159,7 +17625,7 @@
         if (isString(s)) {
           query.suggest.text = s;
         } else if (isSuggest(s)) {
-          extend(query.suggest, s._self());
+          extend(query.suggest, s.toJSON());
         } else {
           throw new TypeError('Argument must be a string or Suggest object');
         }
@@ -20187,85 +17653,7 @@
           throw new TypeError('Argument must be a ScriptField');
         }
         
-        extend(query.script_fields, oScriptField._self());
-        return this;
-      },
-
-      /**
-            <p>Controls the preference of which shard replicas to execute the search request on.
-            By default, the operation is randomized between the each shard replicas.  The
-            preference can be one of the following:</p>
-
-            <dl>
-                <dd><code>_primary</code> - the operation will only be executed on primary shards</dd>
-                <dd><code>_local</code> - the operation will prefer to be executed on local shards</dd>
-                <dd><code>_only_node:$nodeid</code> - the search will only be executed on node with id $nodeid</dd>
-                <dd><code>custom</code> - any string, will guarentee searches always happen on same node.</dd>
-            </dl>
-
-            <p>This option is valid during the following operations:
-                <code>search, search shards, </code> and <code>count</code></p>
-                
-            @member ejs.Request
-            @param {String} perf the preference, any of <code>_primary</code>, <code>_local</code>, 
-                <code>_only_:$nodeid</code>, or a custom string value.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      preference: function (perf) {
-        if (perf == null) {
-          return params.preference;
-        }
-      
-        params.preference = perf;
-        return this;
-      },
-
-      /**
-             <p>If the operation will run on the local node only</p>  
-
-             <p>This option is valid during the following operations:
-                <code>search shards</code></p>
-                  
-             @member ejs.Request
-             @param {Boolean} trueFalse True to run on local node only
-             @returns {Object} returns <code>this</code> so that calls can be chained.
-             */
-      local: function (trueFalse) {
-        if (trueFalse == null) {
-          return params.local;
-        }
-      
-        params.local = trueFalse;
-        return this;
-      },
-      
-      /**
-            <p>Determines what type of indices to exclude from a request.  The
-            value can be one of the following:</p>
-
-            <dl>
-                <dd><code>none</code> - No indices / aliases will be excluded from a request</dd>
-                <dd><code>missing</code> - Indices / aliases that are missing will be excluded from a request</dd>
-            </dl>
-
-            <p>This option is valid during the following operations:
-                <code>search, search shards, count</code> and 
-                <code>delete by query</code></p>
-                
-            @member ejs.Request
-            @param {String} ignoreType the type of ignore (none or missing).
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      ignoreIndices: function (ignoreType) {
-        if (ignoreType == null) {
-          return params.ignore_indices;
-        }
-      
-        ignoreType = ignoreType.toLowerCase();
-        if (ignoreType === 'none' || ignoreType === 'missing') {
-          params.ignore_indices = ignoreType;
-        }
-        
+        extend(query.script_fields, oScriptField.toJSON());
         return this;
       },
       
@@ -20365,85 +17753,8 @@
             @member ejs.Request
             @returns {String} returns this object's internal object representation.
             */
-      _self: function () {
+      toJSON: function () {
         return query;
-      },
-
-      /**
-            Executes a delete by query request using the current query.
-            
-            @member ejs.Request
-            @param {Function} successcb A callback function that handles the response.
-            @param {Function} errorcb A callback function that handles errors.
-            @returns {Object} Returns a client specific object.
-            */
-      doDeleteByQuery: function (successcb, errorcb) {
-        var queryData = JSON.stringify(query.query);
-      
-        // make sure the user has set a client
-        if (ejs.client == null) {
-          throw new Error("No Client Set");
-        }
-        
-        return ejs.client.del(getRestPath('_query'), queryData, successcb, errorcb);
-      },
-
-      /**
-            Executes a count request using the current query.
-            
-            @member ejs.Request
-            @param {Function} successcb A callback function that handles the count response.
-            @param {Function} errorcb A callback function that handles errors.
-            @returns {Object} Returns a client specific object.
-            */
-      doCount: function (successcb, errorcb) {
-        var queryData = JSON.stringify(query.query);
-      
-        // make sure the user has set a client
-        if (ejs.client == null) {
-          throw new Error("No Client Set");
-        }
-        
-        return ejs.client.post(getRestPath('_count'), queryData, successcb, errorcb);
-      },
-            
-      /**
-            Executes the search. 
-
-            @member ejs.Request
-            @param {Function} successcb A callback function that handles the search response.
-            @param {Function} errorcb A callback function that handles errors.
-            @returns {Object} Returns a client specific object.
-            */
-      doSearch: function (successcb, errorcb) {
-        var queryData = JSON.stringify(query);
-      
-        // make sure the user has set a client
-        if (ejs.client == null) {
-          throw new Error("No Client Set");
-        }
-        
-        return ejs.client.post(getRestPath('_search'), queryData, successcb, errorcb);
-      },
-      
-      /**
-            Executes the search request as configured but only returns back 
-            the shards and nodes that the search is going to execute on.  This
-            is a cluster admin method. 
-
-            @member ejs.Request
-            @param {Function} successcb A callback function that handles the response.
-            @param {Function} errorcb A callback function that handles errors.
-            @returns {Object} Returns a client specific object.
-            */
-      doSearchShards: function (successcb, errorcb) {
-        // make sure the user has set a client
-        if (ejs.client == null) {
-          throw new Error("No Client Set");
-        }
-
-        // we don't need to send in the body data, just use empty string
-        return ejs.client.post(getRestPath('_search_shards'), '', successcb, errorcb);
       }
       
     };
@@ -20481,7 +17792,7 @@
     }
     
     if (qry != null) {
-      rescore.query.rescore_query = qry._self();
+      rescore.query.rescore_query = qry.toJSON();
     }
     
     return {
@@ -20502,7 +17813,7 @@
           throw new TypeError('Argument must be a Query');
         }
 
-        rescore.query.rescore_query = someQuery._self();
+        rescore.query.rescore_query = someQuery.toJSON();
         return this;
       },
 
@@ -20620,7 +17931,7 @@
             @member ejs.Rescore
             @returns {String} returns this object's internal object representation.
             */
-      _self: function () {
+      toJSON: function () {
         return rescore;
       }
     };
@@ -20741,7 +18052,7 @@
             @member ejs.ScriptField
             @returns {String} returns this object's internal <code>facet</code> property.
             */
-      _self: function () {
+      toJSON: function () {
         return script;
       }
     };
@@ -20868,7 +18179,7 @@
             @member ejs.Shape
             @returns {String} returns this object's internal object representation.
             */
-      _self: function () {
+      toJSON: function () {
         return shape;
       }
     };
@@ -20949,7 +18260,7 @@
         delete sort[key];
         key = geo_key;
         sort[key] = oldValue;
-        sort[key][fieldName] = point._self();
+        sort[key][fieldName] = point.toJSON();
       
         return this;
       },
@@ -21289,7 +18600,7 @@
           throw new TypeError('Argument must be a Filter');
         }
         
-        sort[key].nested_filter = oFilter._self();
+        sort[key].nested_filter = oFilter.toJSON();
         return this;
       },
           
@@ -21320,7 +18631,7 @@
             @member ejs.Sort
             @returns {String} returns this object's internal object representation.
             */
-      _self: function () {
+      toJSON: function () {
         return sort;
       }
     };
@@ -21363,7 +18674,7 @@
         @member ejs.DirectGenerator
         @property {Object} suggest
         */
-    generator = _common._self();
+    generator = _common.toJSON();
 
     return extend(_common, {
 
@@ -21461,7 +18772,7 @@
             @member ejs.DirectGenerator
             @returns {String} returns this object's internal <code>generator</code> property.
             */
-      _self: function () {
+      toJSON: function () {
         return generator;
       }
     });
@@ -21693,7 +19004,7 @@
             @member ejs.DirectSettingsMixin
             @returns {String} returns this object's internal <code>settings</code> property.
             */
-      _self: function () {
+      toJSON: function () {
         return settings;
       }
     };
@@ -22049,7 +19360,7 @@
         }
 
         if (isGenerator(oGenerator)) {
-          suggest[name].phrase.direct_generator.push(oGenerator._self());
+          suggest[name].phrase.direct_generator.push(oGenerator.toJSON());
         } else if (isArray(oGenerator)) {
           suggest[name].phrase.direct_generator = [];
           for (i = 0, len = oGenerator.length; i < len; i++) {
@@ -22057,7 +19368,7 @@
               throw new TypeError('Argument must be an array of Generators');
             }
 
-            suggest[name].phrase.direct_generator.push(oGenerator[i]._self());
+            suggest[name].phrase.direct_generator.push(oGenerator[i].toJSON());
           }
         } else {
           throw new TypeError('Argument must be a Generator or array of Generators');
@@ -22093,7 +19404,7 @@
             @member ejs.PhraseSuggester
             @returns {String} returns this object's internal <code>suggest</code> property.
             */
-      _self: function () {
+      toJSON: function () {
         return suggest;
       }
     };
@@ -22140,7 +19451,7 @@
     _common = ejs.DirectSettingsMixin();
     
     // setup correct term suggestor format
-    suggest[name] = {term: _common._self()};
+    suggest[name] = {term: _common.toJSON()};
 
     return extend(_common, {
 
@@ -22253,7 +19564,7 @@
             @member ejs.TermSuggester
             @returns {String} returns this object's internal <code>suggest</code> property.
             */
-      _self: function () {
+      toJSON: function () {
         return suggest;
       }
     });

@@ -139,7 +139,7 @@
              @member ejs.PrefixFilter
              @returns {Object} filter object
              */
-      _self: function () {
+      toJSON: function () {
         return filter;
       }
     };

@@ -18,7 +18,7 @@
   ejs.GeoShapeQuery = function (field) {
 
     /**
-         The internal query object. <code>Use _self()</code>
+         The internal query object. <code>Use toJSON()</code>
          @member ejs.GeoShapeQuery
          @property {Object} GeoShapeQuery
          */
@@ -67,7 +67,7 @@
           delete query.geo_shape[field].indexed_shape;
         }
         
-        query.geo_shape[field].shape = shape._self();
+        query.geo_shape[field].shape = shape.toJSON();
         return this;
       },
 
@@ -88,7 +88,7 @@
           delete query.geo_shape[field].shape;
         }
         
-        query.geo_shape[field].indexed_shape = indexedShape._self();
+        query.geo_shape[field].indexed_shape = indexedShape.toJSON();
         return this;
       },
 
@@ -191,7 +191,7 @@
             @member ejs.GeoShapeQuery
             @returns {String} returns this object's internal <code>query</code> property.
             */
-      _self: function () {
+      toJSON: function () {
         return query;
       }
     };

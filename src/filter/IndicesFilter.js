@@ -21,13 +21,13 @@
     }
   
     /**
-         The internal filter object. <code>Use _self()</code>
+         The internal filter object. <code>Use toJSON()</code>
          @member ejs.IndicesFilter
          @property {Object} filter
          */
     var filter = {
       indices: {
-        filter: fltr._self()
+        filter: fltr.toJSON()
       }
     };
 
@@ -83,7 +83,7 @@
           throw new TypeError('Argument must be a Filter');
         }
       
-        filter.indices.filter = f._self();
+        filter.indices.filter = f.toJSON();
         return this;
       },
 
@@ -107,7 +107,7 @@
             filter.indices.no_match_filter = f;
           }
         } else if (isFilter(f)) {
-          filter.indices.no_match_filter = f._self();
+          filter.indices.no_match_filter = f.toJSON();
         } else {
           throw new TypeError('Argument must be string or Filter');
         }
@@ -142,7 +142,7 @@
             @member ejs.IndicesFilter
             @returns {String} returns this object's internal <code>filter</code> property.
             */
-      _self: function () {
+      toJSON: function () {
         return filter;
       }
     };

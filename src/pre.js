@@ -50,12 +50,6 @@
     isHighlight, // checks valid ejs Highlight object
     isSuggest, // checks valid ejs Suggest object
     isGenerator, // checks valid ejs Generator object
-    isClusterHealth, // checks valid ejs ClusterHealth object
-    isClusterState, // checks valid ejs ClusterState object
-    isNodeStats, // checks valid ejs NodeStats object
-    isNodeInfo, // checks valid ejs NodeInfo object
-    isRequest, // checks valid ejs Request object
-    isMultiSearchRequest, // checks valid ejs MultiSearchRequest object
     
     // create ejs object
     ejs;

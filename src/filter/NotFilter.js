@@ -17,13 +17,13 @@
     }
     
     /**
-         The internal filter object. Use <code>_self()</code>
+         The internal filter object. Use <code>toJSON()</code>
 
          @member ejs.NotFilter
          @property {Object} filter
          */
     var filter = {
-      not: oFilter._self()
+      not: oFilter.toJSON()
     };
 
     return {
@@ -44,7 +44,7 @@
           throw new TypeError('Argument must be a Filter');
         }
         
-        filter.not = fltr._self();
+        filter.not = fltr.toJSON();
         return this;
       },
 
@@ -122,7 +122,7 @@
              @member ejs.NotFilter
              @returns {Object} filter object
              */
-      _self: function () {
+      toJSON: function () {
         return filter;
       }
     };

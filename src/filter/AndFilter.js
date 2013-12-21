@@ -13,7 +13,7 @@
   ejs.AndFilter = function (f) {
 
     /**
-         The internal filter object. Use <code>_self()</code>
+         The internal filter object. Use <code>toJSON()</code>
 
          @member ejs.AndFilter
          @property {Object} filter
@@ -27,14 +27,14 @@
       };
 
     if (isFilter(f)) {
-      filter.and.filters.push(f._self());
+      filter.and.filters.push(f.toJSON());
     } else if (isArray(f)) {
       for (i = 0, len = f.length; i < len; i++) {
         if (!isFilter(f[i])) {
           throw new TypeError('Array must contain only Filter objects');
         }
         
-        filter.and.filters.push(f[i]._self());
+        filter.and.filters.push(f[i].toJSON());
       }
     } else {
       throw new TypeError('Argument must be a Filter or Array of Filters');
@@ -60,7 +60,7 @@
         }
       
         if (isFilter(fltr)) {
-          filter.and.filters.push(fltr._self());
+          filter.and.filters.push(fltr.toJSON());
         } else if (isArray(fltr)) {
           filter.and.filters = [];
           for (i = 0, len = fltr.length; i < len; i++) {
@@ -68,7 +68,7 @@
               throw new TypeError('Array must contain only Filter objects');
             }
             
-            filter.and.filters.push(fltr[i]._self());
+            filter.and.filters.push(fltr[i].toJSON());
           }
         } else {
           throw new TypeError('Argument must be a Filter or an Array of Filters');
@@ -151,7 +151,7 @@
              @member ejs.AndFilter
              @returns {Object} filter object
              */
-      _self: function () {
+      toJSON: function () {
         return filter;
       }
     };

@@ -18,13 +18,13 @@
     }
     
     /**
-         The internal query object. <code>Use _self()</code>
+         The internal query object. <code>Use toJSON()</code>
          @member ejs.HasChildFilter
          @property {Object} query
          */
     var filter = {
       has_child: {
-        query: qry._self(),
+        query: qry.toJSON(),
         type: type
       }
     };
@@ -47,7 +47,7 @@
           throw new TypeError('Argument must be a Query object');
         }
         
-        filter.has_child.query = q._self();
+        filter.has_child.query = q.toJSON();
         return this;
       },
 
@@ -68,7 +68,7 @@
           throw new TypeError('Argument must be a Filter object');
         }
         
-        filter.has_child.filter = f._self();
+        filter.has_child.filter = f.toJSON();
         return this;
       },
 
@@ -192,7 +192,7 @@
             @member ejs.HasChildFilter
             @returns {String} returns this object's internal <code>filter</code> property.
             */
-      _self: function () {
+      toJSON: function () {
         return filter;
       }
     };

@@ -348,7 +348,7 @@
         }
 
         if (isGenerator(oGenerator)) {
-          suggest[name].phrase.direct_generator.push(oGenerator._self());
+          suggest[name].phrase.direct_generator.push(oGenerator.toJSON());
         } else if (isArray(oGenerator)) {
           suggest[name].phrase.direct_generator = [];
           for (i = 0, len = oGenerator.length; i < len; i++) {
@@ -356,7 +356,7 @@
               throw new TypeError('Argument must be an array of Generators');
             }
 
-            suggest[name].phrase.direct_generator.push(oGenerator[i]._self());
+            suggest[name].phrase.direct_generator.push(oGenerator[i].toJSON());
           }
         } else {
           throw new TypeError('Argument must be a Generator or array of Generators');
@@ -392,7 +392,7 @@
             @member ejs.PhraseSuggester
             @returns {String} returns this object's internal <code>suggest</code> property.
             */
-      _self: function () {
+      toJSON: function () {
         return suggest;
       }
     };

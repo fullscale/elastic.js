@@ -30,7 +30,7 @@
     }
     
     if (qry != null) {
-      rescore.query.rescore_query = qry._self();
+      rescore.query.rescore_query = qry.toJSON();
     }
     
     return {
@@ -51,7 +51,7 @@
           throw new TypeError('Argument must be a Query');
         }
 
-        rescore.query.rescore_query = someQuery._self();
+        rescore.query.rescore_query = someQuery.toJSON();
         return this;
       },
 
@@ -169,7 +169,7 @@
             @member ejs.Rescore
             @returns {String} returns this object's internal object representation.
             */
-      _self: function () {
+      toJSON: function () {
         return rescore;
       }
     };

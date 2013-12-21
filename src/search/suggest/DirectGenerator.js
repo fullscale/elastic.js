@@ -35,7 +35,7 @@
         @member ejs.DirectGenerator
         @property {Object} suggest
         */
-    generator = _common._self();
+    generator = _common.toJSON();
 
     return extend(_common, {
 
@@ -133,7 +133,7 @@
             @member ejs.DirectGenerator
             @returns {String} returns this object's internal <code>generator</code> property.
             */
-      _self: function () {
+      toJSON: function () {
         return generator;
       }
     });

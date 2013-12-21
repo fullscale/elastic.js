@@ -22,38 +22,12 @@ module.exports = function (grunt) {
           'src/util.js',
           'src/facet/*.js',
           'src/filter/*.js',
-          'src/index/*.js',
           'src/query/*.js',
-          'src/admin/*.js',
           'src/search/**/*.js',
           'src/utils.js',
           'src/post.js'
         ],
         dest: 'dist/elastic.js'
-      },
-      client_node: {
-        src: [
-          'src/clients/elastic-node-client.js'
-        ],
-        dest: 'dist/elastic-node-client.js'
-      },
-      client_jquery: {
-        src: [
-          'src/clients/elastic-jquery-client.js'
-        ],
-        dest: 'dist/elastic-jquery-client.js'
-      },
-      client_extjs: {
-        src: [
-          'src/clients/elastic-extjs-client.js'
-        ],
-        dest: 'dist/elastic-extjs-client.js'
-      },
-      client_angular: {
-        src: [
-          'src/clients/elastic-angular-client.js'
-        ],
-        dest: 'dist/elastic-angular-client.js'
       }
     },
     uglify: {
@@ -64,18 +38,6 @@ module.exports = function (grunt) {
       dist: {
         src: ['<%= concat.dist.dest %>'],
         dest: 'dist/elastic.min.js'
-      },
-      client_jquery: {
-        src: ['src/clients/elastic-jquery-client.js'],
-        dest: 'dist/elastic-jquery-client.min.js'
-      },
-      client_extjs: {
-        src: ['src/clients/elastic-extjs-client.js'],
-        dest: 'dist/elastic-extjs-client.min.js'
-      },
-      client_angular: {
-        src: ['src/clients/elastic-angular-client.js'],
-        dest: 'dist/elastic-angular-client.min.js'
       }
     },
     nodeunit: {
@@ -104,8 +66,7 @@ module.exports = function (grunt) {
       files: [
         'Gruntfile.js', 
         '<%= concat.dist.dest %>', 
-        'tests/**/*.js',
-        'src/clients/*.js'
+        'tests/**/*.js'
       ]
     }
   });

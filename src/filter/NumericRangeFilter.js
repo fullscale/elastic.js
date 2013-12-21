@@ -289,7 +289,7 @@
              @member ejs.NumericRangeFilter
              @returns {Object} filter object
              */
-      _self: function () {
+      toJSON: function () {
         return filter;
       }
     };

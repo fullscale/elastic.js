@@ -1,6 +1,6 @@
 # elastic.js
 
-A JavaScript implementation of the [ElasticSearch](http://www.elasticsearch.org/) Query [DSL](http://www.elasticsearch.org/guide/reference/query-dsl/) and Core API.
+A JavaScript implementation of the [ElasticSearch](http://www.elasticsearch.org/) DSL.
 
 ## Documentation
 You can find the official documentation at the following locations:

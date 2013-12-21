@@ -21,13 +21,13 @@
     }
     
     /**
-         The internal query object. <code>Use _self()</code>
+         The internal query object. <code>Use toJSON()</code>
          @member ejs.IndicesQuery
          @property {Object} query
          */
     var query = {
       indices: {
-        query: qry._self()
+        query: qry.toJSON()
       }
     };
 
@@ -82,7 +82,7 @@
           throw new TypeError('Argument must be a Query');
         }
         
-        query.indices.query = q._self();
+        query.indices.query = q.toJSON();
         return this;
       },
 
@@ -106,7 +106,7 @@
             query.indices.no_match_query = q;
           }
         } else if (isQuery(q)) {
-          query.indices.no_match_query = q._self();
+          query.indices.no_match_query = q.toJSON();
         } else {
           throw new TypeError('Argument must be string or Query');
         }
@@ -157,7 +157,7 @@
             @member ejs.IndicesQuery
             @returns {String} returns this object's internal <code>query</code> property.
             */
-      _self: function () {
+      toJSON: function () {
         return query;
       }
     };

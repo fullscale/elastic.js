@@ -66,7 +66,7 @@ exports.filters = {
     var regexFilter = ejs.RegexpFilter('title', 'regex'),
       expected,
       doTest = function () {
-        test.deepEqual(regexFilter._self(), expected);
+        test.deepEqual(regexFilter.toJSON(), expected);
       };
 
     expected = {
@@ -78,7 +78,7 @@ exports.filters = {
     };
 
     test.ok(regexFilter, 'RegexpFilter exists');
-    test.ok(regexFilter._self(), '_self() works');
+    test.ok(regexFilter.toJSON(), 'toJSON() works');
     doTest();
 
     regexFilter.value('regex2');
@@ -129,18 +129,18 @@ exports.filters = {
       indicesFilter = ejs.IndicesFilter(termFilter, 'i1'),
       expected,
       doTest = function () {
-        test.deepEqual(indicesFilter._self(), expected);
+        test.deepEqual(indicesFilter.toJSON(), expected);
       };
 
     expected = {
       indices: {
-        filter: termFilter._self(),
+        filter: termFilter.toJSON(),
         indices: ['i1']
       }
     };
 
     test.ok(indicesFilter, 'IndicesFilter exists');
-    test.ok(indicesFilter._self(), '_self() works');
+    test.ok(indicesFilter.toJSON(), 'toJSON() works');
     doTest();
 
     indicesFilter = ejs.IndicesFilter(termFilter, ['i2', 'i3']);
@@ -156,7 +156,7 @@ exports.filters = {
     doTest();
     
     indicesFilter.filter(termFilter2);
-    expected.indices.filter = termFilter2._self();
+    expected.indices.filter = termFilter2.toJSON();
     doTest();
     
     indicesFilter.noMatchFilter('invalid');
@@ -171,11 +171,11 @@ exports.filters = {
     doTest();
     
     indicesFilter.noMatchFilter(termFilter3);
-    expected.indices.no_match_filter = termFilter3._self();
+    expected.indices.no_match_filter = termFilter3.toJSON();
     doTest();
     
     indicesFilter.filter(termFilter2);
-    expected.indices.filter = termFilter2._self();
+    expected.indices.filter = termFilter2.toJSON();
     doTest();
     
     test.strictEqual(indicesFilter._type(), 'filter');
@@ -209,7 +209,7 @@ exports.filters = {
     var termsFilter = ejs.TermsFilter('f1', ['t1', 't2']),
       expected,
       doTest = function () {
-        test.deepEqual(termsFilter._self(), expected);
+        test.deepEqual(termsFilter.toJSON(), expected);
       };
 
     expected = {
@@ -219,7 +219,7 @@ exports.filters = {
     };
 
     test.ok(termsFilter, 'TermsFilter exists');
-    test.ok(termsFilter._self(), '_self() works');
+    test.ok(termsFilter.toJSON(), 'toJSON() works');
     doTest();
 
     termsFilter = ejs.TermsFilter('f1', 't3');
@@ -341,7 +341,7 @@ exports.filters = {
       nestedFilter = ejs.NestedFilter('root'),
       expected,
       doTest = function () {
-        test.deepEqual(nestedFilter._self(), expected);
+        test.deepEqual(nestedFilter.toJSON(), expected);
       };
 
     expected = {
@@ -351,7 +351,7 @@ exports.filters = {
     };
 
     test.ok(nestedFilter, 'NestedFilter exists');
-    test.ok(nestedFilter._self(), '_self() works');
+    test.ok(nestedFilter.toJSON(), 'toJSON() works');
     doTest();
 
     nestedFilter.path('new.root');
@@ -359,11 +359,11 @@ exports.filters = {
     doTest();
     
     nestedFilter.query(termQuery);
-    expected.nested.query = termQuery._self();
+    expected.nested.query = termQuery.toJSON();
     doTest();
     
     nestedFilter.filter(termFilter);
-    expected.nested.filter = termFilter._self();
+    expected.nested.filter = termFilter.toJSON();
     doTest();
     
     nestedFilter.boost(2.2);
@@ -405,7 +405,7 @@ exports.filters = {
     var scriptFilter = ejs.ScriptFilter('the script'),
       expected,
       doTest = function () {
-        test.deepEqual(scriptFilter._self(), expected);
+        test.deepEqual(scriptFilter.toJSON(), expected);
       };
 
     expected = {
@@ -415,7 +415,7 @@ exports.filters = {
     };
 
     test.ok(scriptFilter, 'ScriptFilter exists');
-    test.ok(scriptFilter._self(), '_self() works');
+    test.ok(scriptFilter.toJSON(), 'toJSON() works');
     doTest();
 
     scriptFilter.params({param1: 1});
@@ -453,7 +453,7 @@ exports.filters = {
     var rangeFilter = ejs.RangeFilter('f1'),
       expected,
       doTest = function () {
-        test.deepEqual(rangeFilter._self(), expected);
+        test.deepEqual(rangeFilter.toJSON(), expected);
       };
 
     expected = {
@@ -463,7 +463,7 @@ exports.filters = {
     };
 
     test.ok(rangeFilter, 'RangeFilter exists');
-    test.ok(rangeFilter._self(), '_self() works');
+    test.ok(rangeFilter.toJSON(), 'toJSON() works');
     doTest();
     
     rangeFilter.from(1);
@@ -533,21 +533,21 @@ exports.filters = {
       queryFilter = ejs.QueryFilter(termQuery),
       expected,
       doTest = function () {
-        test.deepEqual(queryFilter._self(), expected);
+        test.deepEqual(queryFilter.toJSON(), expected);
       };
 
     expected = {
       fquery: {
-        query: termQuery._self()
+        query: termQuery.toJSON()
       }
     };
 
     test.ok(queryFilter, 'QueryFilter exists');
-    test.ok(queryFilter._self(), '_self() works');
+    test.ok(queryFilter.toJSON(), 'toJSON() works');
     doTest();
     
     queryFilter.query(termQuery2);
-    expected.fquery.query = termQuery2._self();
+    expected.fquery.query = termQuery2.toJSON();
     doTest();
     
     queryFilter.name('fquery');
@@ -581,7 +581,7 @@ exports.filters = {
     var matchAllFilter = ejs.MatchAllFilter(),
       expected,
       doTest = function () {
-        test.deepEqual(matchAllFilter._self(), expected);
+        test.deepEqual(matchAllFilter.toJSON(), expected);
       };
 
     expected = {
@@ -589,7 +589,7 @@ exports.filters = {
     };
 
     test.ok(matchAllFilter, 'MatchAllFilter exists');
-    test.ok(matchAllFilter._self(), '_self() works');
+    test.ok(matchAllFilter.toJSON(), 'toJSON() works');
     doTest();
 
     test.strictEqual(matchAllFilter._type(), 'filter');
@@ -606,22 +606,22 @@ exports.filters = {
       hasParentFilter = ejs.HasParentFilter(termQuery, 't1'),
       expected,
       doTest = function () {
-        test.deepEqual(hasParentFilter._self(), expected);
+        test.deepEqual(hasParentFilter.toJSON(), expected);
       };
 
     expected = {
       has_parent: {
-        query: termQuery._self(),
+        query: termQuery.toJSON(),
         parent_type: 't1'
       }
     };
 
     test.ok(hasParentFilter, 'HasParentFilter exists');
-    test.ok(hasParentFilter._self(), '_self() works');
+    test.ok(hasParentFilter.toJSON(), 'toJSON() works');
     doTest();
     
     hasParentFilter.query(termQuery2);
-    expected.has_parent.query = termQuery2._self();
+    expected.has_parent.query = termQuery2.toJSON();
     doTest();
     
     hasParentFilter.parentType('t2');
@@ -641,7 +641,7 @@ exports.filters = {
     doTest();
     
     hasParentFilter.filter(termFilter);
-    expected.has_parent.filter = termFilter._self();
+    expected.has_parent.filter = termFilter.toJSON();
     doTest();
     
     test.strictEqual(hasParentFilter._type(), 'filter');
@@ -670,22 +670,22 @@ exports.filters = {
       hasChildFilter = ejs.HasChildFilter(termQuery, 't1'),
       expected,
       doTest = function () {
-        test.deepEqual(hasChildFilter._self(), expected);
+        test.deepEqual(hasChildFilter.toJSON(), expected);
       };
 
     expected = {
       has_child: {
-        query: termQuery._self(),
+        query: termQuery.toJSON(),
         type: 't1'
       }
     };
 
     test.ok(hasChildFilter, 'HasChildFilter exists');
-    test.ok(hasChildFilter._self(), '_self() works');
+    test.ok(hasChildFilter.toJSON(), 'toJSON() works');
     doTest();
     
     hasChildFilter.query(termQuery2);
-    expected.has_child.query = termQuery2._self();
+    expected.has_child.query = termQuery2.toJSON();
     doTest();
     
     hasChildFilter.type('t2');
@@ -709,7 +709,7 @@ exports.filters = {
     doTest();
     
     hasChildFilter.filter(termFilter);
-    expected.has_child.filter = termFilter._self();
+    expected.has_child.filter = termFilter.toJSON();
     doTest();
     
     test.strictEqual(hasChildFilter._type(), 'filter');
@@ -735,7 +735,7 @@ exports.filters = {
     var limitFilter = ejs.LimitFilter(100),
       expected,
       doTest = function () {
-        test.deepEqual(limitFilter._self(), expected);
+        test.deepEqual(limitFilter.toJSON(), expected);
       };
 
     expected = {
@@ -745,7 +745,7 @@ exports.filters = {
     };
 
     test.ok(limitFilter, 'LimitFilter exists');
-    test.ok(limitFilter._self(), '_self() works');
+    test.ok(limitFilter.toJSON(), 'toJSON() works');
     doTest();
     
     limitFilter.value(1000);
@@ -767,7 +767,7 @@ exports.filters = {
     var idsFilter = ejs.IdsFilter('id1'),
       expected,
       doTest = function () {
-        test.deepEqual(idsFilter._self(), expected);
+        test.deepEqual(idsFilter.toJSON(), expected);
       };
 
     expected = {
@@ -777,7 +777,7 @@ exports.filters = {
     };
 
     test.ok(idsFilter, 'IdsFilter exists');
-    test.ok(idsFilter._self(), '_self() works');
+    test.ok(idsFilter.toJSON(), 'toJSON() works');
     doTest();
     
     idsFilter = ejs.IdsFilter(['id2', 'id3']);
@@ -835,7 +835,7 @@ exports.filters = {
       boolFilter = ejs.BoolFilter(),
       expected,
       doTest = function () {
-        test.deepEqual(boolFilter._self(), expected);
+        test.deepEqual(boolFilter.toJSON(), expected);
       };
 
     expected = {
@@ -843,35 +843,35 @@ exports.filters = {
     };
 
     test.ok(boolFilter, 'BoolFilter exists');
-    test.ok(boolFilter._self(), '_self() works');
+    test.ok(boolFilter.toJSON(), 'toJSON() works');
     doTest();
 
     boolFilter.must(termFilter);
-    expected.bool.must = [termFilter._self()];
+    expected.bool.must = [termFilter.toJSON()];
     doTest();
 
     boolFilter.must([termFilter2, termFilter3]);
-    expected.bool.must = [termFilter2._self(), termFilter3._self()];
+    expected.bool.must = [termFilter2.toJSON(), termFilter3.toJSON()];
     doTest();
     
     boolFilter.mustNot(termFilter2);
-    expected.bool.must_not = [termFilter2._self()];
+    expected.bool.must_not = [termFilter2.toJSON()];
     doTest();
 
     boolFilter.mustNot([termFilter3, termFilter4]);
-    expected.bool.must_not = [termFilter3._self(), termFilter4._self()];
+    expected.bool.must_not = [termFilter3.toJSON(), termFilter4.toJSON()];
     doTest();
     
     boolFilter.should(termFilter3);
-    expected.bool.should = [termFilter3._self()];
+    expected.bool.should = [termFilter3.toJSON()];
     doTest();
 
     boolFilter.should(termFilter4);
-    expected.bool.should.push(termFilter4._self());
+    expected.bool.should.push(termFilter4.toJSON());
     doTest();
 
     boolFilter.should([termFilter, termFilter2]);
-    expected.bool.should = [termFilter._self(), termFilter2._self()];
+    expected.bool.should = [termFilter.toJSON(), termFilter2.toJSON()];
     doTest();
     
     boolFilter.name('boolfilter');
@@ -928,7 +928,7 @@ exports.filters = {
         .shapeFieldName('stateShape'),
       expected,
       doTest = function () {
-        test.deepEqual(geoShapeFilter._self(), expected);
+        test.deepEqual(geoShapeFilter.toJSON(), expected);
       };
 
     expected = {
@@ -938,25 +938,25 @@ exports.filters = {
     };
 
     test.ok(geoShapeFilter, 'GeoShapeFilter exists');
-    test.ok(geoShapeFilter._self(), '_self() works');
+    test.ok(geoShapeFilter.toJSON(), 'toJSON() works');
     doTest();
 
     geoShapeFilter.shape(shape1);
-    expected.geo_shape.f1.shape = shape1._self();
+    expected.geo_shape.f1.shape = shape1.toJSON();
     doTest();
     
     geoShapeFilter.field('f2');
     expected = {
       geo_shape: {
         f2: {
-          shape: shape1._self()
+          shape: shape1.toJSON()
         }
       }
     };
     doTest();
     
     geoShapeFilter.shape(shape2);
-    expected.geo_shape.f2.shape = shape2._self();
+    expected.geo_shape.f2.shape = shape2.toJSON();
     doTest();
     
     geoShapeFilter.relation('intersects');
@@ -976,11 +976,11 @@ exports.filters = {
     
     geoShapeFilter.indexedShape(iShape1);
     delete expected.geo_shape.f2.shape;
-    expected.geo_shape.f2.indexed_shape = iShape1._self();
+    expected.geo_shape.f2.indexed_shape = iShape1.toJSON();
     doTest();
     
     geoShapeFilter.indexedShape(iShape2);
-    expected.geo_shape.f2.indexed_shape = iShape2._self();
+    expected.geo_shape.f2.indexed_shape = iShape2.toJSON();
     doTest();
     
     geoShapeFilter.strategy('recursive');
@@ -1017,7 +1017,7 @@ exports.filters = {
     var termFilter = ejs.TermFilter('t1', 'v1'),
       expected,
       doTest = function () {
-        test.deepEqual(termFilter._self(), expected);
+        test.deepEqual(termFilter.toJSON(), expected);
       };
 
     expected = {
@@ -1027,7 +1027,7 @@ exports.filters = {
     };
 
     test.ok(termFilter, 'TermFilter exists');
-    test.ok(termFilter._self(), '_self() works');
+    test.ok(termFilter.toJSON(), 'toJSON() works');
     test.strictEqual(termFilter.field(), 't1');
     test.strictEqual(termFilter.term(), 'v1');
     doTest();
@@ -1067,7 +1067,7 @@ exports.filters = {
     var typeFilter = ejs.TypeFilter('type1'),
       expected,
       doTest = function () {
-        test.deepEqual(typeFilter._self(), expected);
+        test.deepEqual(typeFilter.toJSON(), expected);
       };
 
     expected = {
@@ -1077,7 +1077,7 @@ exports.filters = {
     };
 
     test.ok(typeFilter, 'TypeFilter exists');
-    test.ok(typeFilter._self(), '_self() works');
+    test.ok(typeFilter.toJSON(), 'toJSON() works');
     doTest();
 
     typeFilter.type('type2');
@@ -1100,7 +1100,7 @@ exports.filters = {
       point5 = ejs.GeoPoint().array([37.7817289, -122.396181]),
       expected,
       doTest = function () {
-        test.deepEqual(geoPolygonFilter._self(), expected);
+        test.deepEqual(geoPolygonFilter.toJSON(), expected);
       };
 
     expected = {
@@ -1112,27 +1112,27 @@ exports.filters = {
     };
 
     test.ok(geoPolygonFilter, 'GeoPolygonFilter exists');
-    test.ok(geoPolygonFilter._self(), '_self() works');
+    test.ok(geoPolygonFilter.toJSON(), 'toJSON() works');
     doTest();
 
     geoPolygonFilter.points(point1);
-    expected.geo_polygon.location.points.push(point1._self());
+    expected.geo_polygon.location.points.push(point1.toJSON());
     doTest();
     
     geoPolygonFilter.points(point2).points(point3);
-    expected.geo_polygon.location.points.push(point2._self());
-    expected.geo_polygon.location.points.push(point3._self());
+    expected.geo_polygon.location.points.push(point2.toJSON());
+    expected.geo_polygon.location.points.push(point3.toJSON());
     doTest();
     
     geoPolygonFilter.points([point4, point5]);
-    expected.geo_polygon.location.points = [point4._self(), point5._self()];
+    expected.geo_polygon.location.points = [point4.toJSON(), point5.toJSON()];
     doTest();
     
     geoPolygonFilter.field('location2');
     expected = {
       geo_polygon: {
         location2: {
-          points: [point4._self(), point5._self()]
+          points: [point4.toJSON(), point5.toJSON()]
         }
       }
     };
@@ -1175,7 +1175,7 @@ exports.filters = {
       point2 = ejs.GeoPoint([37.7817289, -122.396181]),
       expected,
       doTest = function () {
-        test.deepEqual(geoBboxFilter._self(), expected);
+        test.deepEqual(geoBboxFilter.toJSON(), expected);
       };
 
     expected = {
@@ -1186,15 +1186,15 @@ exports.filters = {
     };
 
     test.ok(geoBboxFilter, 'GeoBboxFilter exists');
-    test.ok(geoBboxFilter._self(), '_self() works');
+    test.ok(geoBboxFilter.toJSON(), 'toJSON() works');
     doTest();
 
     geoBboxFilter.topLeft(point1);
-    expected.geo_bounding_box.location.top_left = point1._self();
+    expected.geo_bounding_box.location.top_left = point1.toJSON();
     doTest(); 
     
     geoBboxFilter.bottomRight(point2);
-    expected.geo_bounding_box.location.bottom_right = point2._self();
+    expected.geo_bounding_box.location.bottom_right = point2.toJSON();
     doTest();
     
     geoBboxFilter.type('memory');
@@ -1213,8 +1213,8 @@ exports.filters = {
       geo_bounding_box: {
         type: 'indexed',
         location2: {
-          top_left: point1._self(),
-          bottom_right: point2._self()
+          top_left: point1.toJSON(),
+          bottom_right: point2.toJSON()
         }
       }
     };
@@ -1256,7 +1256,7 @@ exports.filters = {
       point1 = ejs.GeoPoint([37.7819288, -122.396480]),
       expected,
       doTest = function () {
-        test.deepEqual(geoDistanceFilter._self(), expected);
+        test.deepEqual(geoDistanceFilter.toJSON(), expected);
       };
 
     expected = {
@@ -1266,7 +1266,7 @@ exports.filters = {
     };
     
     test.ok(geoDistanceFilter, 'GeoDistanceFilter exists');
-    test.ok(geoDistanceFilter._self(), '_self() works');
+    test.ok(geoDistanceFilter.toJSON(), 'toJSON() works');
     doTest();
 
     geoDistanceFilter.distance(10);
@@ -1274,14 +1274,14 @@ exports.filters = {
     doTest();
     
     geoDistanceFilter.point(point1),
-    expected.geo_distance.location = point1._self();
+    expected.geo_distance.location = point1.toJSON();
     doTest();
     
     geoDistanceFilter.field('location2');
     expected = {
       geo_distance: {
         distance: 10,
-        location2: point1._self()
+        location2: point1.toJSON()
       }
     };
     doTest();
@@ -1359,7 +1359,7 @@ exports.filters = {
       point1 = ejs.GeoPoint([37.7819288, -122.396480]),
       expected,
       doTest = function () {
-        test.deepEqual(geoDistanceRangeFilter._self(), expected);
+        test.deepEqual(geoDistanceRangeFilter.toJSON(), expected);
       };
 
     expected = {
@@ -1369,7 +1369,7 @@ exports.filters = {
     };
     
     test.ok(geoDistanceRangeFilter, 'GeoDistanceRangeFilter exists');
-    test.ok(geoDistanceRangeFilter._self(), '_self() works');
+    test.ok(geoDistanceRangeFilter.toJSON(), 'toJSON() works');
     doTest();
 
     geoDistanceRangeFilter.from(10);
@@ -1381,7 +1381,7 @@ exports.filters = {
     doTest();
     
     geoDistanceRangeFilter.point(point1),
-    expected.geo_distance_range.location = point1._self();
+    expected.geo_distance_range.location = point1.toJSON();
     doTest();
     
     geoDistanceRangeFilter.field('location2');
@@ -1389,7 +1389,7 @@ exports.filters = {
       geo_distance_range: {
         from: 10,
         to: 30,
-        location2: point1._self()
+        location2: point1.toJSON()
       }
     };
     doTest();
@@ -1512,19 +1512,19 @@ exports.filters = {
       notFilter = ejs.NotFilter(termFilter1),
       expected,
       doTest = function () {
-        test.deepEqual(notFilter._self(), expected);
+        test.deepEqual(notFilter.toJSON(), expected);
       };
 
     expected = {
-      not: termFilter1._self()
+      not: termFilter1.toJSON()
     };
 
     test.ok(notFilter, 'NotFilter exists');
-    test.ok(notFilter._self(), '_self() works');
+    test.ok(notFilter.toJSON(), 'toJSON() works');
     doTest();
 
     notFilter.filter(termFilter2);
-    expected.not = termFilter2._self();
+    expected.not = termFilter2.toJSON();
     doTest();
 
     notFilter.name('filter_name');
@@ -1562,25 +1562,25 @@ exports.filters = {
       andFilter = ejs.AndFilter(termFilter1),
       expected,
       doTest = function () {
-        test.deepEqual(andFilter._self(), expected);
+        test.deepEqual(andFilter.toJSON(), expected);
       };
 
     expected = {
       and: {
-        filters: [termFilter1._self()]
+        filters: [termFilter1.toJSON()]
       }
     };
 
     test.ok(andFilter, 'AndFilter exists');
-    test.ok(andFilter._self(), '_self() works');
+    test.ok(andFilter.toJSON(), 'toJSON() works');
     doTest();
 
     andFilter.filters(termFilter2);
-    expected.and.filters.push(termFilter2._self());
+    expected.and.filters.push(termFilter2.toJSON());
     doTest();
 
     andFilter.filters([termFilter3, termFilter4]);
-    expected.and.filters = [termFilter3._self(), termFilter4._self()];
+    expected.and.filters = [termFilter3.toJSON(), termFilter4.toJSON()];
     doTest();
     
     andFilter.name('filter_name');
@@ -1624,7 +1624,7 @@ exports.filters = {
       start = new Date(1230768000000),
       end = new Date(start.getTime()),
       doTest = function () {
-        test.deepEqual(numericRangeFilter._self(), expected);
+        test.deepEqual(numericRangeFilter.toJSON(), expected);
       };
 
     expected = {
@@ -1635,7 +1635,7 @@ exports.filters = {
     end.setFullYear(start.getFullYear() + 1);
 
     test.ok(numericRangeFilter, 'NumericRangeFilter exists');
-    test.ok(numericRangeFilter._self(), '_self() works');
+    test.ok(numericRangeFilter.toJSON(), 'toJSON() works');
     test.strictEqual(numericRangeFilter.field(), 'f1');
     doTest();
 
@@ -1731,7 +1731,7 @@ exports.filters = {
     var existsFilter = ejs.ExistsFilter('title'),
       expected,
       doTest = function () {
-        test.deepEqual(existsFilter._self(), expected);
+        test.deepEqual(existsFilter.toJSON(), expected);
       };
 
     expected = {
@@ -1741,7 +1741,7 @@ exports.filters = {
     };
 
     test.ok(existsFilter, 'ExistsFilter exists');
-    test.ok(existsFilter._self(), '_self() works');
+    test.ok(existsFilter.toJSON(), 'toJSON() works');
     doTest();
 
     existsFilter.field('body');
@@ -1763,7 +1763,7 @@ exports.filters = {
     var prefixFilter = ejs.PrefixFilter('title', 't'),
       expected,
       doTest = function () {
-        test.deepEqual(prefixFilter._self(), expected);
+        test.deepEqual(prefixFilter.toJSON(), expected);
       };
 
     expected = {
@@ -1773,7 +1773,7 @@ exports.filters = {
     };
 
     test.ok(prefixFilter, 'PrefixFilter exists');
-    test.ok(prefixFilter._self(), '_self() works');
+    test.ok(prefixFilter.toJSON(), 'toJSON() works');
     doTest();
 
     prefixFilter.prefix('th');
@@ -1811,7 +1811,7 @@ exports.filters = {
     var missingFilter = ejs.MissingFilter('title'),
       expected,
       doTest = function () {
-        test.deepEqual(missingFilter._self(), expected);
+        test.deepEqual(missingFilter.toJSON(), expected);
       };
 
     expected = {
@@ -1821,7 +1821,7 @@ exports.filters = {
     };
 
     test.ok(missingFilter, 'MissingFilter exists');
-    test.ok(missingFilter._self(), '_self() works');
+    test.ok(missingFilter.toJSON(), 'toJSON() works');
     doTest();
 
     missingFilter.field('body');
@@ -1854,29 +1854,29 @@ exports.filters = {
       orFilter = ejs.OrFilter(termFilter1),
       expected,
       doTest = function () {
-        test.deepEqual(orFilter._self(), expected);
+        test.deepEqual(orFilter.toJSON(), expected);
       };
 
     expected = {
       or: {
-        filters: [termFilter1._self()]
+        filters: [termFilter1.toJSON()]
       }
     };
 
     test.ok(orFilter, 'OrFilter exists');
-    test.ok(orFilter._self(), '_self() works');
+    test.ok(orFilter.toJSON(), 'toJSON() works');
     doTest();
 
     orFilter.filters(termFilter2);
-    expected.or.filters.push(termFilter2._self());
+    expected.or.filters.push(termFilter2.toJSON());
     doTest();
 
     orFilter.filters([termFilter1, termFilter3]);
-    expected.or.filters = [termFilter1._self(), termFilter3._self()];
+    expected.or.filters = [termFilter1.toJSON(), termFilter3.toJSON()];
     doTest();
     
     orFilter = ejs.OrFilter([termFilter2, termFilter3]);
-    expected.or.filters = [termFilter2._self(), termFilter3._self()];
+    expected.or.filters = [termFilter2.toJSON(), termFilter3.toJSON()];
     doTest();
     
     orFilter.name('filter_name');

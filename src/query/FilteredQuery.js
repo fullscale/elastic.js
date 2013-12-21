@@ -27,18 +27,18 @@
     }
     
     /**
-         The internal query object. Use <code>_self()</code>
+         The internal query object. Use <code>toJSON()</code>
          @member ejs.FilteredQuery
          @property {Object} query
          */
     var query = {
       filtered: {
-        query: someQuery._self()
+        query: someQuery.toJSON()
       }
     };
 
     if (someFilter != null) {
-      query.filtered.filter = someFilter._self();
+      query.filtered.filter = someFilter.toJSON();
     }
     
     return {
@@ -59,7 +59,7 @@
           throw new TypeError('Argument must be a Query');
         }
         
-        query.filtered.query = oQuery._self();
+        query.filtered.query = oQuery.toJSON();
         return this;
       },
 
@@ -79,7 +79,7 @@
           throw new TypeError('Argument must be a Filter');
         }
         
-        query.filtered.filter = oFilter._self();
+        query.filtered.filter = oFilter.toJSON();
         return this;
       },
 
@@ -194,7 +194,7 @@
              @member ejs.FilteredQuery
              @returns {Object} query object
              */
-      _self: function () {
+      toJSON: function () {
         return query;
       }
     };

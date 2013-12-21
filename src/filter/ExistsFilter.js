@@ -84,7 +84,7 @@
              @member ejs.ExistsFilter
              @returns {Object} filter object
              */
-      _self: function () {
+      toJSON: function () {
         return filter;
       }
     };

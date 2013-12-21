@@ -47,7 +47,7 @@
             @member ejs.MatchAllFilter
             @returns {Object} Returns the object's <em>filter</em> property.
             */
-      _self: function () {
+      toJSON: function () {
         return filter;
       }
     };

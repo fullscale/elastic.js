@@ -14,7 +14,7 @@
   ejs.BoolQuery = function () {
 
     /**
-         The internal query object. <code>Use _self()</code>
+         The internal query object. <code>Use toJSON()</code>
          @member ejs.BoolQuery
          @property {Object} query
          */
@@ -43,7 +43,7 @@
         }
 
         if (isQuery(oQuery)) {
-          query.bool.must.push(oQuery._self());
+          query.bool.must.push(oQuery.toJSON());
         } else if (isArray(oQuery)) {
           query.bool.must = [];
           for (i = 0, len = oQuery.length; i < len; i++) {
@@ -51,7 +51,7 @@
               throw new TypeError('Argument must be an array of Queries');
             }
             
-            query.bool.must.push(oQuery[i]._self());
+            query.bool.must.push(oQuery[i].toJSON());
           }
         } else {
           throw new TypeError('Argument must be a Query or array of Queries');
@@ -79,7 +79,7 @@
         }
     
         if (isQuery(oQuery)) {
-          query.bool.must_not.push(oQuery._self());
+          query.bool.must_not.push(oQuery.toJSON());
         } else if (isArray(oQuery)) {
           query.bool.must_not = [];
           for (i = 0, len = oQuery.length; i < len; i++) {
@@ -87,7 +87,7 @@
               throw new TypeError('Argument must be an array of Queries');
             }
             
-            query.bool.must_not.push(oQuery[i]._self());
+            query.bool.must_not.push(oQuery[i].toJSON());
           }
         } else {
           throw new TypeError('Argument must be a Query or array of Queries');
@@ -115,7 +115,7 @@
         }
     
         if (isQuery(oQuery)) {
-          query.bool.should.push(oQuery._self());
+          query.bool.should.push(oQuery.toJSON());
         } else if (isArray(oQuery)) {
           query.bool.should = [];
           for (i = 0, len = oQuery.length; i < len; i++) {
@@ -123,7 +123,7 @@
               throw new TypeError('Argument must be an array of Queries');
             }
             
-            query.bool.should.push(oQuery[i]._self());
+            query.bool.should.push(oQuery[i].toJSON());
           }
         } else {
           throw new TypeError('Argument must be a Query or array of Queries');
@@ -234,7 +234,7 @@
             @member ejs.BoolQuery
             @returns {String} returns this object's internal <code>query</code> property.
             */
-      _self: function () {
+      toJSON: function () {
         return query;
       }
     };

@@ -12,7 +12,7 @@
   ejs.OrFilter = function (filters) {
 
     /**
-         The internal filter object. Use <code>_self()</code>
+         The internal filter object. Use <code>toJSON()</code>
 
          @member ejs.OrFilter
          @property {Object} filter
@@ -26,14 +26,14 @@
     };
 
     if (isFilter(filters)) {
-      filter.or.filters.push(filters._self());
+      filter.or.filters.push(filters.toJSON());
     } else if (isArray(filters)) {
       for (i = 0, len = filters.length; i < len; i++) {
         if (!isFilter(filters[i])) {
           throw new TypeError('Argument must be array of Filters');
         }
         
-        filter.or.filters.push(filters[i]._self());
+        filter.or.filters.push(filters[i].toJSON());
       }
     } else {
       throw new TypeError('Argument must be a Filter or array of Filters');
@@ -58,7 +58,7 @@
         }
       
         if (isFilter(fltr)) {
-          filter.or.filters.push(fltr._self());
+          filter.or.filters.push(fltr.toJSON());
         } else if (isArray(fltr)) {
           filter.or.filters = [];
           for (i = 0, len = fltr.length; i < len; i++) {
@@ -66,7 +66,7 @@
               throw new TypeError('Argument must be an array of Filters');
             }
             
-            filter.or.filters.push(fltr[i]._self());
+            filter.or.filters.push(fltr[i].toJSON());
           }
         } else {
           throw new TypeError('Argument must be a Filter or array of Filters');
@@ -149,7 +149,7 @@
              @member ejs.OrFilter
              @returns {Object} filter object
              */
-      _self: function () {
+      toJSON: function () {
         return filter;
       }
     };

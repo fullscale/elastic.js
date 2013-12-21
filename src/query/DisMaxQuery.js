@@ -15,7 +15,7 @@
   ejs.DisMaxQuery = function () {
 
     /**
-         The internal query object. <code>Use _self()</code>
+         The internal query object. <code>Use toJSON()</code>
          @member ejs.DisMaxQuery
          @property {Object} query
          */
@@ -46,7 +46,7 @@
         }
         
         if (isQuery(qs)) {
-          query.dis_max.queries.push(qs._self());
+          query.dis_max.queries.push(qs.toJSON());
         } else if (isArray(qs)) {
           query.dis_max.queries = [];
           for (i = 0, len = qs.length; i < len; i++) {
@@ -54,7 +54,7 @@
               throw new TypeError('Argument must be array of Queries');
             }
             
-            query.dis_max.queries.push(qs[i]._self());
+            query.dis_max.queries.push(qs[i].toJSON());
           }
         } else {
           throw new TypeError('Argument must be a Query or array of Queries');
@@ -130,7 +130,7 @@
             @member ejs.DisMaxQuery
             @returns {String} returns this object's internal <code>query</code> property.
             */
-      _self: function () {
+      toJSON: function () {
         return query;
       }
     };

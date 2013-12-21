@@ -1,7 +1,7 @@
 {
   "name": "elastic.js",
   "version": "1.1.1",
-  "description": "Javascript API for ElasticSearch",
+  "description": "Javascript API for ElasticSearch DSL",
   "license": "MIT",
   "keywords": [
     "elasticsearch",

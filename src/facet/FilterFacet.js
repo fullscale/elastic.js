@@ -55,7 +55,7 @@
           throw new TypeError('Argument must be a Filter');
         }
         
-        facet[name].filter = oFilter._self();
+        facet[name].filter = oFilter.toJSON();
         return this;
       },
 
@@ -75,7 +75,7 @@
           throw new TypeError('Argument must be a Filter');
         }
         
-        facet[name].facet_filter = oFilter._self();
+        facet[name].facet_filter = oFilter.toJSON();
         return this;
       },
 
@@ -192,7 +192,7 @@
             @member ejs.FilterFacet
             @returns {String} returns this object's internal <code>facet</code> property.
             */
-      _self: function () {
+      toJSON: function () {
         return facet;
       }
     };

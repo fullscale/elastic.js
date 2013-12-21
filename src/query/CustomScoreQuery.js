@@ -19,7 +19,7 @@
     }
     
     /**
-         The internal query object. <code>Use _self()</code>
+         The internal query object. <code>Use toJSON()</code>
          @member ejs.CustomScoreQuery
          @property {Object} query
          */
@@ -30,9 +30,9 @@
     };
 
     if (isQuery(qry)) {
-      query.custom_score.query = qry._self();
+      query.custom_score.query = qry.toJSON();
     } else if (isFilter(qry)) {
-      query.custom_score.filter = qry._self();
+      query.custom_score.filter = qry.toJSON();
     }
     
     return {
@@ -53,7 +53,7 @@
           throw new TypeError('Argument must be a Query');
         }
         
-        query.custom_score.query = q._self();
+        query.custom_score.query = q.toJSON();
         return this;
       },
 
@@ -73,7 +73,7 @@
           throw new TypeError('Argument must be a Filter');
         }
         
-        query.custom_score.filter = f._self();
+        query.custom_score.filter = f.toJSON();
         return this;
       },
       
@@ -170,7 +170,7 @@
             @member ejs.CustomScoreQuery
             @returns {String} returns this object's internal <code>query</code> property.
             */
-      _self: function () {
+      toJSON: function () {
         return query;
       }
     };

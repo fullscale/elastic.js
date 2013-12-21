@@ -19,13 +19,13 @@
     }
     
     /**
-         The internal query object. <code>Use _self()</code>
+         The internal query object. <code>Use toJSON()</code>
          @member ejs.HasParentQuery
          @property {Object} query
          */
     var query = {
       has_parent: {
-        query: qry._self(),
+        query: qry.toJSON(),
         parent_type: parentType
       }
     };
@@ -48,7 +48,7 @@
           throw new TypeError('Argument must be a Query');
         }
         
-        query.has_parent.query = q._self();
+        query.has_parent.query = q.toJSON();
         return this;
       },
 
@@ -172,7 +172,7 @@
             @member ejs.HasParentQuery
             @returns {String} returns this object's internal <code>query</code> property.
             */
-      _self: function () {
+      toJSON: function () {
         return query;
       }
     };

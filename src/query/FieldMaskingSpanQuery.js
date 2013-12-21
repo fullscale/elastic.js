@@ -22,13 +22,13 @@
     }
   
     /**
-         The internal query object. <code>Use _self()</code>
+         The internal query object. <code>Use toJSON()</code>
          @member ejs.FieldMaskingSpanQuery
          @property {Object} query
          */
     var query = {
       field_masking_span: {
-        query: spanQry._self(),
+        query: spanQry.toJSON(),
         field: field
       }
     };
@@ -51,7 +51,7 @@
           throw new TypeError('Argument must be a SpanQuery');
         }
       
-        query.field_masking_span.query = spanQuery._self();
+        query.field_masking_span.query = spanQuery.toJSON();
         return this;
       },
 
@@ -114,7 +114,7 @@
             @member ejs.FieldMaskingSpanQuery
             @returns {String} returns this object's internal <code>query</code> property.
             */
-      _self: function () {
+      toJSON: function () {
         return query;
       }
     };

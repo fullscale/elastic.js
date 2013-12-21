@@ -19,14 +19,14 @@
     }
     
     /**
-         The internal query object. <code>Use _self()</code>
+         The internal query object. <code>Use toJSON()</code>
          @member ejs.SpanNotQuery
          @property {Object} query
          */
     var query = {
       span_not: {
-        include: includeQry._self(),
-        exclude: excludeQry._self()
+        include: includeQry.toJSON(),
+        exclude: excludeQry.toJSON()
       }
     };
 
@@ -48,7 +48,7 @@
           throw new TypeError('Argument must be a SpanQuery');
         }
         
-        query.span_not.include = spanQuery._self();
+        query.span_not.include = spanQuery.toJSON();
         return this;
       },
 
@@ -68,7 +68,7 @@
           throw new TypeError('Argument must be a SpanQuery');
         }
         
-        query.span_not.exclude = spanQuery._self();
+        query.span_not.exclude = spanQuery.toJSON();
         return this;
       },
 
@@ -115,7 +115,7 @@
             @member ejs.SpanNotQuery
             @returns {String} returns this object's internal <code>query</code> property.
             */
-      _self: function () {
+      toJSON: function () {
         return query;
       }
     };

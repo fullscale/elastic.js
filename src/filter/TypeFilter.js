@@ -67,7 +67,7 @@
              @member ejs.TypeFilter
              @returns {Object} filter object
              */
-      _self: function () {
+      toJSON: function () {
         return filter;
       }
     };

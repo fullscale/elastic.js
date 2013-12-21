@@ -21,7 +21,7 @@
   ejs.ConstantScoreQuery = function () {
 
     /**
-         The internal Query object. Use <code>_self()</code>.
+         The internal Query object. Use <code>toJSON()</code>.
          @member ejs.ConstantScoreQuery
          @property {Object} query
          */
@@ -46,7 +46,7 @@
           throw new TypeError('Argument must be a Query');
         }
         
-        query.constant_score.query = oQuery._self();
+        query.constant_score.query = oQuery.toJSON();
         return this;
       },
 
@@ -66,7 +66,7 @@
           throw new TypeError('Argument must be a Filter');
         }
         
-        query.constant_score.filter = oFilter._self();
+        query.constant_score.filter = oFilter.toJSON();
         return this;
       },
 
@@ -144,7 +144,7 @@
             @member ejs.ConstantScoreQuery
             @returns {Object} Returns the object's <em>query</em> property.
             */
-      _self: function () {
+      toJSON: function () {
         return query;
       }
     };
