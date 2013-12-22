@@ -20,6 +20,9 @@
     average IDF of the variants is used.</p>
 
     @name ejs.FuzzyLikeThisQuery
+    @borrows ejs.QueryMixin.boost as boost
+    @borrows ejs.QueryMixin._type as _type
+    @borrows ejs.QueryMixin.toJSON as toJSON
 
     @desc
     <p>Constructs a query where each documents returned are “like” provided text</p>
@@ -28,18 +31,13 @@
     */
   ejs.FuzzyLikeThisQuery = function (likeText) {
 
-    /**
-         The internal Query object. Use <code>get()</code>.
-         @member ejs.FuzzyLikeThisQuery
-         @property {Object} query
-         */
-    var query = {
-      flt: {
-        like_text: likeText
-      }
-    };
+    var 
+      _common = ejs.QueryMixin('flt'),
+      query = _common.toJSON();
+    
+    query.flt.like_text = likeText;
 
-    return {
+    return extend(_common, {
     
       /**
              The fields to run the query against.  If you call with a single field,
@@ -183,42 +181,7 @@
   
         query.flt.fail_on_unsupported_field = trueFalse;
         return this;
-      },
-                 
-      /**
-            Sets the boost value of the <code>Query</code>.
-
-            @member ejs.FuzzyLikeThisQuery
-            @param {Double} boost A positive <code>double</code> value.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      boost: function (boost) {
-        if (boost == null) {
-          return query.flt.boost;
-        }
-
-        query.flt.boost = boost;
-        return this;
-      },
-
-      /**
-            The type of ejs object.  For internal use only.
-            
-            @member ejs.FuzzyLikeThisQuery
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'query';
-      },
-      
-      /**
-            This method is used to retrieve the raw query object. It's designed
-            for internal use when composing and serializing queries.
-            @member ejs.FuzzyLikeThisQuery
-            @returns {Object} Returns the object's <em>query</em> property.
-            */
-      toJSON: function () {
-        return query;
       }
-    };
+      
+    });
   };

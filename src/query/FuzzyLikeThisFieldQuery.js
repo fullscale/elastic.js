@@ -23,6 +23,8 @@
     average IDF of the variants is used.</p>
 
     @name ejs.FuzzyLikeThisFieldQuery
+    @borrows ejs.QueryMixin._type as _type
+    @borrows ejs.QueryMixin.toJSON as toJSON
 
     @desc
     <p>Constructs a query where each documents returned are “like” provided text</p>
@@ -32,20 +34,15 @@
     */
   ejs.FuzzyLikeThisFieldQuery = function (field, likeText) {
 
-    /**
-         The internal Query object. Use <code>get()</code>.
-         @member ejs.FuzzyLikeThisFieldQuery
-         @property {Object} query
-         */
-    var query = {
-      flt_field: {}
-    };
+    var
+      _common = ejs.QueryMixin('flt_field'),
+      query = _common.toJSON();
 
     query.flt_field[field] = {
       like_text: likeText
     };
   
-    return {
+    return extend(_common, {
   
       /**
              The field to run the query against.
@@ -197,26 +194,7 @@
 
         query.flt_field[field].boost = boost;
         return this;
-      },
-
-      /**
-            The type of ejs object.  For internal use only.
-            
-            @member ejs.FuzzyLikeThisFieldQuery
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'query';
-      },
-      
-      /**
-            This method is used to retrieve the raw query object. It's designed
-            for internal use when composing and serializing queries.
-            @member ejs.FuzzyLikeThisFieldQuery
-            @returns {Object} Returns the object's <em>query</em> property.
-            */
-      toJSON: function () {
-        return query;
       }
-    };
+      
+    });
   };

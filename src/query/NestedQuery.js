@@ -9,6 +9,9 @@
     nested mapping).</p>
     
     @name ejs.NestedQuery
+    @borrows ejs.QueryMixin.boost as boost
+    @borrows ejs.QueryMixin._type as _type
+    @borrows ejs.QueryMixin.toJSON as toJSON
 
     @desc
     <p>Constructs a query that is capable of executing a search against objects
@@ -19,19 +22,13 @@
      */
   ejs.NestedQuery = function (path) {
 
-    /**
-         The internal Query object. Use <code>toJSON()</code>.
-         
-         @member ejs.NestedQuery
-         @property {Object} query
-         */
-    var query = {
-      nested: {
-        path: path
-      }
-    };
+    var 
+      _common = ejs.QueryMixin('nested'),
+      query = _common.toJSON();
+    
+    query.nested.path = path;
 
-    return {
+    return extend(_common, {
       
       /**
              Sets the root context for the nested query.
@@ -124,43 +121,7 @@
             */
       scope: function (s) {
         return this;
-      },
-      
-      /**
-            Sets the boost value of the nested <code>Query</code>.
-
-            @member ejs.NestedQuery
-            @param {Double} boost A positive <code>double</code> value.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      boost: function (boost) {
-        if (boost == null) {
-          return query.nested.boost;
-        }
-
-        query.nested.boost = boost;
-        return this;
-      },
-
-      /**
-            The type of ejs object.  For internal use only.
-            
-            @member ejs.NestedQuery
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'query';
-      },
-      
-      /**
-            This method is used to retrieve the raw query object. It's designed
-            for internal use when composing and serializing queries.
-            
-            @member ejs.NestedQuery
-            @returns {Object} Returns the object's <em>query</em> property.
-            */
-      toJSON: function () {
-        return query;
       }
-    };
+      
+    });
   };

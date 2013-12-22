@@ -6,6 +6,8 @@
     NumericRangeQuery.</p>
 
     @name ejs.RangeQuery
+    @borrows ejs.QueryMixin._type as _type
+    @borrows ejs.QueryMixin.toJSON as toJSON
 
     @desc
     Matches documents with fields that have terms within a certain range.
@@ -14,18 +16,13 @@
     */
   ejs.RangeQuery = function (field) {
 
-    /**
-         The internal query object. <code>Use get()</code>
-         @member ejs.RangeQuery
-         @property {Object} query
-         */
-    var query = {
-      range: {}
-    };
+    var
+      _common = ejs.QueryMixin('range'),
+      query = _common.toJSON();
 
     query.range[field] = {};
 
-    return {
+    return extend(_common, {
 
       /**
              The field to run the query against.
@@ -195,27 +192,7 @@
 
         query.range[field].boost = boost;
         return this;
-      },
-
-      /**
-            The type of ejs object.  For internal use only.
-            
-            @member ejs.RangeQuery
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'query';
-      },
-      
-      /**
-            Retrieves the internal <code>query</code> object. This is typically used by
-            internal API functions so use with caution.
-
-            @member ejs.RangeQuery
-            @returns {String} returns this object's internal <code>query</code> property.
-            */
-      toJSON: function () {
-        return query;
       }
-    };
+      
+    });
   };

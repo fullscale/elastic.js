@@ -6,6 +6,9 @@
     score.</p>
 
     @name ejs.BoostingQuery
+    @borrows ejs.QueryMixin.boost as boost
+    @borrows ejs.QueryMixin._type as _type
+    @borrows ejs.QueryMixin.toJSON as toJSON
 
     @desc
     <p>Constructs a query that can demote search results.  A negative boost.</p>
@@ -21,20 +24,15 @@
       throw new TypeError('Arguments must be Queries');
     }
     
-    /**
-         The internal Query object. Use <code>toJSON()</code>.
-         @member ejs.BoostingQuery
-         @property {Object} BoostingQuery
-         */
-    var query = {
-      boosting: {
-        positive: positiveQry.toJSON(),
-        negative: negativeQry.toJSON(),
-        negative_boost: negativeBoost
-      }
-    };
+    var 
+      _common = ejs.QueryMixin('boosting'),
+      query = _common.toJSON();
+    
+    query.boosting.positive = positiveQry.toJSON();
+    query.boosting.negative = negativeQry.toJSON();
+    query.boosting.negative_boost = negativeBoost;
 
-    return {
+    return extend(_common, {
     
       /**
              Sets the "master" query that determines which results are returned.
@@ -95,43 +93,7 @@
 
         query.boosting.negative_boost = negBoost;
         return this;
-      },
-    
-      /**
-            Sets the boost value of the <code>Query</code>.
-
-            @member ejs.BoostingQuery
-            @param {Double} boost A positive <code>double</code> value.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      boost: function (boost) {
-        if (boost == null) {
-          return query.boosting.boost;
-        }
-
-        query.boosting.boost = boost;
-        return this;
-      },
-
-      /**
-            The type of ejs object.  For internal use only.
-            
-            @member ejs.BoostingQuery
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'query';
-      },
-      
-      /**
-            This method is used to retrieve the raw query object. It's designed
-            for internal use when composing and serializing queries.
-            
-            @member ejs.BoostingQuery
-            @returns {Object} Returns the object's <em>query</em> property.
-            */
-      toJSON: function () {
-        return query;
       }
-    };
+      
+    });
   };

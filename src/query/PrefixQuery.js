@@ -4,6 +4,8 @@
     prefix (not analyzed). The prefix query maps to Lucene PrefixQuery.</p>
 
     @name ejs.PrefixQuery
+    @borrows ejs.QueryMixin._type as _type
+    @borrows ejs.QueryMixin.toJSON as toJSON
 
     @desc
     Matches documents containing the specified un-analyzed prefix.
@@ -13,20 +15,15 @@
     */
   ejs.PrefixQuery = function (field, value) {
 
-    /**
-         The internal query object. <code>Use get()</code>
-         @member ejs.PrefixQuery
-         @property {Object} query
-         */
-    var query = {
-      prefix: {}
-    };
+    var
+      _common = ejs.QueryMixin('prefix'),
+      query = _common.toJSON();
 
     query.prefix[field] = {
       value: value
     };
   
-    return {
+    return extend(_common, {
 
       /**
              The field to run the query against.
@@ -127,27 +124,7 @@
 
         query.prefix[field].boost = boost;
         return this;
-      },
-
-      /**
-            The type of ejs object.  For internal use only.
-            
-            @member ejs.PrefixQuery
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'query';
-      },
-      
-      /**
-            Retrieves the internal <code>query</code> object. This is typically used by
-            internal API functions so use with caution.
-
-            @member ejs.PrefixQuery
-            @returns {String} returns this object's internal <code>query</code> property.
-            */
-      toJSON: function () {
-        return query;
       }
-    };
+      
+    });
   };

@@ -9,6 +9,9 @@
     boosting / script is considerably simpler.</p>
   
     @name ejs.CustomFiltersScoreQuery
+    @borrows ejs.QueryMixin.boost as boost
+    @borrows ejs.QueryMixin._type as _type
+    @borrows ejs.QueryMixin.toJSON as toJSON
 
     @desc
     Returned documents matched by the query and scored based on if the document
@@ -25,41 +28,36 @@
       throw new TypeError('Argument must be a Query');
     }
     
-    /**
-         The internal query object. <code>Use toJSON()</code>
-         @member ejs.CustomFiltersScoreQuery
-         @property {Object} query
-         */
-    var query = {
-      custom_filters_score: {
-        query: qry.toJSON(),
-        filters: []
-      }
-    },
+    var 
+      _common = ejs.QueryMixin('custom_filters_score'),
+      query = _common.toJSON(),
   
-    // generate a valid filter object that can be inserted into the filters
-    // array.  Returns null when an invalid filter is passed in.
-    genFilterObject = function (filter) {
-      var obj = null;
+      // generate a valid filter object that can be inserted into the filters
+      // array.  Returns null when an invalid filter is passed in.
+      genFilterObject = function (filter) {
+        var obj = null;
     
-      if (filter.filter && isFilter(filter.filter)) {
-        obj = {
-          filter: filter.filter.toJSON()
-        };
+        if (filter.filter && isFilter(filter.filter)) {
+          obj = {
+            filter: filter.filter.toJSON()
+          };
       
-        if (filter.boost) {
-          obj.boost = filter.boost;
-        } else if (filter.script) {
-          obj.script = filter.script;
-        } else {
-          // invalid filter, must boost or script must be specified
-          obj = null;
+          if (filter.boost) {
+            obj.boost = filter.boost;
+          } else if (filter.script) {
+            obj.script = filter.script;
+          } else {
+            // invalid filter, must boost or script must be specified
+            obj = null;
+          }
         }
-      }
     
-      return obj;
-    }; 
+        return obj;
+      }; 
 
+    query.custom_filters_score.query = qry.toJSON();
+    query.custom_filters_score.filters = [];
+    
     each((isArray(filters) ? filters : [filters]), function (filter) {
       var fObj = genFilterObject(filter);
       if (fObj !== null) {
@@ -67,7 +65,7 @@
       }
     });
   
-    return {
+    return extend(_common, {
 
       /**
             Sets the query to be apply the custom boost to.
@@ -199,43 +197,7 @@
 
         query.custom_filters_score.max_boost = max;
         return this;
-      },
-        
-      /**
-            Sets the boost value of the <code>Query</code>.
-
-            @member ejs.CustomFiltersScoreQuery
-            @param {Double} boost A positive <code>double</code> value.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      boost: function (boost) {
-        if (boost == null) {
-          return query.custom_filters_score.boost;
-        }
-
-        query.custom_filters_score.boost = boost;
-        return this;
-      },
-
-      /**
-            The type of ejs object.  For internal use only.
-            
-            @member ejs.CustomFiltersScoreQuery
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'query';
-      },
-      
-      /**
-            Retrieves the internal <code>query</code> object. This is typically used by
-            internal API functions so use with caution.
-
-            @member ejs.CustomFiltersScoreQuery
-            @returns {String} returns this object's internal <code>query</code> property.
-            */
-      toJSON: function () {
-        return query;
       }
-    };
+      
+    });
   };

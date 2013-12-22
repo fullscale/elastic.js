@@ -7,6 +7,9 @@
     a new <code>Query</code> that is then used for the search.</p>
 
     @name ejs.FilteredQuery
+    @borrows ejs.QueryMixin.boost as boost
+    @borrows ejs.QueryMixin._type as _type
+    @borrows ejs.QueryMixin.toJSON as toJSON
 
     @desc
     <p>A query that applies a filter to the results of another query.</p>
@@ -26,22 +29,17 @@
       throw new TypeError('Argument must be a Filter');
     }
     
-    /**
-         The internal query object. Use <code>toJSON()</code>
-         @member ejs.FilteredQuery
-         @property {Object} query
-         */
-    var query = {
-      filtered: {
-        query: someQuery.toJSON()
-      }
-    };
+    var 
+      _common = ejs.QueryMixin('filtered'),
+      query = _common.toJSON();
+    
+    query.filtered.query = someQuery.toJSON();
 
     if (someFilter != null) {
       query.filtered.filter = someFilter.toJSON();
     }
     
-    return {
+    return extend(_common, {
 
       /**
              <p>Adds the query to apply a constant score to.</p>
@@ -150,42 +148,7 @@
 
         query.filtered._cache_key = k;
         return this;
-      },
-      
-      /**
-            <p>Sets the boost value of the <code>Query</code>.</p>
-
-            @member ejs.FilteredQuery
-            @param {Double} boost A positive <code>double</code> value.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      boost: function (boost) {
-        if (boost == null) {
-          return query.filtered.boost;
-        }
-
-        query.filtered.boost = boost;
-        return this;
-      },
-
-      /**
-            <p>The type of ejs object.  For internal use only.</p>
-            
-            @member ejs.FilteredQuery
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'query';
-      },
-      
-      /**
-             <p>returns the query object.</p>
-
-             @member ejs.FilteredQuery
-             @returns {Object} query object
-             */
-      toJSON: function () {
-        return query;
       }
-    };
+      
+    });
   };

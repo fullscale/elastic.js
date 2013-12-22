@@ -6,6 +6,8 @@
     often serve as the basis for more complex queries such as <em>Boolean</em> queries.</p>
 
     @name ejs.TermQuery
+    @borrows ejs.QueryMixin._type as _type
+    @borrows ejs.QueryMixin.toJSON as toJSON
 
     @desc
     A Query that matches documents containing a term. This may be
@@ -16,20 +18,15 @@
     */
   ejs.TermQuery = function (field, term) {
 
-    /**
-         The internal query object. <code>Use get()</code>
-         @member ejs.TermQuery
-         @property {Object} query
-         */
-    var query = {
-      term: {}
-    };
+    var
+      _common = ejs.QueryMixin('term'),
+      query = _common.toJSON();
 
     query.term[field] = {
       term: term
     };
 
-    return {
+    return extend(_common, {
 
       /**
             Sets the fields to query against.
@@ -82,27 +79,7 @@
 
         query.term[field].boost = boost;
         return this;
-      },
-
-      /**
-            The type of ejs object.  For internal use only.
-            
-            @member ejs.TermQuery
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'query';
-      },
-      
-      /**
-            Retrieves the internal <code>query</code> object. This is typically used by
-            internal API functions so use with caution.
-
-            @member ejs.TermQuery
-            @returns {String} returns this object's internal <code>query</code> property.
-            */
-      toJSON: function () {
-        return query;
       }
-    };
+      
+    });
   };

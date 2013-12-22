@@ -5,6 +5,9 @@
     on specific queries gets normalized, while this query boost factor does not.</p>
 
     @name ejs.CustomBoostFactorQuery
+    @borrows ejs.QueryMixin.boost as boost
+    @borrows ejs.QueryMixin._type as _type
+    @borrows ejs.QueryMixin.toJSON as toJSON
 
     @desc
     Boosts a queries score without that boost being normalized.
@@ -17,18 +20,13 @@
       throw new TypeError('Argument must be a Query');
     }
     
-    /**
-         The internal query object. <code>Use toJSON()</code>
-         @member ejs.CustomBoostFactorQuery
-         @property {Object} query
-         */
-    var query = {
-      custom_boost_factor: {
-        query: qry.toJSON()
-      }
-    };
+    var 
+      _common = ejs.QueryMixin('custom_boost_factor'),
+      query = _common.toJSON();
+    
+    query.custom_boost_factor.query = qry.toJSON();
 
-    return {
+    return extend(_common, {
 
       /**
             Sets the query to be apply the custom boost to.
@@ -64,43 +62,7 @@
 
         query.custom_boost_factor.boost_factor = boost;
         return this;
-      },
-  
-      /**
-            Sets the boost value of the <code>Query</code>.
-
-            @member ejs.CustomBoostFactorQuery
-            @param {Double} boost A positive <code>double</code> value.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      boost: function (boost) {
-        if (boost == null) {
-          return query.custom_boost_factor.boost;
-        }
-
-        query.custom_boost_factor.boost = boost;
-        return this;
-      },
-        
-      /**
-            The type of ejs object.  For internal use only.
-            
-            @member ejs.CustomBoostFactorQuery
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'query';
-      },
-      
-      /**
-            Retrieves the internal <code>query</code> object. This is typically used by
-            internal API functions so use with caution.
-
-            @member ejs.CustomBoostFactorQuery
-            @returns {String} returns this object's internal <code>query</code> property.
-            */
-      toJSON: function () {
-        return query;
       }
-    };
+      
+    });
   };

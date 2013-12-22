@@ -7,6 +7,9 @@
     by using multiple match queries within a bool query.
   
     @name ejs.MultiMatchQuery
+    @borrows ejs.QueryMixin.boost as boost
+    @borrows ejs.QueryMixin._type as _type
+    @borrows ejs.QueryMixin.toJSON as toJSON
 
     @desc
     A Query that allow to more easily build a MatchQuery 
@@ -17,17 +20,12 @@
     */
   ejs.MultiMatchQuery = function (fields, qstr) {
 
-    /**
-         The internal query object. <code>Use get()</code>
-         @member ejs.MultiMatchQuery
-         @property {Object} query
-         */
-    var query = {
-      multi_match: {
-        query: qstr,
-        fields: []
-      }
-    };
+    var 
+      _common = ejs.QueryMixin('multi_match'),
+      query = _common.toJSON();
+    
+    query.multi_match.query = qstr;
+    query.multi_match.fields = [];
 
     if (isString(fields)) {
       query.multi_match.fields.push(fields);
@@ -37,7 +35,7 @@
       throw new TypeError('Argument must be string or array');
     }
     
-    return {
+    return extend(_common, {
 
       /**
             Sets the fields to search across.  If passed a single value it is
@@ -250,22 +248,6 @@
         query.multi_match.lenient = trueFalse;
         return this;
       },
-                 
-      /**
-            Sets the boost value for documents matching the <code>Query</code>.
-
-            @member ejs.MultiMatchQuery
-            @param {Number} boost A positive <code>double</code> value.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      boost: function (boost) {
-        if (boost == null) {
-          return query.multi_match.boost;
-        }
-
-        query.multi_match.boost = boost;
-        return this;
-      },
 
       /**
             Sets the query string for the <code>Query</code>.
@@ -424,27 +406,7 @@
         }
         
         return this;
-      },
-
-      /**
-            The type of ejs object.  For internal use only.
-            
-            @member ejs.MultiMatchQuery
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'query';
-      },
-      
-      /**
-            Retrieves the internal <code>Query</code> object. This is typically used by
-            internal API functions so use with caution.
-
-            @member ejs.MultiMatchQuery
-            @returns {String} returns this object's internal <code>query</code> property.
-            */
-      toJSON: function () {
-        return query;
       }
-    };
+
+    });
   };

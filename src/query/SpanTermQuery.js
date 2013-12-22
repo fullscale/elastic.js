@@ -5,6 +5,8 @@
     spans containing a term. It's essentially a termQuery with positional information asscoaited.</p>
 
     @name ejs.SpanTermQuery
+    @borrows ejs.QueryMixin._type as _type
+    @borrows ejs.QueryMixin.toJSON as toJSON
 
     @desc
     Matches spans containing a term
@@ -14,20 +16,15 @@
     */
   ejs.SpanTermQuery = function (field, value) {
 
-    /**
-         The internal query object. <code>Use get()</code>
-         @member ejs.SpanTermQuery
-         @property {Object} query
-         */
-    var query = {
-      span_term: {}
-    };
+    var
+      _common = ejs.QueryMixin('span_term'),
+      query = _common.toJSON();
 
     query.span_term[field] = {
       term: value
     };
 
-    return {
+    return extend(_common, {
 
       /**
             Sets the field to query against.
@@ -80,27 +77,7 @@
 
         query.span_term[field].boost = boost;
         return this;
-      },
-
-      /**
-            The type of ejs object.  For internal use only.
-            
-            @member ejs.SpanTermQuery
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'query';
-      },
-      
-      /**
-            Retrieves the internal <code>query</code> object. This is typically used by
-            internal API functions so use with caution.
-
-            @member ejs.SpanTermQuery
-            @returns {String} returns this object's internal <code>query</code> property.
-            */
-      toJSON: function () {
-        return query;
       }
-    };
+      
+    });
   };

@@ -4039,12 +4039,7 @@
 
      */
   ejs.MatchAllFilter = function () {
-
-    var 
-    _common = ejs.FilterMixin('match_all'),
-    filter = _common.toJSON();
-
-    return _common;
+    return ejs.FilterMixin('match_all');
   };
 
   /**
@@ -5481,6 +5476,9 @@
     for documents containing the terms <code>javascript</code> and <code>python</code>.</p>
 
     @name ejs.BoolQuery
+    @borrows ejs.QueryMixin.boost as boost
+    @borrows ejs.QueryMixin._type as _type
+    @borrows ejs.QueryMixin.toJSON as toJSON
 
     @desc
     A Query that matches documents matching boolean combinations of other
@@ -5489,16 +5487,11 @@
     */
   ejs.BoolQuery = function () {
 
-    /**
-         The internal query object. <code>Use toJSON()</code>
-         @member ejs.BoolQuery
-         @property {Object} query
-         */
-    var query = {
-      bool: {}
-    };
+    var
+      _common = ejs.QueryMixin('bool'),
+      query = _common.toJSON();
 
-    return {
+    return extend(_common, {
 
       /**
              Adds query to boolean container. Given query "must" appear in matching documents.
@@ -5609,22 +5602,6 @@
       },
 
       /**
-            Sets the boost value for documents matching the <code>Query</code>.
-
-            @member ejs.BoolQuery
-            @param {Double} boost A positive <code>double</code> value.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      boost: function (boost) {
-        if (boost == null) {
-          return query.bool.boost;
-        }
-
-        query.bool.boost = boost;
-        return this;
-      },
-
-      /**
             Sets if the <code>Query</code> should be enhanced with a
             <code>MatchAllQuery</code> in order to act as a pure exclude when
             only negative (mustNot) clauses exist. Default: true.
@@ -5681,29 +5658,9 @@
 
         query.bool.minimum_number_should_match = minMatch;
         return this;
-      },
-
-      /**
-            The type of ejs object.  For internal use only.
-            
-            @member ejs.BoolQuery
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'query';
-      },
-      
-      /**
-            Retrieves the internal <code>query</code> object. This is typically used by
-            internal API functions so use with caution.
-
-            @member ejs.BoolQuery
-            @returns {String} returns this object's internal <code>query</code> property.
-            */
-      toJSON: function () {
-        return query;
       }
-    };
+      
+    });
   };
 
   /**
@@ -5714,6 +5671,9 @@
     score.</p>
 
     @name ejs.BoostingQuery
+    @borrows ejs.QueryMixin.boost as boost
+    @borrows ejs.QueryMixin._type as _type
+    @borrows ejs.QueryMixin.toJSON as toJSON
 
     @desc
     <p>Constructs a query that can demote search results.  A negative boost.</p>
@@ -5729,20 +5689,15 @@
       throw new TypeError('Arguments must be Queries');
     }
     
-    /**
-         The internal Query object. Use <code>toJSON()</code>.
-         @member ejs.BoostingQuery
-         @property {Object} BoostingQuery
-         */
-    var query = {
-      boosting: {
-        positive: positiveQry.toJSON(),
-        negative: negativeQry.toJSON(),
-        negative_boost: negativeBoost
-      }
-    };
+    var 
+      _common = ejs.QueryMixin('boosting'),
+      query = _common.toJSON();
+    
+    query.boosting.positive = positiveQry.toJSON();
+    query.boosting.negative = negativeQry.toJSON();
+    query.boosting.negative_boost = negativeBoost;
 
-    return {
+    return extend(_common, {
     
       /**
              Sets the "master" query that determines which results are returned.
@@ -5803,45 +5758,9 @@
 
         query.boosting.negative_boost = negBoost;
         return this;
-      },
-    
-      /**
-            Sets the boost value of the <code>Query</code>.
-
-            @member ejs.BoostingQuery
-            @param {Double} boost A positive <code>double</code> value.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      boost: function (boost) {
-        if (boost == null) {
-          return query.boosting.boost;
-        }
-
-        query.boosting.boost = boost;
-        return this;
-      },
-
-      /**
-            The type of ejs object.  For internal use only.
-            
-            @member ejs.BoostingQuery
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'query';
-      },
-      
-      /**
-            This method is used to retrieve the raw query object. It's designed
-            for internal use when composing and serializing queries.
-            
-            @member ejs.BoostingQuery
-            @returns {Object} Returns the object's <em>query</em> property.
-            */
-      toJSON: function () {
-        return query;
       }
-    };
+      
+    });
   };
 
   /**
@@ -5860,7 +5779,8 @@
     across domains without specialized stopword files.</p>
   
     @name ejs.CommonTermsQuery
-    @since elasticsearch 0.90
+    @borrows ejs.QueryMixin._type as _type
+    @borrows ejs.QueryMixin.toJSON as toJSON
   
     @desc
     A query that executes high-frequency terms in a optional sub-query.
@@ -5870,14 +5790,9 @@
     */
   ejs.CommonTermsQuery = function (field, qstr) {
 
-    /**
-         The internal query object. <code>Use get()</code>
-         @member ejs.CommonTermsQuery
-         @property {Object} query
-         */
-    var query = {
-      common: {}
-    };
+    var
+      _common = ejs.QueryMixin('common'),
+      query = _common.toJSON();
   
     // support for full Builder functionality where no constructor is used
     // use dummy field until one is set
@@ -5892,7 +5807,7 @@
       query.common[field].query = qstr;
     }
   
-    return {
+    return extend(_common, {
 
       /**
             Sets the field to query against.
@@ -6091,29 +6006,9 @@
 
         query.common[field].boost = boost;
         return this;
-      },
-
-      /**
-            The type of ejs object.  For internal use only.
-          
-            @member ejs.CommonTermsQuery
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'query';
-      },
-    
-      /**
-            Retrieves the internal <code>query</code> object. This is typically used by
-            internal API functions so use with caution.
-
-            @member ejs.CommonTermsQuery
-            @returns {String} returns this object's internal <code>query</code> property.
-            */
-      toJSON: function () {
-        return query;
       }
-    };
+
+    });
   };
 
   /**
@@ -6130,6 +6025,9 @@
     queryNorm, but maintain the same relevance.</p>
 
     @name ejs.ConstantScoreQuery
+    @borrows ejs.QueryMixin.boost as boost
+    @borrows ejs.QueryMixin._type as _type
+    @borrows ejs.QueryMixin.toJSON as toJSON
 
     @desc
     <p>Constructs a query where each documents returned by the internal
@@ -6138,16 +6036,11 @@
      */
   ejs.ConstantScoreQuery = function () {
 
-    /**
-         The internal Query object. Use <code>toJSON()</code>.
-         @member ejs.ConstantScoreQuery
-         @property {Object} query
-         */
-    var query = {
-      constant_score: {}
-    };
+    var
+      _common = ejs.QueryMixin('constant_score'),
+      query = _common.toJSON();
 
-    return {
+    return extend(_common, {
       /**
              Adds the query to apply a constant score to.
 
@@ -6218,45 +6111,9 @@
 
         query.constant_score._cache_key = k;
         return this;
-      },
-      
-      /**
-            Sets the boost value of the <code>Query</code>.
-
-            @member ejs.ConstantScoreQuery
-            @param {Double} boost A positive <code>double</code> value.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      boost: function (boost) {
-        if (boost == null) {
-          return query.constant_score.boost;
-        }
-
-        query.constant_score.boost = boost;
-        return this;
-      },
-
-      /**
-            The type of ejs object.  For internal use only.
-            
-            @member ejs.ConstantScoreQuery
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'query';
-      },
-      
-      /**
-            This method is used to retrieve the raw query object. It's designed
-            for internal use when composing and serializing queries.
-            
-            @member ejs.ConstantScoreQuery
-            @returns {Object} Returns the object's <em>query</em> property.
-            */
-      toJSON: function () {
-        return query;
       }
-    };
+      
+    });
   };
 
   /**
@@ -6266,6 +6123,9 @@
     on specific queries gets normalized, while this query boost factor does not.</p>
 
     @name ejs.CustomBoostFactorQuery
+    @borrows ejs.QueryMixin.boost as boost
+    @borrows ejs.QueryMixin._type as _type
+    @borrows ejs.QueryMixin.toJSON as toJSON
 
     @desc
     Boosts a queries score without that boost being normalized.
@@ -6278,18 +6138,13 @@
       throw new TypeError('Argument must be a Query');
     }
     
-    /**
-         The internal query object. <code>Use toJSON()</code>
-         @member ejs.CustomBoostFactorQuery
-         @property {Object} query
-         */
-    var query = {
-      custom_boost_factor: {
-        query: qry.toJSON()
-      }
-    };
+    var 
+      _common = ejs.QueryMixin('custom_boost_factor'),
+      query = _common.toJSON();
+    
+    query.custom_boost_factor.query = qry.toJSON();
 
-    return {
+    return extend(_common, {
 
       /**
             Sets the query to be apply the custom boost to.
@@ -6325,45 +6180,9 @@
 
         query.custom_boost_factor.boost_factor = boost;
         return this;
-      },
-  
-      /**
-            Sets the boost value of the <code>Query</code>.
-
-            @member ejs.CustomBoostFactorQuery
-            @param {Double} boost A positive <code>double</code> value.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      boost: function (boost) {
-        if (boost == null) {
-          return query.custom_boost_factor.boost;
-        }
-
-        query.custom_boost_factor.boost = boost;
-        return this;
-      },
-        
-      /**
-            The type of ejs object.  For internal use only.
-            
-            @member ejs.CustomBoostFactorQuery
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'query';
-      },
-      
-      /**
-            Retrieves the internal <code>query</code> object. This is typically used by
-            internal API functions so use with caution.
-
-            @member ejs.CustomBoostFactorQuery
-            @returns {String} returns this object's internal <code>query</code> property.
-            */
-      toJSON: function () {
-        return query;
       }
-    };
+      
+    });
   };
 
   /**
@@ -6377,6 +6196,9 @@
     boosting / script is considerably simpler.</p>
   
     @name ejs.CustomFiltersScoreQuery
+    @borrows ejs.QueryMixin.boost as boost
+    @borrows ejs.QueryMixin._type as _type
+    @borrows ejs.QueryMixin.toJSON as toJSON
 
     @desc
     Returned documents matched by the query and scored based on if the document
@@ -6393,41 +6215,36 @@
       throw new TypeError('Argument must be a Query');
     }
     
-    /**
-         The internal query object. <code>Use toJSON()</code>
-         @member ejs.CustomFiltersScoreQuery
-         @property {Object} query
-         */
-    var query = {
-      custom_filters_score: {
-        query: qry.toJSON(),
-        filters: []
-      }
-    },
+    var 
+      _common = ejs.QueryMixin('custom_filters_score'),
+      query = _common.toJSON(),
   
-    // generate a valid filter object that can be inserted into the filters
-    // array.  Returns null when an invalid filter is passed in.
-    genFilterObject = function (filter) {
-      var obj = null;
+      // generate a valid filter object that can be inserted into the filters
+      // array.  Returns null when an invalid filter is passed in.
+      genFilterObject = function (filter) {
+        var obj = null;
     
-      if (filter.filter && isFilter(filter.filter)) {
-        obj = {
-          filter: filter.filter.toJSON()
-        };
+        if (filter.filter && isFilter(filter.filter)) {
+          obj = {
+            filter: filter.filter.toJSON()
+          };
       
-        if (filter.boost) {
-          obj.boost = filter.boost;
-        } else if (filter.script) {
-          obj.script = filter.script;
-        } else {
-          // invalid filter, must boost or script must be specified
-          obj = null;
+          if (filter.boost) {
+            obj.boost = filter.boost;
+          } else if (filter.script) {
+            obj.script = filter.script;
+          } else {
+            // invalid filter, must boost or script must be specified
+            obj = null;
+          }
         }
-      }
     
-      return obj;
-    }; 
+        return obj;
+      }; 
 
+    query.custom_filters_score.query = qry.toJSON();
+    query.custom_filters_score.filters = [];
+    
     each((isArray(filters) ? filters : [filters]), function (filter) {
       var fObj = genFilterObject(filter);
       if (fObj !== null) {
@@ -6435,7 +6252,7 @@
       }
     });
   
-    return {
+    return extend(_common, {
 
       /**
             Sets the query to be apply the custom boost to.
@@ -6567,45 +6384,9 @@
 
         query.custom_filters_score.max_boost = max;
         return this;
-      },
-        
-      /**
-            Sets the boost value of the <code>Query</code>.
-
-            @member ejs.CustomFiltersScoreQuery
-            @param {Double} boost A positive <code>double</code> value.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      boost: function (boost) {
-        if (boost == null) {
-          return query.custom_filters_score.boost;
-        }
-
-        query.custom_filters_score.boost = boost;
-        return this;
-      },
-
-      /**
-            The type of ejs object.  For internal use only.
-            
-            @member ejs.CustomFiltersScoreQuery
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'query';
-      },
-      
-      /**
-            Retrieves the internal <code>query</code> object. This is typically used by
-            internal API functions so use with caution.
-
-            @member ejs.CustomFiltersScoreQuery
-            @returns {String} returns this object's internal <code>query</code> property.
-            */
-      toJSON: function () {
-        return query;
       }
-    };
+      
+    });
   };
 
   /**
@@ -6615,6 +6396,9 @@
     doc (numeric ones) using script expression.</p>
 
     @name ejs.CustomScoreQuery
+    @borrows ejs.QueryMixin.boost as boost
+    @borrows ejs.QueryMixin._type as _type
+    @borrows ejs.QueryMixin.toJSON as toJSON
 
     @desc
     Scores a query based on a script.
@@ -6628,16 +6412,11 @@
       throw new TypeError('Argument must be a Query or Filter');
     }
     
-    /**
-         The internal query object. <code>Use toJSON()</code>
-         @member ejs.CustomScoreQuery
-         @property {Object} query
-         */
-    var query = {
-      custom_score: {
-        script: script
-      }
-    };
+    var 
+      _common = ejs.QueryMixin('custom_score'),
+      query = _common.toJSON();
+    
+    query.custom_score.script = script;
 
     if (isQuery(qry)) {
       query.custom_score.query = qry.toJSON();
@@ -6645,7 +6424,7 @@
       query.custom_score.filter = qry.toJSON();
     }
     
-    return {
+    return extend(_common, {
 
       /**
             Sets the query to apply the custom score to.
@@ -6735,45 +6514,9 @@
 
         query.custom_score.lang = l;
         return this;
-      },
-    
-      /**
-            Sets the boost value of the <code>Query</code>.
-
-            @member ejs.CustomScoreQuery
-            @param {Double} boost A positive <code>double</code> value.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      boost: function (boost) {
-        if (boost == null) {
-          return query.custom_score.boost;
-        }
-
-        query.custom_score.boost = boost;
-        return this;
-      },
-
-      /**
-            The type of ejs object.  For internal use only.
-            
-            @member ejs.CustomScoreQuery
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'query';
-      },
-      
-      /**
-            Retrieves the internal <code>query</code> object. This is typically used by
-            internal API functions so use with caution.
-
-            @member ejs.CustomScoreQuery
-            @returns {String} returns this object's internal <code>query</code> property.
-            */
-      toJSON: function () {
-        return query;
       }
-    };
+      
+    });
   };
 
   /**
@@ -6784,6 +6527,9 @@
     subqueries.
 
     @name ejs.DisMaxQuery
+    @borrows ejs.QueryMixin.boost as boost
+    @borrows ejs.QueryMixin._type as _type
+    @borrows ejs.QueryMixin.toJSON as toJSON
 
     @desc
     A query that generates the union of documents produced by its subqueries such
@@ -6792,16 +6538,11 @@
     */
   ejs.DisMaxQuery = function () {
 
-    /**
-         The internal query object. <code>Use toJSON()</code>
-         @member ejs.DisMaxQuery
-         @property {Object} query
-         */
-    var query = {
-      dis_max: {}
-    };
+    var
+      _common = ejs.QueryMixin('dis_max'),
+      query = _common.toJSON();
 
-    return {
+    return extend(_common, {
 
       /**
             Updates the queries.  If passed a single Query, it is added to the
@@ -6842,23 +6583,6 @@
       },
 
       /**
-            Sets the boost value of the <code>Query</code>.  Default: 1.0.
-
-            @member ejs.DisMaxQuery
-            @param {Double} boost A positive <code>double</code> value.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      boost: function (boost) {
-        if (boost == null) {
-          return query.dis_max.boost;
-        }
-
-        query.dis_max.boost = boost;
-        return this;
-      },
-
-
-      /**
             <p>The tie breaker value.</p>  
 
             <p>The tie breaker capability allows results that include the same term in multiple 
@@ -6879,29 +6603,9 @@
 
         query.dis_max.tie_breaker = tieBreaker;
         return this;
-      },
-
-      /**
-            The type of ejs object.  For internal use only.
-            
-            @member ejs.DisMaxQuery
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'query';
-      },
-      
-      /**
-            Retrieves the internal <code>query</code> object. This is typically used by
-            internal API functions so use with caution.
-
-            @member ejs.DisMaxQuery
-            @returns {String} returns this object's internal <code>query</code> property.
-            */
-      toJSON: function () {
-        return query;
       }
-    };
+      
+    });
   };
   
 
@@ -6914,6 +6618,9 @@
     the real field used in the wrapped span query.</p>
 
     @name ejs.FieldMaskingSpanQuery
+    @borrows ejs.QueryMixin.boost as boost
+    @borrows ejs.QueryMixin._type as _type
+    @borrows ejs.QueryMixin.toJSON as toJSON
 
     @desc
     Wraps a SpanQuery and hides the real field being searched across.
@@ -6928,19 +6635,14 @@
       throw new TypeError('Argument must be a SpanQuery');
     }
   
-    /**
-         The internal query object. <code>Use toJSON()</code>
-         @member ejs.FieldMaskingSpanQuery
-         @property {Object} query
-         */
-    var query = {
-      field_masking_span: {
-        query: spanQry.toJSON(),
-        field: field
-      }
-    };
+    var 
+      _common = ejs.QueryMixin('field_masking_span'),
+      query = _common.toJSON();
+    
+    query.field_masking_span.query = spanQry.toJSON();
+    query.field_masking_span.field = field;
 
-    return {
+    return extend(_common, {
 
       /**
             Sets the span query to wrap.
@@ -6976,45 +6678,9 @@
     
         query.field_masking_span.field = f;
         return this;
-      },
-
-      /**
-            Sets the boost value of the <code>Query</code>.
-
-            @member ejs.FieldMaskingSpanQuery
-            @param {Double} boost A positive <code>double</code> value.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      boost: function (boost) {
-        if (boost == null) {
-          return query.field_masking_span.boost;
-        }
-
-        query.field_masking_span.boost = boost;
-        return this;
-      },
-
-      /**
-            The type of ejs object.  For internal use only.
-            
-            @member ejs.FieldMaskingSpanQuery
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'query';
-      },
-      
-      /**
-            Retrieves the internal <code>query</code> object. This is typically used by
-            internal API functions so use with caution.
-
-            @member ejs.FieldMaskingSpanQuery
-            @returns {String} returns this object's internal <code>query</code> property.
-            */
-      toJSON: function () {
-        return query;
       }
-    };
+      
+    });
   };
 
   /**
@@ -7023,6 +6689,8 @@
     of the <code><a href="/jsdocs/ejs.queryString.html">queryString</a></code> object.
 
     @name ejs.FieldQuery
+    @borrows ejs.QueryMixin._type as _type
+    @borrows ejs.QueryMixin.toJSON as toJSON
 
     @desc
     A query that executes against a given field or document property.
@@ -7032,20 +6700,15 @@
     */
   ejs.FieldQuery = function (field, qstr) {
 
-    /**
-         The internal query object. <code>Use get()</code>
-         @member ejs.FieldQuery
-         @property {Object} query
-         */
-    var query = {
-      field: {}
-    };
+    var
+      _common = ejs.QueryMixin('field'),
+      query = _common.toJSON();
     
     query.field[field] = {
       query: qstr
     };
 
-    return {
+    return extend(_common, {
 
       /**
              The field to run the query against.
@@ -7231,24 +6894,6 @@
         }
 
         query.field[field].fuzzy_min_sim = minSim;
-        return this;
-      },
-
-      /**
-            <p>Sets the boost value of the <code>Query</code>.</p>  
-
-            <p>Default: <code>1.0</code>.</p>
-
-            @member ejs.FieldQuery
-            @param {Double} boost A positive <code>double</code> value.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      boost: function (boost) {
-        if (boost == null) {
-          return query.field[field].boost;
-        }
-
-        query.field[field].boost = boost;
         return this;
       },
 
@@ -7479,28 +7124,26 @@
         query.field[field].minimum_should_match = minMatch;
         return this;
       },
-
-      /**
-            <p>The type of ejs object.  For internal use only.</p>
-            
-            @member ejs.FieldQuery
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'query';
-      },
       
       /**
-            <p>Retrieves the internal <code>query</code> object. This is typically used by
-            internal API functions so use with caution.</p>
+            <p>Sets the boost value of the <code>Query</code>.</p>  
+
+            <p>Default: <code>1.0</code>.</p>
 
             @member ejs.FieldQuery
-            @returns {String} returns this object's internal <code>query</code> property.
+            @param {Double} boost A positive <code>double</code> value.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
             */
-      toJSON: function () {
-        return query;
-      }
-    };
+      boost: function (boost) {
+        if (boost == null) {
+          return query.field[field].boost;
+        }
+
+        query.field[field].boost = boost;
+        return this;
+      },
+      
+    });
   };
 
   /**
@@ -7512,6 +7155,9 @@
     a new <code>Query</code> that is then used for the search.</p>
 
     @name ejs.FilteredQuery
+    @borrows ejs.QueryMixin.boost as boost
+    @borrows ejs.QueryMixin._type as _type
+    @borrows ejs.QueryMixin.toJSON as toJSON
 
     @desc
     <p>A query that applies a filter to the results of another query.</p>
@@ -7531,22 +7177,17 @@
       throw new TypeError('Argument must be a Filter');
     }
     
-    /**
-         The internal query object. Use <code>toJSON()</code>
-         @member ejs.FilteredQuery
-         @property {Object} query
-         */
-    var query = {
-      filtered: {
-        query: someQuery.toJSON()
-      }
-    };
+    var 
+      _common = ejs.QueryMixin('filtered'),
+      query = _common.toJSON();
+    
+    query.filtered.query = someQuery.toJSON();
 
     if (someFilter != null) {
       query.filtered.filter = someFilter.toJSON();
     }
     
-    return {
+    return extend(_common, {
 
       /**
              <p>Adds the query to apply a constant score to.</p>
@@ -7655,44 +7296,9 @@
 
         query.filtered._cache_key = k;
         return this;
-      },
-      
-      /**
-            <p>Sets the boost value of the <code>Query</code>.</p>
-
-            @member ejs.FilteredQuery
-            @param {Double} boost A positive <code>double</code> value.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      boost: function (boost) {
-        if (boost == null) {
-          return query.filtered.boost;
-        }
-
-        query.filtered.boost = boost;
-        return this;
-      },
-
-      /**
-            <p>The type of ejs object.  For internal use only.</p>
-            
-            @member ejs.FilteredQuery
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'query';
-      },
-      
-      /**
-             <p>returns the query object.</p>
-
-             @member ejs.FilteredQuery
-             @returns {Object} query object
-             */
-      toJSON: function () {
-        return query;
       }
-    };
+      
+    });
   };
 
   /**
@@ -7720,6 +7326,8 @@
     average IDF of the variants is used.</p>
 
     @name ejs.FuzzyLikeThisFieldQuery
+    @borrows ejs.QueryMixin._type as _type
+    @borrows ejs.QueryMixin.toJSON as toJSON
 
     @desc
     <p>Constructs a query where each documents returned are “like” provided text</p>
@@ -7729,20 +7337,15 @@
     */
   ejs.FuzzyLikeThisFieldQuery = function (field, likeText) {
 
-    /**
-         The internal Query object. Use <code>get()</code>.
-         @member ejs.FuzzyLikeThisFieldQuery
-         @property {Object} query
-         */
-    var query = {
-      flt_field: {}
-    };
+    var
+      _common = ejs.QueryMixin('flt_field'),
+      query = _common.toJSON();
 
     query.flt_field[field] = {
       like_text: likeText
     };
   
-    return {
+    return extend(_common, {
   
       /**
              The field to run the query against.
@@ -7894,28 +7497,9 @@
 
         query.flt_field[field].boost = boost;
         return this;
-      },
-
-      /**
-            The type of ejs object.  For internal use only.
-            
-            @member ejs.FuzzyLikeThisFieldQuery
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'query';
-      },
-      
-      /**
-            This method is used to retrieve the raw query object. It's designed
-            for internal use when composing and serializing queries.
-            @member ejs.FuzzyLikeThisFieldQuery
-            @returns {Object} Returns the object's <em>query</em> property.
-            */
-      toJSON: function () {
-        return query;
       }
-    };
+      
+    });
   };
 
   /**
@@ -7940,6 +7524,9 @@
     average IDF of the variants is used.</p>
 
     @name ejs.FuzzyLikeThisQuery
+    @borrows ejs.QueryMixin.boost as boost
+    @borrows ejs.QueryMixin._type as _type
+    @borrows ejs.QueryMixin.toJSON as toJSON
 
     @desc
     <p>Constructs a query where each documents returned are “like” provided text</p>
@@ -7948,18 +7535,13 @@
     */
   ejs.FuzzyLikeThisQuery = function (likeText) {
 
-    /**
-         The internal Query object. Use <code>get()</code>.
-         @member ejs.FuzzyLikeThisQuery
-         @property {Object} query
-         */
-    var query = {
-      flt: {
-        like_text: likeText
-      }
-    };
+    var 
+      _common = ejs.QueryMixin('flt'),
+      query = _common.toJSON();
+    
+    query.flt.like_text = likeText;
 
-    return {
+    return extend(_common, {
     
       /**
              The fields to run the query against.  If you call with a single field,
@@ -8103,44 +7685,9 @@
   
         query.flt.fail_on_unsupported_field = trueFalse;
         return this;
-      },
-                 
-      /**
-            Sets the boost value of the <code>Query</code>.
-
-            @member ejs.FuzzyLikeThisQuery
-            @param {Double} boost A positive <code>double</code> value.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      boost: function (boost) {
-        if (boost == null) {
-          return query.flt.boost;
-        }
-
-        query.flt.boost = boost;
-        return this;
-      },
-
-      /**
-            The type of ejs object.  For internal use only.
-            
-            @member ejs.FuzzyLikeThisQuery
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'query';
-      },
-      
-      /**
-            This method is used to retrieve the raw query object. It's designed
-            for internal use when composing and serializing queries.
-            @member ejs.FuzzyLikeThisQuery
-            @returns {Object} Returns the object's <em>query</em> property.
-            */
-      toJSON: function () {
-        return query;
       }
-    };
+      
+    });
   };
 
   /**
@@ -8155,6 +7702,8 @@
     of "2", the query will search for values between "10" and "14".</p>
 
     @name ejs.FuzzyQuery
+    @borrows ejs.QueryMixin._type as _type
+    @borrows ejs.QueryMixin.toJSON as toJSON
 
     @desc
     <p>Constructs a query where each documents returned are “like” provided text</p>
@@ -8165,20 +7714,15 @@
      */
   ejs.FuzzyQuery = function (field, value) {
 
-    /**
-         The internal Query object. Use <code>get()</code>.
-         @member ejs.FuzzyQuery
-         @property {Object} query
-         */
-    var query = {
-      fuzzy: {}
-    };
+    var
+      _common = ejs.QueryMixin('fuzzy'),
+      query = _common.toJSON();
 
     query.fuzzy[field] = {
       value: value
     };
 
-    return {
+    return extend(_common, {
 
       /**
              <p>The field to run the query against.</p>
@@ -8347,29 +7891,9 @@
 
         query.fuzzy[field].boost = boost;
         return this;
-      },
-
-      /**
-            <p>The type of ejs object.  For internal use only.</p>
-            
-            @member ejs.FuzzyQuery
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'query';
-      },
-      
-      /**
-            <p>This method is used to retrieve the raw query object. It's designed
-            for internal use when composing and serializing queries.</p>
-
-            @member ejs.FuzzyQuery
-            @returns {Object} Returns the object's <em>query</em> property.
-            */
-      toJSON: function () {
-        return query;
       }
-    };
+      
+    });
   };
 
   /**
@@ -8384,6 +7908,8 @@
     PrefixTree configuration as defined for the field.</p>
   
     @name ejs.GeoShapeQuery
+    @borrows ejs.QueryMixin._type as _type
+    @borrows ejs.QueryMixin.toJSON as toJSON
 
     @desc
     A Query to find documents with a geo_shapes matching a specific shape.
@@ -8391,18 +7917,13 @@
     */
   ejs.GeoShapeQuery = function (field) {
 
-    /**
-         The internal query object. <code>Use toJSON()</code>
-         @member ejs.GeoShapeQuery
-         @property {Object} GeoShapeQuery
-         */
-    var query = {
-      geo_shape: {}
-    };
+    var
+      _common = ejs.QueryMixin('geo_shape'),
+      query = _common.toJSON();
 
     query.geo_shape[field] = {};
 
-    return {
+    return extend(_common, {
 
       /**
             Sets the field to query against.
@@ -8536,29 +8057,9 @@
 
         query.geo_shape[field].boost = boost;
         return this;
-      },
-
-      /**
-            The type of ejs object.  For internal use only.
-            
-            @member ejs.GeoShapeQuery
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'query';
-      },
-      
-      /**
-            Retrieves the internal <code>query</code> object. This is typically used by
-            internal API functions so use with caution.
-
-            @member ejs.GeoShapeQuery
-            @returns {String} returns this object's internal <code>query</code> property.
-            */
-      toJSON: function () {
-        return query;
       }
-    };
+      
+    });
   };
 
   /**
@@ -8568,6 +8069,9 @@
     parent documents that have child docs matching the query being returned.</p>
   
     @name ejs.HasChildQuery
+    @borrows ejs.QueryMixin.boost as boost
+    @borrows ejs.QueryMixin._type as _type
+    @borrows ejs.QueryMixin.toJSON as toJSON
 
     @desc
     Returns results that have child documents matching the query.
@@ -8581,19 +8085,14 @@
       throw new TypeError('Argument must be a valid Query');
     }
     
-    /**
-         The internal query object. <code>Use toJSON()</code>
-         @member ejs.HasChildQuery
-         @property {Object} query
-         */
-    var query = {
-      has_child: {
-        query: qry.toJSON(),
-        type: type
-      }
-    };
+    var 
+      _common = ejs.QueryMixin('has_child'),
+      query = _common.toJSON();
+    
+    query.has_child.query = qry.toJSON();
+    query.has_child.type = type;
 
-    return {
+    return extend(_common, {
 
       /**
             Sets the query
@@ -8710,45 +8209,9 @@
 
         query.has_child.short_circuit_cutoff = cutoff;
         return this;
-      },
-      
-      /**
-            Sets the boost value of the <code>Query</code>.
-
-            @member ejs.HasChildQuery
-            @param {Double} boost A positive <code>double</code> value.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      boost: function (boost) {
-        if (boost == null) {
-          return query.has_child.boost;
-        }
-
-        query.has_child.boost = boost;
-        return this;
-      },
-
-      /**
-            The type of ejs object.  For internal use only.
-            
-            @member ejs.HasChildQuery
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'query';
-      },
-      
-      /**
-            Retrieves the internal <code>query</code> object. This is typically used by
-            internal API functions so use with caution.
-
-            @member ejs.HasChildQuery
-            @returns {String} returns this object's internal <code>query</code> property.
-            */
-      toJSON: function () {
-        return query;
       }
-    };
+      
+    });
   };
 
   /**
@@ -8758,6 +8221,9 @@
     child documents that have parent docs matching the query being returned.</p>
 
     @name ejs.HasParentQuery
+    @borrows ejs.QueryMixin.boost as boost
+    @borrows ejs.QueryMixin._type as _type
+    @borrows ejs.QueryMixin.toJSON as toJSON
 
     @desc
     Returns results that have parent documents matching the query.
@@ -8771,19 +8237,14 @@
       throw new TypeError('Argument must be a Query');
     }
     
-    /**
-         The internal query object. <code>Use toJSON()</code>
-         @member ejs.HasParentQuery
-         @property {Object} query
-         */
-    var query = {
-      has_parent: {
-        query: qry.toJSON(),
-        parent_type: parentType
-      }
-    };
+    var 
+      _common = ejs.QueryMixin('has_parent'),
+      query = _common.toJSON();
+    
+    query.has_parent.query = qry.toJSON();
+    query.has_parent.parent_type = parentType;
 
-    return {
+    return extend(_common, {
 
       /**
             Sets the query
@@ -8880,45 +8341,9 @@
         }
         
         return this;
-      },
-      
-      /**
-            Sets the boost value of the <code>Query</code>.
-
-            @member ejs.HasParentQuery
-            @param {Double} boost A positive <code>double</code> value.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      boost: function (boost) {
-        if (boost == null) {
-          return query.has_parent.boost;
-        }
-
-        query.has_parent.boost = boost;
-        return this;
-      },
-
-      /**
-            The type of ejs object.  For internal use only.
-            
-            @member ejs.HasParentQuery
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'query';
-      },
-      
-      /**
-            Retrieves the internal <code>query</code> object. This is typically used by
-            internal API functions so use with caution.
-
-            @member ejs.HasParentQuery
-            @returns {String} returns this object's internal <code>query</code> property.
-            */
-      toJSON: function () {
-        return query;
       }
-    };
+      
+    });
   };
 
   /**
@@ -8928,6 +8353,9 @@
     _uid field.</p>
 
     @name ejs.IdsQuery
+    @borrows ejs.QueryMixin.boost as boost
+    @borrows ejs.QueryMixin._type as _type
+    @borrows ejs.QueryMixin.toJSON as toJSON
 
     @desc
     Matches documents with the specified id(s).
@@ -8936,14 +8364,9 @@
     */
   ejs.IdsQuery = function (ids) {
 
-    /**
-         The internal query object. <code>Use get()</code>
-         @member ejs.IdsQuery
-         @property {Object} query
-         */
-    var query = {
-      ids: {}
-    };
+    var
+      _common = ejs.QueryMixin('ids'),
+      query = _common.toJSON();
     
     if (isString(ids)) {
       query.ids.values = [ids];
@@ -8953,7 +8376,7 @@
       throw new TypeError('Argument must be string or array');
     }
 
-    return {
+    return extend(_common, {
 
       /**
             Sets the values array or adds a new value. if val is a string, it
@@ -9008,45 +8431,9 @@
         }
         
         return this;
-      },
-
-      /**
-            Sets the boost value of the <code>Query</code>.
-
-            @member ejs.IdsQuery
-            @param {Double} boost A positive <code>double</code> value.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      boost: function (boost) {
-        if (boost == null) {
-          return query.ids.boost;
-        }
-
-        query.ids.boost = boost;
-        return this;
-      },
-
-      /**
-            The type of ejs object.  For internal use only.
-            
-            @member ejs.IdsQuery
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'query';
-      },
-      
-      /**
-            Retrieves the internal <code>query</code> object. This is typically used by
-            internal API functions so use with caution.
-
-            @member ejs.IdsQuery
-            @returns {String} returns this object's internal <code>query</code> property.
-            */
-      toJSON: function () {
-        return query;
       }
-    };
+      
+    });
   };
 
   /**
@@ -9057,6 +8444,9 @@
     is executed on an index that does not match the listed indices.</p>
 
     @name ejs.IndicesQuery
+    @borrows ejs.QueryMixin.boost as boost
+    @borrows ejs.QueryMixin._type as _type
+    @borrows ejs.QueryMixin.toJSON as toJSON
 
     @desc
     A configurable query that is dependent on the index name.
@@ -9071,16 +8461,11 @@
       throw new TypeError('Argument must be a Query');
     }
     
-    /**
-         The internal query object. <code>Use toJSON()</code>
-         @member ejs.IndicesQuery
-         @property {Object} query
-         */
-    var query = {
-      indices: {
-        query: qry.toJSON()
-      }
-    };
+    var 
+      _common = ejs.QueryMixin('indices'),
+      query = _common.toJSON();
+    
+    query.indices.query = qry.toJSON();
 
     if (isString(indices)) {
       query.indices.indices = [indices];
@@ -9090,7 +8475,7 @@
       throw new TypeError('Argument must be a string or array');
     }
   
-    return {
+    return extend(_common, {
 
       /**
             Sets the indicies the query should match.  When passed a string,
@@ -9163,45 +8548,9 @@
         }
       
         return this;
-      },
-    
-      /**
-            Sets the boost value of the <code>Query</code>.
-
-            @member ejs.IndicesQuery
-            @param {Double} boost A positive <code>double</code> value.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      boost: function (boost) {
-        if (boost == null) {
-          return query.indices.boost;
-        }
-
-        query.indices.boost = boost;
-        return this;
-      },
-
-      /**
-            The type of ejs object.  For internal use only.
-            
-            @member ejs.IndicesQuery
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'query';
-      },
-      
-      /**
-            Retrieves the internal <code>query</code> object. This is typically used by
-            internal API functions so use with caution.
-
-            @member ejs.IndicesQuery
-            @returns {String} returns this object's internal <code>query</code> property.
-            */
-      toJSON: function () {
-        return query;
       }
-    };
+      
+    });
   };
 
   /**
@@ -9210,61 +8559,16 @@
     in a given set of collections and/or types.</p>
 
     @name ejs.MatchAllQuery
+    @borrows ejs.QueryMixin.boost as boost
+    @borrows ejs.QueryMixin._type as _type
+    @borrows ejs.QueryMixin.toJSON as toJSON
 
     @desc
     <p>A query that returns all documents.</p>
 
      */
   ejs.MatchAllQuery = function () {
-
-    /**
-         The internal Query object. Use <code>get()</code>.
-         @member ejs.MatchAllQuery
-         @property {Object} query
-         */
-    var query = {
-      match_all: {}
-    };
-
-    return {
-
-      /**
-            Sets the boost value of the <code>Query</code>.
-
-            @member ejs.MatchAllQuery
-            @param {Double} boost A positive <code>double</code> value.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      boost: function (boost) {
-        if (boost == null) {
-          return query.match_all.boost;
-        }
-
-        query.match_all.boost = boost;
-        return this;
-      },
-
-      /**
-            The type of ejs object.  For internal use only.
-            
-            @member ejs.MatchAllQuery
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'query';
-      },
-      
-      /**
-            This method is used to retrieve the raw query object. It's designed
-            for internal use when composing and serializing queries.
-            
-            @member ejs.MatchAllQuery
-            @returns {Object} Returns the object's <em>query</em> property.
-            */
-      toJSON: function () {
-        return query;
-      }
-    };
+    return ejs.QueryMixin('match_all');
   };
 
   /**
@@ -9274,6 +8578,8 @@
     <code>MatchQuery</code> type.
   
     @name ejs.MatchQuery
+    @borrows ejs.QueryMixin._type as _type
+    @borrows ejs.QueryMixin.toJSON as toJSON
 
     @desc
     A Query that appects text, analyzes it, generates internal query based
@@ -9284,36 +8590,15 @@
     */
   ejs.MatchQuery = function (field, qstr) {
 
-    /**
-         The internal query object. <code>Use get()</code>
-         @member ejs.MatchQuery
-         @property {Object} query
-         */
-    var query = {
-      match: {}
-    };
+    var
+      _common = ejs.QueryMixin('match'),
+      query = _common.toJSON();
     
     query.match[field] = {
       query: qstr
     };
 
-    return {
-
-      /**
-            Sets the boost value for documents matching the <code>Query</code>.
-
-            @member ejs.MatchQuery
-            @param {Number} boost A positive <code>double</code> value.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      boost: function (boost) {
-        if (boost == null) {
-          return query.match[field].boost;
-        }
-
-        query.match[field].boost = boost;
-        return this;
-      },
+    return extend(_common, {
 
       /**
             Sets the query string for the <code>Query</code>.
@@ -9637,28 +8922,24 @@
         
         return this;
       },
-
-      /**
-            The type of ejs object.  For internal use only.
-            
-            @member ejs.MatchQuery
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'query';
-      },
       
       /**
-            Retrieves the internal <code>query</code> object. This is typically used by
-            internal API functions so use with caution.
+            Sets the boost value for documents matching the <code>Query</code>.
 
             @member ejs.MatchQuery
-            @returns {String} returns this object's internal <code>query</code> property.
+            @param {Number} boost A positive <code>double</code> value.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
             */
-      toJSON: function () {
-        return query;
-      }
-    };
+      boost: function (boost) {
+        if (boost == null) {
+          return query.match[field].boost;
+        }
+
+        query.match[field].boost = boost;
+        return this;
+      },
+
+    });
   };
 
   /**
@@ -9667,6 +8948,8 @@
     except it runs against a single field.</p>
 
     @name ejs.MoreLikeThisFieldQuery
+    @borrows ejs.QueryMixin._type as _type
+    @borrows ejs.QueryMixin.toJSON as toJSON
 
     @desc
     <p>Constructs a query where each documents returned are “like” provided text</p>
@@ -9677,20 +8960,15 @@
      */
   ejs.MoreLikeThisFieldQuery = function (field, likeText) {
 
-    /**
-         The internal Query object. Use <code>get()</code>.
-         @member ejs.MoreLikeThisFieldQuery
-         @property {Object} query
-         */
-    var query = {
-      mlt_field: {}
-    };
+    var
+      _common = ejs.QueryMixin('mlt_field'),
+      query = _common.toJSON();
 
     query.mlt_field[field] = {
       like_text: likeText
     };
   
-    return {
+    return extend(_common, {
 
       /**
              The field to run the query against.
@@ -9934,28 +9212,9 @@
 
         query.mlt_field[field].boost = boost;
         return this;
-      },
-
-      /**
-            The type of ejs object.  For internal use only.
-            
-            @member ejs.MoreLikeThisFieldQuery
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'query';
-      },
-      
-      /**
-            This method is used to retrieve the raw query object. It's designed
-            for internal use when composing and serializing queries.
-            @member ejs.MoreLikeThisFieldQuery
-            @returns {Object} Returns the object's <em>query</em> property.
-            */
-      toJSON: function () {
-        return query;
       }
-    };
+      
+    });
   };
 
   /**
@@ -9964,6 +9223,9 @@
     running it against one or more fields.</p>
 
     @name ejs.MoreLikeThisQuery
+    @borrows ejs.QueryMixin.boost as boost
+    @borrows ejs.QueryMixin._type as _type
+    @borrows ejs.QueryMixin.toJSON as toJSON
 
     @desc
     <p>Constructs a query where each documents returned are “like” provided text</p>
@@ -9974,17 +9236,12 @@
      */
   ejs.MoreLikeThisQuery = function (fields, likeText) {
 
-    /**
-         The internal Query object. Use <code>get()</code>.
-         @member ejs.MoreLikeThisQuery
-         @property {Object} query
-         */
-    var query = {
-      mlt: {
-        like_text: likeText,
-        fields: []
-      }
-    };
+    var 
+      _common = ejs.QueryMixin('mlt'),
+      query = _common.toJSON();
+    
+    query.mlt.like_text = likeText;
+    query.mlt.fields = [];
 
     if (isString(fields)) {
       query.mlt.fields.push(fields);
@@ -9994,7 +9251,7 @@
       throw new TypeError('Argument must be string or array');
     }
     
-    return {
+    return extend(_common, {
   
       /**
              The fields to run the query against.  If you call with a single field,
@@ -10226,44 +9483,9 @@
   
         query.mlt.fail_on_unsupported_field = trueFalse;
         return this;
-      },
-                   
-      /**
-            Sets the boost value of the <code>Query</code>.
-
-            @member ejs.MoreLikeThisQuery
-            @param {Double} boost A positive <code>double</code> value.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      boost: function (boost) {
-        if (boost == null) {
-          return query.mlt.boost;
-        }
-
-        query.mlt.boost = boost;
-        return this;
-      },
-
-      /**
-            The type of ejs object.  For internal use only.
-            
-            @member ejs.MoreLikeThisQuery
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'query';
-      },
-      
-      /**
-            This method is used to retrieve the raw query object. It's designed
-            for internal use when composing and serializing queries.
-            @member ejs.MoreLikeThisQuery
-            @returns {Object} Returns the object's <em>query</em> property.
-            */
-      toJSON: function () {
-        return query;
       }
-    };
+      
+    });
   };
 
   /**
@@ -10275,6 +9497,9 @@
     by using multiple match queries within a bool query.
   
     @name ejs.MultiMatchQuery
+    @borrows ejs.QueryMixin.boost as boost
+    @borrows ejs.QueryMixin._type as _type
+    @borrows ejs.QueryMixin.toJSON as toJSON
 
     @desc
     A Query that allow to more easily build a MatchQuery 
@@ -10285,17 +9510,12 @@
     */
   ejs.MultiMatchQuery = function (fields, qstr) {
 
-    /**
-         The internal query object. <code>Use get()</code>
-         @member ejs.MultiMatchQuery
-         @property {Object} query
-         */
-    var query = {
-      multi_match: {
-        query: qstr,
-        fields: []
-      }
-    };
+    var 
+      _common = ejs.QueryMixin('multi_match'),
+      query = _common.toJSON();
+    
+    query.multi_match.query = qstr;
+    query.multi_match.fields = [];
 
     if (isString(fields)) {
       query.multi_match.fields.push(fields);
@@ -10305,7 +9525,7 @@
       throw new TypeError('Argument must be string or array');
     }
     
-    return {
+    return extend(_common, {
 
       /**
             Sets the fields to search across.  If passed a single value it is
@@ -10518,22 +9738,6 @@
         query.multi_match.lenient = trueFalse;
         return this;
       },
-                 
-      /**
-            Sets the boost value for documents matching the <code>Query</code>.
-
-            @member ejs.MultiMatchQuery
-            @param {Number} boost A positive <code>double</code> value.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      boost: function (boost) {
-        if (boost == null) {
-          return query.multi_match.boost;
-        }
-
-        query.multi_match.boost = boost;
-        return this;
-      },
 
       /**
             Sets the query string for the <code>Query</code>.
@@ -10692,29 +9896,9 @@
         }
         
         return this;
-      },
-
-      /**
-            The type of ejs object.  For internal use only.
-            
-            @member ejs.MultiMatchQuery
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'query';
-      },
-      
-      /**
-            Retrieves the internal <code>Query</code> object. This is typically used by
-            internal API functions so use with caution.
-
-            @member ejs.MultiMatchQuery
-            @returns {String} returns this object's internal <code>query</code> property.
-            */
-      toJSON: function () {
-        return query;
       }
-    };
+
+    });
   };
 
   /**
@@ -10728,6 +9912,9 @@
     nested mapping).</p>
     
     @name ejs.NestedQuery
+    @borrows ejs.QueryMixin.boost as boost
+    @borrows ejs.QueryMixin._type as _type
+    @borrows ejs.QueryMixin.toJSON as toJSON
 
     @desc
     <p>Constructs a query that is capable of executing a search against objects
@@ -10738,19 +9925,13 @@
      */
   ejs.NestedQuery = function (path) {
 
-    /**
-         The internal Query object. Use <code>toJSON()</code>.
-         
-         @member ejs.NestedQuery
-         @property {Object} query
-         */
-    var query = {
-      nested: {
-        path: path
-      }
-    };
+    var 
+      _common = ejs.QueryMixin('nested'),
+      query = _common.toJSON();
+    
+    query.nested.path = path;
 
-    return {
+    return extend(_common, {
       
       /**
              Sets the root context for the nested query.
@@ -10843,45 +10024,9 @@
             */
       scope: function (s) {
         return this;
-      },
-      
-      /**
-            Sets the boost value of the nested <code>Query</code>.
-
-            @member ejs.NestedQuery
-            @param {Double} boost A positive <code>double</code> value.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      boost: function (boost) {
-        if (boost == null) {
-          return query.nested.boost;
-        }
-
-        query.nested.boost = boost;
-        return this;
-      },
-
-      /**
-            The type of ejs object.  For internal use only.
-            
-            @member ejs.NestedQuery
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'query';
-      },
-      
-      /**
-            This method is used to retrieve the raw query object. It's designed
-            for internal use when composing and serializing queries.
-            
-            @member ejs.NestedQuery
-            @returns {Object} Returns the object's <em>query</em> property.
-            */
-      toJSON: function () {
-        return query;
       }
-    };
+      
+    });
   };
 
   /**
@@ -10890,6 +10035,8 @@
     prefix (not analyzed). The prefix query maps to Lucene PrefixQuery.</p>
 
     @name ejs.PrefixQuery
+    @borrows ejs.QueryMixin._type as _type
+    @borrows ejs.QueryMixin.toJSON as toJSON
 
     @desc
     Matches documents containing the specified un-analyzed prefix.
@@ -10899,20 +10046,15 @@
     */
   ejs.PrefixQuery = function (field, value) {
 
-    /**
-         The internal query object. <code>Use get()</code>
-         @member ejs.PrefixQuery
-         @property {Object} query
-         */
-    var query = {
-      prefix: {}
-    };
+    var
+      _common = ejs.QueryMixin('prefix'),
+      query = _common.toJSON();
 
     query.prefix[field] = {
       value: value
     };
   
-    return {
+    return extend(_common, {
 
       /**
              The field to run the query against.
@@ -11013,28 +10155,63 @@
 
         query.prefix[field].boost = boost;
         return this;
-      },
+      }
+      
+    });
+  };
+
+  /**
+    @mixin
+    <p>The QueryMixin provides support for common options used across 
+    various <code>Query</code> implementations.  This object should not be 
+    used directly.</p>
+
+    @name ejs.QueryMixin
+    */
+  ejs.QueryMixin = function (type) {
+
+    var query = {};
+    query[type] = {};
+
+    return {
 
       /**
+            Sets the boost value for documents matching the <code>Query</code>.
+
+            @member ejs.QueryMixin
+            @param {Double} boost A positive <code>double</code> value.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      boost: function (boost) {
+        if (boost == null) {
+          return query[type].boost;
+        }
+
+        query[type].boost = boost;
+        return this;
+      },
+    
+      /**
             The type of ejs object.  For internal use only.
-            
-            @member ejs.PrefixQuery
+          
+            @member ejs.QueryMixin
             @returns {String} the type of object
             */
       _type: function () {
         return 'query';
       },
-      
+    
       /**
             Retrieves the internal <code>query</code> object. This is typically used by
             internal API functions so use with caution.
 
-            @member ejs.PrefixQuery
+            @member ejs.QueryMixin
             @returns {String} returns this object's internal <code>query</code> property.
             */
       toJSON: function () {
         return query;
       }
+  
     };
   };
 
@@ -11048,6 +10225,9 @@
     for more information.</p>
 
     @name ejs.QueryStringQuery
+    @borrows ejs.QueryMixin.boost as boost
+    @borrows ejs.QueryMixin._type as _type
+    @borrows ejs.QueryMixin.toJSON as toJSON
 
     @desc
     A query that is parsed using Lucene's default query parser.
@@ -11056,18 +10236,13 @@
     */
   ejs.QueryStringQuery = function (qstr) {
 
-    /**
-         The internal Query object. Use <code>get()</code>.
-         @member ejs.QueryStringQuery
-         @property {Object} query
-         */
-    var query = {
-      query_string: {}
-    };
+    var
+      _common = ejs.QueryMixin('query_string'),
+      query = _common.toJSON();
 
     query.query_string.query = qstr;
 
-    return {
+    return extend(_common, {
 
       /**
             Sets the query string on this <code>Query</code> object.
@@ -11309,22 +10484,6 @@
       },
 
       /**
-            Sets the boost value of the <code>Query</code>.  Default: 1.0.
-
-            @member ejs.QueryStringQuery
-            @param {Double} boost A positive <code>double</code> value.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      boost: function (boost) {
-        if (boost == null) {
-          return query.query_string.boost;
-        }
-
-        query.query_string.boost = boost;
-        return this;
-      },
-
-      /**
             Sets whether or not we should attempt to analyzed wilcard terms in the
             <code>Query</code>. By default, wildcard terms are not analyzed.
             Analysis of wildcard characters is not perfect.  Default: false.
@@ -11556,29 +10715,9 @@
 
         query.query_string.lenient = trueFalse;
         return this;
-      },
-
-      /**
-            The type of ejs object.  For internal use only.
-            
-            @member ejs.QueryStringQuery
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'query';
-      },
-      
-      /**
-            Retrieves the internal <code>query</code> object. This is typically used by
-            internal API functions so use with caution.
-
-            @member ejs.QueryStringQuery
-            @returns {String} returns this object's internal <code>query</code> property.
-            */
-      toJSON: function () {
-        return query;
       }
-    };
+      
+    });
   };
 
   /**
@@ -11589,6 +10728,8 @@
     NumericRangeQuery.</p>
 
     @name ejs.RangeQuery
+    @borrows ejs.QueryMixin._type as _type
+    @borrows ejs.QueryMixin.toJSON as toJSON
 
     @desc
     Matches documents with fields that have terms within a certain range.
@@ -11597,18 +10738,13 @@
     */
   ejs.RangeQuery = function (field) {
 
-    /**
-         The internal query object. <code>Use get()</code>
-         @member ejs.RangeQuery
-         @property {Object} query
-         */
-    var query = {
-      range: {}
-    };
+    var
+      _common = ejs.QueryMixin('range'),
+      query = _common.toJSON();
 
     query.range[field] = {};
 
-    return {
+    return extend(_common, {
 
       /**
              The field to run the query against.
@@ -11778,29 +10914,9 @@
 
         query.range[field].boost = boost;
         return this;
-      },
-
-      /**
-            The type of ejs object.  For internal use only.
-            
-            @member ejs.RangeQuery
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'query';
-      },
-      
-      /**
-            Retrieves the internal <code>query</code> object. This is typically used by
-            internal API functions so use with caution.
-
-            @member ejs.RangeQuery
-            @returns {String} returns this object's internal <code>query</code> property.
-            */
-      toJSON: function () {
-        return query;
       }
-    };
+      
+    });
   };
 
   /**
@@ -11810,6 +10926,8 @@
     index terms.</p>
 
     @name ejs.RegexpQuery
+    @borrows ejs.QueryMixin._type as _type
+    @borrows ejs.QueryMixin.toJSON as toJSON
 
     @desc
     Matches documents that have fields matching a regular expression.
@@ -11819,20 +10937,15 @@
     */
   ejs.RegexpQuery = function (field, value) {
 
-    /**
-         The internal query object. <code>Use get()</code>
-         @member ejs.RegexpQuery
-         @property {Object} query
-         */
-    var query = {
-      regexp: {}
-    };
+    var
+      _common = ejs.QueryMixin('regexp'),
+      query = _common.toJSON();
 
     query.regexp[field] = {
       value: value
     };
 
-    return {
+    return extend(_common, {
 
       /**
              The field to run the query against.
@@ -11978,29 +11091,9 @@
 
         query.regexp[field].boost = boost;
         return this;
-      },
-
-      /**
-            The type of ejs object.  For internal use only.
-          
-            @member ejs.RegexpQuery
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'query';
-      },
-    
-      /**
-            Retrieves the internal <code>query</code> object. This is typically used by
-            internal API functions so use with caution.
-
-            @member ejs.RegexpQuery
-            @returns {String} returns this object's internal <code>query</code> property.
-            */
-      toJSON: function () {
-        return query;
       }
-    };
+      
+    });
   };
 
   /**
@@ -12010,6 +11103,9 @@
     The span first query maps to Lucene SpanFirstQuery.</p>
 
     @name ejs.SpanFirstQuery
+    @borrows ejs.QueryMixin.boost as boost
+    @borrows ejs.QueryMixin._type as _type
+    @borrows ejs.QueryMixin.toJSON as toJSON
 
     @desc
     Matches spans near the beginning of a field.
@@ -12024,19 +11120,14 @@
       throw new TypeError('Argument must be a SpanQuery');
     }
     
-    /**
-         The internal query object. <code>Use toJSON()</code>
-         @member ejs.SpanFirstQuery
-         @property {Object} query
-         */
-    var query = {
-      span_first: {
-        match: spanQry.toJSON(),
-        end: end
-      }
-    };
+    var 
+      _common = ejs.QueryMixin('span_first'),
+      query = _common.toJSON();
+    
+    query.span_first.match = spanQry.toJSON();
+    query.span_first.end = end;
 
-    return {
+    return extend(_common, {
 
       /**
             Sets the span query to match on.
@@ -12072,45 +11163,9 @@
       
         query.span_first.end = position;
         return this;
-      },
-
-      /**
-            Sets the boost value of the <code>Query</code>.
-
-            @member ejs.SpanFirstQuery
-            @param {Double} boost A positive <code>double</code> value.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      boost: function (boost) {
-        if (boost == null) {
-          return query.span_first.boost;
-        }
-
-        query.span_first.boost = boost;
-        return this;
-      },
-      
-      /**
-            The type of ejs object.  For internal use only.
-            
-            @member ejs.SpanFirstQuery
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'query';
-      },
-      
-      /**
-            Retrieves the internal <code>query</code> object. This is typically used by
-            internal API functions so use with caution.
-
-            @member ejs.SpanFirstQuery
-            @returns {String} returns this object's internal <code>query</code> property.
-            */
-      toJSON: function () {
-        return query;
       }
-    };
+      
+    });
   };
 
   /**
@@ -12120,7 +11175,9 @@
     <code>Fuzzy, NumericRange, Prefix, Regex, Range, and Wildcard</code>.</p>
 
     @name ejs.SpanMultiTermQuery
-    @since elasticsearch 0.90
+    @borrows ejs.QueryMixin.boost as boost
+    @borrows ejs.QueryMixin._type as _type
+    @borrows ejs.QueryMixin.toJSON as toJSON
 
     @desc
     Use MultiTermQueries as a SpanQuery.
@@ -12133,22 +11190,17 @@
       throw new TypeError('Argument must be a MultiTermQuery');
     }
 
-    /**
-         The internal query object. <code>Use toJSON()</code>
-         @member ejs.SpanMultiTermQuery
-         @property {Object} query
-         */
-    var query = {
-      span_multi: {
-        match: {}
-      }
-    };
-
+    var 
+      _common = ejs.QueryMixin('span_multi'),
+      query = _common.toJSON();
+    
+    query.span_multi.match = {};
+    
     if (qry != null) {
       query.span_multi.match = qry.toJSON();
     }
 
-    return {
+    return extend(_common, {
 
       /**
             Sets the span query to match on.
@@ -12168,29 +11220,9 @@
     
         query.span_multi.match = mtQuery.toJSON();
         return this;
-      },
-
-      /**
-            The type of ejs object.  For internal use only.
-        
-            @member ejs.SpanMultiTermQuery
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'query';
-      },
-  
-      /**
-            Retrieves the internal <code>query</code> object. This is typically used by
-            internal API functions so use with caution.
-
-            @member ejs.SpanMultiTermQuery
-            @returns {String} returns this object's internal <code>query</code> property.
-            */
-      toJSON: function () {
-        return query;
       }
-    };
+      
+    });
   };
 
   /**
@@ -12199,6 +11231,9 @@
     distance from each other.</p>
 
     @name ejs.SpanNearQuery
+    @borrows ejs.QueryMixin.boost as boost
+    @borrows ejs.QueryMixin._type as _type
+    @borrows ejs.QueryMixin.toJSON as toJSON
 
     @desc
     Matches spans which are near one another.
@@ -12209,18 +11244,14 @@
     */
   ejs.SpanNearQuery = function (clauses, slop) {
 
-    /**
-         The internal query object. <code>Use toJSON()</code>
-         @member ejs.SpanNearQuery
-         @property {Object} query
-         */
-    var i, len,
-      query = {
-        span_near: {
-          clauses: [],
-          slop: slop
-        }
-      };
+    var 
+      i, 
+      len,
+      _common = ejs.QueryMixin('span_near'),
+      query = _common.toJSON();
+    
+    query.span_near.clauses = [];
+    query.span_near.slop = slop;
     
     if (isQuery(clauses)) {
       query.span_near.clauses.push(clauses.toJSON());
@@ -12236,7 +11267,7 @@
       throw new TypeError('Argument must be SpanQuery or array of SpanQueries');
     }
 
-    return {
+    return extend(_common, {
 
       /**
             Sets the clauses used.  If passed a single SpanQuery, it is added
@@ -12319,45 +11350,9 @@
       
         query.span_near.collect_payloads = trueFalse;
         return this;
-      },
-
-      /**
-            Sets the boost value of the <code>Query</code>.
-
-            @member ejs.SpanNearQuery
-            @param {Double} boost A positive <code>double</code> value.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      boost: function (boost) {
-        if (boost == null) {
-          return query.span_near.boost;
-        }
-
-        query.span_near.boost = boost;
-        return this;
-      },
-
-      /**
-            The type of ejs object.  For internal use only.
-            
-            @member ejs.SpanNearQuery
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'query';
-      },
-      
-      /**
-            Retrieves the internal <code>query</code> object. This is typically used by
-            internal API functions so use with caution.
-
-            @member ejs.SpanNearQuery
-            @returns {String} returns this object's internal <code>query</code> property.
-            */
-      toJSON: function () {
-        return query;
       }
-    };
+      
+    });
   };
 
   /**
@@ -12366,6 +11361,9 @@
     The span not query maps to Lucene SpanNotQuery.</p>
 
     @name ejs.SpanNotQuery
+    @borrows ejs.QueryMixin.boost as boost
+    @borrows ejs.QueryMixin._type as _type
+    @borrows ejs.QueryMixin.toJSON as toJSON
 
     @desc
     Removes matches which overlap with another span query.
@@ -12380,19 +11378,14 @@
       throw new TypeError('Argument must be a SpanQuery');
     }
     
-    /**
-         The internal query object. <code>Use toJSON()</code>
-         @member ejs.SpanNotQuery
-         @property {Object} query
-         */
-    var query = {
-      span_not: {
-        include: includeQry.toJSON(),
-        exclude: excludeQry.toJSON()
-      }
-    };
+    var
+      _common = ejs.QueryMixin('span_not'),
+      query = _common.toJSON();
+    
+    query.span_not.include = includeQry.toJSON();
+    query.span_not.exclude = excludeQry.toJSON();
 
-    return {
+    return extend(_common, {
 
       /**
             Set the span query whose matches are filtered.
@@ -12432,45 +11425,9 @@
         
         query.span_not.exclude = spanQuery.toJSON();
         return this;
-      },
-
-      /**
-            Sets the boost value of the <code>Query</code>.
-
-            @member ejs.SpanNotQuery
-            @param {Double} boost A positive <code>double</code> value.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      boost: function (boost) {
-        if (boost == null) {
-          return query.span_not.boost;
-        }
-
-        query.span_not.boost = boost;
-        return this;
-      },
-
-      /**
-            The type of ejs object.  For internal use only.
-            
-            @member ejs.SpanNotQuery
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'query';
-      },
-      
-      /**
-            Retrieves the internal <code>query</code> object. This is typically used by
-            internal API functions so use with caution.
-
-            @member ejs.SpanNotQuery
-            @returns {String} returns this object's internal <code>query</code> property.
-            */
-      toJSON: function () {
-        return query;
       }
-    };
+      
+    });
   };
 
   /**
@@ -12479,6 +11436,9 @@
     underlying SpanQueries match. The span or query maps to Lucene SpanOrQuery.</p>
 
     @name ejs.SpanOrQuery
+    @borrows ejs.QueryMixin.boost as boost
+    @borrows ejs.QueryMixin._type as _type
+    @borrows ejs.QueryMixin.toJSON as toJSON
 
     @desc
     Matches the union of its span clauses.
@@ -12488,18 +11448,13 @@
     */
   ejs.SpanOrQuery = function (clauses) {
 
-    /**
-         The internal query object. <code>Use toJSON()</code>
-         @member ejs.SpanOrQuery
-         @property {Object} query
-         */
-    var i, 
+    var
+      i, 
       len,
-      query = {
-        span_or: {
-          clauses: []
-        }
-      };
+      _common = ejs.QueryMixin('span_or'),
+      query = _common.toJSON();
+    
+    query.span_or.clauses = [];
 
     if (isQuery(clauses)) {
       query.span_or.clauses.push(clauses.toJSON());
@@ -12515,7 +11470,7 @@
       throw new TypeError('Argument must be SpanQuery or array of SpanQueries');
     }
 
-    return {
+    return extend(_common, {
 
       /**
             Sets the clauses used.  If passed a single SpanQuery, it is added
@@ -12549,45 +11504,9 @@
         }
         
         return this;
-      },
-
-      /**
-            Sets the boost value of the <code>Query</code>.
-
-            @member ejs.SpanOrQuery
-            @param {Double} boost A positive <code>double</code> value.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      boost: function (boost) {
-        if (boost == null) {
-          return query.span_or.boost;
-        }
-
-        query.span_or.boost = boost;
-        return this;
-      },
-
-      /**
-            The type of ejs object.  For internal use only.
-            
-            @member ejs.SpanOrQuery
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'query';
-      },
-      
-      /**
-            Retrieves the internal <code>query</code> object. This is typically used by
-            internal API functions so use with caution.
-
-            @member ejs.SpanOrQuery
-            @returns {String} returns this object's internal <code>query</code> property.
-            */
-      toJSON: function () {
-        return query;
       }
-    };
+      
+    });
   };
 
   /**
@@ -12597,6 +11516,8 @@
     spans containing a term. It's essentially a termQuery with positional information asscoaited.</p>
 
     @name ejs.SpanTermQuery
+    @borrows ejs.QueryMixin._type as _type
+    @borrows ejs.QueryMixin.toJSON as toJSON
 
     @desc
     Matches spans containing a term
@@ -12606,20 +11527,15 @@
     */
   ejs.SpanTermQuery = function (field, value) {
 
-    /**
-         The internal query object. <code>Use get()</code>
-         @member ejs.SpanTermQuery
-         @property {Object} query
-         */
-    var query = {
-      span_term: {}
-    };
+    var
+      _common = ejs.QueryMixin('span_term'),
+      query = _common.toJSON();
 
     query.span_term[field] = {
       term: value
     };
 
-    return {
+    return extend(_common, {
 
       /**
             Sets the field to query against.
@@ -12672,29 +11588,9 @@
 
         query.span_term[field].boost = boost;
         return this;
-      },
-
-      /**
-            The type of ejs object.  For internal use only.
-            
-            @member ejs.SpanTermQuery
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'query';
-      },
-      
-      /**
-            Retrieves the internal <code>query</code> object. This is typically used by
-            internal API functions so use with caution.
-
-            @member ejs.SpanTermQuery
-            @returns {String} returns this object's internal <code>query</code> property.
-            */
-      toJSON: function () {
-        return query;
       }
-    };
+      
+    });
   };
 
   /**
@@ -12705,6 +11601,8 @@
     often serve as the basis for more complex queries such as <em>Boolean</em> queries.</p>
 
     @name ejs.TermQuery
+    @borrows ejs.QueryMixin._type as _type
+    @borrows ejs.QueryMixin.toJSON as toJSON
 
     @desc
     A Query that matches documents containing a term. This may be
@@ -12715,20 +11613,15 @@
     */
   ejs.TermQuery = function (field, term) {
 
-    /**
-         The internal query object. <code>Use get()</code>
-         @member ejs.TermQuery
-         @property {Object} query
-         */
-    var query = {
-      term: {}
-    };
+    var
+      _common = ejs.QueryMixin('term'),
+      query = _common.toJSON();
 
     query.term[field] = {
       term: term
     };
 
-    return {
+    return extend(_common, {
 
       /**
             Sets the fields to query against.
@@ -12781,29 +11674,9 @@
 
         query.term[field].boost = boost;
         return this;
-      },
-
-      /**
-            The type of ejs object.  For internal use only.
-            
-            @member ejs.TermQuery
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'query';
-      },
-      
-      /**
-            Retrieves the internal <code>query</code> object. This is typically used by
-            internal API functions so use with caution.
-
-            @member ejs.TermQuery
-            @returns {String} returns this object's internal <code>query</code> property.
-            */
-      toJSON: function () {
-        return query;
       }
-    };
+      
+    });
   };
 
   /**
@@ -12813,6 +11686,9 @@
     in the should clauses.</p>
 
     @name ejs.TermsQuery
+    @borrows ejs.QueryMixin.boost as boost
+    @borrows ejs.QueryMixin._type as _type
+    @borrows ejs.QueryMixin.toJSON as toJSON
 
     @desc
     A Query that matches documents containing provided terms. 
@@ -12822,14 +11698,9 @@
     */
   ejs.TermsQuery = function (field, terms) {
 
-    /**
-         The internal query object. <code>Use get()</code>
-         @member ejs.TermsQuery
-         @property {Object} query
-         */
-    var query = {
-      terms: {}
-    };
+    var
+      _common = ejs.QueryMixin('terms'),
+      query = _common.toJSON();
     
     if (isString(terms)) {
       query.terms[field] = [terms];
@@ -12839,7 +11710,7 @@
       throw new TypeError('Argument must be string or array');
     }
     
-    return {
+    return extend(_common, {
 
       /**
             Sets the fields to query against.
@@ -12919,45 +11790,9 @@
 
         query.terms.disable_coord = trueFalse;
         return this;
-      },
-            
-      /**
-            Sets the boost value for documents matching the <code>Query</code>.
-
-            @member ejs.TermsQuery
-            @param {Number} boost A positive <code>double</code> value.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      boost: function (boost) {
-        if (boost == null) {
-          return query.terms.boost;
-        }
-
-        query.terms.boost = boost;
-        return this;
-      },
-
-      /**
-            The type of ejs object.  For internal use only.
-            
-            @member ejs.TermsQuery
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'query';
-      },
-      
-      /**
-            Retrieves the internal <code>query</code> object. This is typically used by
-            internal API functions so use with caution.
-
-            @member ejs.TermsQuery
-            @returns {String} returns this object's internal <code>query</code> property.
-            */
-      toJSON: function () {
-        return query;
       }
-    };
+      
+    });
   };
 
   /**
@@ -12971,6 +11806,9 @@
     specify max, sum or avg as the score type.</p>
 
     @name ejs.TopChildrenQuery
+    @borrows ejs.QueryMixin.boost as boost
+    @borrows ejs.QueryMixin._type as _type
+    @borrows ejs.QueryMixin.toJSON as toJSON
 
     @desc
     Returns child documents matching the query aggregated into the parent docs.
@@ -12984,19 +11822,14 @@
       throw new TypeError('Argument must be a Query');
     }
     
-    /**
-         The internal query object. <code>Use toJSON()</code>
-         @member ejs.TopChildrenQuery
-         @property {Object} query
-         */
-    var query = {
-      top_children: {
-        query: qry.toJSON(),
-        type: type
-      }
-    };
+    var 
+      _common = ejs.QueryMixin('top_children'),
+      query = _common.toJSON();
+    
+    query.top_children.query = qry.toJSON();
+    query.top_children.type = type;
 
-    return {
+    return extend(_common, {
 
       /**
             Sets the query
@@ -13124,45 +11957,9 @@
 
         query.top_children.incremental_factor = f;
         return this;
-      },
-        
-      /**
-            Sets the boost value of the <code>Query</code>.
-
-            @member ejs.TopChildrenQuery
-            @param {Double} boost A positive <code>double</code> value.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      boost: function (boost) {
-        if (boost == null) {
-          return query.top_children.boost;
-        }
-
-        query.top_children.boost = boost;
-        return this;
-      },
-
-      /**
-            The type of ejs object.  For internal use only.
-            
-            @member ejs.TopChildrenQuery
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'query';
-      },
-      
-      /**
-            Retrieves the internal <code>query</code> object. This is typically used by
-            internal API functions so use with caution.
-
-            @member ejs.TopChildrenQuery
-            @returns {String} returns this object's internal <code>query</code> property.
-            */
-      toJSON: function () {
-        return query;
       }
-    };
+      
+    });
   };
 
   /**
@@ -13176,6 +11973,8 @@
     maps to Lucene WildcardQuery.</p>
 
     @name ejs.WildcardQuery
+    @borrows ejs.QueryMixin._type as _type
+    @borrows ejs.QueryMixin.toJSON as toJSON
 
     @desc
     A Query that matches documents containing a wildcard. This may be
@@ -13186,20 +11985,15 @@
     */
   ejs.WildcardQuery = function (field, value) {
 
-    /**
-         The internal query object. <code>Use get()</code>
-         @member ejs.WildcardQuery
-         @property {Object} query
-         */
-    var query = {
-      wildcard: {}
-    };
+    var
+      _common = ejs.QueryMixin('wildcard'),
+      query = _common.toJSON();
 
     query.wildcard[field] = {
       value: value
     };
 
-    return {
+    return extend(_common, {
 
       /**
             Sets the fields to query against.
@@ -13300,29 +12094,9 @@
 
         query.wildcard[field].boost = boost;
         return this;
-      },
-
-      /**
-            The type of ejs object.  For internal use only.
-            
-            @member ejs.WildcardQuery
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'query';
-      },
-      
-      /**
-            Retrieves the internal <code>query</code> object. This is typically used by
-            internal API functions so use with caution.
-
-            @member ejs.WildcardQuery
-            @returns {String} returns this object's internal <code>query</code> property.
-            */
-      toJSON: function () {
-        return query;
       }
-    };
+      
+    });
   };
 
   /**

@@ -5,6 +5,9 @@
     child documents that have parent docs matching the query being returned.</p>
 
     @name ejs.HasParentQuery
+    @borrows ejs.QueryMixin.boost as boost
+    @borrows ejs.QueryMixin._type as _type
+    @borrows ejs.QueryMixin.toJSON as toJSON
 
     @desc
     Returns results that have parent documents matching the query.
@@ -18,19 +21,14 @@
       throw new TypeError('Argument must be a Query');
     }
     
-    /**
-         The internal query object. <code>Use toJSON()</code>
-         @member ejs.HasParentQuery
-         @property {Object} query
-         */
-    var query = {
-      has_parent: {
-        query: qry.toJSON(),
-        parent_type: parentType
-      }
-    };
+    var 
+      _common = ejs.QueryMixin('has_parent'),
+      query = _common.toJSON();
+    
+    query.has_parent.query = qry.toJSON();
+    query.has_parent.parent_type = parentType;
 
-    return {
+    return extend(_common, {
 
       /**
             Sets the query
@@ -127,43 +125,7 @@
         }
         
         return this;
-      },
-      
-      /**
-            Sets the boost value of the <code>Query</code>.
-
-            @member ejs.HasParentQuery
-            @param {Double} boost A positive <code>double</code> value.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      boost: function (boost) {
-        if (boost == null) {
-          return query.has_parent.boost;
-        }
-
-        query.has_parent.boost = boost;
-        return this;
-      },
-
-      /**
-            The type of ejs object.  For internal use only.
-            
-            @member ejs.HasParentQuery
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'query';
-      },
-      
-      /**
-            Retrieves the internal <code>query</code> object. This is typically used by
-            internal API functions so use with caution.
-
-            @member ejs.HasParentQuery
-            @returns {String} returns this object's internal <code>query</code> property.
-            */
-      toJSON: function () {
-        return query;
       }
-    };
+      
+    });
   };

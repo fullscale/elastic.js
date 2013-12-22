@@ -5,6 +5,9 @@
     parent documents that have child docs matching the query being returned.</p>
   
     @name ejs.HasChildQuery
+    @borrows ejs.QueryMixin.boost as boost
+    @borrows ejs.QueryMixin._type as _type
+    @borrows ejs.QueryMixin.toJSON as toJSON
 
     @desc
     Returns results that have child documents matching the query.
@@ -18,19 +21,14 @@
       throw new TypeError('Argument must be a valid Query');
     }
     
-    /**
-         The internal query object. <code>Use toJSON()</code>
-         @member ejs.HasChildQuery
-         @property {Object} query
-         */
-    var query = {
-      has_child: {
-        query: qry.toJSON(),
-        type: type
-      }
-    };
+    var 
+      _common = ejs.QueryMixin('has_child'),
+      query = _common.toJSON();
+    
+    query.has_child.query = qry.toJSON();
+    query.has_child.type = type;
 
-    return {
+    return extend(_common, {
 
       /**
             Sets the query
@@ -147,43 +145,7 @@
 
         query.has_child.short_circuit_cutoff = cutoff;
         return this;
-      },
-      
-      /**
-            Sets the boost value of the <code>Query</code>.
-
-            @member ejs.HasChildQuery
-            @param {Double} boost A positive <code>double</code> value.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      boost: function (boost) {
-        if (boost == null) {
-          return query.has_child.boost;
-        }
-
-        query.has_child.boost = boost;
-        return this;
-      },
-
-      /**
-            The type of ejs object.  For internal use only.
-            
-            @member ejs.HasChildQuery
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'query';
-      },
-      
-      /**
-            Retrieves the internal <code>query</code> object. This is typically used by
-            internal API functions so use with caution.
-
-            @member ejs.HasChildQuery
-            @returns {String} returns this object's internal <code>query</code> property.
-            */
-      toJSON: function () {
-        return query;
       }
-    };
+      
+    });
   };

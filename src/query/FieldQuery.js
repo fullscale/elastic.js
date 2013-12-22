@@ -4,6 +4,8 @@
     of the <code><a href="/jsdocs/ejs.queryString.html">queryString</a></code> object.
 
     @name ejs.FieldQuery
+    @borrows ejs.QueryMixin._type as _type
+    @borrows ejs.QueryMixin.toJSON as toJSON
 
     @desc
     A query that executes against a given field or document property.
@@ -13,20 +15,15 @@
     */
   ejs.FieldQuery = function (field, qstr) {
 
-    /**
-         The internal query object. <code>Use get()</code>
-         @member ejs.FieldQuery
-         @property {Object} query
-         */
-    var query = {
-      field: {}
-    };
+    var
+      _common = ejs.QueryMixin('field'),
+      query = _common.toJSON();
     
     query.field[field] = {
       query: qstr
     };
 
-    return {
+    return extend(_common, {
 
       /**
              The field to run the query against.
@@ -212,24 +209,6 @@
         }
 
         query.field[field].fuzzy_min_sim = minSim;
-        return this;
-      },
-
-      /**
-            <p>Sets the boost value of the <code>Query</code>.</p>  
-
-            <p>Default: <code>1.0</code>.</p>
-
-            @member ejs.FieldQuery
-            @param {Double} boost A positive <code>double</code> value.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      boost: function (boost) {
-        if (boost == null) {
-          return query.field[field].boost;
-        }
-
-        query.field[field].boost = boost;
         return this;
       },
 
@@ -460,26 +439,24 @@
         query.field[field].minimum_should_match = minMatch;
         return this;
       },
-
-      /**
-            <p>The type of ejs object.  For internal use only.</p>
-            
-            @member ejs.FieldQuery
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'query';
-      },
       
       /**
-            <p>Retrieves the internal <code>query</code> object. This is typically used by
-            internal API functions so use with caution.</p>
+            <p>Sets the boost value of the <code>Query</code>.</p>  
+
+            <p>Default: <code>1.0</code>.</p>
 
             @member ejs.FieldQuery
-            @returns {String} returns this object's internal <code>query</code> property.
+            @param {Double} boost A positive <code>double</code> value.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
             */
-      toJSON: function () {
-        return query;
-      }
-    };
+      boost: function (boost) {
+        if (boost == null) {
+          return query.field[field].boost;
+        }
+
+        query.field[field].boost = boost;
+        return this;
+      },
+      
+    });
   };

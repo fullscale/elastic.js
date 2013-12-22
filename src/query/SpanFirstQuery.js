@@ -5,6 +5,9 @@
     The span first query maps to Lucene SpanFirstQuery.</p>
 
     @name ejs.SpanFirstQuery
+    @borrows ejs.QueryMixin.boost as boost
+    @borrows ejs.QueryMixin._type as _type
+    @borrows ejs.QueryMixin.toJSON as toJSON
 
     @desc
     Matches spans near the beginning of a field.
@@ -19,19 +22,14 @@
       throw new TypeError('Argument must be a SpanQuery');
     }
     
-    /**
-         The internal query object. <code>Use toJSON()</code>
-         @member ejs.SpanFirstQuery
-         @property {Object} query
-         */
-    var query = {
-      span_first: {
-        match: spanQry.toJSON(),
-        end: end
-      }
-    };
+    var 
+      _common = ejs.QueryMixin('span_first'),
+      query = _common.toJSON();
+    
+    query.span_first.match = spanQry.toJSON();
+    query.span_first.end = end;
 
-    return {
+    return extend(_common, {
 
       /**
             Sets the span query to match on.
@@ -67,43 +65,7 @@
       
         query.span_first.end = position;
         return this;
-      },
-
-      /**
-            Sets the boost value of the <code>Query</code>.
-
-            @member ejs.SpanFirstQuery
-            @param {Double} boost A positive <code>double</code> value.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      boost: function (boost) {
-        if (boost == null) {
-          return query.span_first.boost;
-        }
-
-        query.span_first.boost = boost;
-        return this;
-      },
-      
-      /**
-            The type of ejs object.  For internal use only.
-            
-            @member ejs.SpanFirstQuery
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'query';
-      },
-      
-      /**
-            Retrieves the internal <code>query</code> object. This is typically used by
-            internal API functions so use with caution.
-
-            @member ejs.SpanFirstQuery
-            @returns {String} returns this object's internal <code>query</code> property.
-            */
-      toJSON: function () {
-        return query;
       }
-    };
+      
+    });
   };

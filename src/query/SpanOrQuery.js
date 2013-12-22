@@ -4,6 +4,9 @@
     underlying SpanQueries match. The span or query maps to Lucene SpanOrQuery.</p>
 
     @name ejs.SpanOrQuery
+    @borrows ejs.QueryMixin.boost as boost
+    @borrows ejs.QueryMixin._type as _type
+    @borrows ejs.QueryMixin.toJSON as toJSON
 
     @desc
     Matches the union of its span clauses.
@@ -13,18 +16,13 @@
     */
   ejs.SpanOrQuery = function (clauses) {
 
-    /**
-         The internal query object. <code>Use toJSON()</code>
-         @member ejs.SpanOrQuery
-         @property {Object} query
-         */
-    var i, 
+    var
+      i, 
       len,
-      query = {
-        span_or: {
-          clauses: []
-        }
-      };
+      _common = ejs.QueryMixin('span_or'),
+      query = _common.toJSON();
+    
+    query.span_or.clauses = [];
 
     if (isQuery(clauses)) {
       query.span_or.clauses.push(clauses.toJSON());
@@ -40,7 +38,7 @@
       throw new TypeError('Argument must be SpanQuery or array of SpanQueries');
     }
 
-    return {
+    return extend(_common, {
 
       /**
             Sets the clauses used.  If passed a single SpanQuery, it is added
@@ -74,43 +72,7 @@
         }
         
         return this;
-      },
-
-      /**
-            Sets the boost value of the <code>Query</code>.
-
-            @member ejs.SpanOrQuery
-            @param {Double} boost A positive <code>double</code> value.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      boost: function (boost) {
-        if (boost == null) {
-          return query.span_or.boost;
-        }
-
-        query.span_or.boost = boost;
-        return this;
-      },
-
-      /**
-            The type of ejs object.  For internal use only.
-            
-            @member ejs.SpanOrQuery
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'query';
-      },
-      
-      /**
-            Retrieves the internal <code>query</code> object. This is typically used by
-            internal API functions so use with caution.
-
-            @member ejs.SpanOrQuery
-            @returns {String} returns this object's internal <code>query</code> property.
-            */
-      toJSON: function () {
-        return query;
       }
-    };
+      
+    });
   };

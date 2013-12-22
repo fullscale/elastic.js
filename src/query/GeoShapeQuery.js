@@ -10,6 +10,8 @@
     PrefixTree configuration as defined for the field.</p>
   
     @name ejs.GeoShapeQuery
+    @borrows ejs.QueryMixin._type as _type
+    @borrows ejs.QueryMixin.toJSON as toJSON
 
     @desc
     A Query to find documents with a geo_shapes matching a specific shape.
@@ -17,18 +19,13 @@
     */
   ejs.GeoShapeQuery = function (field) {
 
-    /**
-         The internal query object. <code>Use toJSON()</code>
-         @member ejs.GeoShapeQuery
-         @property {Object} GeoShapeQuery
-         */
-    var query = {
-      geo_shape: {}
-    };
+    var
+      _common = ejs.QueryMixin('geo_shape'),
+      query = _common.toJSON();
 
     query.geo_shape[field] = {};
 
-    return {
+    return extend(_common, {
 
       /**
             Sets the field to query against.
@@ -162,27 +159,7 @@
 
         query.geo_shape[field].boost = boost;
         return this;
-      },
-
-      /**
-            The type of ejs object.  For internal use only.
-            
-            @member ejs.GeoShapeQuery
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'query';
-      },
-      
-      /**
-            Retrieves the internal <code>query</code> object. This is typically used by
-            internal API functions so use with caution.
-
-            @member ejs.GeoShapeQuery
-            @returns {String} returns this object's internal <code>query</code> property.
-            */
-      toJSON: function () {
-        return query;
       }
-    };
+      
+    });
   };

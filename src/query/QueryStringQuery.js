@@ -8,6 +8,9 @@
     for more information.</p>
 
     @name ejs.QueryStringQuery
+    @borrows ejs.QueryMixin.boost as boost
+    @borrows ejs.QueryMixin._type as _type
+    @borrows ejs.QueryMixin.toJSON as toJSON
 
     @desc
     A query that is parsed using Lucene's default query parser.
@@ -16,18 +19,13 @@
     */
   ejs.QueryStringQuery = function (qstr) {
 
-    /**
-         The internal Query object. Use <code>get()</code>.
-         @member ejs.QueryStringQuery
-         @property {Object} query
-         */
-    var query = {
-      query_string: {}
-    };
+    var
+      _common = ejs.QueryMixin('query_string'),
+      query = _common.toJSON();
 
     query.query_string.query = qstr;
 
-    return {
+    return extend(_common, {
 
       /**
             Sets the query string on this <code>Query</code> object.
@@ -269,22 +267,6 @@
       },
 
       /**
-            Sets the boost value of the <code>Query</code>.  Default: 1.0.
-
-            @member ejs.QueryStringQuery
-            @param {Double} boost A positive <code>double</code> value.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      boost: function (boost) {
-        if (boost == null) {
-          return query.query_string.boost;
-        }
-
-        query.query_string.boost = boost;
-        return this;
-      },
-
-      /**
             Sets whether or not we should attempt to analyzed wilcard terms in the
             <code>Query</code>. By default, wildcard terms are not analyzed.
             Analysis of wildcard characters is not perfect.  Default: false.
@@ -516,27 +498,7 @@
 
         query.query_string.lenient = trueFalse;
         return this;
-      },
-
-      /**
-            The type of ejs object.  For internal use only.
-            
-            @member ejs.QueryStringQuery
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'query';
-      },
-      
-      /**
-            Retrieves the internal <code>query</code> object. This is typically used by
-            internal API functions so use with caution.
-
-            @member ejs.QueryStringQuery
-            @returns {String} returns this object's internal <code>query</code> property.
-            */
-      toJSON: function () {
-        return query;
       }
-    };
+      
+    });
   };

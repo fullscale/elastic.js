@@ -5,6 +5,8 @@
     <code>MatchQuery</code> type.
   
     @name ejs.MatchQuery
+    @borrows ejs.QueryMixin._type as _type
+    @borrows ejs.QueryMixin.toJSON as toJSON
 
     @desc
     A Query that appects text, analyzes it, generates internal query based
@@ -15,36 +17,15 @@
     */
   ejs.MatchQuery = function (field, qstr) {
 
-    /**
-         The internal query object. <code>Use get()</code>
-         @member ejs.MatchQuery
-         @property {Object} query
-         */
-    var query = {
-      match: {}
-    };
+    var
+      _common = ejs.QueryMixin('match'),
+      query = _common.toJSON();
     
     query.match[field] = {
       query: qstr
     };
 
-    return {
-
-      /**
-            Sets the boost value for documents matching the <code>Query</code>.
-
-            @member ejs.MatchQuery
-            @param {Number} boost A positive <code>double</code> value.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      boost: function (boost) {
-        if (boost == null) {
-          return query.match[field].boost;
-        }
-
-        query.match[field].boost = boost;
-        return this;
-      },
+    return extend(_common, {
 
       /**
             Sets the query string for the <code>Query</code>.
@@ -368,26 +349,22 @@
         
         return this;
       },
-
-      /**
-            The type of ejs object.  For internal use only.
-            
-            @member ejs.MatchQuery
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'query';
-      },
       
       /**
-            Retrieves the internal <code>query</code> object. This is typically used by
-            internal API functions so use with caution.
+            Sets the boost value for documents matching the <code>Query</code>.
 
             @member ejs.MatchQuery
-            @returns {String} returns this object's internal <code>query</code> property.
+            @param {Number} boost A positive <code>double</code> value.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
             */
-      toJSON: function () {
-        return query;
-      }
-    };
+      boost: function (boost) {
+        if (boost == null) {
+          return query.match[field].boost;
+        }
+
+        query.match[field].boost = boost;
+        return this;
+      },
+
+    });
   };

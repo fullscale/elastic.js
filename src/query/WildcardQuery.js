@@ -9,6 +9,8 @@
     maps to Lucene WildcardQuery.</p>
 
     @name ejs.WildcardQuery
+    @borrows ejs.QueryMixin._type as _type
+    @borrows ejs.QueryMixin.toJSON as toJSON
 
     @desc
     A Query that matches documents containing a wildcard. This may be
@@ -19,20 +21,15 @@
     */
   ejs.WildcardQuery = function (field, value) {
 
-    /**
-         The internal query object. <code>Use get()</code>
-         @member ejs.WildcardQuery
-         @property {Object} query
-         */
-    var query = {
-      wildcard: {}
-    };
+    var
+      _common = ejs.QueryMixin('wildcard'),
+      query = _common.toJSON();
 
     query.wildcard[field] = {
       value: value
     };
 
-    return {
+    return extend(_common, {
 
       /**
             Sets the fields to query against.
@@ -133,27 +130,7 @@
 
         query.wildcard[field].boost = boost;
         return this;
-      },
-
-      /**
-            The type of ejs object.  For internal use only.
-            
-            @member ejs.WildcardQuery
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'query';
-      },
-      
-      /**
-            Retrieves the internal <code>query</code> object. This is typically used by
-            internal API functions so use with caution.
-
-            @member ejs.WildcardQuery
-            @returns {String} returns this object's internal <code>query</code> property.
-            */
-      toJSON: function () {
-        return query;
       }
-    };
+      
+    });
   };

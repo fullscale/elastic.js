@@ -6,6 +6,9 @@
     is executed on an index that does not match the listed indices.</p>
 
     @name ejs.IndicesQuery
+    @borrows ejs.QueryMixin.boost as boost
+    @borrows ejs.QueryMixin._type as _type
+    @borrows ejs.QueryMixin.toJSON as toJSON
 
     @desc
     A configurable query that is dependent on the index name.
@@ -20,16 +23,11 @@
       throw new TypeError('Argument must be a Query');
     }
     
-    /**
-         The internal query object. <code>Use toJSON()</code>
-         @member ejs.IndicesQuery
-         @property {Object} query
-         */
-    var query = {
-      indices: {
-        query: qry.toJSON()
-      }
-    };
+    var 
+      _common = ejs.QueryMixin('indices'),
+      query = _common.toJSON();
+    
+    query.indices.query = qry.toJSON();
 
     if (isString(indices)) {
       query.indices.indices = [indices];
@@ -39,7 +37,7 @@
       throw new TypeError('Argument must be a string or array');
     }
   
-    return {
+    return extend(_common, {
 
       /**
             Sets the indicies the query should match.  When passed a string,
@@ -112,43 +110,7 @@
         }
       
         return this;
-      },
-    
-      /**
-            Sets the boost value of the <code>Query</code>.
-
-            @member ejs.IndicesQuery
-            @param {Double} boost A positive <code>double</code> value.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      boost: function (boost) {
-        if (boost == null) {
-          return query.indices.boost;
-        }
-
-        query.indices.boost = boost;
-        return this;
-      },
-
-      /**
-            The type of ejs object.  For internal use only.
-            
-            @member ejs.IndicesQuery
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'query';
-      },
-      
-      /**
-            Retrieves the internal <code>query</code> object. This is typically used by
-            internal API functions so use with caution.
-
-            @member ejs.IndicesQuery
-            @returns {String} returns this object's internal <code>query</code> property.
-            */
-      toJSON: function () {
-        return query;
       }
-    };
+      
+    });
   };

@@ -5,6 +5,9 @@
     _uid field.</p>
 
     @name ejs.IdsQuery
+    @borrows ejs.QueryMixin.boost as boost
+    @borrows ejs.QueryMixin._type as _type
+    @borrows ejs.QueryMixin.toJSON as toJSON
 
     @desc
     Matches documents with the specified id(s).
@@ -13,14 +16,9 @@
     */
   ejs.IdsQuery = function (ids) {
 
-    /**
-         The internal query object. <code>Use get()</code>
-         @member ejs.IdsQuery
-         @property {Object} query
-         */
-    var query = {
-      ids: {}
-    };
+    var
+      _common = ejs.QueryMixin('ids'),
+      query = _common.toJSON();
     
     if (isString(ids)) {
       query.ids.values = [ids];
@@ -30,7 +28,7 @@
       throw new TypeError('Argument must be string or array');
     }
 
-    return {
+    return extend(_common, {
 
       /**
             Sets the values array or adds a new value. if val is a string, it
@@ -85,43 +83,7 @@
         }
         
         return this;
-      },
-
-      /**
-            Sets the boost value of the <code>Query</code>.
-
-            @member ejs.IdsQuery
-            @param {Double} boost A positive <code>double</code> value.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      boost: function (boost) {
-        if (boost == null) {
-          return query.ids.boost;
-        }
-
-        query.ids.boost = boost;
-        return this;
-      },
-
-      /**
-            The type of ejs object.  For internal use only.
-            
-            @member ejs.IdsQuery
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'query';
-      },
-      
-      /**
-            Retrieves the internal <code>query</code> object. This is typically used by
-            internal API functions so use with caution.
-
-            @member ejs.IdsQuery
-            @returns {String} returns this object's internal <code>query</code> property.
-            */
-      toJSON: function () {
-        return query;
       }
-    };
+      
+    });
   };

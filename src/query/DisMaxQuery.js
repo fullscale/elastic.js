@@ -6,6 +6,9 @@
     subqueries.
 
     @name ejs.DisMaxQuery
+    @borrows ejs.QueryMixin.boost as boost
+    @borrows ejs.QueryMixin._type as _type
+    @borrows ejs.QueryMixin.toJSON as toJSON
 
     @desc
     A query that generates the union of documents produced by its subqueries such
@@ -14,16 +17,11 @@
     */
   ejs.DisMaxQuery = function () {
 
-    /**
-         The internal query object. <code>Use toJSON()</code>
-         @member ejs.DisMaxQuery
-         @property {Object} query
-         */
-    var query = {
-      dis_max: {}
-    };
+    var
+      _common = ejs.QueryMixin('dis_max'),
+      query = _common.toJSON();
 
-    return {
+    return extend(_common, {
 
       /**
             Updates the queries.  If passed a single Query, it is added to the
@@ -64,23 +62,6 @@
       },
 
       /**
-            Sets the boost value of the <code>Query</code>.  Default: 1.0.
-
-            @member ejs.DisMaxQuery
-            @param {Double} boost A positive <code>double</code> value.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      boost: function (boost) {
-        if (boost == null) {
-          return query.dis_max.boost;
-        }
-
-        query.dis_max.boost = boost;
-        return this;
-      },
-
-
-      /**
             <p>The tie breaker value.</p>  
 
             <p>The tie breaker capability allows results that include the same term in multiple 
@@ -101,28 +82,8 @@
 
         query.dis_max.tie_breaker = tieBreaker;
         return this;
-      },
-
-      /**
-            The type of ejs object.  For internal use only.
-            
-            @member ejs.DisMaxQuery
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'query';
-      },
-      
-      /**
-            Retrieves the internal <code>query</code> object. This is typically used by
-            internal API functions so use with caution.
-
-            @member ejs.DisMaxQuery
-            @returns {String} returns this object's internal <code>query</code> property.
-            */
-      toJSON: function () {
-        return query;
       }
-    };
+      
+    });
   };
   

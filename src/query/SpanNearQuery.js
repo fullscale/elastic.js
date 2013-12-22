@@ -4,6 +4,9 @@
     distance from each other.</p>
 
     @name ejs.SpanNearQuery
+    @borrows ejs.QueryMixin.boost as boost
+    @borrows ejs.QueryMixin._type as _type
+    @borrows ejs.QueryMixin.toJSON as toJSON
 
     @desc
     Matches spans which are near one another.
@@ -14,18 +17,14 @@
     */
   ejs.SpanNearQuery = function (clauses, slop) {
 
-    /**
-         The internal query object. <code>Use toJSON()</code>
-         @member ejs.SpanNearQuery
-         @property {Object} query
-         */
-    var i, len,
-      query = {
-        span_near: {
-          clauses: [],
-          slop: slop
-        }
-      };
+    var 
+      i, 
+      len,
+      _common = ejs.QueryMixin('span_near'),
+      query = _common.toJSON();
+    
+    query.span_near.clauses = [];
+    query.span_near.slop = slop;
     
     if (isQuery(clauses)) {
       query.span_near.clauses.push(clauses.toJSON());
@@ -41,7 +40,7 @@
       throw new TypeError('Argument must be SpanQuery or array of SpanQueries');
     }
 
-    return {
+    return extend(_common, {
 
       /**
             Sets the clauses used.  If passed a single SpanQuery, it is added
@@ -124,43 +123,7 @@
       
         query.span_near.collect_payloads = trueFalse;
         return this;
-      },
-
-      /**
-            Sets the boost value of the <code>Query</code>.
-
-            @member ejs.SpanNearQuery
-            @param {Double} boost A positive <code>double</code> value.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      boost: function (boost) {
-        if (boost == null) {
-          return query.span_near.boost;
-        }
-
-        query.span_near.boost = boost;
-        return this;
-      },
-
-      /**
-            The type of ejs object.  For internal use only.
-            
-            @member ejs.SpanNearQuery
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'query';
-      },
-      
-      /**
-            Retrieves the internal <code>query</code> object. This is typically used by
-            internal API functions so use with caution.
-
-            @member ejs.SpanNearQuery
-            @returns {String} returns this object's internal <code>query</code> property.
-            */
-      toJSON: function () {
-        return query;
       }
-    };
+      
+    });
   };

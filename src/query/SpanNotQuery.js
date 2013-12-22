@@ -4,6 +4,9 @@
     The span not query maps to Lucene SpanNotQuery.</p>
 
     @name ejs.SpanNotQuery
+    @borrows ejs.QueryMixin.boost as boost
+    @borrows ejs.QueryMixin._type as _type
+    @borrows ejs.QueryMixin.toJSON as toJSON
 
     @desc
     Removes matches which overlap with another span query.
@@ -18,19 +21,14 @@
       throw new TypeError('Argument must be a SpanQuery');
     }
     
-    /**
-         The internal query object. <code>Use toJSON()</code>
-         @member ejs.SpanNotQuery
-         @property {Object} query
-         */
-    var query = {
-      span_not: {
-        include: includeQry.toJSON(),
-        exclude: excludeQry.toJSON()
-      }
-    };
+    var
+      _common = ejs.QueryMixin('span_not'),
+      query = _common.toJSON();
+    
+    query.span_not.include = includeQry.toJSON();
+    query.span_not.exclude = excludeQry.toJSON();
 
-    return {
+    return extend(_common, {
 
       /**
             Set the span query whose matches are filtered.
@@ -70,43 +68,7 @@
         
         query.span_not.exclude = spanQuery.toJSON();
         return this;
-      },
-
-      /**
-            Sets the boost value of the <code>Query</code>.
-
-            @member ejs.SpanNotQuery
-            @param {Double} boost A positive <code>double</code> value.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      boost: function (boost) {
-        if (boost == null) {
-          return query.span_not.boost;
-        }
-
-        query.span_not.boost = boost;
-        return this;
-      },
-
-      /**
-            The type of ejs object.  For internal use only.
-            
-            @member ejs.SpanNotQuery
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'query';
-      },
-      
-      /**
-            Retrieves the internal <code>query</code> object. This is typically used by
-            internal API functions so use with caution.
-
-            @member ejs.SpanNotQuery
-            @returns {String} returns this object's internal <code>query</code> property.
-            */
-      toJSON: function () {
-        return query;
       }
-    };
+      
+    });
   };

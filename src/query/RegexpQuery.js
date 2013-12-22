@@ -5,6 +5,8 @@
     index terms.</p>
 
     @name ejs.RegexpQuery
+    @borrows ejs.QueryMixin._type as _type
+    @borrows ejs.QueryMixin.toJSON as toJSON
 
     @desc
     Matches documents that have fields matching a regular expression.
@@ -14,20 +16,15 @@
     */
   ejs.RegexpQuery = function (field, value) {
 
-    /**
-         The internal query object. <code>Use get()</code>
-         @member ejs.RegexpQuery
-         @property {Object} query
-         */
-    var query = {
-      regexp: {}
-    };
+    var
+      _common = ejs.QueryMixin('regexp'),
+      query = _common.toJSON();
 
     query.regexp[field] = {
       value: value
     };
 
-    return {
+    return extend(_common, {
 
       /**
              The field to run the query against.
@@ -173,27 +170,7 @@
 
         query.regexp[field].boost = boost;
         return this;
-      },
-
-      /**
-            The type of ejs object.  For internal use only.
-          
-            @member ejs.RegexpQuery
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'query';
-      },
-    
-      /**
-            Retrieves the internal <code>query</code> object. This is typically used by
-            internal API functions so use with caution.
-
-            @member ejs.RegexpQuery
-            @returns {String} returns this object's internal <code>query</code> property.
-            */
-      toJSON: function () {
-        return query;
       }
-    };
+      
+    });
   };

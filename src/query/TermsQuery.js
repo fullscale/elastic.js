@@ -5,6 +5,9 @@
     in the should clauses.</p>
 
     @name ejs.TermsQuery
+    @borrows ejs.QueryMixin.boost as boost
+    @borrows ejs.QueryMixin._type as _type
+    @borrows ejs.QueryMixin.toJSON as toJSON
 
     @desc
     A Query that matches documents containing provided terms. 
@@ -14,14 +17,9 @@
     */
   ejs.TermsQuery = function (field, terms) {
 
-    /**
-         The internal query object. <code>Use get()</code>
-         @member ejs.TermsQuery
-         @property {Object} query
-         */
-    var query = {
-      terms: {}
-    };
+    var
+      _common = ejs.QueryMixin('terms'),
+      query = _common.toJSON();
     
     if (isString(terms)) {
       query.terms[field] = [terms];
@@ -31,7 +29,7 @@
       throw new TypeError('Argument must be string or array');
     }
     
-    return {
+    return extend(_common, {
 
       /**
             Sets the fields to query against.
@@ -111,43 +109,7 @@
 
         query.terms.disable_coord = trueFalse;
         return this;
-      },
-            
-      /**
-            Sets the boost value for documents matching the <code>Query</code>.
-
-            @member ejs.TermsQuery
-            @param {Number} boost A positive <code>double</code> value.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      boost: function (boost) {
-        if (boost == null) {
-          return query.terms.boost;
-        }
-
-        query.terms.boost = boost;
-        return this;
-      },
-
-      /**
-            The type of ejs object.  For internal use only.
-            
-            @member ejs.TermsQuery
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'query';
-      },
-      
-      /**
-            Retrieves the internal <code>query</code> object. This is typically used by
-            internal API functions so use with caution.
-
-            @member ejs.TermsQuery
-            @returns {String} returns this object's internal <code>query</code> property.
-            */
-      toJSON: function () {
-        return query;
       }
-    };
+      
+    });
   };

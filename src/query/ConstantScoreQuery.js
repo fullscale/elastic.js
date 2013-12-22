@@ -12,6 +12,9 @@
     queryNorm, but maintain the same relevance.</p>
 
     @name ejs.ConstantScoreQuery
+    @borrows ejs.QueryMixin.boost as boost
+    @borrows ejs.QueryMixin._type as _type
+    @borrows ejs.QueryMixin.toJSON as toJSON
 
     @desc
     <p>Constructs a query where each documents returned by the internal
@@ -20,16 +23,11 @@
      */
   ejs.ConstantScoreQuery = function () {
 
-    /**
-         The internal Query object. Use <code>toJSON()</code>.
-         @member ejs.ConstantScoreQuery
-         @property {Object} query
-         */
-    var query = {
-      constant_score: {}
-    };
+    var
+      _common = ejs.QueryMixin('constant_score'),
+      query = _common.toJSON();
 
-    return {
+    return extend(_common, {
       /**
              Adds the query to apply a constant score to.
 
@@ -100,43 +98,7 @@
 
         query.constant_score._cache_key = k;
         return this;
-      },
-      
-      /**
-            Sets the boost value of the <code>Query</code>.
-
-            @member ejs.ConstantScoreQuery
-            @param {Double} boost A positive <code>double</code> value.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      boost: function (boost) {
-        if (boost == null) {
-          return query.constant_score.boost;
-        }
-
-        query.constant_score.boost = boost;
-        return this;
-      },
-
-      /**
-            The type of ejs object.  For internal use only.
-            
-            @member ejs.ConstantScoreQuery
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'query';
-      },
-      
-      /**
-            This method is used to retrieve the raw query object. It's designed
-            for internal use when composing and serializing queries.
-            
-            @member ejs.ConstantScoreQuery
-            @returns {Object} Returns the object's <em>query</em> property.
-            */
-      toJSON: function () {
-        return query;
       }
-    };
+      
+    });
   };

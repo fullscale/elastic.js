@@ -5,6 +5,9 @@
     doc (numeric ones) using script expression.</p>
 
     @name ejs.CustomScoreQuery
+    @borrows ejs.QueryMixin.boost as boost
+    @borrows ejs.QueryMixin._type as _type
+    @borrows ejs.QueryMixin.toJSON as toJSON
 
     @desc
     Scores a query based on a script.
@@ -18,16 +21,11 @@
       throw new TypeError('Argument must be a Query or Filter');
     }
     
-    /**
-         The internal query object. <code>Use toJSON()</code>
-         @member ejs.CustomScoreQuery
-         @property {Object} query
-         */
-    var query = {
-      custom_score: {
-        script: script
-      }
-    };
+    var 
+      _common = ejs.QueryMixin('custom_score'),
+      query = _common.toJSON();
+    
+    query.custom_score.script = script;
 
     if (isQuery(qry)) {
       query.custom_score.query = qry.toJSON();
@@ -35,7 +33,7 @@
       query.custom_score.filter = qry.toJSON();
     }
     
-    return {
+    return extend(_common, {
 
       /**
             Sets the query to apply the custom score to.
@@ -125,43 +123,7 @@
 
         query.custom_score.lang = l;
         return this;
-      },
-    
-      /**
-            Sets the boost value of the <code>Query</code>.
-
-            @member ejs.CustomScoreQuery
-            @param {Double} boost A positive <code>double</code> value.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      boost: function (boost) {
-        if (boost == null) {
-          return query.custom_score.boost;
-        }
-
-        query.custom_score.boost = boost;
-        return this;
-      },
-
-      /**
-            The type of ejs object.  For internal use only.
-            
-            @member ejs.CustomScoreQuery
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'query';
-      },
-      
-      /**
-            Retrieves the internal <code>query</code> object. This is typically used by
-            internal API functions so use with caution.
-
-            @member ejs.CustomScoreQuery
-            @returns {String} returns this object's internal <code>query</code> property.
-            */
-      toJSON: function () {
-        return query;
       }
-    };
+      
+    });
   };

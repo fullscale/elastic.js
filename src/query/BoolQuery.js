@@ -5,6 +5,9 @@
     for documents containing the terms <code>javascript</code> and <code>python</code>.</p>
 
     @name ejs.BoolQuery
+    @borrows ejs.QueryMixin.boost as boost
+    @borrows ejs.QueryMixin._type as _type
+    @borrows ejs.QueryMixin.toJSON as toJSON
 
     @desc
     A Query that matches documents matching boolean combinations of other
@@ -13,16 +16,11 @@
     */
   ejs.BoolQuery = function () {
 
-    /**
-         The internal query object. <code>Use toJSON()</code>
-         @member ejs.BoolQuery
-         @property {Object} query
-         */
-    var query = {
-      bool: {}
-    };
+    var
+      _common = ejs.QueryMixin('bool'),
+      query = _common.toJSON();
 
-    return {
+    return extend(_common, {
 
       /**
              Adds query to boolean container. Given query "must" appear in matching documents.
@@ -133,22 +131,6 @@
       },
 
       /**
-            Sets the boost value for documents matching the <code>Query</code>.
-
-            @member ejs.BoolQuery
-            @param {Double} boost A positive <code>double</code> value.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      boost: function (boost) {
-        if (boost == null) {
-          return query.bool.boost;
-        }
-
-        query.bool.boost = boost;
-        return this;
-      },
-
-      /**
             Sets if the <code>Query</code> should be enhanced with a
             <code>MatchAllQuery</code> in order to act as a pure exclude when
             only negative (mustNot) clauses exist. Default: true.
@@ -205,27 +187,7 @@
 
         query.bool.minimum_number_should_match = minMatch;
         return this;
-      },
-
-      /**
-            The type of ejs object.  For internal use only.
-            
-            @member ejs.BoolQuery
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'query';
-      },
-      
-      /**
-            Retrieves the internal <code>query</code> object. This is typically used by
-            internal API functions so use with caution.
-
-            @member ejs.BoolQuery
-            @returns {String} returns this object's internal <code>query</code> property.
-            */
-      toJSON: function () {
-        return query;
       }
-    };
+      
+    });
   };

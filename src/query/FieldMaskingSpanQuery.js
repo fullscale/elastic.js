@@ -7,6 +7,9 @@
     the real field used in the wrapped span query.</p>
 
     @name ejs.FieldMaskingSpanQuery
+    @borrows ejs.QueryMixin.boost as boost
+    @borrows ejs.QueryMixin._type as _type
+    @borrows ejs.QueryMixin.toJSON as toJSON
 
     @desc
     Wraps a SpanQuery and hides the real field being searched across.
@@ -21,19 +24,14 @@
       throw new TypeError('Argument must be a SpanQuery');
     }
   
-    /**
-         The internal query object. <code>Use toJSON()</code>
-         @member ejs.FieldMaskingSpanQuery
-         @property {Object} query
-         */
-    var query = {
-      field_masking_span: {
-        query: spanQry.toJSON(),
-        field: field
-      }
-    };
+    var 
+      _common = ejs.QueryMixin('field_masking_span'),
+      query = _common.toJSON();
+    
+    query.field_masking_span.query = spanQry.toJSON();
+    query.field_masking_span.field = field;
 
-    return {
+    return extend(_common, {
 
       /**
             Sets the span query to wrap.
@@ -69,43 +67,7 @@
     
         query.field_masking_span.field = f;
         return this;
-      },
-
-      /**
-            Sets the boost value of the <code>Query</code>.
-
-            @member ejs.FieldMaskingSpanQuery
-            @param {Double} boost A positive <code>double</code> value.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      boost: function (boost) {
-        if (boost == null) {
-          return query.field_masking_span.boost;
-        }
-
-        query.field_masking_span.boost = boost;
-        return this;
-      },
-
-      /**
-            The type of ejs object.  For internal use only.
-            
-            @member ejs.FieldMaskingSpanQuery
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'query';
-      },
-      
-      /**
-            Retrieves the internal <code>query</code> object. This is typically used by
-            internal API functions so use with caution.
-
-            @member ejs.FieldMaskingSpanQuery
-            @returns {String} returns this object's internal <code>query</code> property.
-            */
-      toJSON: function () {
-        return query;
       }
-    };
+      
+    });
   };

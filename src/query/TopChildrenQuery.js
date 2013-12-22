@@ -9,6 +9,9 @@
     specify max, sum or avg as the score type.</p>
 
     @name ejs.TopChildrenQuery
+    @borrows ejs.QueryMixin.boost as boost
+    @borrows ejs.QueryMixin._type as _type
+    @borrows ejs.QueryMixin.toJSON as toJSON
 
     @desc
     Returns child documents matching the query aggregated into the parent docs.
@@ -22,19 +25,14 @@
       throw new TypeError('Argument must be a Query');
     }
     
-    /**
-         The internal query object. <code>Use toJSON()</code>
-         @member ejs.TopChildrenQuery
-         @property {Object} query
-         */
-    var query = {
-      top_children: {
-        query: qry.toJSON(),
-        type: type
-      }
-    };
+    var 
+      _common = ejs.QueryMixin('top_children'),
+      query = _common.toJSON();
+    
+    query.top_children.query = qry.toJSON();
+    query.top_children.type = type;
 
-    return {
+    return extend(_common, {
 
       /**
             Sets the query
@@ -162,43 +160,7 @@
 
         query.top_children.incremental_factor = f;
         return this;
-      },
-        
-      /**
-            Sets the boost value of the <code>Query</code>.
-
-            @member ejs.TopChildrenQuery
-            @param {Double} boost A positive <code>double</code> value.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      boost: function (boost) {
-        if (boost == null) {
-          return query.top_children.boost;
-        }
-
-        query.top_children.boost = boost;
-        return this;
-      },
-
-      /**
-            The type of ejs object.  For internal use only.
-            
-            @member ejs.TopChildrenQuery
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'query';
-      },
-      
-      /**
-            Retrieves the internal <code>query</code> object. This is typically used by
-            internal API functions so use with caution.
-
-            @member ejs.TopChildrenQuery
-            @returns {String} returns this object's internal <code>query</code> property.
-            */
-      toJSON: function () {
-        return query;
       }
-    };
+      
+    });
   };

@@ -14,7 +14,8 @@
     across domains without specialized stopword files.</p>
   
     @name ejs.CommonTermsQuery
-    @since elasticsearch 0.90
+    @borrows ejs.QueryMixin._type as _type
+    @borrows ejs.QueryMixin.toJSON as toJSON
   
     @desc
     A query that executes high-frequency terms in a optional sub-query.
@@ -24,14 +25,9 @@
     */
   ejs.CommonTermsQuery = function (field, qstr) {
 
-    /**
-         The internal query object. <code>Use get()</code>
-         @member ejs.CommonTermsQuery
-         @property {Object} query
-         */
-    var query = {
-      common: {}
-    };
+    var
+      _common = ejs.QueryMixin('common'),
+      query = _common.toJSON();
   
     // support for full Builder functionality where no constructor is used
     // use dummy field until one is set
@@ -46,7 +42,7 @@
       query.common[field].query = qstr;
     }
   
-    return {
+    return extend(_common, {
 
       /**
             Sets the field to query against.
@@ -245,27 +241,7 @@
 
         query.common[field].boost = boost;
         return this;
-      },
-
-      /**
-            The type of ejs object.  For internal use only.
-          
-            @member ejs.CommonTermsQuery
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'query';
-      },
-    
-      /**
-            Retrieves the internal <code>query</code> object. This is typically used by
-            internal API functions so use with caution.
-
-            @member ejs.CommonTermsQuery
-            @returns {String} returns this object's internal <code>query</code> property.
-            */
-      toJSON: function () {
-        return query;
       }
-    };
+
+    });
   };

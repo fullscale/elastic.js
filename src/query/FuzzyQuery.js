@@ -10,6 +10,8 @@
     of "2", the query will search for values between "10" and "14".</p>
 
     @name ejs.FuzzyQuery
+    @borrows ejs.QueryMixin._type as _type
+    @borrows ejs.QueryMixin.toJSON as toJSON
 
     @desc
     <p>Constructs a query where each documents returned are “like” provided text</p>
@@ -20,20 +22,15 @@
      */
   ejs.FuzzyQuery = function (field, value) {
 
-    /**
-         The internal Query object. Use <code>get()</code>.
-         @member ejs.FuzzyQuery
-         @property {Object} query
-         */
-    var query = {
-      fuzzy: {}
-    };
+    var
+      _common = ejs.QueryMixin('fuzzy'),
+      query = _common.toJSON();
 
     query.fuzzy[field] = {
       value: value
     };
 
-    return {
+    return extend(_common, {
 
       /**
              <p>The field to run the query against.</p>
@@ -202,27 +199,7 @@
 
         query.fuzzy[field].boost = boost;
         return this;
-      },
-
-      /**
-            <p>The type of ejs object.  For internal use only.</p>
-            
-            @member ejs.FuzzyQuery
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'query';
-      },
-      
-      /**
-            <p>This method is used to retrieve the raw query object. It's designed
-            for internal use when composing and serializing queries.</p>
-
-            @member ejs.FuzzyQuery
-            @returns {Object} Returns the object's <em>query</em> property.
-            */
-      toJSON: function () {
-        return query;
       }
-    };
+      
+    });
   };

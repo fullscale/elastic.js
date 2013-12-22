@@ -4,6 +4,9 @@
     running it against one or more fields.</p>
 
     @name ejs.MoreLikeThisQuery
+    @borrows ejs.QueryMixin.boost as boost
+    @borrows ejs.QueryMixin._type as _type
+    @borrows ejs.QueryMixin.toJSON as toJSON
 
     @desc
     <p>Constructs a query where each documents returned are “like” provided text</p>
@@ -14,17 +17,12 @@
      */
   ejs.MoreLikeThisQuery = function (fields, likeText) {
 
-    /**
-         The internal Query object. Use <code>get()</code>.
-         @member ejs.MoreLikeThisQuery
-         @property {Object} query
-         */
-    var query = {
-      mlt: {
-        like_text: likeText,
-        fields: []
-      }
-    };
+    var 
+      _common = ejs.QueryMixin('mlt'),
+      query = _common.toJSON();
+    
+    query.mlt.like_text = likeText;
+    query.mlt.fields = [];
 
     if (isString(fields)) {
       query.mlt.fields.push(fields);
@@ -34,7 +32,7 @@
       throw new TypeError('Argument must be string or array');
     }
     
-    return {
+    return extend(_common, {
   
       /**
              The fields to run the query against.  If you call with a single field,
@@ -266,42 +264,7 @@
   
         query.mlt.fail_on_unsupported_field = trueFalse;
         return this;
-      },
-                   
-      /**
-            Sets the boost value of the <code>Query</code>.
-
-            @member ejs.MoreLikeThisQuery
-            @param {Double} boost A positive <code>double</code> value.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      boost: function (boost) {
-        if (boost == null) {
-          return query.mlt.boost;
-        }
-
-        query.mlt.boost = boost;
-        return this;
-      },
-
-      /**
-            The type of ejs object.  For internal use only.
-            
-            @member ejs.MoreLikeThisQuery
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'query';
-      },
-      
-      /**
-            This method is used to retrieve the raw query object. It's designed
-            for internal use when composing and serializing queries.
-            @member ejs.MoreLikeThisQuery
-            @returns {Object} Returns the object's <em>query</em> property.
-            */
-      toJSON: function () {
-        return query;
       }
-    };
+      
+    });
   };
