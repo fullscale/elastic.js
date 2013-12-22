@@ -26,17 +26,10 @@
 
   
     var
-
-    // common suggester options used in this generator
-    _common = ejs.DirectSettingsMixin(),
   
-    /**
-        The internal generator object.
-        @member ejs.DirectGenerator
-        @property {Object} suggest
-        */
-    generator = _common.toJSON();
-
+    generator = {},
+    _common = ejs.DirectSettingsMixin(generator);
+    
     return extend(_common, {
 
       /**

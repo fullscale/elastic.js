@@ -14147,17 +14147,10 @@
 
   
     var
-
-    // common suggester options used in this generator
-    _common = ejs.DirectSettingsMixin(),
   
-    /**
-        The internal generator object.
-        @member ejs.DirectGenerator
-        @property {Object} suggest
-        */
-    generator = _common.toJSON();
-
+    generator = {},
+    _common = ejs.DirectSettingsMixin(generator);
+    
     return extend(_common, {
 
       /**
@@ -14258,14 +14251,7 @@
 
     @name ejs.DirectSettingsMixin
     */
-  ejs.DirectSettingsMixin = function () {
-
-    /**
-        The internal settings object.
-        @member ejs.DirectSettingsMixin
-        @property {Object} settings
-        */
-    var settings = {};
+  ejs.DirectSettingsMixin = function (settings) {
 
     return {
         
@@ -14467,18 +14453,8 @@
   
         settings.min_doc_freq = min;
         return this;
-      },
-  
-      /**
-            <p>Retrieves the internal <code>settings</code> object. This is typically used by
-               internal API functions so use with caution.</p>
-
-            @member ejs.DirectSettingsMixin
-            @returns {String} returns this object's internal <code>settings</code> property.
-            */
-      toJSON: function () {
-        return settings;
       }
+      
     };
   };
 
@@ -14501,97 +14477,15 @@
     */
   ejs.PhraseSuggester = function (name) {
 
-    /**
-        The internal suggest object.
-        @member ejs.PhraseSuggester
-        @property {Object} suggest
-        */
-    var suggest = {};
-    suggest[name] = {phrase: {}};
-
-    return {
-
-      /**
-            <p>Sets the text to get suggestions for.  If not set, the global
-            suggestion text will be used.</p>
-
-            @member ejs.PhraseSuggester
-            @param {String} txt A string to get suggestions for.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      text: function (txt) {
-        if (txt == null) {
-          return suggest[name].text;
-        }
-    
-        suggest[name].text = txt;
-        return this;
-      },
-
-      /**
-            <p>Sets analyzer used to analyze the suggest text.</p>
-
-            @member ejs.PhraseSuggester
-            @param {String} analyzer A valid analyzer name.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      analyzer: function (analyzer) {
-        if (analyzer == null) {
-          return suggest[name].phrase.analyzer;
-        }
-    
-        suggest[name].phrase.analyzer = analyzer;
-        return this;
-      },
+    var
+      _context,
+      _common = ejs.SuggesterMixin(name),
+      suggest = _common.toJSON();
       
-      /**
-            <p>Sets the field used to generate suggestions from.</p>
-
-            @member ejs.PhraseSuggester
-            @param {String} field A valid field name.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      field: function (field) {
-        if (field == null) {
-          return suggest[name].phrase.field;
-        }
+    suggest[name].phrase = {};
+    _context = ejs.SuggestContextMixin(suggest[name].phrase);
     
-        suggest[name].phrase.field = field;
-        return this;
-      },
-      
-      /**
-            <p>Sets the number of suggestions returned for each token.</p>
-
-            @member ejs.PhraseSuggester
-            @param {Integer} s A positive integer value.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      size: function (s) {
-        if (s == null) {
-          return suggest[name].phrase.size;
-        }
-    
-        suggest[name].phrase.size = s;
-        return this;
-      },
-      
-      /**
-            <p>Sets the maximum number of suggestions to be retrieved from 
-            each individual shard.</p>
-
-            @member ejs.PhraseSuggester
-            @param {Integer} s A positive integer value.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      shardSize: function (s) {
-        if (s == null) {
-          return suggest[name].phrase.shard_size;
-        }
-    
-        suggest[name].phrase.shard_size = s;
-        return this;
-      },
+    return extend(_common, _context, {
       
       /**
             <p>Sets the likelihood of a term being a misspelled even if the 
@@ -14847,28 +14741,143 @@
         }
 
         return this;
-      },
+      }
+      
+    });
+  };
 
+  /**
+    @mixin
+    <p>The SuggestContextMixin provides support for suggest context settings 
+    across various <code>Suggester</code> implementations.  This object should not be 
+    used directly.</p>
+
+    @name ejs.SuggestContextMixin
+    */
+  ejs.SuggestContextMixin = function (settings) {
+
+    return {
+    
+      /**
+            <p>Sets analyzer used to analyze the suggest text.</p>
+
+            @member ejs.SuggestContextMixin
+            @param {String} analyzer A valid analyzer name.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      analyzer: function (analyzer) {
+        if (analyzer == null) {
+          return settings.analyzer;
+        }
+  
+        settings.analyzer = analyzer;
+        return this;
+      },
+    
+      /**
+            <p>Sets the field used to generate suggestions from.</p>
+
+            @member ejs.SuggestContextMixin
+            @param {String} field A valid field name.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      field: function (field) {
+        if (field == null) {
+          return settings.field;
+        }
+  
+        settings.field = field;
+        return this;
+      },
+    
+      /**
+            <p>Sets the number of suggestions returned for each token.</p>
+
+            @member ejs.SuggestContextMixin
+            @param {Integer} s A positive integer value.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      size: function (s) {
+        if (s == null) {
+          return settings.size;
+        }
+  
+        settings.size = s;
+        return this;
+      },
+    
+      /**
+            <p>Sets the maximum number of suggestions to be retrieved from 
+            each individual shard.</p>
+
+            @member ejs.SuggestContextMixin
+            @param {Integer} s A positive integer value.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      shardSize: function (s) {
+        if (s == null) {
+          return settings.shard_size;
+        }
+  
+        settings.shard_size = s;
+        return this;
+      }
+      
+    };
+  };
+
+  /**
+    @mixin
+    <p>The SuggesterMixin provides support for the base setting of all suggesters. 
+    This object should not be used directly.</p>
+
+    @name ejs.SuggesterMixin
+    */
+  ejs.SuggesterMixin = function (name) {
+  
+    var suggest = {};
+    suggest[name] = {};
+
+    return {
+  
+      /**
+            <p>Sets the text to get suggestions for.  If not set, the global
+            suggestion text will be used.</p>
+
+            @member ejs.SuggesterMixin
+            @param {String} txt A string to get suggestions for.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      text: function (txt) {
+        if (txt == null) {
+          return suggest[name].text;
+        }
+  
+        suggest[name].text = txt;
+        return this;
+      },
+  
       /**
             The type of ejs object.  For internal use only.
-          
-            @member ejs.PhraseSuggester
+        
+            @member ejs.SuggesterMixin
             @returns {String} the type of object
             */
       _type: function () {
         return 'suggest';
       },
-    
+  
       /**
             <p>Retrieves the internal <code>suggest</code> object. This is typically used by
                internal API functions so use with caution.</p>
 
-            @member ejs.PhraseSuggester
+            @member ejs.SuggesterMixin
             @returns {String} returns this object's internal <code>suggest</code> property.
             */
       toJSON: function () {
         return suggest;
       }
+    
     };
   };
 
@@ -14887,6 +14896,9 @@
     @desc
     <p>A suggester that suggests terms based on edit distance.</p>
 
+    @borrows ejs.SuggesterMixin.text as text
+    @borrows ejs.SuggesterMixin._type as _type
+    @borrows ejs.SuggesterMixin.toJSON as toJSON
     @borrows ejs.DirectSettingsMixin.accuracy as accuracy
     @borrows ejs.DirectSettingsMixin.suggestMode as suggestMode
     @borrows ejs.DirectSettingsMixin.sort as sort
@@ -14897,129 +14909,26 @@
     @borrows ejs.DirectSettingsMixin.prefixLength as prefixLength
     @borrows ejs.DirectSettingsMixin.minWordLen as minWordLen
     @borrows ejs.DirectSettingsMixin.minDocFreq as minDocFreq
+    @borrows ejs.SuggestContextMixin.analyzer as analyzer
+    @borrows ejs.SuggestContextMixin.field as field
+    @borrows ejs.SuggestContextMixin.size as size
+    @borrows ejs.SuggestContextMixin.shardSize as shardSize
 
     @param {String} name The name which be used to refer to this suggester.
     */
   ejs.TermSuggester = function (name) {
 
-    /**
-        The internal suggest object.
-        @member ejs.TermSuggester
-        @property {Object} suggest
-        */
-    var suggest = {},
-  
-    // common suggester options
-    _common = ejs.DirectSettingsMixin();
+    var
+      _direct,
+      _context,
+      _common = ejs.SuggesterMixin(name),
+      suggest = _common.toJSON();  
     
-    // setup correct term suggestor format
-    suggest[name] = {term: _common.toJSON()};
+    suggest[name].term = {};
+    _direct = ejs.DirectSettingsMixin(suggest[name].term);
+    _context = ejs.SuggestContextMixin(suggest[name].term);
 
-    return extend(_common, {
-
-      /**
-            <p>Sets the text to get suggestions for.  If not set, the global
-            suggestion text will be used.</p>
-
-            @member ejs.TermSuggester
-            @param {String} txt A string to get suggestions for.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      text: function (txt) {
-        if (txt == null) {
-          return suggest[name].text;
-        }
-    
-        suggest[name].text = txt;
-        return this;
-      },
-    
-      /**
-            <p>Sets analyzer used to analyze the suggest text.</p>
-
-            @member ejs.TermSuggester
-            @param {String} analyzer A valid analyzer name.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      analyzer: function (analyzer) {
-        if (analyzer == null) {
-          return suggest[name].term.analyzer;
-        }
-    
-        suggest[name].term.analyzer = analyzer;
-        return this;
-      },
-      
-      /**
-            <p>Sets the field used to generate suggestions from.</p>
-
-            @member ejs.TermSuggester
-            @param {String} field A valid field name.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      field: function (field) {
-        if (field == null) {
-          return suggest[name].term.field;
-        }
-    
-        suggest[name].term.field = field;
-        return this;
-      },
-      
-      /**
-            <p>Sets the number of suggestions returned for each token.</p>
-
-            @member ejs.TermSuggester
-            @param {Integer} s A positive integer value.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      size: function (s) {
-        if (s == null) {
-          return suggest[name].term.size;
-        }
-    
-        suggest[name].term.size = s;
-        return this;
-      },
-      
-      /**
-            <p>Sets the maximum number of suggestions to be retrieved from 
-            each individual shard.</p>
-
-            @member ejs.TermSuggester
-            @param {Integer} s A positive integer value.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      shardSize: function (s) {
-        if (s == null) {
-          return suggest[name].term.shard_size;
-        }
-    
-        suggest[name].term.shard_size = s;
-        return this;
-      },
-
-      /**
-            The type of ejs object.  For internal use only.
-          
-            @member ejs.TermSuggester
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'suggest';
-      },
-    
-      /**
-            <p>Retrieves the internal <code>suggest</code> object. This is typically used by
-               internal API functions so use with caution.</p>
-
-            @member ejs.TermSuggester
-            @returns {String} returns this object's internal <code>suggest</code> property.
-            */
-      toJSON: function () {
-        return suggest;
-      }
-    });
+    return extend(_common, _direct, _context);
   };
 
   // run in noConflict mode

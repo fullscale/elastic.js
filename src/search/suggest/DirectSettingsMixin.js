@@ -6,14 +6,7 @@
 
     @name ejs.DirectSettingsMixin
     */
-  ejs.DirectSettingsMixin = function () {
-
-    /**
-        The internal settings object.
-        @member ejs.DirectSettingsMixin
-        @property {Object} settings
-        */
-    var settings = {};
+  ejs.DirectSettingsMixin = function (settings) {
 
     return {
         
@@ -215,17 +208,7 @@
   
         settings.min_doc_freq = min;
         return this;
-      },
-  
-      /**
-            <p>Retrieves the internal <code>settings</code> object. This is typically used by
-               internal API functions so use with caution.</p>
-
-            @member ejs.DirectSettingsMixin
-            @returns {String} returns this object's internal <code>settings</code> property.
-            */
-      toJSON: function () {
-        return settings;
       }
+      
     };
   };
