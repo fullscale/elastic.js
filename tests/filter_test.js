@@ -1273,7 +1273,7 @@ exports.filters = {
     expected.geo_distance.distance = 10;
     doTest();
     
-    geoDistanceFilter.point(point1),
+    geoDistanceFilter.point(point1);
     expected.geo_distance.location = point1.toJSON();
     doTest();
     
@@ -1380,7 +1380,7 @@ exports.filters = {
     expected.geo_distance_range.to = 30;
     doTest();
     
-    geoDistanceRangeFilter.point(point1),
+    geoDistanceRangeFilter.point(point1);
     expected.geo_distance_range.location = point1.toJSON();
     doTest();
     

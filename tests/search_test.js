@@ -28,7 +28,7 @@ exports.search = {
     done();
   },
   exists: function (test) {
-    test.expect(12);
+    test.expect(15);
 
     test.ok(ejs.Request, 'Request');
     test.ok(ejs.ScriptField, 'ScriptField');
@@ -41,6 +41,9 @@ exports.search = {
     test.ok(ejs.PhraseSuggester, 'PhraseSuggester');
     test.ok(ejs.DirectSettingsMixin, 'DirectSettingsMixin');
     test.ok(ejs.DirectGenerator, 'DirectGenerator');
+    test.ok(ejs.SuggesterMixin, 'SuggesterMixin');
+    test.ok(ejs.SuggestContextMixin, 'SuggestContextMixin');
+    test.ok(ejs.CompletionSuggester, 'CompletionSuggester');
     test.ok(ejs.Rescore, 'Rescore');
     
     test.done();
@@ -510,6 +513,81 @@ exports.search = {
     test.throws(function () {
       suggester.directGenerator([gen1, gen2, 'invalid']);
     }, TypeError);
+    
+    test.done();
+  },
+  CompletionSuggester: function (test) {
+    test.expect(17);
+    
+    var suggester = ejs.CompletionSuggester('suggester'),
+      expected,
+      doTest = function () {
+        test.deepEqual(suggester.toJSON(), expected);
+      };
+    
+    expected = {
+      suggester: {
+        completion: {}
+      }
+    };
+    
+    test.ok(suggester, 'CompletionSuggester exists');
+    test.ok(suggester.toJSON(), 'toJSON() works');
+    doTest();
+    
+    suggester.text('sugest termz');
+    expected.suggester.text = 'sugest termz';
+    doTest();
+    
+    suggester.analyzer('analyzer');
+    expected.suggester.completion.analyzer = 'analyzer';
+    doTest();
+    
+    suggester.field('f');
+    expected.suggester.completion.field = 'f';
+    doTest();
+    
+    suggester.size(5);
+    expected.suggester.completion.size = 5;
+    doTest();
+    
+    suggester.shardSize(100);
+    expected.suggester.completion.shard_size = 100;
+    doTest();
+    
+    suggester.fuzzy(true);
+    expected.suggester.completion.fuzzy = {};
+    doTest();
+    
+    suggester.fuzzy(false);
+    delete expected.suggester.completion.fuzzy;
+    doTest();
+    
+    suggester.transpositions(true);
+    expected.suggester.completion.fuzzy = {transpositions: true};
+    doTest();
+    
+    suggester.unicodeAware(false);
+    expected.suggester.completion.fuzzy.unicode_aware = false;
+    doTest();
+    
+    suggester.editDistance(4);
+    expected.suggester.completion.fuzzy.edit_distance = 4;
+    doTest();
+    
+    suggester.minLength(4);
+    expected.suggester.completion.fuzzy.min_length = 4;
+    doTest();
+    
+    suggester.prefixLength(2);
+    expected.suggester.completion.fuzzy.prefix_length = 2;
+    doTest();  
+    
+    suggester.fuzzy(false);
+    delete expected.suggester.completion.fuzzy;
+    doTest();
+    
+    test.strictEqual(suggester._type(), 'suggest');
     
     test.done();
   },
