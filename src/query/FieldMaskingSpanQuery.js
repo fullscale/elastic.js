@@ -7,6 +7,7 @@
     the real field used in the wrapped span query.</p>
 
     @name ejs.FieldMaskingSpanQuery
+    @ejs query
     @borrows ejs.QueryMixin.boost as boost
     @borrows ejs.QueryMixin._type as _type
     @borrows ejs.QueryMixin.toJSON as toJSON

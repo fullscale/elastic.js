@@ -20,6 +20,7 @@
     average IDF of the variants is used.</p>
 
     @name ejs.FuzzyLikeThisQuery
+    @ejs query
     @borrows ejs.QueryMixin.boost as boost
     @borrows ejs.QueryMixin._type as _type
     @borrows ejs.QueryMixin.toJSON as toJSON

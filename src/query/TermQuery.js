@@ -6,6 +6,7 @@
     often serve as the basis for more complex queries such as <em>Boolean</em> queries.</p>
 
     @name ejs.TermQuery
+    @ejs query
     @borrows ejs.QueryMixin._type as _type
     @borrows ejs.QueryMixin.toJSON as toJSON
 

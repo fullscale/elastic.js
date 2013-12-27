@@ -11,6 +11,7 @@
     caching (since it needs to satisfy different queries).</p>
   
     @name ejs.QueryFilter
+    @ejs filter
     @borrows ejs.FilterMixin.name as name
     @borrows ejs.FilterMixin.cache as cache
     @borrows ejs.FilterMixin.cacheKey as cacheKey

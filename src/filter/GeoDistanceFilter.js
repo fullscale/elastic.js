@@ -4,6 +4,7 @@
     point of origin. The format conforms with the GeoJSON specification.</p>
 
     @name ejs.GeoDistanceFilter
+    @ejs filter
     @borrows ejs.FilterMixin.name as name
     @borrows ejs.FilterMixin.cache as cache
     @borrows ejs.FilterMixin.cacheKey as cacheKey

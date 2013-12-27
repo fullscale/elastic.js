@@ -5,12 +5,7 @@
     <code>TermSuggester</code>.</p>
 
     @name ejs.DirectGenerator
-
-    @since elasticsearch 0.90
-  
-    @desc
-    <p>A candidate generator that generates terms based on edit distance.</p>
-
+    @ejs suggest
     @borrows ejs.DirectSettingsMixin.accuracy as accuracy
     @borrows ejs.DirectSettingsMixin.suggestMode as suggestMode
     @borrows ejs.DirectSettingsMixin.sort as sort
@@ -21,6 +16,12 @@
     @borrows ejs.DirectSettingsMixin.prefixLength as prefixLength
     @borrows ejs.DirectSettingsMixin.minWordLen as minWordLen
     @borrows ejs.DirectSettingsMixin.minDocFreq as minDocFreq
+
+    @since elasticsearch 0.90
+  
+    @desc
+    <p>A candidate generator that generates terms based on edit distance.</p>
+  
     */
   ejs.DirectGenerator = function () {
 

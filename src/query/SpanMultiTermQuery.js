@@ -5,6 +5,7 @@
     <code>Fuzzy, NumericRange, Prefix, Regex, Range, and Wildcard</code>.</p>
 
     @name ejs.SpanMultiTermQuery
+    @ejs query
     @borrows ejs.QueryMixin.boost as boost
     @borrows ejs.QueryMixin._type as _type
     @borrows ejs.QueryMixin.toJSON as toJSON

@@ -7,6 +7,7 @@
     by using multiple match queries within a bool query.
   
     @name ejs.MultiMatchQuery
+    @ejs query
     @borrows ejs.QueryMixin.boost as boost
     @borrows ejs.QueryMixin._type as _type
     @borrows ejs.QueryMixin.toJSON as toJSON

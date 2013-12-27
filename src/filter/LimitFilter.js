@@ -3,6 +3,7 @@
     <p>A limit filter limits the number of documents (per shard) to execute on.</p>
 
     @name ejs.LimitFilter
+    @ejs filter
     @borrows ejs.FilterMixin.name as name
     @borrows ejs.FilterMixin.cache as cache
     @borrows ejs.FilterMixin.cacheKey as cacheKey

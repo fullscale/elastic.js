@@ -4,6 +4,7 @@
     the specified lon and lat coordinates. The format conforms with the GeoJSON specification.</p>
 
     @name ejs.GeoBboxFilter
+    @ejs filter
     @borrows ejs.FilterMixin.name as name
     @borrows ejs.FilterMixin.cache as cache
     @borrows ejs.FilterMixin.cacheKey as cacheKey

@@ -6,6 +6,7 @@
     NumericRangeQuery.</p>
 
     @name ejs.RangeQuery
+    @ejs query
     @borrows ejs.QueryMixin._type as _type
     @borrows ejs.QueryMixin.toJSON as toJSON
 

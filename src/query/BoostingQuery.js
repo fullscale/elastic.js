@@ -6,6 +6,7 @@
     score.</p>
 
     @name ejs.BoostingQuery
+    @ejs query
     @borrows ejs.QueryMixin.boost as boost
     @borrows ejs.QueryMixin._type as _type
     @borrows ejs.QueryMixin.toJSON as toJSON

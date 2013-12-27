@@ -4,6 +4,7 @@
     and the field contains a legitimate value.</p>
 
     @name ejs.ExistsFilter
+    @ejs filter
     @borrows ejs.FilterMixin.name as name
     @borrows ejs.FilterMixin.cache as cache
     @borrows ejs.FilterMixin.cacheKey as cacheKey

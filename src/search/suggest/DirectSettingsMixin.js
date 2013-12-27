@@ -5,6 +5,8 @@
     used directly.</p>
 
     @name ejs.DirectSettingsMixin
+  
+    @param {String} settings The object to set the options on.
     */
   ejs.DirectSettingsMixin = function (settings) {
 

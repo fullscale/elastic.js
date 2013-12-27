@@ -5,6 +5,7 @@
     spans containing a term. It's essentially a termQuery with positional information asscoaited.</p>
 
     @name ejs.SpanTermQuery
+    @ejs query
     @borrows ejs.QueryMixin._type as _type
     @borrows ejs.QueryMixin.toJSON as toJSON
 

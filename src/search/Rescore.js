@@ -3,6 +3,7 @@
     <p>A method that allows to rescore queries with a typically more expensive.</p>
 
     @name ejs.Rescore
+    @ejs request
 
     @desc
     <p>Defines an operation that rescores a query with another query.</p>

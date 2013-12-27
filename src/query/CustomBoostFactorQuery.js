@@ -5,6 +5,7 @@
     on specific queries gets normalized, while this query boost factor does not.</p>
 
     @name ejs.CustomBoostFactorQuery
+    @ejs query
     @borrows ejs.QueryMixin.boost as boost
     @borrows ejs.QueryMixin._type as _type
     @borrows ejs.QueryMixin.toJSON as toJSON

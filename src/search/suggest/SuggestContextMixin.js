@@ -5,6 +5,8 @@
     used directly.</p>
 
     @name ejs.SuggestContextMixin
+  
+    @param {String} settings The object to set the options on.
     */
   ejs.SuggestContextMixin = function (settings) {
 

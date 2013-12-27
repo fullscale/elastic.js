@@ -4,6 +4,7 @@
     matching the query being returned.</p>
 
     @name ejs.HasChildFilter
+    @ejs filter
     @borrows ejs.FilterMixin.name as name
     @borrows ejs.FilterMixin.cache as cache
     @borrows ejs.FilterMixin.cacheKey as cacheKey

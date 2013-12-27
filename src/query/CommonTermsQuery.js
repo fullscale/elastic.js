@@ -14,6 +14,7 @@
     across domains without specialized stopword files.</p>
   
     @name ejs.CommonTermsQuery
+    @ejs query
     @borrows ejs.QueryMixin._type as _type
     @borrows ejs.QueryMixin.toJSON as toJSON
   

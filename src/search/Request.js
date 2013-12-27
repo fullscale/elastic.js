@@ -3,6 +3,7 @@
     <p>The <code>Request</code> object provides methods generating an elasticsearch request body.</p>
 
     @name ejs.Request
+    @ejs request
 
     @desc
     <p>Provides methods for generating request bodies.</p>

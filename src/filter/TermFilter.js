@@ -5,6 +5,7 @@
     terms that are not necessarily in a sequence.</p>
 
     @name ejs.TermFilter
+    @ejs filter
     @borrows ejs.FilterMixin.name as name
     @borrows ejs.FilterMixin.cache as cache
     @borrows ejs.FilterMixin.cacheKey as cacheKey

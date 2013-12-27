@@ -201,6 +201,7 @@
         var nav = '',
             seen = {};
         
+        /*
         var moduleNames = find({kind: 'module'});
         if (moduleNames.length) {
             nav = nav + '<h3>Modules</h3><ul class="toc-item">';
@@ -233,6 +234,7 @@
             
             nav = nav + '</ul>';
         }
+        */
         
         // sorts an array of objects based on a property within that object
         var sort = function (prop, arr) {
@@ -247,26 +249,34 @@
             });
         };
 
-        var classNames = find({kind: 'class'});
-        if (classNames.length) {
-            nav = nav + '<h3>Modules</h3><ul class="toc-item">';
-            sort("name", classNames);
-            classNames.forEach(function(c) {
-                var moduleSameName = find({kind: 'module', longname: c.longname});
-                if (moduleSameName.length) {
-                    c.name = c.name.replace('module:', 'require(')+')';
-                    moduleSameName[0].module = c;
-                }
-                //print(c.name);
-                if (!seen.hasOwnProperty(c.longname) ) nav += '<li>'+linkto(c.longname, c.name)+'</li>';
-                seen[c.longname] = true;
-            });
-            
-            nav = nav + '</ul>';
+        var navWithTag = function (tag, header) {
+            var classNames = find({kind: 'class', tags:{has: {title: 'ejs', value: tag}}});
+            if (classNames.length) {
+                nav = nav + '<h3>' + header + '</h3><ul class="toc-item">';
+                sort("name", classNames);
+                classNames.forEach(function(c) {
+                    var moduleSameName = find({kind: 'module', tags:{has: {title: 'ejs', value: tag}}, longname: c.longname});
+                    if (moduleSameName.length) {
+                        c.name = c.name.replace('module:', 'require(')+')';
+                        moduleSameName[0].module = c;
+                    }
+                    //print(c.name);
+                    if (!seen.hasOwnProperty(c.longname) ) nav += '<li>'+linkto(c.longname, c.name)+'</li>';
+                    seen[c.longname] = true;
+                });
+
+                nav = nav + '</ul>';
+            }
         }
         
+        navWithTag('request', 'Request');
+        navWithTag('query', 'Queries');
+        navWithTag('filter', 'Filters');
+        navWithTag('facet', 'Facets');
+        navWithTag('suggest', 'Suggesters');
+        navWithTag('geo', 'Geo');
         
-        
+        /*
         var mixinNames = find({kind: 'mixin'});
         if (mixinNames.length) {
             nav = nav + '<h3>Mixins</h3><ul class="toc-item">';
@@ -277,9 +287,8 @@
             
             nav = nav + '</ul>';
         }
-
+        
         var globalNames = find({kind: ['property', 'function'], 'memberof': {'isUndefined': true}});
-
         if (globalNames.length) {
             nav = nav + '<h3>Global</h3><ul class="toc-item">';
             globalNames.forEach(function(g) {
@@ -289,6 +298,7 @@
             
             nav = nav + '</ul>';
         }
+        */
         
         for (var longname in helper.longnameToUrl) {
             var classes = find({kind: 'class', longname: longname});

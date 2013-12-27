@@ -5,6 +5,7 @@
     The span first query maps to Lucene SpanFirstQuery.</p>
 
     @name ejs.SpanFirstQuery
+    @ejs query
     @borrows ejs.QueryMixin.boost as boost
     @borrows ejs.QueryMixin._type as _type
     @borrows ejs.QueryMixin.toJSON as toJSON

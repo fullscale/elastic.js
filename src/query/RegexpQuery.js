@@ -5,6 +5,7 @@
     index terms.</p>
 
     @name ejs.RegexpQuery
+    @ejs query
     @borrows ejs.QueryMixin._type as _type
     @borrows ejs.QueryMixin.toJSON as toJSON
 

@@ -5,6 +5,7 @@
     parent documents that have child docs matching the query being returned.</p>
   
     @name ejs.HasChildQuery
+    @ejs query
     @borrows ejs.QueryMixin.boost as boost
     @borrows ejs.QueryMixin._type as _type
     @borrows ejs.QueryMixin.toJSON as toJSON

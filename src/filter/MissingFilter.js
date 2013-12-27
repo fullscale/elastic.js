@@ -3,6 +3,7 @@
     <p>An missingFilter matches documents where the specified field contains no legitimate value.</p>
 
     @name ejs.MissingFilter
+    @ejs filter
     @borrows ejs.FilterMixin.name as name
     @borrows ejs.FilterMixin.cache as cache
     @borrows ejs.FilterMixin.cacheKey as cacheKey

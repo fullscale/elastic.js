@@ -4,6 +4,8 @@
     This object should not be used directly.</p>
 
     @name ejs.SuggesterMixin
+  
+    @param {String} name The name of the suggester.
     */
   ejs.SuggesterMixin = function (name) {
   

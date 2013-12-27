@@ -4,6 +4,7 @@
     to phrase query, except that it acts as a filter. Can be placed within queries that accept a filter.</p>
 
     @name ejs.PrefixFilter
+    @ejs filter
     @borrows ejs.FilterMixin.name as name
     @borrows ejs.FilterMixin.cache as cache
     @borrows ejs.FilterMixin.cacheKey as cacheKey

@@ -15,6 +15,7 @@
     <p>See http://www.elasticsearch.org/guide/reference/api/search/highlighting.html</p>
 
     @name ejs.Highlight
+    @ejs request
 
     @desc
     <p>Allows to highlight search results on one or more fields.</p>

@@ -18,6 +18,7 @@
     </div>
 
     @name ejs.DateHistogramFacet
+    @ejs facet
     @borrows ejs.FacetMixin.facetFilter as facetFilter
     @borrows ejs.FacetMixin.global as global
     @borrows ejs.FacetMixin.mode as mode

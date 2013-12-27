@@ -17,6 +17,7 @@
     </div>
 
     @name ejs.TermStatsFacet
+    @ejs facet
     @borrows ejs.FacetMixin.facetFilter as facetFilter
     @borrows ejs.FacetMixin.global as global
     @borrows ejs.FacetMixin.mode as mode

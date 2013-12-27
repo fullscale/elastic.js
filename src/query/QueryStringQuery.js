@@ -8,6 +8,7 @@
     for more information.</p>
 
     @name ejs.QueryStringQuery
+    @ejs query
     @borrows ejs.QueryMixin.boost as boost
     @borrows ejs.QueryMixin._type as _type
     @borrows ejs.QueryMixin.toJSON as toJSON

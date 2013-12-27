@@ -4,6 +4,7 @@
     except it runs against a single field.</p>
 
     @name ejs.MoreLikeThisFieldQuery
+    @ejs query
     @borrows ejs.QueryMixin._type as _type
     @borrows ejs.QueryMixin.toJSON as toJSON
 

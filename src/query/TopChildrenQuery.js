@@ -9,6 +9,7 @@
     specify max, sum or avg as the score type.</p>
 
     @name ejs.TopChildrenQuery
+    @ejs query
     @borrows ejs.QueryMixin.boost as boost
     @borrows ejs.QueryMixin._type as _type
     @borrows ejs.QueryMixin.toJSON as toJSON

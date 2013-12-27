@@ -5,6 +5,7 @@
     for documents containing the terms <code>javascript</code> and <code>python</code>.</p>
 
     @name ejs.BoolQuery
+    @ejs query
     @borrows ejs.QueryMixin.boost as boost
     @borrows ejs.QueryMixin._type as _type
     @borrows ejs.QueryMixin.toJSON as toJSON

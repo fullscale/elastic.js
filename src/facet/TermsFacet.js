@@ -13,6 +13,7 @@
        <a href="http://en.wikipedia.org/wiki/Faceted_classification">Faceted Classification</a></p<
 
     @name ejs.TermsFacet
+    @ejs facet
     @borrows ejs.FacetMixin.facetFilter as facetFilter
     @borrows ejs.FacetMixin.global as global
     @borrows ejs.FacetMixin.mode as mode

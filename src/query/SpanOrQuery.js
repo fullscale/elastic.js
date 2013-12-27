@@ -4,6 +4,7 @@
     underlying SpanQueries match. The span or query maps to Lucene SpanOrQuery.</p>
 
     @name ejs.SpanOrQuery
+    @ejs query
     @borrows ejs.QueryMixin.boost as boost
     @borrows ejs.QueryMixin._type as _type
     @borrows ejs.QueryMixin.toJSON as toJSON

@@ -4,6 +4,7 @@
     in a given set of collections and/or types.</p>
 
     @name ejs.MatchAllFilter
+    @ejs filter
     @borrows ejs.FilterMixin.name as name
     @borrows ejs.FilterMixin.cache as cache
     @borrows ejs.FilterMixin.cacheKey as cacheKey

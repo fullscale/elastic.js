@@ -3,6 +3,7 @@
     <p>A Filter that filters results by a specified index type.</p>
 
     @name ejs.TypeFilter
+    @ejs filter
     @borrows ejs.FilterMixin.name as name
     @borrows ejs.FilterMixin.cache as cache
     @borrows ejs.FilterMixin.cacheKey as cacheKey

@@ -6,6 +6,7 @@
     <p>See http://www.geojson.org/</p>
 
     @name ejs.Shape
+    @ejs geo
 
     @desc
     <p>Defines a shape</p>

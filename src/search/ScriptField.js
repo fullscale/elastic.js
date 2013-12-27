@@ -7,6 +7,7 @@
     based on the calculation <code>price * quantity</code>.</p>
 
     @name ejs.ScriptField
+    @ejs request
 
     @desc
     <p>Computes dynamic document properties based on information from other fields.</p>

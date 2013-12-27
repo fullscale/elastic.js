@@ -10,6 +10,7 @@
     parent doc (or parent nested mapping).</p>
   
     @name ejs.NestedFilter
+    @ejs filter
     @borrows ejs.FilterMixin.name as name
     @borrows ejs.FilterMixin.cache as cache
     @borrows ejs.FilterMixin.cacheKey as cacheKey

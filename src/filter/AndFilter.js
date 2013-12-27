@@ -3,6 +3,7 @@
     A container Filter that allows Boolean AND composition of Filters.
 
     @name ejs.AndFilter
+    @ejs filter
     @borrows ejs.FilterMixin.name as name
     @borrows ejs.FilterMixin.cache as cache
     @borrows ejs.FilterMixin.cacheKey as cacheKey

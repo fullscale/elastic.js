@@ -7,6 +7,7 @@
     provide their coordinates each time.</p>
 
     @name ejs.IndexedShape
+    @ejs geo
 
     @desc
     <p>Defines a shape that already exists in an index/type.</p>

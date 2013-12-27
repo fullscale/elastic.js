@@ -10,6 +10,7 @@
     of "2", the query will search for values between "10" and "14".</p>
 
     @name ejs.FuzzyQuery
+    @ejs query
     @borrows ejs.QueryMixin._type as _type
     @borrows ejs.QueryMixin.toJSON as toJSON
 

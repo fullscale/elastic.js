@@ -3,6 +3,7 @@
     <p>A filter allowing to define scripts as filters</p>
 
     @name ejs.ScriptFilter
+    @ejs filter
     @borrows ejs.FilterMixin.name as name
     @borrows ejs.FilterMixin.cache as cache
     @borrows ejs.FilterMixin.cacheKey as cacheKey

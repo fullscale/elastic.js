@@ -6,6 +6,7 @@
     <p>See http://www.elasticsearch.org/guide/reference/mapping/geo-point-type.html</p>
 
     @name ejs.GeoPoint
+    @ejs geo
 
     @desc
     <p>Defines a point</p>

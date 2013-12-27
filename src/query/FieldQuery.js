@@ -4,6 +4,7 @@
     of the <code><a href="/jsdocs/ejs.queryString.html">queryString</a></code> object.
 
     @name ejs.FieldQuery
+    @ejs query
     @borrows ejs.QueryMixin._type as _type
     @borrows ejs.QueryMixin.toJSON as toJSON
 

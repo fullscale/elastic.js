@@ -14,6 +14,7 @@
     filter should be used.</p>
 
     @name ejs.NumericRangeFilter
+    @ejs filter
     @borrows ejs.FilterMixin.name as name
     @borrows ejs.FilterMixin.cache as cache
     @borrows ejs.FilterMixin.cacheKey as cacheKey

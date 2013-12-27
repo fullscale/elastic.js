@@ -5,6 +5,7 @@
     <code>MatchQuery</code> type.
   
     @name ejs.MatchQuery
+    @ejs query
     @borrows ejs.QueryMixin._type as _type
     @borrows ejs.QueryMixin.toJSON as toJSON
 

@@ -5,6 +5,7 @@
     doc (numeric ones) using script expression.</p>
 
     @name ejs.CustomScoreQuery
+    @ejs query
     @borrows ejs.QueryMixin.boost as boost
     @borrows ejs.QueryMixin._type as _type
     @borrows ejs.QueryMixin.toJSON as toJSON

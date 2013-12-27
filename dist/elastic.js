@@ -1,4 +1,4 @@
-/*! elastic.js - v1.1.1 - 2013-12-21
+/*! elastic.js - v1.1.1 - 2013-12-26
  * https://github.com/fullscale/elastic.js
  * Copyright (c) 2013 FullScale Labs, LLC; Licensed MIT */
 
@@ -237,6 +237,7 @@
     </div>
 
     @name ejs.DateHistogramFacet
+    @ejs facet
     @borrows ejs.FacetMixin.facetFilter as facetFilter
     @borrows ejs.FacetMixin.global as global
     @borrows ejs.FacetMixin.mode as mode
@@ -719,6 +720,7 @@
     </div>
 
     @name ejs.FilterFacet
+    @ejs facet
     @borrows ejs.FacetMixin.facetFilter as facetFilter
     @borrows ejs.FacetMixin.global as global
     @borrows ejs.FacetMixin.mode as mode
@@ -788,6 +790,7 @@
     </div>
 
     @name ejs.GeoDistanceFacet
+    @ejs facet
     @borrows ejs.FacetMixin.facetFilter as facetFilter
     @borrows ejs.FacetMixin.global as global
     @borrows ejs.FacetMixin.mode as mode
@@ -1077,6 +1080,7 @@
     </div>
 
     @name ejs.HistogramFacet
+    @ejs facet
     @borrows ejs.FacetMixin.facetFilter as facetFilter
     @borrows ejs.FacetMixin.global as global
     @borrows ejs.FacetMixin.mode as mode
@@ -1341,6 +1345,7 @@
     </div>
 
     @name ejs.QueryFacet
+    @ejs facet
     @borrows ejs.FacetMixin.facetFilter as facetFilter
     @borrows ejs.FacetMixin.global as global
     @borrows ejs.FacetMixin.mode as mode
@@ -1409,6 +1414,7 @@
     </div>
 
     @name ejs.RangeFacet
+    @ejs facet
     @borrows ejs.FacetMixin.facetFilter as facetFilter
     @borrows ejs.FacetMixin.global as global
     @borrows ejs.FacetMixin.mode as mode
@@ -1637,6 +1643,7 @@
     </div>
 
     @name ejs.StatisticalFacet
+    @ejs facet
     @borrows ejs.FacetMixin.facetFilter as facetFilter
     @borrows ejs.FacetMixin.global as global
     @borrows ejs.FacetMixin.mode as mode
@@ -1773,6 +1780,7 @@
     </div>
 
     @name ejs.TermStatsFacet
+    @ejs facet
     @borrows ejs.FacetMixin.facetFilter as facetFilter
     @borrows ejs.FacetMixin.global as global
     @borrows ejs.FacetMixin.mode as mode
@@ -1991,6 +1999,7 @@
        <a href="http://en.wikipedia.org/wiki/Faceted_classification">Faceted Classification</a></p<
 
     @name ejs.TermsFacet
+    @ejs facet
     @borrows ejs.FacetMixin.facetFilter as facetFilter
     @borrows ejs.FacetMixin.global as global
     @borrows ejs.FacetMixin.mode as mode
@@ -2278,6 +2287,7 @@
     A container Filter that allows Boolean AND composition of Filters.
 
     @name ejs.AndFilter
+    @ejs filter
     @borrows ejs.FilterMixin.name as name
     @borrows ejs.FilterMixin.cache as cache
     @borrows ejs.FilterMixin.cacheKey as cacheKey
@@ -2362,6 +2372,7 @@
     filter.
   
     @name ejs.BoolFilter
+    @ejs filter
     @borrows ejs.FilterMixin.name as name
     @borrows ejs.FilterMixin.cache as cache
     @borrows ejs.FilterMixin.cacheKey as cacheKey
@@ -2510,6 +2521,7 @@
     and the field contains a legitimate value.</p>
 
     @name ejs.ExistsFilter
+    @ejs filter
     @borrows ejs.FilterMixin.name as name
     @borrows ejs.FilterMixin.cache as cache
     @borrows ejs.FilterMixin.cacheKey as cacheKey
@@ -2642,6 +2654,7 @@
     the specified lon and lat coordinates. The format conforms with the GeoJSON specification.</p>
 
     @name ejs.GeoBboxFilter
+    @ejs filter
     @borrows ejs.FilterMixin.name as name
     @borrows ejs.FilterMixin.cache as cache
     @borrows ejs.FilterMixin.cacheKey as cacheKey
@@ -2778,6 +2791,7 @@
     point of origin. The format conforms with the GeoJSON specification.</p>
 
     @name ejs.GeoDistanceFilter
+    @ejs filter
     @borrows ejs.FilterMixin.name as name
     @borrows ejs.FilterMixin.cache as cache
     @borrows ejs.FilterMixin.cacheKey as cacheKey
@@ -2960,6 +2974,7 @@
     point of origin. The format conforms with the GeoJSON specification.</p>
 
     @name ejs.GeoDistanceRangeFilter
+    @ejs filter
     @borrows ejs.FilterMixin.name as name
     @borrows ejs.FilterMixin.cache as cache
     @borrows ejs.FilterMixin.cacheKey as cacheKey
@@ -3277,6 +3292,7 @@
     for each document as a Geo Point type. The format conforms with the GeoJSON specification.</p>
 
     @name ejs.GeoPolygonFilter
+    @ejs filter
     @borrows ejs.FilterMixin.name as name
     @borrows ejs.FilterMixin.cache as cache
     @borrows ejs.FilterMixin.cacheKey as cacheKey
@@ -3392,6 +3408,7 @@
     PrefixTree configuration as defined for the field.</p>
 
     @name ejs.GeoShapeFilter
+    @ejs filter
     @borrows ejs.FilterMixin.name as name
     @borrows ejs.FilterMixin.cache as cache
     @borrows ejs.FilterMixin.cacheKey as cacheKey
@@ -3539,6 +3556,7 @@
     matching the query being returned.</p>
 
     @name ejs.HasChildFilter
+    @ejs filter
     @borrows ejs.FilterMixin.name as name
     @borrows ejs.FilterMixin.cache as cache
     @borrows ejs.FilterMixin.cacheKey as cacheKey
@@ -3661,6 +3679,7 @@
     the query being returned.</p>
 
     @name ejs.HasParentFilter
+    @ejs filter
     @borrows ejs.FilterMixin.name as name
     @borrows ejs.FilterMixin.cache as cache
     @borrows ejs.FilterMixin.cacheKey as cacheKey
@@ -3768,6 +3787,7 @@
     _uid field.</p>
 
     @name ejs.IdsFilter
+    @ejs filter
     @borrows ejs.FilterMixin.name as name
     @borrows ejs.FilterMixin.cache as cache
     @borrows ejs.FilterMixin.cacheKey as cacheKey
@@ -3861,6 +3881,7 @@
     is executed on an index that does not match the listed indices.</p>
 
     @name ejs.IndicesFilter
+    @ejs filter
     @borrows ejs.FilterMixin.name as name
     @borrows ejs.FilterMixin.cache as cache
     @borrows ejs.FilterMixin.cacheKey as cacheKey
@@ -3978,6 +3999,7 @@
     <p>A limit filter limits the number of documents (per shard) to execute on.</p>
 
     @name ejs.LimitFilter
+    @ejs filter
     @borrows ejs.FilterMixin.name as name
     @borrows ejs.FilterMixin.cache as cache
     @borrows ejs.FilterMixin.cacheKey as cacheKey
@@ -4028,6 +4050,7 @@
     in a given set of collections and/or types.</p>
 
     @name ejs.MatchAllFilter
+    @ejs filter
     @borrows ejs.FilterMixin.name as name
     @borrows ejs.FilterMixin.cache as cache
     @borrows ejs.FilterMixin.cacheKey as cacheKey
@@ -4047,6 +4070,7 @@
     <p>An missingFilter matches documents where the specified field contains no legitimate value.</p>
 
     @name ejs.MissingFilter
+    @ejs filter
     @borrows ejs.FilterMixin.name as name
     @borrows ejs.FilterMixin.cache as cache
     @borrows ejs.FilterMixin.cacheKey as cacheKey
@@ -4132,6 +4156,7 @@
     parent doc (or parent nested mapping).</p>
   
     @name ejs.NestedFilter
+    @ejs filter
     @borrows ejs.FilterMixin.name as name
     @borrows ejs.FilterMixin.cache as cache
     @borrows ejs.FilterMixin.cacheKey as cacheKey
@@ -4264,6 +4289,7 @@
     contained filter.</p>
 
     @name ejs.NotFilter
+    @ejs filter
     @borrows ejs.FilterMixin.name as name
     @borrows ejs.FilterMixin.cache as cache
     @borrows ejs.FilterMixin.cacheKey as cacheKey
@@ -4328,6 +4354,7 @@
     filter should be used.</p>
 
     @name ejs.NumericRangeFilter
+    @ejs filter
     @borrows ejs.FilterMixin.name as name
     @borrows ejs.FilterMixin.cache as cache
     @borrows ejs.FilterMixin.cacheKey as cacheKey
@@ -4536,6 +4563,7 @@
     A container filter that allows Boolean OR composition of filters.
 
     @name ejs.OrFilter
+    @ejs filter
     @borrows ejs.FilterMixin.name as name
     @borrows ejs.FilterMixin.cache as cache
     @borrows ejs.FilterMixin.cacheKey as cacheKey
@@ -4616,6 +4644,7 @@
     to phrase query, except that it acts as a filter. Can be placed within queries that accept a filter.</p>
 
     @name ejs.PrefixFilter
+    @ejs filter
     @borrows ejs.FilterMixin.name as name
     @borrows ejs.FilterMixin.cache as cache
     @borrows ejs.FilterMixin.cacheKey as cacheKey
@@ -4692,6 +4721,7 @@
     caching (since it needs to satisfy different queries).</p>
   
     @name ejs.QueryFilter
+    @ejs filter
     @borrows ejs.FilterMixin.name as name
     @borrows ejs.FilterMixin.cache as cache
     @borrows ejs.FilterMixin.cacheKey as cacheKey
@@ -4745,6 +4775,7 @@
     <p>Matches documents with fields that have terms within a certain range.</p>
 
     @name ejs.RangeFilter
+    @ejs filter
     @borrows ejs.FilterMixin.name as name
     @borrows ejs.FilterMixin.cache as cache
     @borrows ejs.FilterMixin.cacheKey as cacheKey
@@ -4930,6 +4961,7 @@
     over index terms.</p>
 
     @name ejs.RegexpFilter
+    @ejs filter
     @borrows ejs.FilterMixin.name as name
     @borrows ejs.FilterMixin.cache as cache
     @borrows ejs.FilterMixin.cacheKey as cacheKey
@@ -5044,6 +5076,7 @@
     <p>A filter allowing to define scripts as filters</p>
 
     @name ejs.ScriptFilter
+    @ejs filter
     @borrows ejs.FilterMixin.name as name
     @borrows ejs.FilterMixin.cache as cache
     @borrows ejs.FilterMixin.cacheKey as cacheKey
@@ -5125,6 +5158,7 @@
     terms that are not necessarily in a sequence.</p>
 
     @name ejs.TermFilter
+    @ejs filter
     @borrows ejs.FilterMixin.name as name
     @borrows ejs.FilterMixin.cache as cache
     @borrows ejs.FilterMixin.cacheKey as cacheKey
@@ -5198,6 +5232,7 @@
     terms (not analyzed)</p>
 
     @name ejs.TermsFilter
+    @ejs filter
     @borrows ejs.FilterMixin.name as name
     @borrows ejs.FilterMixin.cache as cache
     @borrows ejs.FilterMixin.cacheKey as cacheKey
@@ -5429,6 +5464,7 @@
     <p>A Filter that filters results by a specified index type.</p>
 
     @name ejs.TypeFilter
+    @ejs filter
     @borrows ejs.FilterMixin.name as name
     @borrows ejs.FilterMixin.cache as cache
     @borrows ejs.FilterMixin.cacheKey as cacheKey
@@ -5476,6 +5512,7 @@
     for documents containing the terms <code>javascript</code> and <code>python</code>.</p>
 
     @name ejs.BoolQuery
+    @ejs query
     @borrows ejs.QueryMixin.boost as boost
     @borrows ejs.QueryMixin._type as _type
     @borrows ejs.QueryMixin.toJSON as toJSON
@@ -5671,6 +5708,7 @@
     score.</p>
 
     @name ejs.BoostingQuery
+    @ejs query
     @borrows ejs.QueryMixin.boost as boost
     @borrows ejs.QueryMixin._type as _type
     @borrows ejs.QueryMixin.toJSON as toJSON
@@ -5779,6 +5817,7 @@
     across domains without specialized stopword files.</p>
   
     @name ejs.CommonTermsQuery
+    @ejs query
     @borrows ejs.QueryMixin._type as _type
     @borrows ejs.QueryMixin.toJSON as toJSON
   
@@ -6025,6 +6064,7 @@
     queryNorm, but maintain the same relevance.</p>
 
     @name ejs.ConstantScoreQuery
+    @ejs query
     @borrows ejs.QueryMixin.boost as boost
     @borrows ejs.QueryMixin._type as _type
     @borrows ejs.QueryMixin.toJSON as toJSON
@@ -6123,6 +6163,7 @@
     on specific queries gets normalized, while this query boost factor does not.</p>
 
     @name ejs.CustomBoostFactorQuery
+    @ejs query
     @borrows ejs.QueryMixin.boost as boost
     @borrows ejs.QueryMixin._type as _type
     @borrows ejs.QueryMixin.toJSON as toJSON
@@ -6196,6 +6237,7 @@
     boosting / script is considerably simpler.</p>
   
     @name ejs.CustomFiltersScoreQuery
+    @ejs query
     @borrows ejs.QueryMixin.boost as boost
     @borrows ejs.QueryMixin._type as _type
     @borrows ejs.QueryMixin.toJSON as toJSON
@@ -6396,6 +6438,7 @@
     doc (numeric ones) using script expression.</p>
 
     @name ejs.CustomScoreQuery
+    @ejs query
     @borrows ejs.QueryMixin.boost as boost
     @borrows ejs.QueryMixin._type as _type
     @borrows ejs.QueryMixin.toJSON as toJSON
@@ -6527,6 +6570,7 @@
     subqueries.
 
     @name ejs.DisMaxQuery
+    @ejs query
     @borrows ejs.QueryMixin.boost as boost
     @borrows ejs.QueryMixin._type as _type
     @borrows ejs.QueryMixin.toJSON as toJSON
@@ -6618,6 +6662,7 @@
     the real field used in the wrapped span query.</p>
 
     @name ejs.FieldMaskingSpanQuery
+    @ejs query
     @borrows ejs.QueryMixin.boost as boost
     @borrows ejs.QueryMixin._type as _type
     @borrows ejs.QueryMixin.toJSON as toJSON
@@ -6689,6 +6734,7 @@
     of the <code><a href="/jsdocs/ejs.queryString.html">queryString</a></code> object.
 
     @name ejs.FieldQuery
+    @ejs query
     @borrows ejs.QueryMixin._type as _type
     @borrows ejs.QueryMixin.toJSON as toJSON
 
@@ -7155,6 +7201,7 @@
     a new <code>Query</code> that is then used for the search.</p>
 
     @name ejs.FilteredQuery
+    @ejs query
     @borrows ejs.QueryMixin.boost as boost
     @borrows ejs.QueryMixin._type as _type
     @borrows ejs.QueryMixin.toJSON as toJSON
@@ -7326,6 +7373,7 @@
     average IDF of the variants is used.</p>
 
     @name ejs.FuzzyLikeThisFieldQuery
+    @ejs query
     @borrows ejs.QueryMixin._type as _type
     @borrows ejs.QueryMixin.toJSON as toJSON
 
@@ -7524,6 +7572,7 @@
     average IDF of the variants is used.</p>
 
     @name ejs.FuzzyLikeThisQuery
+    @ejs query
     @borrows ejs.QueryMixin.boost as boost
     @borrows ejs.QueryMixin._type as _type
     @borrows ejs.QueryMixin.toJSON as toJSON
@@ -7702,6 +7751,7 @@
     of "2", the query will search for values between "10" and "14".</p>
 
     @name ejs.FuzzyQuery
+    @ejs query
     @borrows ejs.QueryMixin._type as _type
     @borrows ejs.QueryMixin.toJSON as toJSON
 
@@ -7908,6 +7958,7 @@
     PrefixTree configuration as defined for the field.</p>
   
     @name ejs.GeoShapeQuery
+    @ejs query
     @borrows ejs.QueryMixin._type as _type
     @borrows ejs.QueryMixin.toJSON as toJSON
 
@@ -8069,6 +8120,7 @@
     parent documents that have child docs matching the query being returned.</p>
   
     @name ejs.HasChildQuery
+    @ejs query
     @borrows ejs.QueryMixin.boost as boost
     @borrows ejs.QueryMixin._type as _type
     @borrows ejs.QueryMixin.toJSON as toJSON
@@ -8221,6 +8273,7 @@
     child documents that have parent docs matching the query being returned.</p>
 
     @name ejs.HasParentQuery
+    @ejs query
     @borrows ejs.QueryMixin.boost as boost
     @borrows ejs.QueryMixin._type as _type
     @borrows ejs.QueryMixin.toJSON as toJSON
@@ -8353,6 +8406,7 @@
     _uid field.</p>
 
     @name ejs.IdsQuery
+    @ejs query
     @borrows ejs.QueryMixin.boost as boost
     @borrows ejs.QueryMixin._type as _type
     @borrows ejs.QueryMixin.toJSON as toJSON
@@ -8444,6 +8498,7 @@
     is executed on an index that does not match the listed indices.</p>
 
     @name ejs.IndicesQuery
+    @ejs query
     @borrows ejs.QueryMixin.boost as boost
     @borrows ejs.QueryMixin._type as _type
     @borrows ejs.QueryMixin.toJSON as toJSON
@@ -8559,6 +8614,7 @@
     in a given set of collections and/or types.</p>
 
     @name ejs.MatchAllQuery
+    @ejs query
     @borrows ejs.QueryMixin.boost as boost
     @borrows ejs.QueryMixin._type as _type
     @borrows ejs.QueryMixin.toJSON as toJSON
@@ -8578,6 +8634,7 @@
     <code>MatchQuery</code> type.
   
     @name ejs.MatchQuery
+    @ejs query
     @borrows ejs.QueryMixin._type as _type
     @borrows ejs.QueryMixin.toJSON as toJSON
 
@@ -8948,6 +9005,7 @@
     except it runs against a single field.</p>
 
     @name ejs.MoreLikeThisFieldQuery
+    @ejs query
     @borrows ejs.QueryMixin._type as _type
     @borrows ejs.QueryMixin.toJSON as toJSON
 
@@ -9223,6 +9281,7 @@
     running it against one or more fields.</p>
 
     @name ejs.MoreLikeThisQuery
+    @ejs query
     @borrows ejs.QueryMixin.boost as boost
     @borrows ejs.QueryMixin._type as _type
     @borrows ejs.QueryMixin.toJSON as toJSON
@@ -9497,6 +9556,7 @@
     by using multiple match queries within a bool query.
   
     @name ejs.MultiMatchQuery
+    @ejs query
     @borrows ejs.QueryMixin.boost as boost
     @borrows ejs.QueryMixin._type as _type
     @borrows ejs.QueryMixin.toJSON as toJSON
@@ -9912,6 +9972,7 @@
     nested mapping).</p>
     
     @name ejs.NestedQuery
+    @ejs query
     @borrows ejs.QueryMixin.boost as boost
     @borrows ejs.QueryMixin._type as _type
     @borrows ejs.QueryMixin.toJSON as toJSON
@@ -10035,6 +10096,7 @@
     prefix (not analyzed). The prefix query maps to Lucene PrefixQuery.</p>
 
     @name ejs.PrefixQuery
+    @ejs query
     @borrows ejs.QueryMixin._type as _type
     @borrows ejs.QueryMixin.toJSON as toJSON
 
@@ -10225,6 +10287,7 @@
     for more information.</p>
 
     @name ejs.QueryStringQuery
+    @ejs query
     @borrows ejs.QueryMixin.boost as boost
     @borrows ejs.QueryMixin._type as _type
     @borrows ejs.QueryMixin.toJSON as toJSON
@@ -10728,6 +10791,7 @@
     NumericRangeQuery.</p>
 
     @name ejs.RangeQuery
+    @ejs query
     @borrows ejs.QueryMixin._type as _type
     @borrows ejs.QueryMixin.toJSON as toJSON
 
@@ -10926,6 +10990,7 @@
     index terms.</p>
 
     @name ejs.RegexpQuery
+    @ejs query
     @borrows ejs.QueryMixin._type as _type
     @borrows ejs.QueryMixin.toJSON as toJSON
 
@@ -11103,6 +11168,7 @@
     The span first query maps to Lucene SpanFirstQuery.</p>
 
     @name ejs.SpanFirstQuery
+    @ejs query
     @borrows ejs.QueryMixin.boost as boost
     @borrows ejs.QueryMixin._type as _type
     @borrows ejs.QueryMixin.toJSON as toJSON
@@ -11175,6 +11241,7 @@
     <code>Fuzzy, NumericRange, Prefix, Regex, Range, and Wildcard</code>.</p>
 
     @name ejs.SpanMultiTermQuery
+    @ejs query
     @borrows ejs.QueryMixin.boost as boost
     @borrows ejs.QueryMixin._type as _type
     @borrows ejs.QueryMixin.toJSON as toJSON
@@ -11231,6 +11298,7 @@
     distance from each other.</p>
 
     @name ejs.SpanNearQuery
+    @ejs query
     @borrows ejs.QueryMixin.boost as boost
     @borrows ejs.QueryMixin._type as _type
     @borrows ejs.QueryMixin.toJSON as toJSON
@@ -11361,6 +11429,7 @@
     The span not query maps to Lucene SpanNotQuery.</p>
 
     @name ejs.SpanNotQuery
+    @ejs query
     @borrows ejs.QueryMixin.boost as boost
     @borrows ejs.QueryMixin._type as _type
     @borrows ejs.QueryMixin.toJSON as toJSON
@@ -11436,6 +11505,7 @@
     underlying SpanQueries match. The span or query maps to Lucene SpanOrQuery.</p>
 
     @name ejs.SpanOrQuery
+    @ejs query
     @borrows ejs.QueryMixin.boost as boost
     @borrows ejs.QueryMixin._type as _type
     @borrows ejs.QueryMixin.toJSON as toJSON
@@ -11516,6 +11586,7 @@
     spans containing a term. It's essentially a termQuery with positional information asscoaited.</p>
 
     @name ejs.SpanTermQuery
+    @ejs query
     @borrows ejs.QueryMixin._type as _type
     @borrows ejs.QueryMixin.toJSON as toJSON
 
@@ -11601,6 +11672,7 @@
     often serve as the basis for more complex queries such as <em>Boolean</em> queries.</p>
 
     @name ejs.TermQuery
+    @ejs query
     @borrows ejs.QueryMixin._type as _type
     @borrows ejs.QueryMixin.toJSON as toJSON
 
@@ -11686,6 +11758,7 @@
     in the should clauses.</p>
 
     @name ejs.TermsQuery
+    @ejs query
     @borrows ejs.QueryMixin.boost as boost
     @borrows ejs.QueryMixin._type as _type
     @borrows ejs.QueryMixin.toJSON as toJSON
@@ -11806,6 +11879,7 @@
     specify max, sum or avg as the score type.</p>
 
     @name ejs.TopChildrenQuery
+    @ejs query
     @borrows ejs.QueryMixin.boost as boost
     @borrows ejs.QueryMixin._type as _type
     @borrows ejs.QueryMixin.toJSON as toJSON
@@ -11973,6 +12047,7 @@
     maps to Lucene WildcardQuery.</p>
 
     @name ejs.WildcardQuery
+    @ejs query
     @borrows ejs.QueryMixin._type as _type
     @borrows ejs.QueryMixin.toJSON as toJSON
 
@@ -12107,6 +12182,7 @@
     <p>See http://www.elasticsearch.org/guide/reference/mapping/geo-point-type.html</p>
 
     @name ejs.GeoPoint
+    @ejs geo
 
     @desc
     <p>Defines a point</p>
@@ -12270,6 +12346,7 @@
     <p>See http://www.elasticsearch.org/guide/reference/api/search/highlighting.html</p>
 
     @name ejs.Highlight
+    @ejs request
 
     @desc
     <p>Allows to highlight search results on one or more fields.</p>
@@ -12706,6 +12783,7 @@
     provide their coordinates each time.</p>
 
     @name ejs.IndexedShape
+    @ejs geo
 
     @desc
     <p>Defines a shape that already exists in an index/type.</p>
@@ -12817,6 +12895,7 @@
     <p>The <code>Request</code> object provides methods generating an elasticsearch request body.</p>
 
     @name ejs.Request
+    @ejs request
 
     @desc
     <p>Provides methods for generating request bodies.</p>
@@ -13287,6 +13366,7 @@
     <p>A method that allows to rescore queries with a typically more expensive.</p>
 
     @name ejs.Rescore
+    @ejs request
 
     @desc
     <p>Defines an operation that rescores a query with another query.</p>
@@ -13457,6 +13537,7 @@
     based on the calculation <code>price * quantity</code>.</p>
 
     @name ejs.ScriptField
+    @ejs request
 
     @desc
     <p>Computes dynamic document properties based on information from other fields.</p>
@@ -13568,6 +13649,7 @@
     <p>See http://www.geojson.org/</p>
 
     @name ejs.Shape
+    @ejs geo
 
     @desc
     <p>Defines a shape</p>
@@ -13685,6 +13767,7 @@
     <p>See http://www.elasticsearch.org/guide/reference/api/search/sort.html</p>
 
     @name ejs.Sort
+    @ejs request
 
     @desc
     <p>Defines a sort value</p>
@@ -14121,11 +14204,20 @@
 
   /**
     @class
+    @suggester
     <p>The completion suggester is a so-called prefix suggester. It does not do spell 
     correction like the term or phrase suggesters but allows basic auto-complete functionality.</p>
 
     @name ejs.CompletionSuggester
-
+    @ejs suggest
+    @borrows ejs.SuggesterMixin.text as text
+    @borrows ejs.SuggesterMixin._type as _type
+    @borrows ejs.SuggesterMixin.toJSON as toJSON
+    @borrows ejs.SuggestContextMixin.analyzer as analyzer
+    @borrows ejs.SuggestContextMixin.field as field
+    @borrows ejs.SuggestContextMixin.size as size
+    @borrows ejs.SuggestContextMixin.shardSize as shardSize
+  
     @since elasticsearch 0.90.4
   
     @desc
@@ -14284,12 +14376,7 @@
     <code>TermSuggester</code>.</p>
 
     @name ejs.DirectGenerator
-
-    @since elasticsearch 0.90
-  
-    @desc
-    <p>A candidate generator that generates terms based on edit distance.</p>
-
+    @ejs suggest
     @borrows ejs.DirectSettingsMixin.accuracy as accuracy
     @borrows ejs.DirectSettingsMixin.suggestMode as suggestMode
     @borrows ejs.DirectSettingsMixin.sort as sort
@@ -14300,6 +14387,12 @@
     @borrows ejs.DirectSettingsMixin.prefixLength as prefixLength
     @borrows ejs.DirectSettingsMixin.minWordLen as minWordLen
     @borrows ejs.DirectSettingsMixin.minDocFreq as minDocFreq
+
+    @since elasticsearch 0.90
+  
+    @desc
+    <p>A candidate generator that generates terms based on edit distance.</p>
+  
     */
   ejs.DirectGenerator = function () {
 
@@ -14408,6 +14501,8 @@
     used directly.</p>
 
     @name ejs.DirectSettingsMixin
+  
+    @param {String} settings The object to set the options on.
     */
   ejs.DirectSettingsMixin = function (settings) {
 
@@ -14625,7 +14720,15 @@
     co-occurence and frequencies.</p>
 
     @name ejs.PhraseSuggester
-
+    @ejs suggest
+    @borrows ejs.SuggesterMixin.text as text
+    @borrows ejs.SuggesterMixin._type as _type
+    @borrows ejs.SuggesterMixin.toJSON as toJSON
+    @borrows ejs.SuggestContextMixin.analyzer as analyzer
+    @borrows ejs.SuggestContextMixin.field as field
+    @borrows ejs.SuggestContextMixin.size as size
+    @borrows ejs.SuggestContextMixin.shardSize as shardSize
+  
     @since elasticsearch 0.90
     
     @desc
@@ -14911,6 +15014,8 @@
     used directly.</p>
 
     @name ejs.SuggestContextMixin
+  
+    @param {String} settings The object to set the options on.
     */
   ejs.SuggestContextMixin = function (settings) {
 
@@ -14990,6 +15095,8 @@
     This object should not be used directly.</p>
 
     @name ejs.SuggesterMixin
+  
+    @param {String} name The name of the suggester.
     */
   ejs.SuggesterMixin = function (name) {
   
@@ -15048,12 +15155,7 @@
     <code>PhraseSuggester</code>.</p>
 
     @name ejs.TermSuggester
-
-    @since elasticsearch 0.90
-    
-    @desc
-    <p>A suggester that suggests terms based on edit distance.</p>
-
+    @ejs suggest
     @borrows ejs.SuggesterMixin.text as text
     @borrows ejs.SuggesterMixin._type as _type
     @borrows ejs.SuggesterMixin.toJSON as toJSON
@@ -15071,6 +15173,11 @@
     @borrows ejs.SuggestContextMixin.field as field
     @borrows ejs.SuggestContextMixin.size as size
     @borrows ejs.SuggestContextMixin.shardSize as shardSize
+
+    @since elasticsearch 0.90
+    
+    @desc
+    <p>A suggester that suggests terms based on edit distance.</p>
 
     @param {String} name The name which be used to refer to this suggester.
     */

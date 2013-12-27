@@ -7,12 +7,7 @@
     <code>PhraseSuggester</code>.</p>
 
     @name ejs.TermSuggester
-
-    @since elasticsearch 0.90
-    
-    @desc
-    <p>A suggester that suggests terms based on edit distance.</p>
-
+    @ejs suggest
     @borrows ejs.SuggesterMixin.text as text
     @borrows ejs.SuggesterMixin._type as _type
     @borrows ejs.SuggesterMixin.toJSON as toJSON
@@ -30,6 +25,11 @@
     @borrows ejs.SuggestContextMixin.field as field
     @borrows ejs.SuggestContextMixin.size as size
     @borrows ejs.SuggestContextMixin.shardSize as shardSize
+
+    @since elasticsearch 0.90
+    
+    @desc
+    <p>A suggester that suggests terms based on edit distance.</p>
 
     @param {String} name The name which be used to refer to this suggester.
     */

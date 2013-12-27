@@ -1,10 +1,19 @@
   /**
     @class
+    @suggester
     <p>The completion suggester is a so-called prefix suggester. It does not do spell 
     correction like the term or phrase suggesters but allows basic auto-complete functionality.</p>
 
     @name ejs.CompletionSuggester
-
+    @ejs suggest
+    @borrows ejs.SuggesterMixin.text as text
+    @borrows ejs.SuggesterMixin._type as _type
+    @borrows ejs.SuggesterMixin.toJSON as toJSON
+    @borrows ejs.SuggestContextMixin.analyzer as analyzer
+    @borrows ejs.SuggestContextMixin.field as field
+    @borrows ejs.SuggestContextMixin.size as size
+    @borrows ejs.SuggestContextMixin.shardSize as shardSize
+  
     @since elasticsearch 0.90.4
   
     @desc

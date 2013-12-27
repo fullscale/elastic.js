@@ -6,6 +6,7 @@
     <p>See http://www.elasticsearch.org/guide/reference/api/search/sort.html</p>
 
     @name ejs.Sort
+    @ejs request
 
     @desc
     <p>Defines a sort value</p>
