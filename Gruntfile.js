@@ -20,6 +20,7 @@ module.exports = function (grunt) {
         src: [
           'src/pre.js',
           'src/util.js',
+          'src/mixins/**/*.js',
           'src/facet/*.js',
           'src/filter/*.js',
           'src/query/*.js',

@@ -218,6 +218,648 @@
   };
  
   /**
+    @mixin
+    <p>The DirectSettingsMixin provides support for common options used across 
+    various <code>Suggester</code> implementations.  This object should not be 
+    used directly.</p>
+
+    @name ejs.DirectSettingsMixin
+  
+    @param {String} settings The object to set the options on.
+    */
+  ejs.DirectSettingsMixin = function (settings) {
+
+    return {
+        
+      /**
+            <p>Sets the accuracy.  How similar the suggested terms at least 
+            need to be compared to the original suggest text.</p>
+
+            @member ejs.DirectSettingsMixin
+            @param {Double} a A positive double value between 0 and 1.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      accuracy: function (a) {
+        if (a == null) {
+          return settings.accuracy;
+        }
+  
+        settings.accuracy = a;
+        return this;
+      },
+    
+      /**
+            <p>Sets the suggest mode.  Valid values are:</p>
+
+            <dl>
+              <dd><code>missing</code> - Only suggest terms in the suggest text that aren't in the index</dd>
+              <dd><code>popular</code> - Only suggest suggestions that occur in more docs then the original suggest text term</dd>
+              <dd><code>always</code> - Suggest any matching suggestions based on terms in the suggest text</dd> 
+            </dl>
+
+            @member ejs.DirectSettingsMixin
+            @param {String} m The mode of missing, popular, or always.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      suggestMode: function (m) {
+        if (m == null) {
+          return settings.suggest_mode;
+        }
+  
+        m = m.toLowerCase();
+        if (m === 'missing' || m === 'popular' || m === 'always') {
+          settings.suggest_mode = m;
+        }
+      
+        return this;
+      },
+    
+      /**
+            <p>Sets the sort mode.  Valid values are:</p>
+
+            <dl>
+              <dd><code>score</code> - Sort by score first, then document frequency, and then the term itself</dd>
+              <dd><code>frequency</code> - Sort by document frequency first, then simlarity score and then the term itself</dd>
+            </dl>
+
+            @member ejs.DirectSettingsMixin
+            @param {String} s The score type of score or frequency.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      sort: function (s) {
+        if (s == null) {
+          return settings.sort;
+        }
+  
+        s = s.toLowerCase();
+        if (s === 'score' || s === 'frequency') {
+          settings.sort = s;
+        }
+      
+        return this;
+      },
+    
+      /**
+            <p>Sets what string distance implementation to use for comparing 
+            how similar suggested terms are.  Valid values are:</p>
+
+            <dl>
+              <dd><code>internal</code> - based on damerau_levenshtein but but highly optimized for comparing string distance for terms inside the index</dd>
+              <dd><code>damerau_levenshtein</code> - String distance algorithm based on Damerau-Levenshtein algorithm</dd>
+              <dd><code>levenstein</code> - String distance algorithm based on Levenstein edit distance algorithm</dd>
+              <dd><code>jarowinkler</code> - String distance algorithm based on Jaro-Winkler algorithm</dd>
+              <dd><code>ngram</code> - String distance algorithm based on character n-grams</dd>
+            </dl>
+
+            @member ejs.DirectSettingsMixin
+            @param {String} s The string distance algorithm name.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      stringDistance: function (s) {
+        if (s == null) {
+          return settings.string_distance;
+        }
+  
+        s = s.toLowerCase();
+        if (s === 'internal' || s === 'damerau_levenshtein' || 
+            s === 'levenstein' || s === 'jarowinkler' || s === 'ngram') {
+          settings.string_distance = s;
+        }
+      
+        return this;
+      },
+    
+      /**
+            <p>Sets the maximum edit distance candidate suggestions can have 
+            in order to be considered as a suggestion.</p>
+
+            @member ejs.DirectSettingsMixin
+            @param {Integer} max An integer value greater than 0.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      maxEdits: function (max) {
+        if (max == null) {
+          return settings.max_edits;
+        }
+  
+        settings.max_edits = max;
+        return this;
+      },
+    
+      /**
+            <p>The factor that is used to multiply with the size in order 
+            to inspect more candidate suggestions.</p>
+
+            @member ejs.DirectSettingsMixin
+            @param {Integer} max A positive integer value.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      maxInspections: function (max) {
+        if (max == null) {
+          return settings.max_inspections;
+        }
+  
+        settings.max_inspections = max;
+        return this;
+      },
+    
+      /**
+            <p>Sets a maximum threshold in number of documents a suggest text 
+            token can exist in order to be corrected.</p>
+
+            @member ejs.DirectSettingsMixin
+            @param {Double} max A positive double value.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      maxTermFreq: function (max) {
+        if (max == null) {
+          return settings.max_term_freq;
+        }
+  
+        settings.max_term_freq = max;
+        return this;
+      },
+    
+      /**
+            <p>Sets the number of minimal prefix characters that must match in 
+            order be a candidate suggestion.</p>
+
+            @member ejs.DirectSettingsMixin
+            @param {Integer} len A positive integer value.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      prefixLen: function (len) {
+        if (len == null) {
+          return settings.prefix_len;
+        }
+  
+        settings.prefix_len = len;
+        return this;
+      },
+    
+      /**
+            <p>Sets the minimum length a suggest text term must have in order 
+            to be corrected.</p>
+
+            @member ejs.DirectSettingsMixin
+            @param {Integer} len A positive integer value.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      minWordLen: function (len) {
+        if (len == null) {
+          return settings.min_word_len;
+        }
+  
+        settings.min_word_len = len;
+        return this;
+      },
+    
+      /**
+            <p>Sets a minimal threshold of the number of documents a suggested 
+            term should appear in.</p>
+
+            @member ejs.DirectSettingsMixin
+            @param {Double} min A positive double value.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      minDocFreq: function (min) {
+        if (min == null) {
+          return settings.min_doc_freq;
+        }
+  
+        settings.min_doc_freq = min;
+        return this;
+      }
+      
+    };
+  };
+
+  /**
+    @mixin
+    <p>The FacetMixin provides support for common options used across 
+    various <code>Facet</code> implementations.  This object should not be 
+    used directly.</p>
+
+    @name ejs.FacetMixin
+    */
+  ejs.FacetMixin = function (name) {
+
+    var facet = {};
+    facet[name] = {};
+    
+    return {
+    
+      /**
+            <p>Allows you to reduce the documents used for computing facet results.</p>
+
+            @member ejs.FacetMixin
+            @param {Object} oFilter A valid <code>Filter</code> object.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      facetFilter: function (oFilter) {
+        if (oFilter == null) {
+          return facet[name].facet_filter;
+        }
+      
+        if (!isFilter(oFilter)) {
+          throw new TypeError('Argument must be a Filter');
+        }
+        
+        facet[name].facet_filter = oFilter.toJSON();
+        return this;
+      },
+
+      /**
+            <p>Computes values across the entire index</p>
+
+            @member ejs.FacetMixin
+            @param {Boolean} trueFalse Calculate facet counts globally or not.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      global: function (trueFalse) {
+        if (trueFalse == null) {
+          return facet[name].global;
+        }
+        
+        facet[name].global = trueFalse;
+        return this;
+      },
+      
+      /**
+            <p>Sets the mode the facet will use.<p>
+            
+            <dl>
+                <dd><code>collector</code></dd>
+                <dd><code>post</code></dd>
+            <dl>
+            
+            @member ejs.FacetMixin
+            @param {String} m The mode: collector or post.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      mode: function (m) {
+        if (m == null) {
+          return facet[name].mode;
+        }
+      
+        m = m.toLowerCase();
+        if (m === 'collector' || m === 'post') {
+          facet[name].mode = m;
+        }
+        
+        return this;
+      },
+      
+      /**
+            <p>Enables caching of the <code>facetFilter</code></p>
+
+            @member ejs.FacetMixin
+            @param {Boolean} trueFalse If the facetFilter should be cached or not
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      cacheFilter: function (trueFalse) {
+        if (trueFalse == null) {
+          return facet[name].cache_filter;
+        }
+        
+        facet[name].cache_filter = trueFalse;
+        return this;
+      },
+      
+      /**
+            <p>Computes values across the the specified scope</p>
+
+            @deprecated since elasticsearch 0.90
+            @member ejs.FacetMixin
+            @param {String} scope The scope name to calculate facet counts with.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      scope: function (scope) {
+        return this;
+      },
+      
+      /**
+            <p>Sets the path to the nested document if faceting against a
+            nested field.</p>
+
+            @member ejs.FacetMixin
+            @param {String} path The nested path
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      nested: function (path) {
+        if (path == null) {
+          return facet[name].nested;
+        }
+        
+        facet[name].nested = path;
+        return this;
+      },
+
+      /**
+            The type of ejs object.  For internal use only.
+            
+            @member ejs.FacetMixin
+            @returns {String} the type of object
+            */
+      _type: function () {
+        return 'facet';
+      },
+      
+      /**
+            <p>Retrieves the internal <code>facet</code> object. This is typically used by
+               internal API functions so use with caution.</p>
+
+            @member ejs.FacetMixin
+            @returns {String} returns this object's internal <code>facet</code> property.
+            */
+      toJSON: function () {
+        return facet;
+      }
+      
+    };
+  };
+
+  /**
+    @mixin
+    <p>The FilterMixin provides support for common options used across 
+    various <code>Filter</code> implementations.  This object should not be 
+    used directly.</p>
+
+    @name ejs.FilterMixin
+    */
+  ejs.FilterMixin = function (type) {
+
+    var filter = {};
+    filter[type] = {};
+
+    return {
+
+      /**
+            Sets the filter name.
+
+            @member ejs.FilterMixin
+            @param {String} name A name for the filter.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      name: function (name) {
+        if (name == null) {
+          return filter[type]._name;
+        }
+
+        filter[type]._name = name;
+        return this;
+      },
+
+      /**
+            Enable or disable caching of the filter
+
+            @member ejs.FilterMixin
+            @param {Boolean} trueFalse True to cache the filter, false otherwise.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      cache: function (trueFalse) {
+        if (trueFalse == null) {
+          return filter[type]._cache;
+        }
+
+        filter[type]._cache = trueFalse;
+        return this;
+      },
+
+      /**
+            Sets the cache key.
+
+            @member ejs.FilterMixin
+            @param {String} key the cache key as a string.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      cacheKey: function (key) {
+        if (key == null) {
+          return filter[type]._cache_key;
+        }
+
+        filter[type]._cache_key = key;
+        return this;
+      },
+
+      /**
+            The type of ejs object.  For internal use only.
+          
+            @member ejs.FilterMixin
+            @returns {String} the type of object
+            */
+      _type: function () {
+        return 'filter';
+      },
+    
+      /**
+             Returns the filter object.
+
+             @member ejs.FilterMixin
+             @returns {Object} filter object
+             */
+      toJSON: function () {
+        return filter;
+      }
+    
+    };
+  };
+
+  /**
+    @mixin
+    <p>The QueryMixin provides support for common options used across 
+    various <code>Query</code> implementations.  This object should not be 
+    used directly.</p>
+
+    @name ejs.QueryMixin
+    */
+  ejs.QueryMixin = function (type) {
+
+    var query = {};
+    query[type] = {};
+
+    return {
+
+      /**
+            Sets the boost value for documents matching the <code>Query</code>.
+
+            @member ejs.QueryMixin
+            @param {Double} boost A positive <code>double</code> value.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      boost: function (boost) {
+        if (boost == null) {
+          return query[type].boost;
+        }
+
+        query[type].boost = boost;
+        return this;
+      },
+    
+      /**
+            The type of ejs object.  For internal use only.
+          
+            @member ejs.QueryMixin
+            @returns {String} the type of object
+            */
+      _type: function () {
+        return 'query';
+      },
+    
+      /**
+            Retrieves the internal <code>query</code> object. This is typically used by
+            internal API functions so use with caution.
+
+            @member ejs.QueryMixin
+            @returns {String} returns this object's internal <code>query</code> property.
+            */
+      toJSON: function () {
+        return query;
+      }
+  
+    };
+  };
+
+  /**
+    @mixin
+    <p>The SuggestContextMixin provides support for suggest context settings 
+    across various <code>Suggester</code> implementations.  This object should not be 
+    used directly.</p>
+
+    @name ejs.SuggestContextMixin
+  
+    @param {String} settings The object to set the options on.
+    */
+  ejs.SuggestContextMixin = function (settings) {
+
+    return {
+    
+      /**
+            <p>Sets analyzer used to analyze the suggest text.</p>
+
+            @member ejs.SuggestContextMixin
+            @param {String} analyzer A valid analyzer name.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      analyzer: function (analyzer) {
+        if (analyzer == null) {
+          return settings.analyzer;
+        }
+  
+        settings.analyzer = analyzer;
+        return this;
+      },
+    
+      /**
+            <p>Sets the field used to generate suggestions from.</p>
+
+            @member ejs.SuggestContextMixin
+            @param {String} field A valid field name.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      field: function (field) {
+        if (field == null) {
+          return settings.field;
+        }
+  
+        settings.field = field;
+        return this;
+      },
+    
+      /**
+            <p>Sets the number of suggestions returned for each token.</p>
+
+            @member ejs.SuggestContextMixin
+            @param {Integer} s A positive integer value.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      size: function (s) {
+        if (s == null) {
+          return settings.size;
+        }
+  
+        settings.size = s;
+        return this;
+      },
+    
+      /**
+            <p>Sets the maximum number of suggestions to be retrieved from 
+            each individual shard.</p>
+
+            @member ejs.SuggestContextMixin
+            @param {Integer} s A positive integer value.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      shardSize: function (s) {
+        if (s == null) {
+          return settings.shard_size;
+        }
+  
+        settings.shard_size = s;
+        return this;
+      }
+      
+    };
+  };
+
+  /**
+    @mixin
+    <p>The SuggesterMixin provides support for the base setting of all suggesters. 
+    This object should not be used directly.</p>
+
+    @name ejs.SuggesterMixin
+  
+    @param {String} name The name of the suggester.
+    */
+  ejs.SuggesterMixin = function (name) {
+  
+    var suggest = {};
+    suggest[name] = {};
+
+    return {
+  
+      /**
+            <p>Sets the text to get suggestions for.  If not set, the global
+            suggestion text will be used.</p>
+
+            @member ejs.SuggesterMixin
+            @param {String} txt A string to get suggestions for.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      text: function (txt) {
+        if (txt == null) {
+          return suggest[name].text;
+        }
+  
+        suggest[name].text = txt;
+        return this;
+      },
+  
+      /**
+            The type of ejs object.  For internal use only.
+        
+            @member ejs.SuggesterMixin
+            @returns {String} the type of object
+            */
+      _type: function () {
+        return 'suggest';
+      },
+  
+      /**
+            <p>Retrieves the internal <code>suggest</code> object. This is typically used by
+               internal API functions so use with caution.</p>
+
+            @member ejs.SuggesterMixin
+            @returns {String} returns this object's internal <code>suggest</code> property.
+            */
+      toJSON: function () {
+        return suggest;
+      }
+    
+    };
+  };
+
+  /**
     @class
     <p>The DateHistogram facet works with time-based values by building a histogram across time
        intervals of the <code>value</code> field. Each value is <em>rounded</em> into an interval (or
@@ -554,151 +1196,6 @@
       }
       
     });
-  };
-
-  /**
-    @mixin
-    <p>The FacetMixin provides support for common options used across 
-    various <code>Facet</code> implementations.  This object should not be 
-    used directly.</p>
-
-    @name ejs.FacetMixin
-    */
-  ejs.FacetMixin = function (name) {
-
-    var facet = {};
-    facet[name] = {};
-    
-    return {
-    
-      /**
-            <p>Allows you to reduce the documents used for computing facet results.</p>
-
-            @member ejs.FacetMixin
-            @param {Object} oFilter A valid <code>Filter</code> object.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      facetFilter: function (oFilter) {
-        if (oFilter == null) {
-          return facet[name].facet_filter;
-        }
-      
-        if (!isFilter(oFilter)) {
-          throw new TypeError('Argument must be a Filter');
-        }
-        
-        facet[name].facet_filter = oFilter.toJSON();
-        return this;
-      },
-
-      /**
-            <p>Computes values across the entire index</p>
-
-            @member ejs.FacetMixin
-            @param {Boolean} trueFalse Calculate facet counts globally or not.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      global: function (trueFalse) {
-        if (trueFalse == null) {
-          return facet[name].global;
-        }
-        
-        facet[name].global = trueFalse;
-        return this;
-      },
-      
-      /**
-            <p>Sets the mode the facet will use.<p>
-            
-            <dl>
-                <dd><code>collector</code></dd>
-                <dd><code>post</code></dd>
-            <dl>
-            
-            @member ejs.FacetMixin
-            @param {String} m The mode: collector or post.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      mode: function (m) {
-        if (m == null) {
-          return facet[name].mode;
-        }
-      
-        m = m.toLowerCase();
-        if (m === 'collector' || m === 'post') {
-          facet[name].mode = m;
-        }
-        
-        return this;
-      },
-      
-      /**
-            <p>Enables caching of the <code>facetFilter</code></p>
-
-            @member ejs.FacetMixin
-            @param {Boolean} trueFalse If the facetFilter should be cached or not
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      cacheFilter: function (trueFalse) {
-        if (trueFalse == null) {
-          return facet[name].cache_filter;
-        }
-        
-        facet[name].cache_filter = trueFalse;
-        return this;
-      },
-      
-      /**
-            <p>Computes values across the the specified scope</p>
-
-            @deprecated since elasticsearch 0.90
-            @member ejs.FacetMixin
-            @param {String} scope The scope name to calculate facet counts with.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      scope: function (scope) {
-        return this;
-      },
-      
-      /**
-            <p>Sets the path to the nested document if faceting against a
-            nested field.</p>
-
-            @member ejs.FacetMixin
-            @param {String} path The nested path
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      nested: function (path) {
-        if (path == null) {
-          return facet[name].nested;
-        }
-        
-        facet[name].nested = path;
-        return this;
-      },
-
-      /**
-            The type of ejs object.  For internal use only.
-            
-            @member ejs.FacetMixin
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'facet';
-      },
-      
-      /**
-            <p>Retrieves the internal <code>facet</code> object. This is typically used by
-               internal API functions so use with caution.</p>
-
-            @member ejs.FacetMixin
-            @returns {String} returns this object's internal <code>facet</code> property.
-            */
-      toJSON: function () {
-        return facet;
-      }
-      
-    };
   };
 
   /**
@@ -2560,92 +3057,6 @@
       }
       
     });
-  };
-
-  /**
-    @mixin
-    <p>The FilterMixin provides support for common options used across 
-    various <code>Filter</code> implementations.  This object should not be 
-    used directly.</p>
-
-    @name ejs.FilterMixin
-    */
-  ejs.FilterMixin = function (type) {
-
-    var filter = {};
-    filter[type] = {};
-
-    return {
-
-      /**
-            Sets the filter name.
-
-            @member ejs.FilterMixin
-            @param {String} name A name for the filter.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      name: function (name) {
-        if (name == null) {
-          return filter[type]._name;
-        }
-
-        filter[type]._name = name;
-        return this;
-      },
-
-      /**
-            Enable or disable caching of the filter
-
-            @member ejs.FilterMixin
-            @param {Boolean} trueFalse True to cache the filter, false otherwise.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      cache: function (trueFalse) {
-        if (trueFalse == null) {
-          return filter[type]._cache;
-        }
-
-        filter[type]._cache = trueFalse;
-        return this;
-      },
-
-      /**
-            Sets the cache key.
-
-            @member ejs.FilterMixin
-            @param {String} key the cache key as a string.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      cacheKey: function (key) {
-        if (key == null) {
-          return filter[type]._cache_key;
-        }
-
-        filter[type]._cache_key = key;
-        return this;
-      },
-
-      /**
-            The type of ejs object.  For internal use only.
-          
-            @member ejs.FilterMixin
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'filter';
-      },
-    
-      /**
-             Returns the filter object.
-
-             @member ejs.FilterMixin
-             @returns {Object} filter object
-             */
-      toJSON: function () {
-        return filter;
-      }
-    
-    };
   };
 
   /**
@@ -10223,61 +10634,6 @@
   };
 
   /**
-    @mixin
-    <p>The QueryMixin provides support for common options used across 
-    various <code>Query</code> implementations.  This object should not be 
-    used directly.</p>
-
-    @name ejs.QueryMixin
-    */
-  ejs.QueryMixin = function (type) {
-
-    var query = {};
-    query[type] = {};
-
-    return {
-
-      /**
-            Sets the boost value for documents matching the <code>Query</code>.
-
-            @member ejs.QueryMixin
-            @param {Double} boost A positive <code>double</code> value.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      boost: function (boost) {
-        if (boost == null) {
-          return query[type].boost;
-        }
-
-        query[type].boost = boost;
-        return this;
-      },
-    
-      /**
-            The type of ejs object.  For internal use only.
-          
-            @member ejs.QueryMixin
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'query';
-      },
-    
-      /**
-            Retrieves the internal <code>query</code> object. This is typically used by
-            internal API functions so use with caution.
-
-            @member ejs.QueryMixin
-            @returns {String} returns this object's internal <code>query</code> property.
-            */
-      toJSON: function () {
-        return query;
-      }
-  
-    };
-  };
-
-  /**
     @class
     <p>A query that is parsed using Lucene's default query parser. Although Lucene provides the
     ability to create your own queries through its API, it also provides a rich query language
@@ -14495,223 +14851,6 @@
   };
 
   /**
-    @mixin
-    <p>The DirectSettingsMixin provides support for common options used across 
-    various <code>Suggester</code> implementations.  This object should not be 
-    used directly.</p>
-
-    @name ejs.DirectSettingsMixin
-  
-    @param {String} settings The object to set the options on.
-    */
-  ejs.DirectSettingsMixin = function (settings) {
-
-    return {
-        
-      /**
-            <p>Sets the accuracy.  How similar the suggested terms at least 
-            need to be compared to the original suggest text.</p>
-
-            @member ejs.DirectSettingsMixin
-            @param {Double} a A positive double value between 0 and 1.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      accuracy: function (a) {
-        if (a == null) {
-          return settings.accuracy;
-        }
-  
-        settings.accuracy = a;
-        return this;
-      },
-    
-      /**
-            <p>Sets the suggest mode.  Valid values are:</p>
-
-            <dl>
-              <dd><code>missing</code> - Only suggest terms in the suggest text that aren't in the index</dd>
-              <dd><code>popular</code> - Only suggest suggestions that occur in more docs then the original suggest text term</dd>
-              <dd><code>always</code> - Suggest any matching suggestions based on terms in the suggest text</dd> 
-            </dl>
-
-            @member ejs.DirectSettingsMixin
-            @param {String} m The mode of missing, popular, or always.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      suggestMode: function (m) {
-        if (m == null) {
-          return settings.suggest_mode;
-        }
-  
-        m = m.toLowerCase();
-        if (m === 'missing' || m === 'popular' || m === 'always') {
-          settings.suggest_mode = m;
-        }
-      
-        return this;
-      },
-    
-      /**
-            <p>Sets the sort mode.  Valid values are:</p>
-
-            <dl>
-              <dd><code>score</code> - Sort by score first, then document frequency, and then the term itself</dd>
-              <dd><code>frequency</code> - Sort by document frequency first, then simlarity score and then the term itself</dd>
-            </dl>
-
-            @member ejs.DirectSettingsMixin
-            @param {String} s The score type of score or frequency.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      sort: function (s) {
-        if (s == null) {
-          return settings.sort;
-        }
-  
-        s = s.toLowerCase();
-        if (s === 'score' || s === 'frequency') {
-          settings.sort = s;
-        }
-      
-        return this;
-      },
-    
-      /**
-            <p>Sets what string distance implementation to use for comparing 
-            how similar suggested terms are.  Valid values are:</p>
-
-            <dl>
-              <dd><code>internal</code> - based on damerau_levenshtein but but highly optimized for comparing string distance for terms inside the index</dd>
-              <dd><code>damerau_levenshtein</code> - String distance algorithm based on Damerau-Levenshtein algorithm</dd>
-              <dd><code>levenstein</code> - String distance algorithm based on Levenstein edit distance algorithm</dd>
-              <dd><code>jarowinkler</code> - String distance algorithm based on Jaro-Winkler algorithm</dd>
-              <dd><code>ngram</code> - String distance algorithm based on character n-grams</dd>
-            </dl>
-
-            @member ejs.DirectSettingsMixin
-            @param {String} s The string distance algorithm name.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      stringDistance: function (s) {
-        if (s == null) {
-          return settings.string_distance;
-        }
-  
-        s = s.toLowerCase();
-        if (s === 'internal' || s === 'damerau_levenshtein' || 
-            s === 'levenstein' || s === 'jarowinkler' || s === 'ngram') {
-          settings.string_distance = s;
-        }
-      
-        return this;
-      },
-    
-      /**
-            <p>Sets the maximum edit distance candidate suggestions can have 
-            in order to be considered as a suggestion.</p>
-
-            @member ejs.DirectSettingsMixin
-            @param {Integer} max An integer value greater than 0.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      maxEdits: function (max) {
-        if (max == null) {
-          return settings.max_edits;
-        }
-  
-        settings.max_edits = max;
-        return this;
-      },
-    
-      /**
-            <p>The factor that is used to multiply with the size in order 
-            to inspect more candidate suggestions.</p>
-
-            @member ejs.DirectSettingsMixin
-            @param {Integer} max A positive integer value.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      maxInspections: function (max) {
-        if (max == null) {
-          return settings.max_inspections;
-        }
-  
-        settings.max_inspections = max;
-        return this;
-      },
-    
-      /**
-            <p>Sets a maximum threshold in number of documents a suggest text 
-            token can exist in order to be corrected.</p>
-
-            @member ejs.DirectSettingsMixin
-            @param {Double} max A positive double value.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      maxTermFreq: function (max) {
-        if (max == null) {
-          return settings.max_term_freq;
-        }
-  
-        settings.max_term_freq = max;
-        return this;
-      },
-    
-      /**
-            <p>Sets the number of minimal prefix characters that must match in 
-            order be a candidate suggestion.</p>
-
-            @member ejs.DirectSettingsMixin
-            @param {Integer} len A positive integer value.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      prefixLen: function (len) {
-        if (len == null) {
-          return settings.prefix_len;
-        }
-  
-        settings.prefix_len = len;
-        return this;
-      },
-    
-      /**
-            <p>Sets the minimum length a suggest text term must have in order 
-            to be corrected.</p>
-
-            @member ejs.DirectSettingsMixin
-            @param {Integer} len A positive integer value.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      minWordLen: function (len) {
-        if (len == null) {
-          return settings.min_word_len;
-        }
-  
-        settings.min_word_len = len;
-        return this;
-      },
-    
-      /**
-            <p>Sets a minimal threshold of the number of documents a suggested 
-            term should appear in.</p>
-
-            @member ejs.DirectSettingsMixin
-            @param {Double} min A positive double value.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      minDocFreq: function (min) {
-        if (min == null) {
-          return settings.min_doc_freq;
-        }
-  
-        settings.min_doc_freq = min;
-        return this;
-      }
-      
-    };
-  };
-
-  /**
     @class
     <p>PhraseSuggester extends the <code>PhraseSuggester</code> and suggests
     entire corrected phrases instead of individual tokens.  The individual
@@ -15005,145 +15144,6 @@
       }
       
     });
-  };
-
-  /**
-    @mixin
-    <p>The SuggestContextMixin provides support for suggest context settings 
-    across various <code>Suggester</code> implementations.  This object should not be 
-    used directly.</p>
-
-    @name ejs.SuggestContextMixin
-  
-    @param {String} settings The object to set the options on.
-    */
-  ejs.SuggestContextMixin = function (settings) {
-
-    return {
-    
-      /**
-            <p>Sets analyzer used to analyze the suggest text.</p>
-
-            @member ejs.SuggestContextMixin
-            @param {String} analyzer A valid analyzer name.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      analyzer: function (analyzer) {
-        if (analyzer == null) {
-          return settings.analyzer;
-        }
-  
-        settings.analyzer = analyzer;
-        return this;
-      },
-    
-      /**
-            <p>Sets the field used to generate suggestions from.</p>
-
-            @member ejs.SuggestContextMixin
-            @param {String} field A valid field name.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      field: function (field) {
-        if (field == null) {
-          return settings.field;
-        }
-  
-        settings.field = field;
-        return this;
-      },
-    
-      /**
-            <p>Sets the number of suggestions returned for each token.</p>
-
-            @member ejs.SuggestContextMixin
-            @param {Integer} s A positive integer value.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      size: function (s) {
-        if (s == null) {
-          return settings.size;
-        }
-  
-        settings.size = s;
-        return this;
-      },
-    
-      /**
-            <p>Sets the maximum number of suggestions to be retrieved from 
-            each individual shard.</p>
-
-            @member ejs.SuggestContextMixin
-            @param {Integer} s A positive integer value.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      shardSize: function (s) {
-        if (s == null) {
-          return settings.shard_size;
-        }
-  
-        settings.shard_size = s;
-        return this;
-      }
-      
-    };
-  };
-
-  /**
-    @mixin
-    <p>The SuggesterMixin provides support for the base setting of all suggesters. 
-    This object should not be used directly.</p>
-
-    @name ejs.SuggesterMixin
-  
-    @param {String} name The name of the suggester.
-    */
-  ejs.SuggesterMixin = function (name) {
-  
-    var suggest = {};
-    suggest[name] = {};
-
-    return {
-  
-      /**
-            <p>Sets the text to get suggestions for.  If not set, the global
-            suggestion text will be used.</p>
-
-            @member ejs.SuggesterMixin
-            @param {String} txt A string to get suggestions for.
-            @returns {Object} returns <code>this</code> so that calls can be chained.
-            */
-      text: function (txt) {
-        if (txt == null) {
-          return suggest[name].text;
-        }
-  
-        suggest[name].text = txt;
-        return this;
-      },
-  
-      /**
-            The type of ejs object.  For internal use only.
-        
-            @member ejs.SuggesterMixin
-            @returns {String} the type of object
-            */
-      _type: function () {
-        return 'suggest';
-      },
-  
-      /**
-            <p>Retrieves the internal <code>suggest</code> object. This is typically used by
-               internal API functions so use with caution.</p>
-
-            @member ejs.SuggesterMixin
-            @returns {String} returns this object's internal <code>suggest</code> property.
-            */
-      toJSON: function () {
-        return suggest;
-      }
-    
-    };
   };
 
   /**
