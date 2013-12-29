@@ -15,7 +15,7 @@
     A Filter that matches documents containing provided terms. 
 
     @param {String} field the document field/key to filter against
-    @param {String || Array} terms a single term or an array of terms.
+    @param {(String|String[])} terms a single term or an array of terms.
     */
   ejs.TermsFilter = function (field, terms) {
 
@@ -72,7 +72,7 @@
             existing terms.
 
             @member ejs.TermsFilter
-            @param {String || Array} t A single term or an array or terms.
+            @param {(String|String[])} t A single term or an array or terms.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       terms: function (t) {

@@ -186,7 +186,7 @@
             fields.
 
             @member ejs.Request
-            @param {String || Array} s The field as a string or fields as array
+            @param {(String|String[])} s The field as a string or fields as array
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       fields: function (fieldList) {
@@ -328,7 +328,7 @@
             @since elasticsearch 0.90
             
             @member ejs.Request
-            @param {String || Suggest} s A valid Suggest object or a String to 
+            @param {(String|Suggest)} s A valid Suggest object or a String to 
               set as the global suggest text.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */

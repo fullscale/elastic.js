@@ -30,7 +30,7 @@
             replaces all existing values.
 
             @member ejs.DisMaxQuery
-            @param {Query || Array} qs A single Query or an array of Queries
+            @param {(Query|Query[])} qs A single Query or an array of Queries
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       queries: function (qs) {

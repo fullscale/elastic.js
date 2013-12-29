@@ -50,7 +50,7 @@
             The lower bound. Defaults to start from the first.
 
             @member ejs.RangeQuery
-            @param {Variable Type} f the lower bound value, type depends on field type
+            @param {*} f the lower bound value, type depends on field type
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       from: function (f) {
@@ -66,7 +66,7 @@
             The upper bound. Defaults to unbounded.
 
             @member ejs.RangeQuery
-            @param {Variable Type} t the upper bound value, type depends on field type
+            @param {*} t the upper bound value, type depends on field type
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       to: function (t) {
@@ -116,7 +116,7 @@
             include_lower to false,
 
             @member ejs.RangeQuery
-            @param {Variable Type} val the value, type depends on field type
+            @param {*} val the value, type depends on field type
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       gt: function (val) {
@@ -133,7 +133,7 @@
             and include_lower to true.
 
             @member ejs.RangeQuery
-            @param {Variable Type} val the value, type depends on field type
+            @param {*} val the value, type depends on field type
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       gte: function (val) {
@@ -150,7 +150,7 @@
             to false.
 
             @member ejs.RangeQuery
-            @param {Variable Type} val the value, type depends on field type
+            @param {*} val the value, type depends on field type
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       lt: function (val) {
@@ -167,7 +167,7 @@
             and include_upper to true.
 
             @member ejs.RangeQuery
-            @param {Variable Type} val the value, type depends on field type
+            @param {*} val the value, type depends on field type
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       lte: function (val) {

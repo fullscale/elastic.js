@@ -17,7 +17,7 @@
     A configurable filter that is dependent on the index name.
 
     @param {Object} fltr A valid filter object.
-    @param {String || Array} indices a single index name or an array of index 
+    @param {(String|String[])} indices a single index name or an array of index 
       names.
     */
   ejs.IndicesFilter = function (fltr, indices) {
@@ -48,7 +48,7 @@
             an array, it overwites all current indices.
 
             @member ejs.IndicesFilter
-            @param {String || Array} i A single index name or an array of index names.
+            @param {(String|String[])} i A single index name or an array of index names.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       indices: function (i) {
@@ -94,7 +94,7 @@
             documents or "all" to match all documents.
 
             @member ejs.IndicesFilter
-            @param {Object || String} f A valid Filter object or "none" or "all"
+            @param {(Filter|String)} f A valid Filter object or "none" or "all"
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       noMatchFilter: function (f) {

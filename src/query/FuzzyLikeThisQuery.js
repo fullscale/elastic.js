@@ -46,7 +46,7 @@
              of field names, it replaces any existing values with the new array.
 
              @member ejs.FuzzyLikeThisQuery
-             @param {String || Array} f A single field name or a list of field names.
+             @param {(String|String[])} f A single field name or a list of field names.
              @returns {Object} returns <code>this</code> so that calls can be chained.
              */
       fields: function (f) {

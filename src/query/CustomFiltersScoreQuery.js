@@ -18,8 +18,8 @@
     Returned documents matched by the query and scored based on if the document
     matched in a filter.  
 
-    @param {Object} qry A valid query object.
-    @param {Object || Array} filters A single object or array of objects.  Each 
+    @param {Query} qry A valid query object.
+    @param {(Object|Object[])} filters A single object or array of object.  Each 
       object must have a 'filter' property and either a 'boost' or 'script' 
       property.
     */
@@ -101,7 +101,7 @@
             </code>
 
             @member ejs.CustomFiltersScoreQuery
-            @param {Object || Array} fltrs An object or array of objects 
+            @param {(Object|Object[])} fltrs An object or array of objects 
               contining a filter and either a boost or script property.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */

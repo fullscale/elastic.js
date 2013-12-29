@@ -33,7 +33,7 @@
              replace all existing filters.
 
              @member ejs.BoolFilter
-             @param {Filter || Array} oFilter A valid Filter or array of
+             @param {(Filter|Filter[])} oFilter A valid Filter or array of
               Filter objects.
              @returns {Object} returns <code>this</code> so that calls can be chained.
              */
@@ -73,7 +73,7 @@
              they replace all existing filters.
 
              @member ejs.BoolFilter
-             @param {Filter || Array} oFilter A valid Filter or array of
+             @param {(Filter|Filter[])} oFilter A valid Filter or array of
                Filter objects.
              @returns {Object} returns <code>this</code> so that calls can be chained.
              */
@@ -113,7 +113,7 @@
              they replace all existing filters.
 
              @member ejs.BoolFilter
-             @param {Filter || Array} oFilter A valid Filter or array of
+             @param {(Filter|Filter[])} oFilter A valid Filter or array of
                 Filter objects.
              @returns {Object} returns <code>this</code> so that calls can be chained.
              */

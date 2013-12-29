@@ -24,7 +24,7 @@
     @desc
     A Filter that only accepts numeric values within a specified range.
 
-    @param {string} fieldName The name of the field to filter on.
+    @param {String} fieldName The name of the field to filter on.
     */
   ejs.NumericRangeFilter = function (fieldName) {
 
@@ -136,7 +136,7 @@
             include_lower to false,
 
             @member ejs.NumericRangeFilter
-            @param {Variable Type} val the value, type depends on field type
+            @param {*} val the value, type depends on field type
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       gt: function (val) {
@@ -157,7 +157,7 @@
             and include_lower to true.
 
             @member ejs.NumericRangeFilter
-            @param {Variable Type} val the value, type depends on field type
+            @param {*} val the value, type depends on field type
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       gte: function (val) {
@@ -178,7 +178,7 @@
             to false.
 
             @member ejs.NumericRangeFilter
-            @param {Variable Type} val the value, type depends on field type
+            @param {*} val the value, type depends on field type
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       lt: function (val) {
@@ -199,7 +199,7 @@
             and include_upper to true.
 
             @member ejs.NumericRangeFilter
-            @param {Variable Type} val the value, type depends on field type
+            @param {*} val the value, type depends on field type
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       lte: function (val) {

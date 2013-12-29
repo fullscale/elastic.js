@@ -15,7 +15,7 @@
     @desc
     Matches documents with the specified id(s).
 
-    @param {Array || String} ids A single document id or a list of document ids.
+    @param {(String|String[])} ids A single document id or a list of document ids.
     */
   ejs.IdsFilter = function (ids) {
 
@@ -39,7 +39,7 @@
             array it is set as the document values and replaces any existing values.
 
             @member ejs.IdsFilter
-            @param {Array || String} val An single document id or an array of document ids.
+            @param {(String|String[])} val An single document id or an array of document ids.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       values: function (val) {
@@ -65,7 +65,7 @@
             parameter is optional.
 
             @member ejs.IdsFilter
-            @param {Array || String} type A type or a list of types
+            @param {(String|String[])} type A type or a list of types
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       type: function (type) {

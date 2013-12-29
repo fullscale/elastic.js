@@ -16,7 +16,7 @@
     A Query that allow to more easily build a MatchQuery 
     over multiple fields
 
-    @param {String || Array} fields the single field or array of fields to search across
+    @param {(String|String[])} fields the single field or array of fields to search across
     @param {String} qstr the query string
     */
   ejs.MultiMatchQuery = function (fields, qstr) {
@@ -44,7 +44,7 @@
             values, they overwite all existing values.
 
             @member ejs.MultiMatchQuery
-            @param {String || Array} f A single field or list of fields names to 
+            @param {(String|String[])} f A single field or list of fields names to 
               search across.
             @returns {Object} returns <code>this</code> so that calls can be 
               chained. Returns {Array} current value if `f` not specified.

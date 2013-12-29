@@ -12,7 +12,7 @@
     @desc
     <p>Constructs a query where each documents returned are “like” provided text</p>
 
-    @param {String || Array} fields A single field or array of fields to run against.
+    @param {(String|String[])} fields A single field or array of fields to run against.
     @param {String} likeText The text to find documents like it.
   
      */
@@ -41,7 +41,7 @@
              of field names, it replaces any existing values with the new array.
 
              @member ejs.MoreLikeThisQuery
-             @param {String || Array} f A single field name or a list of field names.
+             @param {(String|String[])} f A single field name or a list of field names.
              @returns {Object} returns <code>this</code> so that calls can be chained.
              */
       fields: function (f) {

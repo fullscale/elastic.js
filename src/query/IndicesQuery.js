@@ -14,8 +14,8 @@
     @desc
     A configurable query that is dependent on the index name.
 
-    @param {Object} qry A valid query object.
-    @param {String || Array} indices a single index name or an array of index 
+    @param {Query} qry A valid query object.
+    @param {(String|String[])} indices a single index name or an array of index 
       names.
     */
   ejs.IndicesQuery = function (qry, indices) {
@@ -46,7 +46,7 @@
             an array, it overwites all current indices.
 
             @member ejs.IndicesQuery
-            @param {String || Array} i A single index name or an array of index names.
+            @param {(String|String[])} i A single index name or an array of index names.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       indices: function (i) {
@@ -69,7 +69,7 @@
             Sets the query to be executed against the indices specified.
 
             @member ejs.IndicesQuery
-            @param {Object} q A valid Query object
+            @param {Query} q A valid Query object
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       query: function (q) {
@@ -91,7 +91,7 @@
             documents or "all" to match all documents.
 
             @member ejs.IndicesQuery
-            @param {Object || String} q A valid Query object or "none" or "all"
+            @param {(Query|String)} q A valid Query object or "none" or "all"
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       noMatchQuery: function (q) {

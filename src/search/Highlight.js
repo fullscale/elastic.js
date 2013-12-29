@@ -20,7 +20,7 @@
     @desc
     <p>Allows to highlight search results on one or more fields.</p>
 
-    @param {String || Array} fields An optional field or array of fields to highlight.
+    @param {(String|String[])} fields An optional field or array of fields to highlight.
     */
   ejs.Highlight = function (fields) {
   
@@ -58,7 +58,7 @@
             added to the current list of fields.
 
             @member ejs.Highlight
-            @param {String || Array} vals A field name or array of field names.
+            @param {(String|String[])} vals A field name or array of field names.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       fields: function (vals) {
@@ -85,7 +85,7 @@
             <code>oField</code> parameter.
         
             @member ejs.Highlight
-            @param {String || Array} tags A single tag or an array of tags.
+            @param {(String|String[])} tags A single tag or an array of tags.
             @param {String} oField An optional field name
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
@@ -111,7 +111,7 @@
             <code>oField</code> parameter.
         
             @member ejs.Highlight
-            @param {String || Array} tags A single tag or an array of tags.
+            @param {(String|String[])} tags A single tag or an array of tags.
             @param {String} oField An optional field name
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */

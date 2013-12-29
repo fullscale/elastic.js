@@ -258,7 +258,7 @@
             array of Generators, they replace all existing generators.
 
             @member ejs.PhraseSuggester
-            @param {Generator || Array} oGenerator A valid Generator or 
+            @param {(Generator|Generator[])} oGenerator A valid Generator or 
               array of Generator objects.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */

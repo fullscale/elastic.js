@@ -13,7 +13,7 @@
     @desc
     A container Filter that allows Boolean OR composition of filters.
 
-    @param {Filter || Array} filters A valid Filter or array of Filters.
+    @param {(Filter|Filter[])} filters A valid Filter or array of Filters.
     */
   ejs.OrFilter = function (filters) {
 
@@ -47,7 +47,7 @@
              replace all existing Filters.
 
              @member ejs.OrFilter
-             @param {Filter || Array} fltr A Filter or array of Filters
+             @param {(Filter|Filter[])} fltr A Filter or array of Filters
              @returns {Object} returns <code>this</code> so that calls can be chained.
              */
       filters: function (fltr) {

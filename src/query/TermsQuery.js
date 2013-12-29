@@ -14,7 +14,7 @@
     A Query that matches documents containing provided terms. 
 
     @param {String} field the document field/key to query against
-    @param {String || Array} terms a single term or array of "terms" to match
+    @param {(String|String[])} terms a single term or array of "terms" to match
     */
   ejs.TermsQuery = function (field, terms) {
 
@@ -59,7 +59,7 @@
             existing terms.
 
             @member ejs.TermsQuery
-            @param {String || Array} t A single term or an array or terms.
+            @param {(String|String[])} t A single term or an array or terms.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       terms: function (t) {

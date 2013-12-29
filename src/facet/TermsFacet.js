@@ -167,7 +167,7 @@
             terms.  If passed an array, it overwrites all existing values.</p>
 
             @member ejs.TermsFacet
-            @param {String || Array} exclude A single term to exclude or an 
+            @param {(String|String[])} exclude A single term to exclude or an 
               array of terms to exclude.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */

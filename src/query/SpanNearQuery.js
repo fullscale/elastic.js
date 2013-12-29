@@ -12,7 +12,7 @@
     @desc
     Matches spans which are near one another.
 
-    @param {Query || Array} clauses A single SpanQuery or array of SpanQueries
+    @param {(Query|Query[])} clauses A single SpanQuery or array of SpanQueries
     @param {Integer} slop The number of intervening unmatched positions
 
     */
@@ -49,7 +49,7 @@
             SpanQueries, they replace any existing clauses.
 
             @member ejs.SpanNearQuery
-            @param {Query || Array} clauses A SpanQuery or array of SpanQueries.
+            @param {(Query|Query[])} clauses A SpanQuery or array of SpanQueries.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       clauses: function (clauses) {
