@@ -1,6 +1,6 @@
 # elastic.js
 
-A JavaScript implementation of the [ElasticSearch](http://www.elasticsearch.org/) DSL for use with the [official elasticsearch javascript client](http://elasticsearch.github.io/elasticsearch-js/index.html).  
+A JavaScript implementation of the [ElasticSearch](http://www.elasticsearch.org/) DSL for use with the [official elasticsearch javascript client](http://www.elasticsearch.org/guide/en/elasticsearch/client/javascript-api/current/index.html).  
 
 ## Documentation
 You can find the official documentation at the following locations:
