@@ -203,8 +203,42 @@
         } else if (isArray(fieldList)) {
           query.fields = fieldList;
         } else {
-          throw new TypeError('Argument must be string or array');
+          throw new TypeError('Argument must be a string or an array');
         }
+
+        return this;
+      },
+
+      /**
+            By default, searches return full documents, meaning every property or field.
+            This method allows you to specify which fields you want included and/or which
+            ones you want excluded.
+            You are allowed to call this function multiple times with different partial names.
+            The result will be different sets that are returned by ElasticSearch, only containing
+            the fields you specified for each set. The paths to such a result set looks like this:
+            hits.hits.fields.<partialName 1>, hits.hits.fields.<partialName 2>, ..
+
+            @member ejs.Request
+            @param {String} partialName The name of this partial.
+            @param {Array} includedFieldList The list of fields to include as array, may be an empty array.
+            @param {Array} excludedFieldList The list of fields to exclude as array, may be an empty array.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      partial_fields: function (partialName, includedFieldList, excludedFieldList) {        
+        if (!isString(partialName)) {
+          throw new TypeError('Argument partialName must be a String');
+        }
+        if (!isArray(includedFieldList)) {
+          throw new TypeError('Argument includedFieldList must be an array');
+        }
+
+        if (!isArray(excludedFieldList)) {
+          throw new TypeError('Argument excludedFieldList must be an array');
+        }
+        query.partial_fields = {};
+        query.partial_fields[partialName] = {};
+        query.partial_fields[partialName].include = includedFieldList;
+        query.partial_fields[partialName].exclude = excludedFieldList;
 
         return this;
       },
