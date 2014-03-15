@@ -1,6 +1,6 @@
 # elastic.js
 
-A JavaScript implementation of the [ElasticSearch](http://www.elasticsearch.org/) DSL for use with the [official elasticsearch javascript client](http://elasticsearch.github.io/elasticsearch-js/index.html).  
+A JavaScript implementation of the [ElasticSearch](http://www.elasticsearch.org/) DSL for use with the [official elasticsearch javascript client](http://www.elasticsearch.org/guide/en/elasticsearch/client/javascript-api/current/index.html).  
 
 ## Documentation
 You can find the official documentation at the following locations:
@@ -16,7 +16,7 @@ and [here](https://gist.github.com/egaumer).
 
 ### Search
 
-See http://elasticsearch.github.io/elasticsearch-js/api.html#search.
+See http://www.elasticsearch.org/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-search.
 
 ```
 client.search({
@@ -31,7 +31,7 @@ client.search({
 
 ### Suggest
 
-See http://elasticsearch.github.io/elasticsearch-js/api.html#suggest
+See http://www.elasticsearch.org/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-suggest
 
 ```
 client.suggest({
@@ -46,7 +46,7 @@ client.suggest({
 
 ### Multi-Search
 
-See http://elasticsearch.github.io/elasticsearch-js/api.html#msearch
+See http://www.elasticsearch.org/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-msearch
 
 ```
 client.msearch({
