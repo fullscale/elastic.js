@@ -10,19 +10,19 @@
 (function () {
   'use strict';
 
-  var 
+  var
 
     // save reference to global object
     // `window` in browser
     // `exports` on server
     root = this,
-    
+
     // save the previous version of ejs
     _ejs = root && root.ejs,
 
     // from underscore.js, used in utils
-    ArrayProto = Array.prototype, 
-    ObjProto = Object.prototype, 
+    ArrayProto = Array.prototype,
+    ObjProto = Object.prototype,
     slice = ArrayProto.slice,
     toString = ObjProto.toString,
     hasOwnProp = ObjProto.hasOwnProperty,
@@ -38,6 +38,7 @@
     isObject,
     isString,
     isNumber,
+    isBoolean,
     isFunction,
     isEJSObject, // checks if valid ejs object
     isQuery, // checks valid ejs Query object
@@ -52,10 +53,10 @@
     isHighlight, // checks valid ejs Highlight object
     isSuggest, // checks valid ejs Suggest object
     isGenerator, // checks valid ejs Generator object
-    
+
     // create ejs object
     ejs;
-    
+
   if (typeof exports !== 'undefined') {
     ejs = exports;
   } else {
@@ -63,13 +64,13 @@
   }
 
   /* Utility methods, most of which are pulled from underscore.js. */
-  
+
   // Shortcut function for checking if an object has a given property directly
   // on itself (in other words, not on a prototype).
   has = function (obj, key) {
     return hasOwnProp.call(obj, key);
   };
-    
+
   // The cornerstone, an `each` implementation, aka `forEach`.
   // Handles objects with the built-in `forEach`, arrays, and raw objects.
   // Delegates to **ECMAScript 5**'s native `forEach` if available.
@@ -95,7 +96,7 @@
       }
     }
   };
-      
+
   // Extend a given object with all the properties in passed-in object(s).
   extend = function (obj) {
     each(slice.call(arguments, 1), function (source) {
@@ -106,28 +107,28 @@
     return obj;
   };
 
-  // Returns the index at which value can be found in the array, or -1 if 
+  // Returns the index at which value can be found in the array, or -1 if
   // value is not present in the array.
   indexOf = function (array, item) {
     if (array == null) {
       return -1;
     }
-    
+
     var i = 0, l = array.length;
     if (nativeIndexOf && array.indexOf === nativeIndexOf) {
       return array.indexOf(item);
     }
-    
+
     for (; i < l; i++) {
       if (array[i] === item) {
         return i;
-        
+
       }
     }
-    
+
     return -1;
   };
-  
+
   // Is a given value an array?
   // Delegates to ECMA5's native Array.isArray
   // switched to ===, not sure why underscore used ==
@@ -139,17 +140,21 @@
   isObject = function (obj) {
     return obj === Object(obj);
   };
-  
+
   // switched to ===, not sure why underscore used ==
   isString = function (obj) {
     return toString.call(obj) === '[object String]';
   };
-  
+
   // switched to ===, not sure why underscore used ==
   isNumber = function (obj) {
     return toString.call(obj) === '[object Number]';
   };
-  
+
+  isBoolean = function(obj) {
+    return obj === true || obj === false || toString.call(obj) === '[object Boolean]';
+  };
+
   // switched to ===, not sure why underscore used ==
   if (typeof (/./) !== 'function') {
     isFunction = function (obj) {
@@ -160,7 +165,7 @@
       return toString.call(obj) === '[object Function]';
     };
   }
-  
+
   // Is a given value an ejs object?
   // Yes if object and has "_type", "toJSON", and "toString" properties
   isEJSObject = function (obj) {
@@ -168,7 +173,7 @@
       has(obj, '_type') &&
       has(obj, 'toJSON'));
   };
-  
+
   isQuery = function (obj) {
     return (isEJSObject(obj) && obj._type() === 'query');
   };
@@ -180,43 +185,43 @@
   isFilter = function (obj) {
     return (isEJSObject(obj) && obj._type() === 'filter');
   };
-  
+
   isFacet = function (obj) {
     return (isEJSObject(obj) && obj._type() === 'facet');
   };
-  
+
   isScriptField = function (obj) {
     return (isEJSObject(obj) && obj._type() === 'script field');
   };
-  
+
   isGeoPoint = function (obj) {
     return (isEJSObject(obj) && obj._type() === 'geo point');
   };
-  
+
   isIndexedShape = function (obj) {
     return (isEJSObject(obj) && obj._type() === 'indexed shape');
   };
-  
+
   isShape = function (obj) {
     return (isEJSObject(obj) && obj._type() === 'shape');
   };
-  
+
   isSort = function (obj) {
     return (isEJSObject(obj) && obj._type() === 'sort');
   };
-  
+
   isHighlight = function (obj) {
     return (isEJSObject(obj) && obj._type() === 'highlight');
   };
-  
+
   isSuggest = function (obj) {
     return (isEJSObject(obj) && obj._type() === 'suggest');
   };
-  
+
   isGenerator = function (obj) {
     return (isEJSObject(obj) && obj._type() === 'generator');
   };
- 
+
   /**
     @mixin
     <p>The DirectSettingsMixin provides support for common options used across 
@@ -13458,48 +13463,41 @@
       },
 
       /**
-            By default, searches return full documents, meaning every property or field.
-            This method allows you to specify which fields you want included and/or which
-            ones you want excluded.
-            You are allowed to call this function multiple times with different partial names.
-            The result will be different sets that are returned by ElasticSearch, only containing
-            the fields you specified for each set. The paths to such a result set looks like this:
-            hits.hits.fields.<partialName 1>, hits.hits.fields.<partialName 2>, ..
+            Allows to control how the _source field is returned with every hit.
+            By default operations return the contents of the _source field
+            unless you have used the fields parameter or if the _source field
+            is disabled.  Set the includes parameter to false to completely
+            disable returning the source field.
 
             @member ejs.Request
-            @param {String} partialName The name of this partial.
-            @param {Array} includes The list of fields to include as array, may be an empty array.
-            @param {Array} excludes The list of fields to exclude as array, may be an empty array.
+            @param {(String|Boolean|String[])} includes The field or list of fields to include as array.
+              Set to a boolean false to disable the source completely.
+            @param {(String|String[])} excludes The  optional field or list of fields to exclude.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
-      partialFields: function (partialName, includes, excludes) {
-        if (!isString(partialName)) {
-          throw new TypeError('Argument partialName must be a String');
+      source: function (includes, excludes) {
+        if (includes == null && excludes == null) {
+          return query._source;
         }
 
-        if (includes != null && !isArray(includes) && !isString(includes)) {
-          throw new TypeError('Argument includes must be a string or an array');
+        if (!isArray(includes) && !isString(includes) && !isBoolean(includes)) {
+          throw new TypeError('Argument includes must be a string, an array, or a boolean');
         }
 
         if (excludes != null && !isArray(excludes) && !isString(excludes)) {
           throw new TypeError('Argument excludes must be a string or an array');
         }
 
-        if (query.partial_fields == null) {
-          query.partial_fields = {};
-        }
+        if (isBoolean(includes)) {
+          query._source = includes;
+        } else {
+          query._source = {
+            includes: includes
+          };
 
-        if (includes == null && excludes == null) {
-          return query.partial_fields[partialName];
-        }
-
-        query.partial_fields[partialName] = {};
-        if (includes != null) {
-          query.partial_fields[partialName].include = includes;
-        }
-
-        if (excludes != null) {
-          query.partial_fields[partialName].exclude = excludes;
+          if (excludes != null) {
+            query._source.excludes = excludes;
+          }
         }
 
         return this;

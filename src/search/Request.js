@@ -210,48 +210,41 @@
       },
 
       /**
-            By default, searches return full documents, meaning every property or field.
-            This method allows you to specify which fields you want included and/or which
-            ones you want excluded.
-            You are allowed to call this function multiple times with different partial names.
-            The result will be different sets that are returned by ElasticSearch, only containing
-            the fields you specified for each set. The paths to such a result set looks like this:
-            hits.hits.fields.<partialName 1>, hits.hits.fields.<partialName 2>, ..
+            Allows to control how the _source field is returned with every hit.
+            By default operations return the contents of the _source field
+            unless you have used the fields parameter or if the _source field
+            is disabled.  Set the includes parameter to false to completely
+            disable returning the source field.
 
             @member ejs.Request
-            @param {String} partialName The name of this partial.
-            @param {Array} includes The list of fields to include as array, may be an empty array.
-            @param {Array} excludes The list of fields to exclude as array, may be an empty array.
+            @param {(String|Boolean|String[])} includes The field or list of fields to include as array.
+              Set to a boolean false to disable the source completely.
+            @param {(String|String[])} excludes The  optional field or list of fields to exclude.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
-      partialFields: function (partialName, includes, excludes) {
-        if (!isString(partialName)) {
-          throw new TypeError('Argument partialName must be a String');
+      source: function (includes, excludes) {
+        if (includes == null && excludes == null) {
+          return query._source;
         }
 
-        if (includes != null && !isArray(includes) && !isString(includes)) {
-          throw new TypeError('Argument includes must be a string or an array');
+        if (!isArray(includes) && !isString(includes) && !isBoolean(includes)) {
+          throw new TypeError('Argument includes must be a string, an array, or a boolean');
         }
 
         if (excludes != null && !isArray(excludes) && !isString(excludes)) {
           throw new TypeError('Argument excludes must be a string or an array');
         }
 
-        if (query.partial_fields == null) {
-          query.partial_fields = {};
-        }
+        if (isBoolean(includes)) {
+          query._source = includes;
+        } else {
+          query._source = {
+            includes: includes
+          };
 
-        if (includes == null && excludes == null) {
-          return query.partial_fields[partialName];
-        }
-
-        query.partial_fields[partialName] = {};
-        if (includes != null) {
-          query.partial_fields[partialName].include = includes;
-        }
-
-        if (excludes != null) {
-          query.partial_fields[partialName].exclude = excludes;
+          if (excludes != null) {
+            query._source.excludes = excludes;
+          }
         }
 
         return this;

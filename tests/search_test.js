@@ -1134,7 +1134,7 @@ exports.search = {
     test.done();
   },
   Request: function (test) {
-    test.expect(53);
+    test.expect(52);
 
     var req = ejs.Request(),
       matchAll = ejs.MatchAllQuery(),
@@ -1216,38 +1216,28 @@ exports.search = {
     expected.fields = ['field3', 'field4'];
     doTest();
 
-    req.partialFields('test1', 'i1', 'e1');
-    expected.partial_fields = {
-      test1: {
-        include: 'i1',
-        exclude: 'e1'
-      }
+    req.source('i1', 'e1');
+    expected._source = {
+      includes: 'i1',
+      excludes: 'e1'
     };
     doTest();
 
-    req.partialFields('test2', ['i1', 'i2'], ['e1', 'e2']);
-    expected.partial_fields.test2 = {
-      include: ['i1', 'i2'],
-      exclude: ['e1', 'e2']
+    req.source(['i1', 'i2'], ['e1', 'e2']);
+    expected._source = {
+      includes: ['i1', 'i2'],
+      excludes: ['e1', 'e2']
     };
     doTest();
 
-    req.partialFields('test3', ['i1', 'i2']);
-    expected.partial_fields.test3 = {
-      include: ['i1', 'i2']
+    req.source(['i1', 'i2']);
+    expected._source = {
+      includes: ['i1', 'i2']
     };
     doTest();
 
-    req.partialFields('test4', null, ['e1', 'e2']);
-    expected.partial_fields.test4 = {
-      exclude: ['e1', 'e2']
-    };
-    doTest();
-
-    req.partialFields('test2', 'i1', null);
-    expected.partial_fields.test2 = {
-      include: 'i1'
-    };
+    req.source(false);
+    expected._source = false;
     doTest();
 
     var hlt = ejs.Highlight('body').fragmentSize(500, 'body');
@@ -1378,15 +1368,15 @@ exports.search = {
     }, TypeError);
 
     test.throws(function () {
-      req.partialFields(1, "bad", "name");
+      req.source(1, "ok");
     }, TypeError);
 
     test.throws(function () {
-      req.partialFields("valid", "valid", 1);
+      req.source("ok", 1);
     }, TypeError);
 
     test.throws(function () {
-      req.partialFields("valid", 1, "valid");
+      req.source(null, "ok");
     }, TypeError);
 
     test.done();

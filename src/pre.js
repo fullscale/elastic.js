@@ -6,19 +6,19 @@
 (function () {
   'use strict';
 
-  var 
+  var
 
     // save reference to global object
     // `window` in browser
     // `exports` on server
     root = this,
-    
+
     // save the previous version of ejs
     _ejs = root && root.ejs,
 
     // from underscore.js, used in utils
-    ArrayProto = Array.prototype, 
-    ObjProto = Object.prototype, 
+    ArrayProto = Array.prototype,
+    ObjProto = Object.prototype,
     slice = ArrayProto.slice,
     toString = ObjProto.toString,
     hasOwnProp = ObjProto.hasOwnProperty,
@@ -34,6 +34,7 @@
     isObject,
     isString,
     isNumber,
+    isBoolean,
     isFunction,
     isEJSObject, // checks if valid ejs object
     isQuery, // checks valid ejs Query object
@@ -48,10 +49,10 @@
     isHighlight, // checks valid ejs Highlight object
     isSuggest, // checks valid ejs Suggest object
     isGenerator, // checks valid ejs Generator object
-    
+
     // create ejs object
     ejs;
-    
+
   if (typeof exports !== 'undefined') {
     ejs = exports;
   } else {
