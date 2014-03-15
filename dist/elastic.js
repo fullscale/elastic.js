@@ -2523,7 +2523,7 @@
     */
   ejs.TermsFacet = function (name) {
 
-    var 
+    var
       _common = ejs.FacetMixin(name),
       facet = _common.toJSON();
 
@@ -2533,7 +2533,7 @@
 
       /**
             Sets the field to be used to construct the this facet.  Set to
-            _index to return a facet count of hits per _index the search was 
+            _index to return a facet count of hits per _index the search was
             executed on.
 
             @member ejs.TermsFacet
@@ -2544,7 +2544,7 @@
         if (fieldName == null) {
           return facet[name].terms.field;
         }
-      
+
         facet[name].terms.field = fieldName;
         return this;
       },
@@ -2560,11 +2560,11 @@
         if (fields == null) {
           return facet[name].terms.fields;
         }
-      
+
         if (!isArray(fields)) {
           throw new TypeError('Argument must be an array');
         }
-        
+
         facet[name].terms.fields = fields;
         return this;
       },
@@ -2580,11 +2580,11 @@
         if (script == null) {
           return facet[name].terms.script_field;
         }
-      
+
         facet[name].terms.script_field = script;
         return this;
       },
-            
+
       /**
             Sets the number of facet entries that will be returned for this facet. For instance, you
             might ask for only the top 5 <code>authors</code> although there might be hundreds of
@@ -2598,20 +2598,38 @@
         if (facetSize == null) {
           return facet[name].terms.size;
         }
-      
+
         facet[name].terms.size = facetSize;
+        return this;
+      },
+
+
+      /**
+            Determines how many terms the coordinating node will request from
+            each shard.
+
+            @member ejs.TermsFacet
+            @param {Integer} shardSize The numer of terms to fetch from each shard.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      shardSize: function (shardSize) {
+        if (shardSize == null) {
+          return facet[name].terms.shard_size;
+        }
+
+        facet[name].terms.shard_size = shardSize;
         return this;
       },
 
       /**
             Sets the type of ordering that will be performed on the date
             buckets.  Valid values are:
-            
+
             count - default, sort by the number of items in the bucket
             term - sort by term value.
             reverse_count - reverse sort of the number of items in the bucket
             reverse_term - reverse sort of the term value.
-            
+
             @member ejs.TermsFacet
             @param {String} o The ordering method
             @returns {Object} returns <code>this</code> so that calls can be chained.
@@ -2620,14 +2638,14 @@
         if (o == null) {
           return facet[name].terms.order;
         }
-      
+
         o = o.toLowerCase();
-        if (o === 'count' || o === 'term' || 
+        if (o === 'count' || o === 'term' ||
           o === 'reverse_count' || o === 'reverse_term') {
-          
+
           facet[name].terms.order = o;
         }
-        
+
         return this;
       },
 
@@ -2644,7 +2662,7 @@
         if (trueFalse == null) {
           return facet[name].terms.all_terms;
         }
-      
+
         facet[name].terms.all_terms = trueFalse;
         return this;
       },
@@ -2655,7 +2673,7 @@
             terms.  If passed an array, it overwrites all existing values.</p>
 
             @member ejs.TermsFacet
-            @param {(String|String[])} exclude A single term to exclude or an 
+            @param {(String|String[])} exclude A single term to exclude or an
               array of terms to exclude.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
@@ -2663,11 +2681,11 @@
         if (facet[name].terms.exclude == null) {
           facet[name].terms.exclude = [];
         }
-        
+
         if (exclude == null) {
           return facet[name].terms.exclude;
         }
-      
+
         if (isString(exclude)) {
           facet[name].terms.exclude.push(exclude);
         } else if (isArray(exclude)) {
@@ -2675,7 +2693,7 @@
         } else {
           throw new TypeError('Argument must be string or array');
         }
-        
+
         return this;
       },
 
@@ -2690,7 +2708,7 @@
         if (exp == null) {
           return facet[name].terms.regex;
         }
-      
+
         facet[name].terms.regex = exp;
         return this;
       },
@@ -2707,7 +2725,7 @@
         if (flags == null) {
           return facet[name].terms.regex_flags;
         }
-      
+
         facet[name].terms.regex_flags = flags;
         return this;
       },
@@ -2724,7 +2742,7 @@
         if (scriptCode == null) {
           return facet[name].terms.script;
         }
-      
+
         facet[name].terms.script = scriptCode;
         return this;
       },
@@ -2741,17 +2759,17 @@
         if (language == null) {
           return facet[name].terms.lang;
         }
-      
+
         facet[name].terms.lang = language;
         return this;
       },
 
       /**
-            Sets parameters that will be applied to the script.  Overwrites 
+            Sets parameters that will be applied to the script.  Overwrites
             any existing params.
 
             @member ejs.TermsFacet
-            @param {Object} p An object where the keys are the parameter name and 
+            @param {Object} p An object where the keys are the parameter name and
               values are the parameter value.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
@@ -2759,13 +2777,13 @@
         if (p == null) {
           return facet[name].terms.params;
         }
-    
+
         facet[name].terms.params = p;
         return this;
       },
-      
+
       /**
-            Sets the execution hint determines how the facet is computed.  
+            Sets the execution hint determines how the facet is computed.
             Currently only supported value is "map".
 
             @member ejs.TermsFacet
@@ -2776,11 +2794,11 @@
         if (h == null) {
           return facet[name].terms.execution_hint;
         }
-    
+
         facet[name].terms.execution_hint = h;
         return this;
       }
-      
+
     });
   };
 

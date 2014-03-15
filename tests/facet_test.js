@@ -43,7 +43,7 @@ exports.facets = {
     test.done();
   },
   TermsFacet: function (test) {
-    test.expect(33);
+    test.expect(34);
 
     var termFacet = ejs.TermsFacet('somename'),
       termFilter = ejs.TermFilter('t1', 'v1'),
@@ -69,13 +69,17 @@ exports.facets = {
     termFacet.fields(['f2', 'f3']);
     expected.somename.terms.fields = ['f2', 'f3'];
     doTest();
-    
+
     termFacet.scriptField('sfield');
     expected.somename.terms.script_field = 'sfield';
     doTest();
-    
+
     termFacet.size(2);
     expected.somename.terms.size = 2;
+    doTest();
+
+    termFacet.shardSize(100);
+    expected.somename.terms.shard_size = 100;
     doTest();
 
     termFacet.order('count');
@@ -84,55 +88,55 @@ exports.facets = {
 
     termFacet.order('INVALID');
     doTest();
-    
+
     termFacet.order('TERM');
     expected.somename.terms.order = 'term';
     doTest();
-    
+
     termFacet.order('REVERSE_Count');
     expected.somename.terms.order = 'reverse_count';
     doTest();
-    
+
     termFacet.order('reverse_TERM');
     expected.somename.terms.order = 'reverse_term';
     doTest();
-    
+
     termFacet.exclude('e1');
     expected.somename.terms.exclude = ['e1'];
     doTest();
-    
+
     termFacet.exclude('e2');
     expected.somename.terms.exclude.push('e2');
     doTest();
-    
+
     termFacet.exclude(['e3', 'e4']);
     expected.somename.terms.exclude = ['e3', 'e4'];
     doTest();
-    
+
     termFacet.regex('r');
     expected.somename.terms.regex = 'r';
     doTest();
-    
+
     termFacet.regexFlags('flag');
     expected.somename.terms.regex_flags = 'flag';
     doTest();
-    
+
     termFacet.script('script');
     expected.somename.terms.script = 'script';
     doTest();
-    
+
     termFacet.lang('mvel');
     expected.somename.terms.lang = 'mvel';
     doTest();
-    
+
     termFacet.params({p1: 'v1'});
     expected.somename.terms.params = {p1: 'v1'};
     doTest();
-    
+
     termFacet.executionHint('map');
     expected.somename.terms.execution_hint = 'map';
     doTest();
-    
+
     termFacet.facetFilter(termFilter);
     expected.somename.facet_filter = termFilter.toJSON();
     doTest();
@@ -144,41 +148,41 @@ exports.facets = {
     termFacet.global(true);
     expected.somename.global = true;
     doTest();
-    
+
     termFacet.mode('collector');
     expected.somename.mode = 'collector';
     doTest();
-    
+
     termFacet.mode('INVALID');
     doTest();
-    
+
     termFacet.mode('POST');
     expected.somename.mode = 'post';
     doTest();
-    
+
     termFacet.cacheFilter(false);
     expected.somename.cache_filter = false;
     doTest();
-    
+
     termFacet.nested('root.path');
     expected.somename.nested = 'root.path';
     doTest();
-    
+
     test.strictEqual(termFacet._type(), 'facet');
-    
-    
+
+
     test.throws(function () {
       termFacet.facetFilter('invalid');
     }, TypeError);
-    
+
     test.throws(function () {
       termFacet.exclude(1);
     }, TypeError);
-    
+
     test.throws(function () {
       termFacet.fields('invalid');
     }, TypeError);
-    
+
     test.done();
   },
   GeoDistanceFacet: function (test) {
@@ -249,45 +253,45 @@ exports.facets = {
     geoDistanceFacet.unit('mi');
     expected.somename.geo_distance.unit = 'mi';
     doTest();
-    
+
     geoDistanceFacet.unit('INVALID');
     doTest();
-    
+
     geoDistanceFacet.unit('Km');
     expected.somename.geo_distance.unit = 'km';
     doTest();
-    
+
     geoDistanceFacet.distanceType('arc');
     expected.somename.geo_distance.distance_type = 'arc';
     doTest();
-    
+
     geoDistanceFacet.distanceType('INVALID');
     doTest();
-    
+
     geoDistanceFacet.distanceType('Plane');
     expected.somename.geo_distance.distance_type = 'plane';
     doTest();
-    
+
     geoDistanceFacet.normalize(true);
     expected.somename.geo_distance.normalize = true;
     doTest();
-    
+
     geoDistanceFacet.valueField('locationvals');
     expected.somename.geo_distance.value_field = 'locationvals';
     doTest();
-    
+
     geoDistanceFacet.valueScript('script');
     expected.somename.geo_distance.value_script = 'script';
     doTest();
-    
+
     geoDistanceFacet.lang('mvel');
     expected.somename.geo_distance.lang = 'mvel';
     doTest();
-    
+
     geoDistanceFacet.params({p1: 'v1', p2: false});
     expected.somename.geo_distance.params = {p1: 'v1', p2: false};
     doTest();
-    
+
     geoDistanceFacet.facetFilter(termFilter);
     expected.somename.facet_filter = termFilter.toJSON();
     doTest();
@@ -295,37 +299,37 @@ exports.facets = {
     geoDistanceFacet.global(true);
     expected.somename.global = true;
     doTest();
-    
+
     geoDistanceFacet.mode('collector');
     expected.somename.mode = 'collector';
     doTest();
-    
+
     geoDistanceFacet.mode('INVALID');
     doTest();
-    
+
     geoDistanceFacet.mode('POST');
     expected.somename.mode = 'post';
     doTest();
-    
+
     geoDistanceFacet.cacheFilter(false);
     expected.somename.cache_filter = false;
     doTest();
-    
+
     geoDistanceFacet.nested('root.path');
     expected.somename.nested = 'root.path';
     doTest();
-    
+
     test.strictEqual(geoDistanceFacet._type(), 'facet');
-    
-    
+
+
     test.throws(function () {
       geoDistanceFacet.point('invalid');
     }, TypeError);
-    
+
     test.throws(function () {
       geoDistanceFacet.facetFilter('invalid');
     }, TypeError);
-    
+
     test.done();
   },
   StatisticalFacet: function (test) {
@@ -351,11 +355,11 @@ exports.facets = {
     statisticalFacet.field('field1');
     expected.somename.statistical.field = 'field1';
     doTest();
-    
+
     statisticalFacet.fields(['field2', 'field3']);
     expected.somename.statistical.fields = ['field2', 'field3'];
     doTest();
-    
+
     statisticalFacet.lang('js');
     expected.somename.statistical.lang = 'js';
     doTest();
@@ -375,41 +379,41 @@ exports.facets = {
       factor: 5
     };
     doTest();
-    
+
     statisticalFacet.global(true);
     expected.somename.global = true;
     doTest();
-    
+
     statisticalFacet.mode('collector');
     expected.somename.mode = 'collector';
     doTest();
-    
+
     statisticalFacet.mode('INVALID');
     doTest();
-    
+
     statisticalFacet.mode('POST');
     expected.somename.mode = 'post';
     doTest();
-    
+
     statisticalFacet.cacheFilter(false);
     expected.somename.cache_filter = false;
     doTest();
-    
+
     statisticalFacet.nested('root.path');
     expected.somename.nested = 'root.path';
     doTest();
-    
+
     test.strictEqual(statisticalFacet._type(), 'facet');
-    
-    
+
+
     test.throws(function () {
       statisticalFacet.facetFilter('invalid');
     }, TypeError);
-    
+
     test.throws(function () {
       statisticalFacet.fields(2);
     }, TypeError);
-    
+
     test.done();
   },
   TermStatsFacet: function (test) {
@@ -443,74 +447,74 @@ exports.facets = {
     termStatsFacet.scriptField('scriptField');
     expected.somename.terms_stats.script_field = 'scriptField';
     doTest();
-    
+
     termStatsFacet.valueScript('valueScript');
     expected.somename.terms_stats.value_script = 'valueScript';
     doTest();
-    
+
     termStatsFacet.allTerms(false);
     expected.somename.terms_stats.all_terms = false;
     doTest();
-    
+
     termStatsFacet.lang('mvel');
     expected.somename.terms_stats.lang = 'mvel';
     doTest();
-    
+
     termStatsFacet.params({p1: false});
     expected.somename.terms_stats.params = {p1: false};
     doTest();
-    
+
     termStatsFacet.order("total");
     expected.somename.terms_stats.order = "total";
     doTest();
 
     termStatsFacet.order('INVALID');
     doTest();
-    
+
     termStatsFacet.order('COUNT');
     expected.somename.terms_stats.order = 'count';
     doTest();
-    
+
     termStatsFacet.order('reverse_total');
     expected.somename.terms_stats.order = 'reverse_total';
     doTest();
-    
+
     termStatsFacet.order('REVERSE_count');
     expected.somename.terms_stats.order = 'reverse_count';
     doTest();
-    
+
     termStatsFacet.order('term');
     expected.somename.terms_stats.order = 'term';
     doTest();
-    
+
     termStatsFacet.order('reverse_term');
     expected.somename.terms_stats.order = 'reverse_term';
     doTest();
-    
+
     termStatsFacet.order('min');
     expected.somename.terms_stats.order = 'min';
     doTest();
-    
+
     termStatsFacet.order('reverse_min');
     expected.somename.terms_stats.order = 'reverse_min';
     doTest();
-    
+
     termStatsFacet.order('max');
     expected.somename.terms_stats.order = 'max';
     doTest();
-    
+
     termStatsFacet.order('reverse_max');
     expected.somename.terms_stats.order = 'reverse_max';
     doTest();
-    
+
     termStatsFacet.order('mean');
     expected.somename.terms_stats.order = 'mean';
     doTest();
-    
+
     termStatsFacet.order('reverse_mean');
     expected.somename.terms_stats.order = 'reverse_mean';
     doTest();
-    
+
     termStatsFacet.facetFilter(termFilter);
     expected.somename.facet_filter = termFilter.toJSON();
     doTest();
@@ -518,37 +522,37 @@ exports.facets = {
     termStatsFacet.size(5);
     expected.somename.terms_stats.size = 5;
     doTest();
-    
+
     termStatsFacet.global(true);
     expected.somename.global = true;
     doTest();
-    
+
     termStatsFacet.mode('collector');
     expected.somename.mode = 'collector';
     doTest();
-    
+
     termStatsFacet.mode('INVALID');
     doTest();
-    
+
     termStatsFacet.mode('POST');
     expected.somename.mode = 'post';
     doTest();
-    
+
     termStatsFacet.cacheFilter(false);
     expected.somename.cache_filter = false;
     doTest();
-    
+
     termStatsFacet.nested('root.path');
     expected.somename.nested = 'root.path';
     doTest();
-    
+
     test.strictEqual(termStatsFacet._type(), 'facet');
-    
-    
+
+
     test.throws(function () {
       termStatsFacet.facetFilter('invalid');
     }, TypeError);
-    
+
     test.done();
   },
   DateHistogramFacet: function (test) {
@@ -590,92 +594,92 @@ exports.facets = {
     dateHistogramFacet.keyField('pubdatekeys');
     expected.somename.date_histogram.key_field = 'pubdatekeys';
     doTest();
-    
+
     dateHistogramFacet.valueField('pubdatevalues');
     expected.somename.date_histogram.value_field = 'pubdatevalues';
     doTest();
-    
+
     dateHistogramFacet.preZone(-8);
     expected.somename.date_histogram.pre_zone = -8;
     doTest();
-    
+
     dateHistogramFacet.preZoneAdjustLargeInterval(true);
     expected.somename.date_histogram.pre_zone_adjust_large_interval = true;
     doTest();
-    
+
     dateHistogramFacet.postZone(-5);
     expected.somename.date_histogram.post_zone = -5;
     doTest();
-    
+
     dateHistogramFacet.preOffset('1h');
     expected.somename.date_histogram.pre_offset = '1h';
     doTest();
-    
+
     dateHistogramFacet.postOffset('2d');
     expected.somename.date_histogram.post_offset = '2d';
     doTest();
-    
+
     dateHistogramFacet.factor(1000);
     expected.somename.date_histogram.factor = 1000;
     doTest();
-    
+
     dateHistogramFacet.valueScript('script');
     expected.somename.date_histogram.value_script = 'script';
     doTest();
-    
+
     dateHistogramFacet.order('time');
     expected.somename.date_histogram.order = 'time';
     doTest();
-    
+
     dateHistogramFacet.order('INVALID');
     doTest();
-    
+
     dateHistogramFacet.order('COUNT');
     expected.somename.date_histogram.order = 'count';
     doTest();
-    
+
     dateHistogramFacet.order('Total');
     expected.somename.date_histogram.order = 'total';
     doTest();
-    
+
     dateHistogramFacet.lang('mvel');
     expected.somename.date_histogram.lang = 'mvel';
     doTest();
-    
+
     dateHistogramFacet.params({p1: 'v1', p2: false});
     expected.somename.date_histogram.params = {p1: 'v1', p2: false};
     doTest();
-    
+
     dateHistogramFacet.global(true);
     expected.somename.global = true;
     doTest();
-    
+
     dateHistogramFacet.mode('collector');
     expected.somename.mode = 'collector';
     doTest();
-    
+
     dateHistogramFacet.mode('INVALID');
     doTest();
-    
+
     dateHistogramFacet.mode('POST');
     expected.somename.mode = 'post';
     doTest();
-    
+
     dateHistogramFacet.cacheFilter(false);
     expected.somename.cache_filter = false;
     doTest();
-    
+
     dateHistogramFacet.nested('root.path');
     expected.somename.nested = 'root.path';
     doTest();
-    
+
     test.strictEqual(dateHistogramFacet._type(), 'facet');
-    
-    
+
+
     test.throws(function () {
       dateHistogramFacet.facetFilter('invalid');
     }, TypeError);
-    
+
     test.done();
   },
   QueryFacet: function (test) {
@@ -704,41 +708,41 @@ exports.facets = {
     queryFacet.facetFilter(termFilter);
     expected.somename.facet_filter = termFilter.toJSON();
     doTest();
-    
+
     queryFacet.global(true);
     expected.somename.global = true;
     doTest();
-    
+
     queryFacet.mode('collector');
     expected.somename.mode = 'collector';
     doTest();
-    
+
     queryFacet.mode('INVALID');
     doTest();
-    
+
     queryFacet.mode('POST');
     expected.somename.mode = 'post';
     doTest();
-    
+
     queryFacet.cacheFilter(false);
     expected.somename.cache_filter = false;
     doTest();
-    
+
     queryFacet.nested('root.path');
     expected.somename.nested = 'root.path';
     doTest();
-    
+
     test.strictEqual(queryFacet._type(), 'facet');
-    
-    
+
+
     test.throws(function () {
       queryFacet.query('invalid');
     }, TypeError);
-    
+
     test.throws(function () {
       queryFacet.facetFilter('invalid');
     }, TypeError);
-    
+
     test.done();
   },
   FilterFacet: function (test) {
@@ -767,41 +771,41 @@ exports.facets = {
     filterFacet.facetFilter(termFilter2);
     expected.somename.facet_filter = termFilter2.toJSON();
     doTest();
-    
+
     filterFacet.global(true);
     expected.somename.global = true;
     doTest();
-    
+
     filterFacet.mode('collector');
     expected.somename.mode = 'collector';
     doTest();
-    
+
     filterFacet.mode('INVALID');
     doTest();
-    
+
     filterFacet.mode('POST');
     expected.somename.mode = 'post';
     doTest();
-    
+
     filterFacet.cacheFilter(false);
     expected.somename.cache_filter = false;
     doTest();
-    
+
     filterFacet.nested('root.path');
     expected.somename.nested = 'root.path';
     doTest();
-    
+
     test.strictEqual(filterFacet._type(), 'facet');
-    
-    
+
+
     test.throws(function () {
       filterFacet.filter('invalid');
     }, TypeError);
-    
+
     test.throws(function () {
       filterFacet.facetFilter('invalid');
     }, TypeError);
-    
+
     test.done();
   },
   HistogramFacet: function (test) {
@@ -835,88 +839,88 @@ exports.facets = {
     histogramFacet.timeInterval('1d');
     expected.somename.histogram.time_interval = '1d';
     doTest();
-    
+
     histogramFacet.from(100);
     expected.somename.histogram.from = 100;
     doTest();
-    
+
     histogramFacet.to(600);
     expected.somename.histogram.to = 600;
     doTest();
-    
+
     histogramFacet.order('key');
     expected.somename.histogram.order = 'key';
     doTest();
-    
+
     histogramFacet.order('INVALID');
     doTest();
-    
+
     histogramFacet.order('COUNT');
     expected.somename.histogram.order = 'count';
     doTest();
-    
+
     histogramFacet.order('Total');
     expected.somename.histogram.order = 'total';
     doTest();
-    
+
     histogramFacet.valueField('pricevals');
     expected.somename.histogram.value_field = 'pricevals';
     doTest();
-    
+
     histogramFacet.keyField('pricekeys');
     expected.somename.histogram.key_field = 'pricekeys';
     doTest();
-    
+
     histogramFacet.valueScript('script');
     expected.somename.histogram.value_script = 'script';
     doTest();
-    
+
     histogramFacet.keyScript('script2');
     expected.somename.histogram.key_script = 'script2';
     doTest();
-    
+
     histogramFacet.lang('mvel');
     expected.somename.histogram.lang = 'mvel';
     doTest();
-    
+
     histogramFacet.params({p1: 'v1', p2: false});
     expected.somename.histogram.params = {p1: 'v1', p2: false};
     doTest();
-    
+
     histogramFacet.facetFilter(termFilter);
     expected.somename.facet_filter = termFilter.toJSON();
     doTest();
-    
+
     histogramFacet.global(true);
     expected.somename.global = true;
     doTest();
-    
+
     histogramFacet.mode('collector');
     expected.somename.mode = 'collector';
     doTest();
-    
+
     histogramFacet.mode('INVALID');
     doTest();
-    
+
     histogramFacet.mode('POST');
     expected.somename.mode = 'post';
     doTest();
-    
+
     histogramFacet.cacheFilter(false);
     expected.somename.cache_filter = false;
     doTest();
-    
+
     histogramFacet.nested('root.path');
     expected.somename.nested = 'root.path';
     doTest();
-    
+
     test.strictEqual(histogramFacet._type(), 'facet');
-    
-    
+
+
     test.throws(function () {
       histogramFacet.facetFilter('invalid');
     }, TypeError);
-    
+
     test.done();
   },
   RangeFacet: function (test) {
@@ -948,27 +952,27 @@ exports.facets = {
     rangeFacet.keyField('pricekey');
     expected.somename.range.key_field = 'pricekey';
     doTest();
-    
+
     rangeFacet.valueField('pricevalue');
     expected.somename.range.value_field = 'pricevalue';
     doTest();
-    
+
     rangeFacet.keyScript('script');
     expected.somename.range.key_script = 'script';
     doTest();
-    
+
     rangeFacet.valueScript('script2');
     expected.somename.range.value_script = 'script2';
     doTest();
-    
+
     rangeFacet.lang('mvel');
     expected.somename.range.lang = 'mvel';
     doTest();
-    
+
     rangeFacet.params({p1: true, p2: 'v2'});
     expected.somename.range.params = {p1: true, p2: 'v2'};
     doTest();
-    
+
     rangeFacet.addUnboundedTo(10);
     expected.somename.range.ranges.push({
       to: 10
@@ -1002,33 +1006,33 @@ exports.facets = {
     rangeFacet.global(true);
     expected.somename.global = true;
     doTest();
-    
+
     rangeFacet.mode('collector');
     expected.somename.mode = 'collector';
     doTest();
-    
+
     rangeFacet.mode('INVALID');
     doTest();
-    
+
     rangeFacet.mode('POST');
     expected.somename.mode = 'post';
     doTest();
-    
+
     rangeFacet.cacheFilter(false);
     expected.somename.cache_filter = false;
     doTest();
-    
+
     rangeFacet.nested('root.path');
     expected.somename.nested = 'root.path';
     doTest();
-    
+
     test.strictEqual(rangeFacet._type(), 'facet');
-    
-    
+
+
     test.throws(function () {
       rangeFacet.facetFilter('invalid');
     }, TypeError);
-    
+
     test.done();
   }
 };
