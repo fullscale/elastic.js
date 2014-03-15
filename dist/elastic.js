@@ -1,6 +1,6 @@
-/*! elastic.js - v1.1.1 - 2013-12-26
+/*! elastic.js - v1.1.1 - 2014-03-15
  * https://github.com/fullscale/elastic.js
- * Copyright (c) 2013 FullScale Labs, LLC; Licensed MIT */
+ * Copyright (c) 2014 FullScale Labs, LLC; Licensed MIT */
 
 /**
  @namespace
@@ -2650,7 +2650,7 @@
             terms.  If passed an array, it overwrites all existing values.</p>
 
             @member ejs.TermsFacet
-            @param {String || Array} exclude A single term to exclude or an 
+            @param {(String|String[])} exclude A single term to exclude or an 
               array of terms to exclude.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
@@ -2794,7 +2794,7 @@
     @desc
     A container Filter that allows Boolean AND composition of Filters.
 
-    @param {Filter || Array} f A single Filter object or an array of valid 
+    @param {(Filter|Filter[])} f A single Filter object or an array of valid 
       Filter objects.
     */
   ejs.AndFilter = function (f) {
@@ -2829,7 +2829,7 @@
              of Filters, then they replace all existing filters.
 
              @member ejs.AndFilter
-             @param {Filter || Array} fltr A valid filter object or an array of filters.
+             @param {(Filter|Filter[])} fltr A valid filter object or an array of filters.
              @returns {Object} returns <code>this</code> so that calls can be chained.
              */
       filters: function (fltr) {
@@ -2896,7 +2896,7 @@
              replace all existing filters.
 
              @member ejs.BoolFilter
-             @param {Filter || Array} oFilter A valid Filter or array of
+             @param {(Filter|Filter[])} oFilter A valid Filter or array of
               Filter objects.
              @returns {Object} returns <code>this</code> so that calls can be chained.
              */
@@ -2936,7 +2936,7 @@
              they replace all existing filters.
 
              @member ejs.BoolFilter
-             @param {Filter || Array} oFilter A valid Filter or array of
+             @param {(Filter|Filter[])} oFilter A valid Filter or array of
                Filter objects.
              @returns {Object} returns <code>this</code> so that calls can be chained.
              */
@@ -2976,7 +2976,7 @@
              they replace all existing filters.
 
              @member ejs.BoolFilter
-             @param {Filter || Array} oFilter A valid Filter or array of
+             @param {(Filter|Filter[])} oFilter A valid Filter or array of
                 Filter objects.
              @returns {Object} returns <code>this</code> so that calls can be chained.
              */
@@ -4208,7 +4208,7 @@
     @desc
     Matches documents with the specified id(s).
 
-    @param {Array || String} ids A single document id or a list of document ids.
+    @param {(String|String[])} ids A single document id or a list of document ids.
     */
   ejs.IdsFilter = function (ids) {
 
@@ -4232,7 +4232,7 @@
             array it is set as the document values and replaces any existing values.
 
             @member ejs.IdsFilter
-            @param {Array || String} val An single document id or an array of document ids.
+            @param {(String|String[])} val An single document id or an array of document ids.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       values: function (val) {
@@ -4258,7 +4258,7 @@
             parameter is optional.
 
             @member ejs.IdsFilter
-            @param {Array || String} type A type or a list of types
+            @param {(String|String[])} type A type or a list of types
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       type: function (type) {
@@ -4303,7 +4303,7 @@
     A configurable filter that is dependent on the index name.
 
     @param {Object} fltr A valid filter object.
-    @param {String || Array} indices a single index name or an array of index 
+    @param {(String|String[])} indices a single index name or an array of index 
       names.
     */
   ejs.IndicesFilter = function (fltr, indices) {
@@ -4334,7 +4334,7 @@
             an array, it overwites all current indices.
 
             @member ejs.IndicesFilter
-            @param {String || Array} i A single index name or an array of index names.
+            @param {(String|String[])} i A single index name or an array of index names.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       indices: function (i) {
@@ -4380,7 +4380,7 @@
             documents or "all" to match all documents.
 
             @member ejs.IndicesFilter
-            @param {Object || String} f A valid Filter object or "none" or "all"
+            @param {(Filter|String)} f A valid Filter object or "none" or "all"
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       noMatchFilter: function (f) {
@@ -4775,7 +4775,7 @@
     @desc
     A Filter that only accepts numeric values within a specified range.
 
-    @param {string} fieldName The name of the field to filter on.
+    @param {String} fieldName The name of the field to filter on.
     */
   ejs.NumericRangeFilter = function (fieldName) {
 
@@ -4887,7 +4887,7 @@
             include_lower to false,
 
             @member ejs.NumericRangeFilter
-            @param {Variable Type} val the value, type depends on field type
+            @param {*} val the value, type depends on field type
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       gt: function (val) {
@@ -4908,7 +4908,7 @@
             and include_lower to true.
 
             @member ejs.NumericRangeFilter
-            @param {Variable Type} val the value, type depends on field type
+            @param {*} val the value, type depends on field type
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       gte: function (val) {
@@ -4929,7 +4929,7 @@
             to false.
 
             @member ejs.NumericRangeFilter
-            @param {Variable Type} val the value, type depends on field type
+            @param {*} val the value, type depends on field type
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       lt: function (val) {
@@ -4950,7 +4950,7 @@
             and include_upper to true.
 
             @member ejs.NumericRangeFilter
-            @param {Variable Type} val the value, type depends on field type
+            @param {*} val the value, type depends on field type
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       lte: function (val) {
@@ -4984,7 +4984,7 @@
     @desc
     A container Filter that allows Boolean OR composition of filters.
 
-    @param {Filter || Array} filters A valid Filter or array of Filters.
+    @param {(Filter|Filter[])} filters A valid Filter or array of Filters.
     */
   ejs.OrFilter = function (filters) {
 
@@ -5018,7 +5018,7 @@
              replace all existing Filters.
 
              @member ejs.OrFilter
-             @param {Filter || Array} fltr A Filter or array of Filters
+             @param {(Filter|Filter[])} fltr A Filter or array of Filters
              @returns {Object} returns <code>this</code> so that calls can be chained.
              */
       filters: function (fltr) {
@@ -5233,7 +5233,7 @@
             The lower bound. Defaults to start from the first.
 
             @member ejs.RangeFilter
-            @param {Variable Type} f the lower bound value, type depends on field type
+            @param {*} f the lower bound value, type depends on field type
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       from: function (f) {
@@ -5249,7 +5249,7 @@
             The upper bound. Defaults to unbounded.
 
             @member ejs.RangeFilter
-            @param {Variable Type} t the upper bound value, type depends on field type
+            @param {*} t the upper bound value, type depends on field type
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       to: function (t) {
@@ -5299,7 +5299,7 @@
             include_lower to false,
 
             @member ejs.RangeFilter
-            @param {Variable Type} val the value, type depends on field type
+            @param {*} val the value, type depends on field type
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       gt: function (val) {
@@ -5316,7 +5316,7 @@
             and include_lower to true.
 
             @member ejs.RangeFilter
-            @param {Variable Type} val the value, type depends on field type
+            @param {*} val the value, type depends on field type
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       gte: function (val) {
@@ -5333,7 +5333,7 @@
             to false.
 
             @member ejs.RangeFilter
-            @param {Variable Type} val the value, type depends on field type
+            @param {*} val the value, type depends on field type
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       lt: function (val) {
@@ -5350,7 +5350,7 @@
             and include_upper to true.
 
             @member ejs.RangeFilter
-            @param {Variable Type} val the value, type depends on field type
+            @param {*} val the value, type depends on field type
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       lte: function (val) {
@@ -5654,7 +5654,7 @@
     A Filter that matches documents containing provided terms. 
 
     @param {String} field the document field/key to filter against
-    @param {String || Array} terms a single term or an array of terms.
+    @param {(String|String[])} terms a single term or an array of terms.
     */
   ejs.TermsFilter = function (field, terms) {
 
@@ -5711,7 +5711,7 @@
             existing terms.
 
             @member ejs.TermsFilter
-            @param {String || Array} t A single term or an array or terms.
+            @param {(String|String[])} t A single term or an array or terms.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       terms: function (t) {
@@ -6657,8 +6657,8 @@
     Returned documents matched by the query and scored based on if the document
     matched in a filter.  
 
-    @param {Object} qry A valid query object.
-    @param {Object || Array} filters A single object or array of objects.  Each 
+    @param {Query} qry A valid query object.
+    @param {(Object|Object[])} filters A single object or array of object.  Each 
       object must have a 'filter' property and either a 'boost' or 'script' 
       property.
     */
@@ -6740,7 +6740,7 @@
             </code>
 
             @member ejs.CustomFiltersScoreQuery
-            @param {Object || Array} fltrs An object or array of objects 
+            @param {(Object|Object[])} fltrs An object or array of objects 
               contining a filter and either a boost or script property.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
@@ -7005,7 +7005,7 @@
             replaces all existing values.
 
             @member ejs.DisMaxQuery
-            @param {Query || Array} qs A single Query or an array of Queries
+            @param {(Query|Query[])} qs A single Query or an array of Queries
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       queries: function (qs) {
@@ -8009,7 +8009,7 @@
              of field names, it replaces any existing values with the new array.
 
              @member ejs.FuzzyLikeThisQuery
-             @param {String || Array} f A single field name or a list of field names.
+             @param {(String|String[])} f A single field name or a list of field names.
              @returns {Object} returns <code>this</code> so that calls can be chained.
              */
       fields: function (f) {
@@ -8825,7 +8825,7 @@
     @desc
     Matches documents with the specified id(s).
 
-    @param {Array || String} ids A single document id or a list of document ids.
+    @param {(String|String[])} ids A single document id or a list of document ids.
     */
   ejs.IdsQuery = function (ids) {
 
@@ -8849,7 +8849,7 @@
             array it is set as the document values and replaces any existing values.
 
             @member ejs.IdsQuery
-            @param {Array || String} val An single document id or an array of document ids.
+            @param {(String|String[])} val An single document id or an array of document ids.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       values: function (val) {
@@ -8875,7 +8875,7 @@
             parameter is optional.
 
             @member ejs.IdsQuery
-            @param {Array || String} type A type or a list of types
+            @param {(String|String[])} type A type or a list of types
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       type: function (type) {
@@ -8917,8 +8917,8 @@
     @desc
     A configurable query that is dependent on the index name.
 
-    @param {Object} qry A valid query object.
-    @param {String || Array} indices a single index name or an array of index 
+    @param {Query} qry A valid query object.
+    @param {(String|String[])} indices a single index name or an array of index 
       names.
     */
   ejs.IndicesQuery = function (qry, indices) {
@@ -8949,7 +8949,7 @@
             an array, it overwites all current indices.
 
             @member ejs.IndicesQuery
-            @param {String || Array} i A single index name or an array of index names.
+            @param {(String|String[])} i A single index name or an array of index names.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       indices: function (i) {
@@ -8972,7 +8972,7 @@
             Sets the query to be executed against the indices specified.
 
             @member ejs.IndicesQuery
-            @param {Object} q A valid Query object
+            @param {Query} q A valid Query object
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       query: function (q) {
@@ -8994,7 +8994,7 @@
             documents or "all" to match all documents.
 
             @member ejs.IndicesQuery
-            @param {Object || String} q A valid Query object or "none" or "all"
+            @param {(Query|String)} q A valid Query object or "none" or "all"
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       noMatchQuery: function (q) {
@@ -9700,7 +9700,7 @@
     @desc
     <p>Constructs a query where each documents returned are “like” provided text</p>
 
-    @param {String || Array} fields A single field or array of fields to run against.
+    @param {(String|String[])} fields A single field or array of fields to run against.
     @param {String} likeText The text to find documents like it.
   
      */
@@ -9729,7 +9729,7 @@
              of field names, it replaces any existing values with the new array.
 
              @member ejs.MoreLikeThisQuery
-             @param {String || Array} f A single field name or a list of field names.
+             @param {(String|String[])} f A single field name or a list of field names.
              @returns {Object} returns <code>this</code> so that calls can be chained.
              */
       fields: function (f) {
@@ -9976,7 +9976,7 @@
     A Query that allow to more easily build a MatchQuery 
     over multiple fields
 
-    @param {String || Array} fields the single field or array of fields to search across
+    @param {(String|String[])} fields the single field or array of fields to search across
     @param {String} qstr the query string
     */
   ejs.MultiMatchQuery = function (fields, qstr) {
@@ -10004,7 +10004,7 @@
             values, they overwite all existing values.
 
             @member ejs.MultiMatchQuery
-            @param {String || Array} f A single field or list of fields names to 
+            @param {(String|String[])} f A single field or list of fields names to 
               search across.
             @returns {Object} returns <code>this</code> so that calls can be 
               chained. Returns {Array} current value if `f` not specified.
@@ -11191,7 +11191,7 @@
             The lower bound. Defaults to start from the first.
 
             @member ejs.RangeQuery
-            @param {Variable Type} f the lower bound value, type depends on field type
+            @param {*} f the lower bound value, type depends on field type
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       from: function (f) {
@@ -11207,7 +11207,7 @@
             The upper bound. Defaults to unbounded.
 
             @member ejs.RangeQuery
-            @param {Variable Type} t the upper bound value, type depends on field type
+            @param {*} t the upper bound value, type depends on field type
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       to: function (t) {
@@ -11257,7 +11257,7 @@
             include_lower to false,
 
             @member ejs.RangeQuery
-            @param {Variable Type} val the value, type depends on field type
+            @param {*} val the value, type depends on field type
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       gt: function (val) {
@@ -11274,7 +11274,7 @@
             and include_lower to true.
 
             @member ejs.RangeQuery
-            @param {Variable Type} val the value, type depends on field type
+            @param {*} val the value, type depends on field type
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       gte: function (val) {
@@ -11291,7 +11291,7 @@
             to false.
 
             @member ejs.RangeQuery
-            @param {Variable Type} val the value, type depends on field type
+            @param {*} val the value, type depends on field type
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       lt: function (val) {
@@ -11308,7 +11308,7 @@
             and include_upper to true.
 
             @member ejs.RangeQuery
-            @param {Variable Type} val the value, type depends on field type
+            @param {*} val the value, type depends on field type
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       lte: function (val) {
@@ -11662,7 +11662,7 @@
     @desc
     Matches spans which are near one another.
 
-    @param {Query || Array} clauses A single SpanQuery or array of SpanQueries
+    @param {(Query|Query[])} clauses A single SpanQuery or array of SpanQueries
     @param {Integer} slop The number of intervening unmatched positions
 
     */
@@ -11699,7 +11699,7 @@
             SpanQueries, they replace any existing clauses.
 
             @member ejs.SpanNearQuery
-            @param {Query || Array} clauses A SpanQuery or array of SpanQueries.
+            @param {(Query|Query[])} clauses A SpanQuery or array of SpanQueries.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       clauses: function (clauses) {
@@ -11904,7 +11904,7 @@
             SpanQueries, they replace any existing clauses.
 
             @member ejs.SpanOrQuery
-            @param {Query || Array} clauses A SpanQuery or array of SpanQueries.
+            @param {(Query|Query[])} clauses A SpanQuery or array of SpanQueries.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       clauses: function (clauses) {
@@ -12123,7 +12123,7 @@
     A Query that matches documents containing provided terms. 
 
     @param {String} field the document field/key to query against
-    @param {String || Array} terms a single term or array of "terms" to match
+    @param {(String|String[])} terms a single term or array of "terms" to match
     */
   ejs.TermsQuery = function (field, terms) {
 
@@ -12168,7 +12168,7 @@
             existing terms.
 
             @member ejs.TermsQuery
-            @param {String || Array} t A single term or an array or terms.
+            @param {(String|String[])} t A single term or an array or terms.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       terms: function (t) {
@@ -12707,7 +12707,7 @@
     @desc
     <p>Allows to highlight search results on one or more fields.</p>
 
-    @param {String || Array} fields An optional field or array of fields to highlight.
+    @param {(String|String[])} fields An optional field or array of fields to highlight.
     */
   ejs.Highlight = function (fields) {
   
@@ -12745,7 +12745,7 @@
             added to the current list of fields.
 
             @member ejs.Highlight
-            @param {String || Array} vals A field name or array of field names.
+            @param {(String|String[])} vals A field name or array of field names.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       fields: function (vals) {
@@ -12772,7 +12772,7 @@
             <code>oField</code> parameter.
         
             @member ejs.Highlight
-            @param {String || Array} tags A single tag or an array of tags.
+            @param {(String|String[])} tags A single tag or an array of tags.
             @param {String} oField An optional field name
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
@@ -12798,7 +12798,7 @@
             <code>oField</code> parameter.
         
             @member ejs.Highlight
-            @param {String || Array} tags A single tag or an array of tags.
+            @param {(String|String[])} tags A single tag or an array of tags.
             @param {String} oField An optional field name
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
@@ -13263,19 +13263,19 @@
         routing - the shard routing value
     */
   ejs.Request = function () {
-    
+
     /**
         The internal query object.
         @member ejs.Request
         @property {Object} query
         */
     var query = {};
-    
+
     return {
 
       /**
             <p>Sets the sorting for the query.  This accepts many input formats.</p>
-            
+
             <dl>
                 <dd><code>sort()</code> - The current sorting values are returned.</dd>
                 <dd><code>sort(fieldName)</code> - Adds the field to the current list of sorting values.</dd>
@@ -13286,18 +13286,18 @@
                     from the array.  The array must contain only strings and Sort objects.</dd>
             </dl>
 
-            <p>Multi-level sorting is supported so the order in which sort fields 
+            <p>Multi-level sorting is supported so the order in which sort fields
             are added to the query requests is relevant.</p>
-            
+
             <p>It is recommended to use <code>Sort</code> objects when possible.</p>
-            
+
             @member ejs.Request
             @param {String} fieldName The field to be sorted by.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       sort: function () {
         var i, len;
-        
+
         if (!has(query, "sort")) {
           query.sort = [];
         }
@@ -13305,11 +13305,11 @@
         if (arguments.length === 0) {
           return query.sort;
         }
-      
+
         // if passed a single argument
         if (arguments.length === 1) {
           var sortVal = arguments[0];
-          
+
           if (isString(sortVal)) {
             // add  a single field name
             query.sort.push(sortVal);
@@ -13333,12 +13333,12 @@
           } else {
             // Invalid object type as argument.
             throw new TypeError('Argument must be string, Sort, or array');
-          } 
+          }
         } else if (arguments.length === 2) {
           // handle the case where a single field name and order are passed
           var field = arguments[0],
             order = arguments[1];
-            
+
           if (isString(field) && isString(order)) {
             order = order.toLowerCase();
             if (order === 'asc' || order === 'desc') {
@@ -13353,7 +13353,7 @@
       },
 
       /**
-           Enables score computation and tracking during sorting.  Be default, 
+           Enables score computation and tracking during sorting.  Be default,
            when sorting scores are not computed.
 
             @member ejs.Request
@@ -13364,11 +13364,11 @@
         if (trueFalse == null) {
           return query.track_scores;
         }
-      
+
         query.track_scores = trueFalse;
         return this;
       },
-    
+
       /**
             A search result set could be very large (think Google). Setting the
             <code>from</code> parameter allows you to page through the result set
@@ -13383,11 +13383,11 @@
         if (f == null) {
           return query.from;
         }
-        
+
         query.from = f;
         return this;
       },
-      
+
       /**
             Sets the number of results/documents to be returned. This is set on a per page basis.
 
@@ -13399,18 +13399,18 @@
         if (s == null) {
           return query.size;
         }
-      
+
         query.size = s;
         return this;
       },
 
       /**
-            A timeout, bounding the request to be executed within the 
+            A timeout, bounding the request to be executed within the
             specified time value and bail when expired. Defaults to no timeout.
 
             <p>This option is valid during the following operations:
                 <code>search</code> and <code>delete by query</code></p>
-    
+
             @member ejs.Request
             @param {Long} t The timeout value in milliseconds.
             @returns {Object} returns <code>this</code> so that calls can be chained.
@@ -13419,39 +13419,87 @@
         if (t == null) {
           return query.timeout;
         }
-      
+
         query.timeout = t;
         return this;
       },
-                  
-      
+
+
       /**
             By default, searches return full documents, meaning every property or field.
             This method allows you to specify which fields you want returned.
-            
+
             Pass a single field name and it is appended to the current list of
-            fields.  Pass an array of fields and it replaces all existing 
+            fields.  Pass an array of fields and it replaces all existing
             fields.
 
             @member ejs.Request
-            @param {String || Array} s The field as a string or fields as array
+            @param {(String|String[])} s The field as a string or fields as array
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       fields: function (fieldList) {
         if (fieldList == null) {
           return query.fields;
         }
-      
+
         if (query.fields == null) {
           query.fields = [];
         }
-        
+
         if (isString(fieldList)) {
           query.fields.push(fieldList);
         } else if (isArray(fieldList)) {
           query.fields = fieldList;
         } else {
-          throw new TypeError('Argument must be string or array');
+          throw new TypeError('Argument must be a string or an array');
+        }
+
+        return this;
+      },
+
+      /**
+            By default, searches return full documents, meaning every property or field.
+            This method allows you to specify which fields you want included and/or which
+            ones you want excluded.
+            You are allowed to call this function multiple times with different partial names.
+            The result will be different sets that are returned by ElasticSearch, only containing
+            the fields you specified for each set. The paths to such a result set looks like this:
+            hits.hits.fields.<partialName 1>, hits.hits.fields.<partialName 2>, ..
+
+            @member ejs.Request
+            @param {String} partialName The name of this partial.
+            @param {Array} includes The list of fields to include as array, may be an empty array.
+            @param {Array} excludes The list of fields to exclude as array, may be an empty array.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      partialFields: function (partialName, includes, excludes) {
+        if (!isString(partialName)) {
+          throw new TypeError('Argument partialName must be a String');
+        }
+
+        if (includes != null && !isArray(includes) && !isString(includes)) {
+          throw new TypeError('Argument includes must be a string or an array');
+        }
+
+        if (excludes != null && !isArray(excludes) && !isString(excludes)) {
+          throw new TypeError('Argument excludes must be a string or an array');
+        }
+
+        if (query.partial_fields == null) {
+          query.partial_fields = {};
+        }
+
+        if (includes == null && excludes == null) {
+          return query.partial_fields[partialName];
+        }
+
+        query.partial_fields[partialName] = {};
+        if (includes != null) {
+          query.partial_fields[partialName].include = includes;
+        }
+
+        if (excludes != null) {
+          query.partial_fields[partialName].exclude = excludes;
         }
 
         return this;
@@ -13491,11 +13539,11 @@
         if (someQuery == null) {
           return query.query;
         }
-      
+
         if (!isQuery(someQuery)) {
           throw new TypeError('Argument must be a Query');
         }
-        
+
         query.query = someQuery.toJSON();
         return this;
       },
@@ -13512,15 +13560,15 @@
         if (facet == null) {
           return query.facets;
         }
-      
+
         if (query.facets == null) {
           query.facets = {};
         }
-      
+
         if (!isFacet(facet)) {
           throw new TypeError('Argument must be a Facet');
         }
-        
+
         extend(query.facets, facet.toJSON());
 
         return this;
@@ -13537,17 +13585,17 @@
         if (filter == null) {
           return query.filter;
         }
-      
+
         if (!isFilter(filter)) {
           throw new TypeError('Argument must be a Filter');
         }
-        
+
         query.filter = filter.toJSON();
         return this;
       },
 
       /**
-            Performs highlighting based on the <code>Highlight</code> 
+            Performs highlighting based on the <code>Highlight</code>
             settings.
 
             @member ejs.Request
@@ -13558,7 +13606,7 @@
         if (h == null) {
           return query.highlight;
         }
-      
+
         if (!isHighlight(h)) {
           throw new TypeError('Argument must be a Highlight object');
         }
@@ -13568,15 +13616,15 @@
       },
 
       /**
-            Allows you to set the specified suggester on this request object. 
-            Multiple suggesters can be set, all of which will be returned when 
-            the search is executed.  Global suggestion text can be set by 
+            Allows you to set the specified suggester on this request object.
+            Multiple suggesters can be set, all of which will be returned when
+            the search is executed.  Global suggestion text can be set by
             passing in a string vs. a <code>Suggest</code> object.
 
             @since elasticsearch 0.90
-            
+
             @member ejs.Request
-            @param {String || Suggest} s A valid Suggest object or a String to 
+            @param {(String|Suggest)} s A valid Suggest object or a String to
               set as the global suggest text.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
@@ -13584,11 +13632,11 @@
         if (s == null) {
           return query.suggest;
         }
-      
+
         if (query.suggest == null) {
           query.suggest = {};
         }
-      
+
         if (isString(s)) {
           query.suggest.text = s;
         } else if (isSuggest(s)) {
@@ -13599,7 +13647,7 @@
 
         return this;
       },
-      
+
       /**
             Computes a document property dynamically based on the supplied <code>ScriptField</code>.
 
@@ -13611,19 +13659,19 @@
         if (oScriptField == null) {
           return query.script_fields;
         }
-      
+
         if (query.script_fields == null) {
           query.script_fields = {};
         }
-      
+
         if (!isScriptField(oScriptField)) {
           throw new TypeError('Argument must be a ScriptField');
         }
-        
+
         extend(query.script_fields, oScriptField.toJSON());
         return this;
       },
-      
+
       /**
             Boosts hits in the specified index by the given boost value.
 
@@ -13640,7 +13688,7 @@
         if (arguments.length === 0) {
           return query.indices_boost;
         }
-      
+
         query.indices_boost[index] = boost;
         return this;
       },
@@ -13655,8 +13703,8 @@
       explain: function (trueFalse) {
         if (trueFalse == null) {
           return query.explain;
-        } 
-        
+        }
+
         query.explain = trueFalse;
         return this;
       },
@@ -13672,7 +13720,7 @@
         if (trueFalse == null) {
           return query.version;
         }
-        
+
         query.version = trueFalse;
         return this;
       },
@@ -13688,21 +13736,21 @@
         if (min == null) {
           return query.min_score;
         }
-        
+
         query.min_score = min;
         return this;
       },
 
       /**
             The type of ejs object.  For internal use only.
-            
+
             @member ejs.Request
             @returns {String} the type of object
             */
       _type: function () {
         return 'request';
       },
-      
+
       /**
             Retrieves the internal <code>query</code> object. This is typically used by
             internal API functions so use with caution.
@@ -13713,7 +13761,7 @@
       toJSON: function () {
         return query;
       }
-      
+
     };
   };
 
@@ -15110,7 +15158,7 @@
             array of Generators, they replace all existing generators.
 
             @member ejs.PhraseSuggester
-            @param {Generator || Array} oGenerator A valid Generator or 
+            @param {(Generator|Generator[])} oGenerator A valid Generator or 
               array of Generator objects.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
