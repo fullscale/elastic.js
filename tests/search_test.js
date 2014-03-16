@@ -1134,7 +1134,7 @@ exports.search = {
     test.done();
   },
   Request: function (test) {
-    test.expect(52);
+    test.expect(56);
 
     var req = ejs.Request(),
       matchAll = ejs.MatchAllQuery(),
@@ -1142,6 +1142,9 @@ exports.search = {
       termFilter = ejs.TermFilter('tf', 'vf'),
       filterFacet = ejs.FilterFacet('my_filter_facet').filter(termFilter),
       termsFacet = ejs.TermsFacet('my_terms_facet').field('author'),
+      globalAgg = ejs.GlobalAggregation('myglobal'),
+      termsAgg = ejs.TermsAggregation('termsagg').field('afield'),
+      filterAgg = ejs.FilterAggregation('filteragg').filter(termFilter),
       scriptField = ejs.ScriptField('my_script_field')
         .script('doc["my_field_name"].value * 2'),
       scriptField2 = ejs.ScriptField('my_script_field2')
@@ -1268,6 +1271,14 @@ exports.search = {
     expected.facets.my_terms_facet = termsFacet.toJSON().my_terms_facet;
     doTest();
 
+    req.agg(filterAgg);
+    expected.aggs = filterAgg.toJSON();
+    doTest();
+
+    req.aggregation(globalAgg.agg(termsAgg));
+    expected.aggs.myglobal = globalAgg.toJSON().myglobal;
+    doTest();
+
     req.filter(termFilter);
     expected.filter = termFilter.toJSON();
     doTest();
@@ -1318,13 +1329,20 @@ exports.search = {
 
     test.strictEqual(req._type(), 'request');
 
-
     test.throws(function () {
       req.query('invalid');
     }, TypeError);
 
     test.throws(function () {
       req.facet('invalid');
+    }, TypeError);
+
+    test.throws(function () {
+      req.agg('invalid');
+    }, TypeError);
+
+    test.throws(function () {
+      req.aggregation('invalid');
     }, TypeError);
 
     test.throws(function () {
