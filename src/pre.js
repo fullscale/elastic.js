@@ -41,6 +41,7 @@
     isRescore, // checks valid ejs Rescore object
     isFilter, // checks valid ejs Filter object
     isFacet, // checks valid ejs Facet object
+    isAggregation, // checks valid ejs Aggregation object
     isScriptField, // checks valid ejs ScriptField object
     isGeoPoint, // checks valid ejs GeoPoint object
     isIndexedShape, // checks valid ejs IndexedShape object

@@ -22,6 +22,7 @@ module.exports = function (grunt) {
           'src/util.js',
           'src/mixins/**/*.js',
           'src/facet/*.js',
+          'src/aggregations/*.js',
           'src/filter/*.js',
           'src/query/*.js',
           'src/search/**/*.js',
@@ -65,8 +66,8 @@ module.exports = function (grunt) {
         }
       },
       files: [
-        'Gruntfile.js', 
-        '<%= concat.dist.dest %>', 
+        'Gruntfile.js',
+        '<%= concat.dist.dest %>',
         'tests/**/*.js'
       ]
     }

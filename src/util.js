@@ -125,6 +125,10 @@
     return (isEJSObject(obj) && obj._type() === 'facet');
   };
 
+  isAggregation = function (obj) {
+    return (isEJSObject(obj) && obj._type() === 'aggregation');
+  };
+  
   isScriptField = function (obj) {
     return (isEJSObject(obj) && obj._type() === 'script field');
   };

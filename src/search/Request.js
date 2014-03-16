@@ -320,6 +320,46 @@
       },
 
       /**
+      Add an aggregation.  This method can be called multiple times
+      in order to set multiple nested aggregations that will be executed
+      at the same time as the search request.
+
+      @member ejs.Request
+      @param {Aggregation} agg Any valid <code>Aggregation</code> object.
+      @returns {Object} returns <code>this</code> so that calls can be chained.
+      */
+      aggregation: function(agg) {
+        if (agg == null) {
+          return query.aggs;
+        }
+
+        if (query.aggs == null) {
+          query.aggs = {};
+        }
+
+        if (!isAggregation(agg)) {
+          throw new TypeError('Argument must be an Aggregation');
+        }
+
+        extend(query.aggs, agg.toJSON());
+
+        return this;
+      },
+
+      /**
+      Add an aggregation.  This method can be called multiple times
+      in order to set multiple nested aggregations that will be executed
+      at the same time as the search request.  Alias for the aggregation method.
+
+      @member ejs.Request
+      @param {Aggregation} agg Any valid <code>Aggregation</code> object.
+      @returns {Object} returns <code>this</code> so that calls can be chained.
+      */
+      agg: function(agg) {
+        return this.aggregation(agg);
+      },
+
+      /**
             Allows you to set a specified filter on this request object.
 
             @member ejs.Request
