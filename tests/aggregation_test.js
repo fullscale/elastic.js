@@ -28,7 +28,7 @@ exports.aggregations = {
     done();
   },
   exists: function (test) {
-    test.expect(18);
+    test.expect(19);
 
     test.ok(ejs.GlobalAggregation, 'GlobalAggregation');
     test.ok(ejs.FilterAggregation, 'FilterAggregation');
@@ -48,6 +48,7 @@ exports.aggregations = {
     test.ok(ejs.SumAggregation, 'SumAggregation');
     test.ok(ejs.ValueCountAggregation, 'ValueCountAggregation');
     test.ok(ejs.ExtendedStatsAggregation, 'ExtendedStatsAggregation');
+    test.ok(ejs.DateHistogramAggregation, 'DateHistogramAggregation');
 
     test.done();
   },
@@ -658,6 +659,104 @@ exports.aggregations = {
 
     agg.field('f1');
     expected.myagg.missing.field = 'f1';
+    doTest();
+
+    agg.agg(ta1);
+    expected.myagg.aggs = ta1.toJSON();
+    doTest();
+
+    test.strictEqual(agg._type(), 'aggregation');
+
+    test.throws(function () {
+      agg.agggregation('invalid');
+    }, TypeError);
+
+    test.done();
+  },
+  DateHistogramAggregation: function (test) {
+    test.expect(23);
+
+    var agg = ejs.DateHistogramAggregation('myagg'),
+      ta1 = ejs.TermsAggregation('ta1').field('f1'),
+      expected,
+      doTest = function () {
+        test.deepEqual(agg.toJSON(), expected);
+      };
+
+    expected = {
+      myagg: {date_histogram: {}}
+    };
+
+    test.ok(agg, 'DateHistogramAggregation exists');
+    test.ok(agg.toJSON(), 'toJSON() works');
+    doTest();
+
+    agg.field('f1');
+    expected.myagg.date_histogram.field = 'f1';
+    doTest();
+
+    agg.script('s1');
+    expected.myagg.date_histogram.script = 's1';
+    doTest();
+
+    agg.lang('mvel');
+    expected.myagg.date_histogram.lang = 'mvel';
+    doTest();
+
+    agg.timeZone('-02:30');
+    expected.myagg.date_histogram.time_zone = '-02:30';
+    doTest();
+
+    agg.preZone('-02:00');
+    expected.myagg.date_histogram.pre_zone = '-02:00';
+    doTest();
+
+    agg.postZone(-2);
+    expected.myagg.date_histogram.post_zone = -2;
+    doTest();
+
+    agg.preOffset('1h');
+    expected.myagg.date_histogram.pre_offset = '1h';
+    doTest();
+
+    agg.postOffset('1d');
+    expected.myagg.date_histogram.post_offset = '1d';
+    doTest();
+
+    agg.format('%Y-%m-%d');
+    expected.myagg.date_histogram.format = '%Y-%m-%d';
+    doTest();
+
+    agg.interval('1d');
+    expected.myagg.date_histogram.interval = '1d';
+    doTest();
+
+    agg.minDocCount(0);
+    expected.myagg.date_histogram.min_doc_count = 0;
+    doTest();
+
+    agg.keyed(true);
+    expected.myagg.date_histogram.keyed = true;
+    doTest();
+
+    agg.scriptValuesSorted(false);
+    expected.myagg.date_histogram.script_values_sorted = false;
+    doTest();
+
+    agg.preZoneAdjustLargeInterval(true);
+    expected.myagg.date_histogram.pre_zone_adjust_large_interval = true;
+    doTest();
+
+    agg.params({p1: 'v1'});
+    expected.myagg.date_histogram.params = {p1: 'v1'};
+    doTest();
+
+    agg.order('_count', 'asc');
+    expected.myagg.date_histogram.order = {'_count': 'asc'};
+    doTest();
+
+    agg.order('_key', 'invalid');
+    expected.myagg.date_histogram.order = {'_key': 'desc'};
     doTest();
 
     agg.agg(ta1);
