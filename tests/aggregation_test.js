@@ -28,7 +28,7 @@ exports.aggregations = {
     done();
   },
   exists: function (test) {
-    test.expect(21);
+    test.expect(22);
 
     test.ok(ejs.GlobalAggregation, 'GlobalAggregation');
     test.ok(ejs.FilterAggregation, 'FilterAggregation');
@@ -51,6 +51,7 @@ exports.aggregations = {
     test.ok(ejs.DateHistogramAggregation, 'DateHistogramAggregation');
     test.ok(ejs.DateRangeAggregation, 'DateRangeAggregation');
     test.ok(ejs.GeoDistanceAggregation, 'GeoDistanceAggregation');
+    test.ok(ejs.IPv4RangeAggregation, 'IPv4RangeAggregation');
 
     test.done();
   },
@@ -650,6 +651,76 @@ exports.aggregations = {
 
     agg.keyed(true);
     expected.myagg.geo_distance.keyed = true;
+    doTest();
+
+    agg.agg(ta1);
+    expected.myagg.aggs = ta1.toJSON();
+    doTest();
+
+    test.strictEqual(agg._type(), 'aggregation');
+
+    test.throws(function () {
+      agg.agggregation('invalid');
+    }, TypeError);
+
+    test.done();
+  },
+  IPv4RangeAggregation: function (test) {
+    test.expect(16);
+
+    var agg = ejs.IPv4RangeAggregation('myagg'),
+      ta1 = ejs.TermsAggregation('ta1').field('f1'),
+      expected,
+      doTest = function () {
+        test.deepEqual(agg.toJSON(), expected);
+      };
+
+    expected = {
+      myagg: {ip_range: {}}
+    };
+
+    test.ok(agg, 'IPv4RangeAggregation exists');
+    test.ok(agg.toJSON(), 'toJSON() works');
+    doTest();
+
+    agg.field('f1');
+    expected.myagg.ip_range.field = 'f1';
+    doTest();
+
+    agg.script('s1');
+    expected.myagg.ip_range.script = 's1';
+    doTest();
+
+    agg.lang('mvel');
+    expected.myagg.ip_range.lang = 'mvel';
+    doTest();
+
+    agg.range('10.0.0.5', '10.0.0.6');
+    expected.myagg.ip_range.ranges = [{from: '10.0.0.5', to: '10.0.0.6'}];
+    doTest();
+
+    agg.range(null, '10.0.0.5', null, 'mykey');
+    expected.myagg.ip_range.ranges.push({to: '10.0.0.5', key: 'mykey'});
+    doTest();
+
+    agg.range('10.0.0.5');
+    expected.myagg.ip_range.ranges.push({from: '10.0.0.5'});
+    doTest();
+
+    agg.range(null, null, '10.0.0.0/25', 'usingmask');
+    expected.myagg.ip_range.ranges.push({mask: '10.0.0.0/25', key: 'usingmask'});
+    doTest();
+
+    agg.keyed(true);
+    expected.myagg.ip_range.keyed = true;
+    doTest();
+
+    agg.scriptValuesSorted(false);
+    expected.myagg.ip_range.script_values_sorted = false;
+    doTest();
+
+    agg.params({p1: 'v1'});
+    expected.myagg.ip_range.params = {p1: 'v1'};
     doTest();
 
     agg.agg(ta1);
