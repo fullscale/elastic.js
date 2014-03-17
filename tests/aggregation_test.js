@@ -28,7 +28,7 @@ exports.aggregations = {
     done();
   },
   exists: function (test) {
-    test.expect(6);
+    test.expect(7);
 
     test.ok(ejs.GlobalAggregation, 'GlobalAggregation');
     test.ok(ejs.FilterAggregation, 'FilterAggregation');
@@ -36,6 +36,41 @@ exports.aggregations = {
     test.ok(ejs.GeoHashGridAggregation, 'GeoHashGridAggregation');
     test.ok(ejs.HistogramAggregation, 'HistogramAggregation');
     test.ok(ejs.MissingAggregation, 'MissingAggregation');
+    test.ok(ejs.NestedAggregation, 'NestedAggregation');
+
+    test.done();
+  },
+  NestedAggregation: function (test) {
+    test.expect(7);
+
+    var agg = ejs.NestedAggregation('myagg'),
+      ta1 = ejs.TermsAggregation('ta1').field('f1'),
+      expected,
+      doTest = function () {
+        test.deepEqual(agg.toJSON(), expected);
+      };
+
+    expected = {
+      myagg: {nested: {}}
+    };
+
+    test.ok(agg, 'NestedAggregation exists');
+    test.ok(agg.toJSON(), 'toJSON() works');
+    doTest();
+
+    agg.path('f1');
+    expected.myagg.nested.path = 'f1';
+    doTest();
+
+    agg.agg(ta1);
+    expected.myagg.aggs = ta1.toJSON();
+    doTest();
+
+    test.strictEqual(agg._type(), 'aggregation');
+
+    test.throws(function () {
+      agg.agggregation('invalid');
+    }, TypeError);
 
     test.done();
   },
