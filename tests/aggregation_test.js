@@ -28,7 +28,7 @@ exports.aggregations = {
     done();
   },
   exists: function (test) {
-    test.expect(16);
+    test.expect(17);
 
     test.ok(ejs.GlobalAggregation, 'GlobalAggregation');
     test.ok(ejs.FilterAggregation, 'FilterAggregation');
@@ -46,6 +46,57 @@ exports.aggregations = {
     test.ok(ejs.PercentilesAggregation, 'PercentilesAggregation');
     test.ok(ejs.StatsAggregation, 'StatsAggregation');
     test.ok(ejs.SumAggregation, 'SumAggregation');
+    test.ok(ejs.ValueCountAggregation, 'ValueCountAggregation');
+
+    test.done();
+  },
+  ValueCountAggregation: function (test) {
+    test.expect(11);
+
+    var agg = ejs.ValueCountAggregation('myagg'),
+      ta1 = ejs.TermsAggregation('ta1').field('f1'),
+      expected,
+      doTest = function () {
+        test.deepEqual(agg.toJSON(), expected);
+      };
+
+    expected = {
+      myagg: {value_count: {}}
+    };
+
+    test.ok(agg, 'ValueCountAggregation exists');
+    test.ok(agg.toJSON(), 'toJSON() works');
+    doTest();
+
+    agg.field('f1');
+    expected.myagg.value_count.field = 'f1';
+    doTest();
+
+    agg.script('s1');
+    expected.myagg.value_count.script = 's1';
+    doTest();
+
+    agg.lang('mvel');
+    expected.myagg.value_count.lang = 'mvel';
+    doTest();
+
+    agg.scriptValuesUnique(false);
+    expected.myagg.value_count.script_values_unique = false;
+    doTest();
+
+    agg.params({p1: 'v1'});
+    expected.myagg.value_count.params = {p1: 'v1'};
+    doTest();
+
+    agg.agg(ta1);
+    expected.myagg.aggs = ta1.toJSON();
+    doTest();
+
+    test.strictEqual(agg._type(), 'aggregation');
+
+    test.throws(function () {
+      agg.agggregation('invalid');
+    }, TypeError);
 
     test.done();
   },
