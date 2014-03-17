@@ -28,12 +28,87 @@ exports.aggregations = {
     done();
   },
   exists: function (test) {
-    test.expect(4);
+    test.expect(5);
 
     test.ok(ejs.GlobalAggregation, 'GlobalAggregation');
     test.ok(ejs.FilterAggregation, 'FilterAggregation');
     test.ok(ejs.TermsAggregation, 'TermsAggregation');
     test.ok(ejs.GeoHashGridAggregation, 'GeoHashGridAggregation');
+    test.ok(ejs.HistogramAggregation, 'HistogramAggregation');
+
+    test.done();
+  },
+  HistogramAggregation: function (test) {
+    test.expect(17);
+
+    var agg = ejs.HistogramAggregation('myagg'),
+      ta1 = ejs.TermsAggregation('ta1').field('f1'),
+      expected,
+      doTest = function () {
+        test.deepEqual(agg.toJSON(), expected);
+      };
+
+    expected = {
+      myagg: {histogram: {}}
+    };
+
+    test.ok(agg, 'HistogramAggregation exists');
+    test.ok(agg.toJSON(), 'toJSON() works');
+    doTest();
+
+    agg.field('f1');
+    expected.myagg.histogram.field = 'f1';
+    doTest();
+
+    agg.script('s1');
+    expected.myagg.histogram.script = 's1';
+    doTest();
+
+    agg.lang('mvel');
+    expected.myagg.histogram.lang = 'mvel';
+    doTest();
+
+    agg.format('%Y-%m-%d');
+    expected.myagg.histogram.format = '%Y-%m-%d';
+    doTest();
+
+    agg.interval(10);
+    expected.myagg.histogram.interval = 10;
+    doTest();
+
+    agg.minDocCount(0);
+    expected.myagg.histogram.min_doc_count = 0;
+    doTest();
+
+    agg.keyed(true);
+    expected.myagg.histogram.keyed = true;
+    doTest();
+
+    agg.scriptValuesSorted(false);
+    expected.myagg.histogram.script_values_sorted = false;
+    doTest();
+
+    agg.params({p1: 'v1'});
+    expected.myagg.histogram.params = {p1: 'v1'};
+    doTest();
+
+    agg.order('_count', 'asc');
+    expected.myagg.histogram.order = {'_count': 'asc'};
+    doTest();
+
+    agg.order('_key', 'invalid');
+    expected.myagg.histogram.order = {'_key': 'desc'};
+    doTest();
+
+    agg.agg(ta1);
+    expected.myagg.aggs = ta1.toJSON();
+    doTest();
+
+    test.strictEqual(agg._type(), 'aggregation');
+
+    test.throws(function () {
+      agg.agggregation('invalid');
+    }, TypeError);
 
     test.done();
   },
