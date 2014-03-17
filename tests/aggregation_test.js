@@ -28,7 +28,7 @@ exports.aggregations = {
     done();
   },
   exists: function (test) {
-    test.expect(10);
+    test.expect(11);
 
     test.ok(ejs.GlobalAggregation, 'GlobalAggregation');
     test.ok(ejs.FilterAggregation, 'FilterAggregation');
@@ -40,6 +40,61 @@ exports.aggregations = {
     test.ok(ejs.RangeAggregation, 'RangeAggregation');
     test.ok(ejs.SignificantTermsAggregation, 'SignificantTermsAggregation');
     test.ok(ejs.AvgAggregation, 'AvgAggregation');
+    test.ok(ejs.CardinalityAggregation, 'CardinalityAggregation');
+
+    test.done();
+  },
+  CardinalityAggregation: function (test) {
+    test.expect(12);
+
+    var agg = ejs.CardinalityAggregation('myagg'),
+      ta1 = ejs.TermsAggregation('ta1').field('f1'),
+      expected,
+      doTest = function () {
+        test.deepEqual(agg.toJSON(), expected);
+      };
+
+    expected = {
+      myagg: {cardinality: {}}
+    };
+
+    test.ok(agg, 'CardinalityAggregation exists');
+    test.ok(agg.toJSON(), 'toJSON() works');
+    doTest();
+
+    agg.field('f1');
+    expected.myagg.cardinality.field = 'f1';
+    doTest();
+
+    agg.script('s1');
+    expected.myagg.cardinality.script = 's1';
+    doTest();
+
+    agg.lang('mvel');
+    expected.myagg.cardinality.lang = 'mvel';
+    doTest();
+
+    agg.params({p1: 'v1'});
+    expected.myagg.cardinality.params = {p1: 'v1'};
+    doTest();
+
+    agg.rehash(false);
+    expected.myagg.cardinality.rehash = false;
+    doTest();
+
+    agg.precisionThreshold(100);
+    expected.myagg.cardinality.precision_threshold = 100;
+    doTest();
+
+    agg.agg(ta1);
+    expected.myagg.aggs = ta1.toJSON();
+    doTest();
+
+    test.strictEqual(agg._type(), 'aggregation');
+
+    test.throws(function () {
+      agg.agggregation('invalid');
+    }, TypeError);
 
     test.done();
   },
