@@ -28,7 +28,7 @@ exports.aggregations = {
     done();
   },
   exists: function (test) {
-    test.expect(8);
+    test.expect(9);
 
     test.ok(ejs.GlobalAggregation, 'GlobalAggregation');
     test.ok(ejs.FilterAggregation, 'FilterAggregation');
@@ -38,6 +38,84 @@ exports.aggregations = {
     test.ok(ejs.MissingAggregation, 'MissingAggregation');
     test.ok(ejs.NestedAggregation, 'NestedAggregation');
     test.ok(ejs.RangeAggregation, 'RangeAggregation');
+    test.ok(ejs.SignificantTermsAggregation, 'SignificantTermsAggregation');
+
+    test.done();
+  },
+  SignificantTermsAggregation: function (test) {
+    test.expect(18);
+
+    var agg = ejs.SignificantTermsAggregation('myagg'),
+      ta1 = ejs.TermsAggregation('ta1').field('f1'),
+      expected,
+      doTest = function () {
+        test.deepEqual(agg.toJSON(), expected);
+      };
+
+    expected = {
+      myagg: {significant_terms: {}}
+    };
+
+    test.ok(agg, 'SignificantTermsAggregation exists');
+    test.ok(agg.toJSON(), 'toJSON() works');
+    doTest();
+
+    agg.field('f1');
+    expected.myagg.significant_terms.field = 'f1';
+    doTest();
+
+    agg.format('%Y-%m-%d');
+    expected.myagg.significant_terms.format = '%Y-%m-%d';
+    doTest();
+
+    agg.include('.+');
+    expected.myagg.significant_terms.include = {pattern: '.+'};
+    doTest();
+
+    agg.include('.*?', 'DOTALL');
+    expected.myagg.significant_terms.include = {pattern: '.*?', flags: 'DOTALL'};
+    doTest();
+
+    agg.exclude('.*');
+    expected.myagg.significant_terms.exclude = {pattern: '.*'};
+    doTest();
+
+    agg.exclude('.*?', 'DOTALL|MULTILINE');
+    expected.myagg.significant_terms.exclude = {pattern: '.*?', flags: 'DOTALL|MULTILINE'};
+    doTest();
+
+    agg.executionHint('map');
+    expected.myagg.significant_terms.execution_hint = 'map';
+    doTest();
+
+    agg.executionHint('invalid');
+    doTest();
+
+    agg.executionHint('ORDINALS');
+    expected.myagg.significant_terms.execution_hint = 'ordinals';
+    doTest();
+
+    agg.size(10);
+    expected.myagg.significant_terms.size = 10;
+    doTest();
+
+    agg.shardSize(100);
+    expected.myagg.significant_terms.shard_size = 100;
+    doTest();
+
+    agg.minDocCount(2);
+    expected.myagg.significant_terms.min_doc_count = 2;
+    doTest();
+
+    agg.agg(ta1);
+    expected.myagg.aggs = ta1.toJSON();
+    doTest();
+
+    test.strictEqual(agg._type(), 'aggregation');
+
+    test.throws(function () {
+      agg.agggregation('invalid');
+    }, TypeError);
 
     test.done();
   },
