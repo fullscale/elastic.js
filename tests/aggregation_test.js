@@ -28,7 +28,7 @@ exports.aggregations = {
     done();
   },
   exists: function (test) {
-    test.expect(7);
+    test.expect(8);
 
     test.ok(ejs.GlobalAggregation, 'GlobalAggregation');
     test.ok(ejs.FilterAggregation, 'FilterAggregation');
@@ -37,6 +37,77 @@ exports.aggregations = {
     test.ok(ejs.HistogramAggregation, 'HistogramAggregation');
     test.ok(ejs.MissingAggregation, 'MissingAggregation');
     test.ok(ejs.NestedAggregation, 'NestedAggregation');
+    test.ok(ejs.RangeAggregation, 'RangeAggregation');
+
+    test.done();
+  },
+  RangeAggregation: function (test) {
+    test.expect(16);
+
+    var agg = ejs.RangeAggregation('myagg'),
+      ta1 = ejs.TermsAggregation('ta1').field('f1'),
+      expected,
+      doTest = function () {
+        test.deepEqual(agg.toJSON(), expected);
+      };
+
+    expected = {
+      myagg: {range: {}}
+    };
+
+    test.ok(agg, 'RangeAggregation exists');
+    test.ok(agg.toJSON(), 'toJSON() works');
+    doTest();
+
+    agg.field('f1');
+    expected.myagg.range.field = 'f1';
+    doTest();
+
+    agg.script('s1');
+    expected.myagg.range.script = 's1';
+    doTest();
+
+    agg.lang('mvel');
+    expected.myagg.range.lang = 'mvel';
+    doTest();
+
+    agg.range(2, 4);
+    expected.myagg.range.ranges = [{from: 2, to: 4}];
+    doTest();
+
+    agg.range(null, 8, 'eight');
+    expected.myagg.range.ranges.push({to: 8, key: 'eight'});
+    doTest();
+
+    agg.range(9);
+    expected.myagg.range.ranges.push({from: 9});
+    doTest();
+
+    agg.range('start', null, 'strfrom');
+    expected.myagg.range.ranges.push({from: 'start', key: 'strfrom'});
+    doTest();
+
+    agg.keyed(true);
+    expected.myagg.range.keyed = true;
+    doTest();
+
+    agg.scriptValuesSorted(false);
+    expected.myagg.range.script_values_sorted = false;
+    doTest();
+
+    agg.params({p1: 'v1'});
+    expected.myagg.range.params = {p1: 'v1'};
+    doTest();
+
+    agg.agg(ta1);
+    expected.myagg.aggs = ta1.toJSON();
+    doTest();
+
+    test.strictEqual(agg._type(), 'aggregation');
+
+    test.throws(function () {
+      agg.agggregation('invalid');
+    }, TypeError);
 
     test.done();
   },
