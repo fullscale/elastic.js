@@ -28,7 +28,7 @@ exports.aggregations = {
     done();
   },
   exists: function (test) {
-    test.expect(11);
+    test.expect(12);
 
     test.ok(ejs.GlobalAggregation, 'GlobalAggregation');
     test.ok(ejs.FilterAggregation, 'FilterAggregation');
@@ -41,6 +41,57 @@ exports.aggregations = {
     test.ok(ejs.SignificantTermsAggregation, 'SignificantTermsAggregation');
     test.ok(ejs.AvgAggregation, 'AvgAggregation');
     test.ok(ejs.CardinalityAggregation, 'CardinalityAggregation');
+    test.ok(ejs.MaxAggregation, 'MaxAggregation');
+
+    test.done();
+  },
+  MaxAggregation: function (test) {
+    test.expect(11);
+
+    var agg = ejs.MaxAggregation('myagg'),
+      ta1 = ejs.TermsAggregation('ta1').field('f1'),
+      expected,
+      doTest = function () {
+        test.deepEqual(agg.toJSON(), expected);
+      };
+
+    expected = {
+      myagg: {max: {}}
+    };
+
+    test.ok(agg, 'MaxAggregation exists');
+    test.ok(agg.toJSON(), 'toJSON() works');
+    doTest();
+
+    agg.field('f1');
+    expected.myagg.max.field = 'f1';
+    doTest();
+
+    agg.script('s1');
+    expected.myagg.max.script = 's1';
+    doTest();
+
+    agg.lang('mvel');
+    expected.myagg.max.lang = 'mvel';
+    doTest();
+
+    agg.scriptValuesSorted(false);
+    expected.myagg.max.script_values_sorted = false;
+    doTest();
+
+    agg.params({p1: 'v1'});
+    expected.myagg.max.params = {p1: 'v1'};
+    doTest();
+
+    agg.agg(ta1);
+    expected.myagg.aggs = ta1.toJSON();
+    doTest();
+
+    test.strictEqual(agg._type(), 'aggregation');
+
+    test.throws(function () {
+      agg.agggregation('invalid');
+    }, TypeError);
 
     test.done();
   },
