@@ -12,8 +12,6 @@
     @borrows ejs.MetricsAggregationMixin.script as script
     @borrows ejs.MetricsAggregationMixin.lang as lang
     @borrows ejs.MetricsAggregationMixin.params as params
-    @borrows ejs.MetricsAggregationMixin.aggregation as aggregation
-    @borrows ejs.MetricsAggregationMixin.agg as agg
     @borrows ejs.MetricsAggregationMixin._type as _type
     @borrows ejs.MetricsAggregationMixin.toJSON as toJSON
 

@@ -52,7 +52,7 @@ exports.aggregations = {
     test.done();
   },
   ExtendedStatsAggregation: function (test) {
-    test.expect(11);
+    test.expect(9);
 
     var agg = ejs.ExtendedStatsAggregation('myagg'),
       ta1 = ejs.TermsAggregation('ta1').field('f1'),
@@ -89,20 +89,12 @@ exports.aggregations = {
     expected.myagg.extended_stats.params = {p1: 'v1'};
     doTest();
 
-    agg.agg(ta1);
-    expected.myagg.aggs = ta1.toJSON();
-    doTest();
-
     test.strictEqual(agg._type(), 'aggregation');
-
-    test.throws(function () {
-      agg.agggregation('invalid');
-    }, TypeError);
 
     test.done();
   },
   ValueCountAggregation: function (test) {
-    test.expect(11);
+    test.expect(9);
 
     var agg = ejs.ValueCountAggregation('myagg'),
       ta1 = ejs.TermsAggregation('ta1').field('f1'),
@@ -139,20 +131,12 @@ exports.aggregations = {
     expected.myagg.value_count.params = {p1: 'v1'};
     doTest();
 
-    agg.agg(ta1);
-    expected.myagg.aggs = ta1.toJSON();
-    doTest();
-
     test.strictEqual(agg._type(), 'aggregation');
-
-    test.throws(function () {
-      agg.agggregation('invalid');
-    }, TypeError);
 
     test.done();
   },
   SumAggregation: function (test) {
-    test.expect(11);
+    test.expect(9);
 
     var agg = ejs.SumAggregation('myagg'),
       ta1 = ejs.TermsAggregation('ta1').field('f1'),
@@ -189,20 +173,12 @@ exports.aggregations = {
     expected.myagg.sum.params = {p1: 'v1'};
     doTest();
 
-    agg.agg(ta1);
-    expected.myagg.aggs = ta1.toJSON();
-    doTest();
-
     test.strictEqual(agg._type(), 'aggregation');
-
-    test.throws(function () {
-      agg.agggregation('invalid');
-    }, TypeError);
 
     test.done();
   },
   StatsAggregation: function (test) {
-    test.expect(11);
+    test.expect(9);
 
     var agg = ejs.StatsAggregation('myagg'),
       ta1 = ejs.TermsAggregation('ta1').field('f1'),
@@ -239,20 +215,12 @@ exports.aggregations = {
     expected.myagg.stats.params = {p1: 'v1'};
     doTest();
 
-    agg.agg(ta1);
-    expected.myagg.aggs = ta1.toJSON();
-    doTest();
-
     test.strictEqual(agg._type(), 'aggregation');
-
-    test.throws(function () {
-      agg.agggregation('invalid');
-    }, TypeError);
 
     test.done();
   },
   PercentilesAggregation: function (test) {
-    test.expect(17);
+    test.expect(15);
 
     var agg = ejs.PercentilesAggregation('myagg'),
       ta1 = ejs.TermsAggregation('ta1').field('f1'),
@@ -309,15 +277,7 @@ exports.aggregations = {
     expected.myagg.percentiles.compression = 200;
     doTest();
 
-    agg.agg(ta1);
-    expected.myagg.aggs = ta1.toJSON();
-    doTest();
-
     test.strictEqual(agg._type(), 'aggregation');
-
-    test.throws(function () {
-      agg.agggregation('invalid');
-    }, TypeError);
 
     test.throws(function () {
       agg.percents('invalid');
@@ -326,7 +286,7 @@ exports.aggregations = {
     test.done();
   },
   MinAggregation: function (test) {
-    test.expect(11);
+    test.expect(9);
 
     var agg = ejs.MinAggregation('myagg'),
       ta1 = ejs.TermsAggregation('ta1').field('f1'),
@@ -363,20 +323,12 @@ exports.aggregations = {
     expected.myagg.min.params = {p1: 'v1'};
     doTest();
 
-    agg.agg(ta1);
-    expected.myagg.aggs = ta1.toJSON();
-    doTest();
-
     test.strictEqual(agg._type(), 'aggregation');
-
-    test.throws(function () {
-      agg.agggregation('invalid');
-    }, TypeError);
 
     test.done();
   },
   MaxAggregation: function (test) {
-    test.expect(11);
+    test.expect(9);
 
     var agg = ejs.MaxAggregation('myagg'),
       ta1 = ejs.TermsAggregation('ta1').field('f1'),
@@ -413,20 +365,12 @@ exports.aggregations = {
     expected.myagg.max.params = {p1: 'v1'};
     doTest();
 
-    agg.agg(ta1);
-    expected.myagg.aggs = ta1.toJSON();
-    doTest();
-
     test.strictEqual(agg._type(), 'aggregation');
-
-    test.throws(function () {
-      agg.agggregation('invalid');
-    }, TypeError);
 
     test.done();
   },
   CardinalityAggregation: function (test) {
-    test.expect(12);
+    test.expect(10);
 
     var agg = ejs.CardinalityAggregation('myagg'),
       ta1 = ejs.TermsAggregation('ta1').field('f1'),
@@ -467,20 +411,12 @@ exports.aggregations = {
     expected.myagg.cardinality.precision_threshold = 100;
     doTest();
 
-    agg.agg(ta1);
-    expected.myagg.aggs = ta1.toJSON();
-    doTest();
-
     test.strictEqual(agg._type(), 'aggregation');
-
-    test.throws(function () {
-      agg.agggregation('invalid');
-    }, TypeError);
 
     test.done();
   },
   AvgAggregation: function (test) {
-    test.expect(11);
+    test.expect(9);
 
     var agg = ejs.AvgAggregation('myagg'),
       ta1 = ejs.TermsAggregation('ta1').field('f1'),
@@ -517,15 +453,7 @@ exports.aggregations = {
     expected.myagg.avg.params = {p1: 'v1'};
     doTest();
 
-    agg.agg(ta1);
-    expected.myagg.aggs = ta1.toJSON();
-    doTest();
-
     test.strictEqual(agg._type(), 'aggregation');
-
-    test.throws(function () {
-      agg.agggregation('invalid');
-    }, TypeError);
 
     test.done();
   },

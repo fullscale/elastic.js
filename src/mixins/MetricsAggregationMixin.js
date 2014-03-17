@@ -6,8 +6,6 @@
 
     @name ejs.MetricsAggregationMixin
     @ejs aggregation
-    @borrows ejs.AggregationMixin.aggregation as aggregation
-    @borrows ejs.AggregationMixin.agg as agg
     @borrows ejs.AggregationMixin._type as _type
     @borrows ejs.AggregationMixin.toJSON as toJSON
 
@@ -17,6 +15,11 @@
     var
       _common = ejs.AggregationMixin(name),
       agg = _common.toJSON();
+
+    // remove ability for sub-aggregations since metrics aggregations dont
+    // support them.
+    delete _common.aggregation;
+    delete _common.agg;
 
     agg[name][type] = {};
 

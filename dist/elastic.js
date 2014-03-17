@@ -763,8 +763,6 @@
 
     @name ejs.MetricsAggregationMixin
     @ejs aggregation
-    @borrows ejs.AggregationMixin.aggregation as aggregation
-    @borrows ejs.AggregationMixin.agg as agg
     @borrows ejs.AggregationMixin._type as _type
     @borrows ejs.AggregationMixin.toJSON as toJSON
 
@@ -774,6 +772,11 @@
     var
       _common = ejs.AggregationMixin(name),
       agg = _common.toJSON();
+
+    // remove ability for sub-aggregations since metrics aggregations dont
+    // support them.
+    delete _common.aggregation;
+    delete _common.agg;
 
     agg[name][type] = {};
 
@@ -3010,8 +3013,6 @@
     @borrows ejs.MetricsAggregationMixin.lang as lang
     @borrows ejs.MetricsAggregationMixin.scriptValuesSorted as scriptValuesSorted
     @borrows ejs.MetricsAggregationMixin.params as params
-    @borrows ejs.MetricsAggregationMixin.aggregation as aggregation
-    @borrows ejs.MetricsAggregationMixin.agg as agg
     @borrows ejs.MetricsAggregationMixin._type as _type
     @borrows ejs.MetricsAggregationMixin.toJSON as toJSON
 
@@ -3043,8 +3044,6 @@
     @borrows ejs.MetricsAggregationMixin.script as script
     @borrows ejs.MetricsAggregationMixin.lang as lang
     @borrows ejs.MetricsAggregationMixin.params as params
-    @borrows ejs.MetricsAggregationMixin.aggregation as aggregation
-    @borrows ejs.MetricsAggregationMixin.agg as agg
     @borrows ejs.MetricsAggregationMixin._type as _type
     @borrows ejs.MetricsAggregationMixin.toJSON as toJSON
 
@@ -3125,8 +3124,6 @@
     @borrows ejs.MetricsAggregationMixin.lang as lang
     @borrows ejs.MetricsAggregationMixin.scriptValuesSorted as scriptValuesSorted
     @borrows ejs.MetricsAggregationMixin.params as params
-    @borrows ejs.MetricsAggregationMixin.aggregation as aggregation
-    @borrows ejs.MetricsAggregationMixin.agg as agg
     @borrows ejs.MetricsAggregationMixin._type as _type
     @borrows ejs.MetricsAggregationMixin.toJSON as toJSON
 
@@ -3551,8 +3548,6 @@
     @borrows ejs.MetricsAggregationMixin.lang as lang
     @borrows ejs.MetricsAggregationMixin.scriptValuesSorted as scriptValuesSorted
     @borrows ejs.MetricsAggregationMixin.params as params
-    @borrows ejs.MetricsAggregationMixin.aggregation as aggregation
-    @borrows ejs.MetricsAggregationMixin.agg as agg
     @borrows ejs.MetricsAggregationMixin._type as _type
     @borrows ejs.MetricsAggregationMixin.toJSON as toJSON
 
@@ -3586,8 +3581,6 @@
     @borrows ejs.MetricsAggregationMixin.lang as lang
     @borrows ejs.MetricsAggregationMixin.scriptValuesSorted as scriptValuesSorted
     @borrows ejs.MetricsAggregationMixin.params as params
-    @borrows ejs.MetricsAggregationMixin.aggregation as aggregation
-    @borrows ejs.MetricsAggregationMixin.agg as agg
     @borrows ejs.MetricsAggregationMixin._type as _type
     @borrows ejs.MetricsAggregationMixin.toJSON as toJSON
 
@@ -3717,8 +3710,6 @@
     @borrows ejs.MetricsAggregationMixin.lang as lang
     @borrows ejs.MetricsAggregationMixin.scriptValuesSorted as scriptValuesSorted
     @borrows ejs.MetricsAggregationMixin.params as params
-    @borrows ejs.MetricsAggregationMixin.aggregation as aggregation
-    @borrows ejs.MetricsAggregationMixin.agg as agg
     @borrows ejs.MetricsAggregationMixin._type as _type
     @borrows ejs.MetricsAggregationMixin.toJSON as toJSON
 
@@ -4202,8 +4193,6 @@
     @borrows ejs.MetricsAggregationMixin.lang as lang
     @borrows ejs.MetricsAggregationMixin.scriptValuesSorted as scriptValuesSorted
     @borrows ejs.MetricsAggregationMixin.params as params
-    @borrows ejs.MetricsAggregationMixin.aggregation as aggregation
-    @borrows ejs.MetricsAggregationMixin.agg as agg
     @borrows ejs.MetricsAggregationMixin._type as _type
     @borrows ejs.MetricsAggregationMixin.toJSON as toJSON
 
@@ -4237,8 +4226,6 @@
     @borrows ejs.MetricsAggregationMixin.lang as lang
     @borrows ejs.MetricsAggregationMixin.scriptValuesSorted as scriptValuesSorted
     @borrows ejs.MetricsAggregationMixin.params as params
-    @borrows ejs.MetricsAggregationMixin.aggregation as aggregation
-    @borrows ejs.MetricsAggregationMixin.agg as agg
     @borrows ejs.MetricsAggregationMixin._type as _type
     @borrows ejs.MetricsAggregationMixin.toJSON as toJSON
 
@@ -4582,8 +4569,6 @@
     @borrows ejs.MetricsAggregationMixin.script as script
     @borrows ejs.MetricsAggregationMixin.lang as lang
     @borrows ejs.MetricsAggregationMixin.params as params
-    @borrows ejs.MetricsAggregationMixin.aggregation as aggregation
-    @borrows ejs.MetricsAggregationMixin.agg as agg
     @borrows ejs.MetricsAggregationMixin._type as _type
     @borrows ejs.MetricsAggregationMixin.toJSON as toJSON
 
