@@ -28,16 +28,63 @@ exports.aggregations = {
     done();
   },
   exists: function (test) {
-    test.expect(3);
+    test.expect(4);
 
     test.ok(ejs.GlobalAggregation, 'GlobalAggregation');
     test.ok(ejs.FilterAggregation, 'FilterAggregation');
     test.ok(ejs.TermsAggregation, 'TermsAggregation');
+    test.ok(ejs.GeoHashGridAggregation, 'GeoHashGridAggregation');
+
+    test.done();
+  },
+  GeoHashGridAggregation: function (test) {
+    test.expect(10);
+
+    var agg = ejs.GeoHashGridAggregation('myagg'),
+      ta1 = ejs.TermsAggregation('ta1').field('f1'),
+      expected,
+      doTest = function () {
+        test.deepEqual(agg.toJSON(), expected);
+      };
+
+    expected = {
+      myagg: {geohash_grid: {}}
+    };
+
+    test.ok(agg, 'GeoHashGridAggregation exists');
+    test.ok(agg.toJSON(), 'toJSON() works');
+    doTest();
+
+    agg.field('f1');
+    expected.myagg.geohash_grid.field = 'f1';
+    doTest();
+
+    agg.precision(6);
+    expected.myagg.geohash_grid.precision = 6;
+    doTest();
+
+    agg.size(10);
+    expected.myagg.geohash_grid.size = 10;
+    doTest();
+
+    agg.shardSize(100);
+    expected.myagg.geohash_grid.shard_size = 100;
+    doTest();
+
+    agg.agg(ta1);
+    expected.myagg.aggs = ta1.toJSON();
+    doTest();
+
+    test.strictEqual(agg._type(), 'aggregation');
+
+    test.throws(function () {
+      agg.agggregation('invalid');
+    }, TypeError);
 
     test.done();
   },
   TermsAggregation: function (test) {
-    test.expect(33);
+    test.expect(32);
 
     var agg = ejs.TermsAggregation('myagg'),
       ta1 = ejs.TermsAggregation('ta1').field('f1'),
@@ -164,10 +211,6 @@ exports.aggregations = {
 
     test.throws(function () {
       agg.agggregation('invalid');
-    }, TypeError);
-
-    test.throws(function () {
-      agg.filter('invalid');
     }, TypeError);
 
     test.done();
