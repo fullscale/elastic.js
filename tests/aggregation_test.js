@@ -28,7 +28,7 @@ exports.aggregations = {
     done();
   },
   exists: function (test) {
-    test.expect(20);
+    test.expect(21);
 
     test.ok(ejs.GlobalAggregation, 'GlobalAggregation');
     test.ok(ejs.FilterAggregation, 'FilterAggregation');
@@ -50,6 +50,7 @@ exports.aggregations = {
     test.ok(ejs.ExtendedStatsAggregation, 'ExtendedStatsAggregation');
     test.ok(ejs.DateHistogramAggregation, 'DateHistogramAggregation');
     test.ok(ejs.DateRangeAggregation, 'DateRangeAggregation');
+    test.ok(ejs.GeoDistanceAggregation, 'GeoDistanceAggregation');
 
     test.done();
   },
@@ -522,6 +523,133 @@ exports.aggregations = {
 
     agg.minDocCount(2);
     expected.myagg.significant_terms.min_doc_count = 2;
+    doTest();
+
+    agg.agg(ta1);
+    expected.myagg.aggs = ta1.toJSON();
+    doTest();
+
+    test.strictEqual(agg._type(), 'aggregation');
+
+    test.throws(function () {
+      agg.agggregation('invalid');
+    }, TypeError);
+
+    test.done();
+  },
+  GeoDistanceAggregation: function (test) {
+    test.expect(30);
+
+    var agg = ejs.GeoDistanceAggregation('myagg'),
+      point1 = ejs.GeoPoint([40, -70]),
+      point2 = ejs.GeoPoint([52.3760, 4.894]),
+      point3 = ejs.GeoPoint([52.3760, -70]),
+      ta1 = ejs.TermsAggregation('ta1').field('f1'),
+      expected,
+      doTest = function () {
+        test.deepEqual(agg.toJSON(), expected);
+      };
+
+    expected = {
+      myagg: {geo_distance: {}}
+    };
+
+    test.ok(agg, 'GeoDistanceAggregation exists');
+    test.ok(agg.toJSON(), 'toJSON() works');
+    doTest();
+
+    agg.field('location');
+    expected.myagg.geo_distance.field = 'location';
+    doTest();
+
+    agg.unit('in');
+    expected.myagg.geo_distance.unit = 'in';
+    doTest();
+
+    agg.unit('INVALID');
+    doTest();
+
+    agg.unit('yd');
+    expected.myagg.geo_distance.unit = 'yd';
+    doTest();
+
+    agg.unit('ft');
+    expected.myagg.geo_distance.unit = 'ft';
+    doTest();
+
+    agg.unit('km');
+    expected.myagg.geo_distance.unit = 'km';
+    doTest();
+
+    agg.unit('NM');
+    expected.myagg.geo_distance.unit = 'NM';
+    doTest();
+
+    agg.unit('mm');
+    expected.myagg.geo_distance.unit = 'mm';
+    doTest();
+
+    agg.unit('cm');
+    expected.myagg.geo_distance.unit = 'cm';
+    doTest();
+
+    agg.unit('mi');
+    expected.myagg.geo_distance.unit = 'mi';
+    doTest();
+
+    agg.unit('m');
+    expected.myagg.geo_distance.unit = 'm';
+    doTest();
+
+    agg.distanceType('plane');
+    expected.myagg.geo_distance.distance_type = 'plane';
+    doTest();
+
+    agg.distanceType('INVALID');
+    doTest();
+
+    agg.distanceType('arc');
+    expected.myagg.geo_distance.distance_type = 'arc';
+    doTest();
+
+    agg.distanceType('sloppy_arc');
+    expected.myagg.geo_distance.distance_type = 'sloppy_arc';
+    doTest();
+
+    agg.distanceType('FACTOR');
+    expected.myagg.geo_distance.distance_type = 'factor';
+    doTest();
+
+    agg.origin(point1);
+    expected.myagg.geo_distance.origin = point1.toJSON();
+    doTest();
+
+    agg.point(point2);
+    expected.myagg.geo_distance.point = point2.toJSON();
+    doTest();
+
+    agg.center(point3);
+    expected.myagg.geo_distance.center = point3.toJSON();
+    doTest();
+
+    agg.range(2, 4);
+    expected.myagg.geo_distance.ranges = [{from: 2, to: 4}];
+    doTest();
+
+    agg.range(null, 8, 'eight');
+    expected.myagg.geo_distance.ranges.push({to: 8, key: 'eight'});
+    doTest();
+
+    agg.range(9);
+    expected.myagg.geo_distance.ranges.push({from: 9});
+    doTest();
+
+    agg.range('start', null, 'strfrom');
+    expected.myagg.geo_distance.ranges.push({from: 'start', key: 'strfrom'});
+    doTest();
+
+    agg.keyed(true);
+    expected.myagg.geo_distance.keyed = true;
     doTest();
 
     agg.agg(ta1);
