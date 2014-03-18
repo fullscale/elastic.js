@@ -272,6 +272,7 @@
         navWithTag('request', 'Request');
         navWithTag('query', 'Queries');
         navWithTag('filter', 'Filters');
+        navWithTag('aggregation', 'Aggregations');
         navWithTag('facet', 'Facets');
         navWithTag('suggest', 'Suggesters');
         navWithTag('geo', 'Geo');

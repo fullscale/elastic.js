@@ -12,8 +12,8 @@
     @borrows ejs.MetricsAggregationMixin.lang as lang
     @borrows ejs.MetricsAggregationMixin.scriptValuesSorted as scriptValuesSorted
     @borrows ejs.MetricsAggregationMixin.params as params
-    @borrows ejs.MetricsAggregationMixin._type as _type
-    @borrows ejs.MetricsAggregationMixin.toJSON as toJSON
+    @borrows ejs.AggregationMixin._type as _type
+    @borrows ejs.AggregationMixin.toJSON as toJSON
 
     @desc
     <p>Aggregation that calculates one or more percentiles over numeric values

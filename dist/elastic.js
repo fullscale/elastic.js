@@ -3013,8 +3013,8 @@
     @borrows ejs.MetricsAggregationMixin.lang as lang
     @borrows ejs.MetricsAggregationMixin.scriptValuesSorted as scriptValuesSorted
     @borrows ejs.MetricsAggregationMixin.params as params
-    @borrows ejs.MetricsAggregationMixin._type as _type
-    @borrows ejs.MetricsAggregationMixin.toJSON as toJSON
+    @borrows ejs.AggregationMixin._type as _type
+    @borrows ejs.AggregationMixin.toJSON as toJSON
 
     @desc
     <p>Aggregation that computes the average of numeric values that are extracted
@@ -3044,8 +3044,8 @@
     @borrows ejs.MetricsAggregationMixin.script as script
     @borrows ejs.MetricsAggregationMixin.lang as lang
     @borrows ejs.MetricsAggregationMixin.params as params
-    @borrows ejs.MetricsAggregationMixin._type as _type
-    @borrows ejs.MetricsAggregationMixin.toJSON as toJSON
+    @borrows ejs.AggregationMixin._type as _type
+    @borrows ejs.AggregationMixin.toJSON as toJSON
 
     @desc
     <p>Aggregation that calculates an approximate count of distinct values.</p>
@@ -3623,8 +3623,8 @@
     @borrows ejs.MetricsAggregationMixin.lang as lang
     @borrows ejs.MetricsAggregationMixin.scriptValuesSorted as scriptValuesSorted
     @borrows ejs.MetricsAggregationMixin.params as params
-    @borrows ejs.MetricsAggregationMixin._type as _type
-    @borrows ejs.MetricsAggregationMixin.toJSON as toJSON
+    @borrows ejs.AggregationMixin._type as _type
+    @borrows ejs.AggregationMixin.toJSON as toJSON
 
     @desc
     <p>Aggregation that computes extra stats over numeric values extracted from
@@ -4433,8 +4433,8 @@
     @borrows ejs.MetricsAggregationMixin.lang as lang
     @borrows ejs.MetricsAggregationMixin.scriptValuesSorted as scriptValuesSorted
     @borrows ejs.MetricsAggregationMixin.params as params
-    @borrows ejs.MetricsAggregationMixin._type as _type
-    @borrows ejs.MetricsAggregationMixin.toJSON as toJSON
+    @borrows ejs.AggregationMixin._type as _type
+    @borrows ejs.AggregationMixin.toJSON as toJSON
 
     @desc
     <p>Aggregation that keeps track and returns the maximum value among the
@@ -4466,8 +4466,8 @@
     @borrows ejs.MetricsAggregationMixin.lang as lang
     @borrows ejs.MetricsAggregationMixin.scriptValuesSorted as scriptValuesSorted
     @borrows ejs.MetricsAggregationMixin.params as params
-    @borrows ejs.MetricsAggregationMixin._type as _type
-    @borrows ejs.MetricsAggregationMixin.toJSON as toJSON
+    @borrows ejs.AggregationMixin._type as _type
+    @borrows ejs.AggregationMixin.toJSON as toJSON
 
     @desc
     <p>Aggregation that keeps track and returns the minimum value among numeric
@@ -4595,8 +4595,8 @@
     @borrows ejs.MetricsAggregationMixin.lang as lang
     @borrows ejs.MetricsAggregationMixin.scriptValuesSorted as scriptValuesSorted
     @borrows ejs.MetricsAggregationMixin.params as params
-    @borrows ejs.MetricsAggregationMixin._type as _type
-    @borrows ejs.MetricsAggregationMixin.toJSON as toJSON
+    @borrows ejs.AggregationMixin._type as _type
+    @borrows ejs.AggregationMixin.toJSON as toJSON
 
     @desc
     <p>Aggregation that calculates one or more percentiles over numeric values
@@ -5078,8 +5078,8 @@
     @borrows ejs.MetricsAggregationMixin.lang as lang
     @borrows ejs.MetricsAggregationMixin.scriptValuesSorted as scriptValuesSorted
     @borrows ejs.MetricsAggregationMixin.params as params
-    @borrows ejs.MetricsAggregationMixin._type as _type
-    @borrows ejs.MetricsAggregationMixin.toJSON as toJSON
+    @borrows ejs.AggregationMixin._type as _type
+    @borrows ejs.AggregationMixin.toJSON as toJSON
 
     @desc
     <p>Aggregation that computes stats over numeric values extracted from the
@@ -5111,8 +5111,8 @@
     @borrows ejs.MetricsAggregationMixin.lang as lang
     @borrows ejs.MetricsAggregationMixin.scriptValuesSorted as scriptValuesSorted
     @borrows ejs.MetricsAggregationMixin.params as params
-    @borrows ejs.MetricsAggregationMixin._type as _type
-    @borrows ejs.MetricsAggregationMixin.toJSON as toJSON
+    @borrows ejs.AggregationMixin._type as _type
+    @borrows ejs.AggregationMixin.toJSON as toJSON
 
     @desc
     <p>Aggregation that sums up numeric values that are extracted from the
@@ -5454,8 +5454,8 @@
     @borrows ejs.MetricsAggregationMixin.script as script
     @borrows ejs.MetricsAggregationMixin.lang as lang
     @borrows ejs.MetricsAggregationMixin.params as params
-    @borrows ejs.MetricsAggregationMixin._type as _type
-    @borrows ejs.MetricsAggregationMixin.toJSON as toJSON
+    @borrows ejs.AggregationMixin._type as _type
+    @borrows ejs.AggregationMixin.toJSON as toJSON
 
     @desc
     <p>Aggregation that counts the number of values that are extracted from the
