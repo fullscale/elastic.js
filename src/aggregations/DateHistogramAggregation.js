@@ -163,6 +163,35 @@
       },
 
       /**
+      Set's the range/bounds for the histogram aggregation.  Useful when you
+      want to include buckets that might be outside the bounds of indexed
+      documents.
+
+      @member ejs.DateHistogramAggregation
+      @param {(String|Long)} min The start bound / minimum bound value
+      @param {(String|Long)} max The end bound / maximum bound value
+      @returns {Object} returns <code>this</code> so that calls can be chained.
+      */
+      extendedBounds: function (min, max) {
+        var bounds;
+        if (min == null && max == null) {
+          return agg[name].date_histogram.extended_bounds;
+        }
+
+        bounds = {};
+        if (min != null) {
+          bounds.min = min;
+        }
+
+        if (max != null) {
+          bounds.max = max;
+        }
+
+        agg[name].date_histogram.extended_bounds = bounds;
+        return this;
+      },
+
+      /**
       Sets the histogram interval.  Buckets are generated based on this interval
       value.
 

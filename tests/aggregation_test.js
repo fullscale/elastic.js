@@ -948,7 +948,7 @@ exports.aggregations = {
     test.done();
   },
   DateHistogramAggregation: function (test) {
-    test.expect(23);
+    test.expect(26);
 
     var agg = ejs.DateHistogramAggregation('myagg'),
       ta1 = ejs.TermsAggregation('ta1').field('f1'),
@@ -1001,6 +1001,18 @@ exports.aggregations = {
     expected.myagg.date_histogram.format = '%Y-%m-%d';
     doTest();
 
+    agg.extendedBounds('now/d-3d', 'now/d');
+    expected.myagg.date_histogram.extended_bounds = {min: 'now/d-3d', max: 'now/d'};
+    doTest();
+
+    agg.extendedBounds('now/d-3d');
+    expected.myagg.date_histogram.extended_bounds = {min: 'now/d-3d'};
+    doTest();
+
+    agg.extendedBounds(null, 'now/d');
+    expected.myagg.date_histogram.extended_bounds = {max: 'now/d'};
+    doTest();
+
     agg.interval('1d');
     expected.myagg.date_histogram.interval = '1d';
     doTest();
@@ -1046,7 +1058,7 @@ exports.aggregations = {
     test.done();
   },
   HistogramAggregation: function (test) {
-    test.expect(17);
+    test.expect(20);
 
     var agg = ejs.HistogramAggregation('myagg'),
       ta1 = ejs.TermsAggregation('ta1').field('f1'),
@@ -1077,6 +1089,18 @@ exports.aggregations = {
 
     agg.format('%Y-%m-%d');
     expected.myagg.histogram.format = '%Y-%m-%d';
+    doTest();
+
+    agg.extendedBounds(0, 100);
+    expected.myagg.histogram.extended_bounds = {min: 0, max: 100};
+    doTest();
+
+    agg.extendedBounds(0);
+    expected.myagg.histogram.extended_bounds = {min: 0};
+    doTest();
+
+    agg.extendedBounds(null, 100);
+    expected.myagg.histogram.extended_bounds = {max: 100};
     doTest();
 
     agg.interval(10);
