@@ -28,13 +28,12 @@ exports.queries = {
     done();
   },
   exists: function (test) {
-    test.expect(39);
-    
+    test.expect(35);
+
     test.ok(ejs.CommonTermsQuery, 'CommonTermsQuery');
     test.ok(ejs.RegexpQuery, 'RegexpQuery');
     test.ok(ejs.GeoShapeQuery, 'GeoShapeQuery');
     test.ok(ejs.IndicesQuery, 'IndicesQuery');
-    test.ok(ejs.CustomFiltersScoreQuery, 'CustomFiltersScoreQuery');
     test.ok(ejs.WildcardQuery, 'WildcardQuery');
     test.ok(ejs.TopChildrenQuery, 'TopChildrenQuery');
     test.ok(ejs.TermsQuery, 'TermsQuery');
@@ -47,15 +46,12 @@ exports.queries = {
     test.ok(ejs.FuzzyQuery, 'FuzzyQuery');
     test.ok(ejs.FuzzyLikeThisFieldQuery, 'FuzzyLikeThisFieldQuery');
     test.ok(ejs.FuzzyLikeThisQuery, 'FuzzyLikeThisQuery');
-    test.ok(ejs.CustomBoostFactorQuery, 'CustomBoostFactorQuery');
-    test.ok(ejs.CustomScoreQuery, 'CustomScoreQuery');
     test.ok(ejs.IdsQuery, 'IdsQuery');
     test.ok(ejs.BoostingQuery, 'BoostingQuery');
     test.ok(ejs.MatchQuery, 'MatchQuery');
     test.ok(ejs.MultiMatchQuery, 'MultiMatchQuery');
     test.ok(ejs.TermQuery, 'TermQuery');
     test.ok(ejs.BoolQuery, 'BoolQuery');
-    test.ok(ejs.FieldQuery, 'FieldQuery');
     test.ok(ejs.DisMaxQuery, 'DisMaxQuery');
     test.ok(ejs.QueryStringQuery, 'QueryStringQuery');
     test.ok(ejs.FilteredQuery, 'FilteredQuery');
@@ -98,7 +94,7 @@ exports.queries = {
       }
     };
     doTest();
-    
+
     commonQuery = ejs.CommonTermsQuery('field', 'qstr');
     expected = {
       common: {
@@ -108,7 +104,7 @@ exports.queries = {
       }
     };
     doTest();
-    
+
     commonQuery.field('field2');
     expected = {
       common: {
@@ -118,11 +114,11 @@ exports.queries = {
       }
     };
     doTest();
-    
+
     commonQuery.query('qstr2');
     expected.common.field2.query = 'qstr2';
     doTest();
-    
+
     commonQuery.boost(1.5);
     expected.common.field2.boost = 1.5;
     doTest();
@@ -130,11 +126,11 @@ exports.queries = {
     commonQuery.disableCoord(true);
     expected.common.field2.disable_coord = true;
     doTest();
-    
+
     commonQuery.cutoffFrequency(0.65);
     expected.common.field2.cutoff_frequency = 0.65;
     doTest();
-    
+
     commonQuery.highFreqOperator('and');
     expected.common.field2.high_freq_operator = 'and';
     doTest();
@@ -156,7 +152,7 @@ exports.queries = {
     commonQuery.lowFreqOperator('or');
     expected.common.field2.low_freq_operator = 'or';
     doTest();
-    
+
     commonQuery.analyzer('the analyzer');
     expected.common.field2.analyzer = 'the analyzer';
     doTest();
@@ -164,18 +160,18 @@ exports.queries = {
     commonQuery.minimumShouldMatch(10);
     expected.common.field2.minimum_should_match = {low_freq: 10};
     doTest();
-    
+
     commonQuery.minimumShouldMatchLowFreq(5);
     expected.common.field2.minimum_should_match.low_freq = 5;
     doTest();
-    
+
     commonQuery.minimumShouldMatchHighFreq(10);
     expected.common.field2.minimum_should_match.high_freq = 10;
     doTest();
-    
+
     test.strictEqual(commonQuery._type(), 'query');
-    
-    
+
+
     test.done();
   },
   RegexpQuery: function (test) {
@@ -198,11 +194,11 @@ exports.queries = {
     test.ok(regexQuery, 'RegexpQuery exists');
     test.ok(regexQuery.toJSON(), 'toJSON() works');
     doTest();
-    
+
     regexQuery.value('regex2');
     expected.regexp.f1.value = 'regex2';
     doTest();
-    
+
     regexQuery.field('f2');
     expected = {
       regexp: {
@@ -212,48 +208,48 @@ exports.queries = {
       }
     };
     doTest();
-    
+
     regexQuery.boost(1.2);
     expected.regexp.f2.boost = 1.2;
     doTest();
-    
+
     regexQuery.rewrite('constant_score_auto');
     expected.regexp.f2.rewrite = 'constant_score_auto';
     doTest();
-    
+
     regexQuery.rewrite('invalid');
     doTest();
-    
+
     regexQuery.rewrite('scoring_boolean');
     expected.regexp.f2.rewrite = 'scoring_boolean';
     doTest();
-    
+
     regexQuery.rewrite('constant_score_boolean');
     expected.regexp.f2.rewrite = 'constant_score_boolean';
     doTest();
-    
+
     regexQuery.rewrite('constant_score_filter');
     expected.regexp.f2.rewrite = 'constant_score_filter';
     doTest();
-    
+
     regexQuery.rewrite('top_terms_boost_5');
     expected.regexp.f2.rewrite = 'top_terms_boost_5';
     doTest();
-    
+
     regexQuery.rewrite('top_terms_9');
     expected.regexp.f2.rewrite = 'top_terms_9';
     doTest();
-    
+
     regexQuery.flags('INTERSECTION|EMPTY');
     expected.regexp.f2.flags = 'INTERSECTION|EMPTY';
     doTest();
-    
+
     regexQuery.flagsValue(-1);
     expected.regexp.f2.flags_value = -1;
     doTest();
-    
+
     test.strictEqual(regexQuery._type(), 'query');
-    
+
 
     test.done();
   },
@@ -262,7 +258,7 @@ exports.queries = {
 
     var geoShapeQuery = ejs.GeoShapeQuery('f1'),
       shape1 = ejs.Shape('envelope', [[-45.0, 45.0], [45.0, -45.0]]),
-      shape2 = ejs.Shape('polygon', [[-180.0, 10.0], [20.0, 90.0], 
+      shape2 = ejs.Shape('polygon', [[-180.0, 10.0], [20.0, 90.0],
         [180.0, -5.0], [-30.0, -90.0]]),
       iShape1 = ejs.IndexedShape('countries', 'New Zealand'),
       iShape2 = ejs.IndexedShape('state', 'CA')
@@ -286,7 +282,7 @@ exports.queries = {
     geoShapeQuery.shape(shape1);
     expected.geo_shape.f1.shape = shape1.toJSON();
     doTest();
-    
+
     geoShapeQuery.field('f2');
     expected = {
       geo_shape: {
@@ -296,53 +292,53 @@ exports.queries = {
       }
     };
     doTest();
-    
+
     geoShapeQuery.shape(shape2);
     expected.geo_shape.f2.shape = shape2.toJSON();
     doTest();
-    
+
     geoShapeQuery.relation('intersects');
     expected.geo_shape.f2.relation = 'intersects';
     doTest();
-    
+
     geoShapeQuery.relation('INVALID');
     doTest();
-    
+
     geoShapeQuery.relation('DisJoint');
     expected.geo_shape.f2.relation = 'disjoint';
     doTest();
-    
+
     geoShapeQuery.relation('WITHIN');
     expected.geo_shape.f2.relation = 'within';
     doTest();
-    
+
     geoShapeQuery.indexedShape(iShape1);
     delete expected.geo_shape.f2.shape;
     expected.geo_shape.f2.indexed_shape = iShape1.toJSON();
     doTest();
-    
+
     geoShapeQuery.indexedShape(iShape2);
     expected.geo_shape.f2.indexed_shape = iShape2.toJSON();
     doTest();
-    
+
     geoShapeQuery.strategy('recursive');
     expected.geo_shape.f2.strategy = 'recursive';
     doTest();
-    
+
     geoShapeQuery.strategy('INVALID');
     doTest();
-    
+
     geoShapeQuery.strategy('TERM');
     expected.geo_shape.f2.strategy = 'term';
     doTest();
-    
+
     geoShapeQuery.boost(1.5);
     expected.geo_shape.f2.boost = 1.5;
     doTest();
-    
+
     test.strictEqual(geoShapeQuery._type(), 'query');
-    
-    
+
+
     test.done();
   },
   IndicesQuery: function (test) {
@@ -371,57 +367,57 @@ exports.queries = {
     indicesQuery = ejs.IndicesQuery(termQuery, ['i2', 'i3']);
     expected.indices.indices = ['i2', 'i3'];
     doTest();
-    
+
     indicesQuery.indices('i4');
     expected.indices.indices.push('i4');
     doTest();
-    
+
     indicesQuery.indices(['i5']);
     expected.indices.indices = ['i5'];
     doTest();
-    
+
     indicesQuery.query(termQuery2);
     expected.indices.query = termQuery2.toJSON();
     doTest();
-    
+
     indicesQuery.noMatchQuery('invalid');
     doTest();
-    
+
     indicesQuery.noMatchQuery('none');
     expected.indices.no_match_query = 'none';
     doTest();
-    
+
     indicesQuery.noMatchQuery('ALL');
     expected.indices.no_match_query = 'all';
     doTest();
-    
+
     indicesQuery.noMatchQuery(termQuery3);
     expected.indices.no_match_query = termQuery3.toJSON();
     doTest();
-     
+
     indicesQuery.boost(1.5);
     expected.indices.boost = 1.5;
     doTest();
-    
+
     indicesQuery.query(termQuery2);
     expected.indices.query = termQuery2.toJSON();
     doTest();
-    
+
     test.strictEqual(indicesQuery._type(), 'query');
-    
+
 
     test.throws(function () {
       ejs.IndicesQuery('invalid', 'index1');
     }, TypeError);
-    
+
     test.throws(function () {
       ejs.IndicesQuery(termQuery2, 3);
     }, TypeError);
-    
+
     test.throws(function () {
       indicesQuery.query('invalid');
     }, TypeError);
-    
+
     test.throws(function () {
       indicesQuery.noMatchQuery(2);
     }, TypeError);
@@ -430,137 +426,6 @@ exports.queries = {
       indicesQuery.indices(1);
     }, TypeError);
 
-    test.done();
-  },
-  CustomFiltersScoreQuery: function (test) {
-    test.expect(24);
-
-    var termQuery = ejs.TermQuery('t1', 'v1'),
-      termQuery2 = ejs.TermQuery('t2', 'v2'),
-      termFilter = ejs.TermFilter('tf1', 'fv1'),
-      termFilter2 = ejs.TermFilter('tf2', 'fv2'), 
-      cfsQuery = ejs.CustomFiltersScoreQuery(termQuery, [
-        {filter: termFilter, boost: 1.2}, 
-        {filter: termFilter2, script: 's'}
-      ]),
-      expected,
-      doTest = function () {
-        test.deepEqual(cfsQuery.toJSON(), expected);
-      };
-
-    expected = {
-      custom_filters_score: {
-        query: termQuery.toJSON(),
-        filters: [{
-          filter: termFilter.toJSON(),
-          boost: 1.2
-        }, {
-          filter: termFilter2.toJSON(),
-          script: 's'
-        }]
-      }
-    };
-
-    test.ok(cfsQuery, 'CustomFiltersScoreQuery exists');
-    test.ok(cfsQuery.toJSON(), 'toJSON() works');
-    doTest();
-
-    cfsQuery = ejs.CustomFiltersScoreQuery(termQuery, {filter: termFilter, boost: 1.2});
-    expected = {
-      custom_filters_score: {
-        query: termQuery.toJSON(),
-        filters: [{
-          filter: termFilter.toJSON(),
-          boost: 1.2
-        }]
-      }
-    };
-    doTest();
-    
-    cfsQuery.boost(1.5);
-    expected.custom_filters_score.boost = 1.5;
-    doTest();
-    
-    cfsQuery.query(termQuery2);
-    expected.custom_filters_score.query = termQuery2.toJSON();
-    doTest();
-    
-    // invalid filter because no boost or script, results in empty filters.
-    cfsQuery.filters([{filter: termFilter, invalid: true}]);
-    expected.custom_filters_score.filters = [];
-    doTest();
-    
-    // overwrite existing
-    cfsQuery.filters([{filter: termFilter, script: 's'}]);
-    expected.custom_filters_score.filters = [{filter: termFilter.toJSON(), script: 's'}];
-    doTest();
-    
-    cfsQuery.filters([{filter: termFilter, invalid: true}, {filter: termFilter2, boost: 2}]);
-    expected.custom_filters_score.filters = [{filter: termFilter2.toJSON(), boost: 2}];
-    doTest();
-    
-    // append
-    cfsQuery.filters({filter: termFilter2, boost: 5.5});
-    expected.custom_filters_score.filters.push({filter: termFilter2.toJSON(), boost: 5.5});
-    doTest();
-    
-    cfsQuery.filters([{filter: termFilter, script: 's'}, {filter: termFilter2, boost: 2.2}]);
-    expected.custom_filters_score.filters = [
-      {filter: termFilter.toJSON(), script: 's'}, 
-      {filter: termFilter2.toJSON(), boost: 2.2}
-    ];
-    doTest();
-    
-    cfsQuery.scoreMode('first');
-    expected.custom_filters_score.score_mode = 'first';
-    doTest();
-    
-    cfsQuery.scoreMode('INVALID');
-    doTest();
-    
-    cfsQuery.scoreMode('MIN');
-    expected.custom_filters_score.score_mode = 'min';
-    doTest();
-    
-    cfsQuery.scoreMode('max');
-    expected.custom_filters_score.score_mode = 'max';
-    doTest();
-    
-    cfsQuery.scoreMode('TOTAL');
-    expected.custom_filters_score.score_mode = 'total';
-    doTest();
-    
-    cfsQuery.scoreMode('avg');
-    expected.custom_filters_score.score_mode = 'avg';
-    doTest();
-    
-    cfsQuery.scoreMode('Multiply');
-    expected.custom_filters_score.score_mode = 'multiply';
-    doTest();
-    
-    cfsQuery.params({param1: true, param2: false});
-    expected.custom_filters_score.params = {param1: true, param2: false};
-    doTest();
-    
-    cfsQuery.lang('mvel');
-    expected.custom_filters_score.lang = 'mvel';
-    doTest();
-    
-    cfsQuery.maxBoost(6.0);
-    expected.custom_filters_score.max_boost = 6.0;
-    doTest();
-    
-    test.strictEqual(cfsQuery._type(), 'query');
-    
-
-    test.throws(function () {
-      ejs.CustomFiltersScoreQuery('invalid', {filter: termFilter, boost: 1.2});
-    }, TypeError);
-    
-    test.throws(function () {
-      cfsQuery.query('junk');
-    }, TypeError);
-    
     test.done();
   },
   WildcardQuery: function (test) {
@@ -591,30 +456,30 @@ exports.queries = {
     wildcardQuery.rewrite('constant_score_auto');
     expected.wildcard.f1.rewrite = 'constant_score_auto';
     doTest();
-    
+
     wildcardQuery.rewrite('invalid');
     doTest();
-    
+
     wildcardQuery.rewrite('scoring_boolean');
     expected.wildcard.f1.rewrite = 'scoring_boolean';
     doTest();
-    
+
     wildcardQuery.rewrite('constant_score_boolean');
     expected.wildcard.f1.rewrite = 'constant_score_boolean';
     doTest();
-    
+
     wildcardQuery.rewrite('constant_score_filter');
     expected.wildcard.f1.rewrite = 'constant_score_filter';
     doTest();
-    
+
     wildcardQuery.rewrite('top_terms_boost_5');
     expected.wildcard.f1.rewrite = 'top_terms_boost_5';
     doTest();
-    
+
     wildcardQuery.rewrite('top_terms_9');
     expected.wildcard.f1.rewrite = 'top_terms_9';
     doTest();
-    
+
     wildcardQuery.field('f2');
     expected = {
       wildcard: {
@@ -626,13 +491,13 @@ exports.queries = {
       }
     };
     doTest();
-    
+
     wildcardQuery.value('wild?card');
     expected.wildcard.f2.value = 'wild?card';
     doTest();
-    
+
     test.strictEqual(wildcardQuery._type(), 'query');
-    
+
 
     test.done();
   },
@@ -657,76 +522,76 @@ exports.queries = {
     test.ok(topChildren, 'TopChildrenQuery exists');
     test.ok(topChildren.toJSON(), 'toJSON() works');
     doTest();
-    
+
     topChildren.query(termQuery2);
     expected.top_children.query = termQuery2.toJSON();
     doTest();
-    
+
     topChildren.type('t2');
     expected.top_children.type = 't2';
     doTest();
-    
+
     topChildren.boost(1.2);
     expected.top_children.boost = 1.2;
     doTest();
-    
+
     topChildren.score('silently fail');
     doTest();
-    
+
     topChildren.score('max');
     expected.top_children.score = 'max';
     doTest();
-    
+
     topChildren.score('SUM');
     expected.top_children.score = 'sum';
     doTest();
-    
+
     topChildren.score('avg');
     expected.top_children.score = 'avg';
     doTest();
-    
+
     topChildren.score('total');
     expected.top_children.score = 'total';
     doTest();
-    
+
     topChildren.scoreMode('silently fail');
     doTest();
-    
+
     topChildren.scoreMode('max');
     expected.top_children.score_mode = 'max';
     doTest();
-    
+
     topChildren.scoreMode('SUM');
     expected.top_children.score_mode = 'sum';
     doTest();
-    
+
     topChildren.scoreMode('avg');
     expected.top_children.score_mode = 'avg';
     doTest();
-    
+
     topChildren.scoreMode('total');
     expected.top_children.score_mode = 'total';
     doTest();
-    
+
     topChildren.factor(7);
     expected.top_children.factor = 7;
     doTest();
-    
+
     topChildren.incrementalFactor(3);
     expected.top_children.incremental_factor = 3;
     doTest();
-    
+
     test.strictEqual(topChildren._type(), 'query');
-    
+
 
     test.throws(function () {
       ejs.TopChildrenQuery('invalid', 'type');
     }, TypeError);
-    
+
     test.throws(function () {
       topChildren.query('invalid');
     }, TypeError);
-    
+
     test.done();
   },
   TermsQuery: function (test) {
@@ -755,7 +620,7 @@ exports.queries = {
       }
     };
     doTest();
-    
+
     termsQuery.boost(1.5);
     expected.terms.boost = 1.5;
     doTest();
@@ -763,7 +628,7 @@ exports.queries = {
     termsQuery.minimumShouldMatch(2);
     expected.terms.minimum_should_match = 2;
     doTest();
-    
+
     termsQuery.field('f2');
     expected = {
       terms: {
@@ -773,30 +638,30 @@ exports.queries = {
       }
     };
     doTest();
-    
+
     termsQuery.terms('t4');
     expected.terms.f2.push('t4');
     doTest();
-    
+
     termsQuery.terms(['t5', 't6']);
     expected.terms.f2 = ['t5', 't6'];
     doTest();
-    
+
     termsQuery.disableCoord(true);
     expected.terms.disable_coord = true;
     doTest();
-    
+
     test.strictEqual(termsQuery._type(), 'query');
-    
+
 
     test.throws(function () {
       ejs.TermsQuery('f1', 3);
     }, TypeError);
-    
+
     test.throws(function () {
       termsQuery.terms(2);
     }, TypeError);
-    
+
     test.done();
   },
   RangeQuery: function (test) {
@@ -817,11 +682,11 @@ exports.queries = {
     test.ok(rangeQuery, 'RangeQuery exists');
     test.ok(rangeQuery.toJSON(), 'toJSON() works');
     doTest();
-    
+
     rangeQuery.from(1);
     expected.range.f1.from = 1;
     doTest();
-    
+
     rangeQuery.field('f2');
     expected = {
       range: {
@@ -831,41 +696,41 @@ exports.queries = {
       }
     };
     doTest();
-    
+
     rangeQuery.to(3);
     expected.range.f2.to = 3;
     doTest();
-    
+
     rangeQuery.includeLower(false);
     expected.range.f2.include_lower = false;
     doTest();
-    
+
     rangeQuery.includeUpper(true);
     expected.range.f2.include_upper = true;
     doTest();
-    
+
     rangeQuery.gt(4);
     expected.range.f2.gt = 4;
     doTest();
-    
+
     rangeQuery.gte(4);
     expected.range.f2.gte = 4;
     doTest();
-    
+
     rangeQuery.lt(6);
     expected.range.f2.lt = 6;
     doTest();
-    
+
     rangeQuery.lte(6);
     expected.range.f2.lte = 6;
     doTest();
-    
+
     rangeQuery.boost(1.2);
     expected.range.f2.boost = 1.2;
     doTest();
-    
+
     test.strictEqual(rangeQuery._type(), 'query');
-    
+
 
     test.done();
   },
@@ -889,11 +754,11 @@ exports.queries = {
     test.ok(prefixQuery, 'PrefixQuery exists');
     test.ok(prefixQuery.toJSON(), 'toJSON() works');
     doTest();
-    
+
     prefixQuery.value('prefix2');
     expected.prefix.f1.value = 'prefix2';
     doTest();
-    
+
     prefixQuery.field('f2');
     expected = {
       prefix: {
@@ -903,40 +768,40 @@ exports.queries = {
       }
     };
     doTest();
-    
+
     prefixQuery.boost(1.2);
     expected.prefix.f2.boost = 1.2;
     doTest();
-    
+
     prefixQuery.rewrite('constant_score_auto');
     expected.prefix.f2.rewrite = 'constant_score_auto';
     doTest();
-    
+
     prefixQuery.rewrite('invalid');
     doTest();
-    
+
     prefixQuery.rewrite('scoring_boolean');
     expected.prefix.f2.rewrite = 'scoring_boolean';
     doTest();
-    
+
     prefixQuery.rewrite('constant_score_boolean');
     expected.prefix.f2.rewrite = 'constant_score_boolean';
     doTest();
-    
+
     prefixQuery.rewrite('constant_score_filter');
     expected.prefix.f2.rewrite = 'constant_score_filter';
     doTest();
-    
+
     prefixQuery.rewrite('top_terms_boost_5');
     expected.prefix.f2.rewrite = 'top_terms_boost_5';
     doTest();
-    
+
     prefixQuery.rewrite('top_terms_9');
     expected.prefix.f2.rewrite = 'top_terms_9';
     doTest();
-    
+
     test.strictEqual(prefixQuery._type(), 'query');
-    
+
 
     test.done();
   },
@@ -960,11 +825,11 @@ exports.queries = {
     test.ok(mltQuery, 'MoreLikeThisFieldQuery exists');
     test.ok(mltQuery.toJSON(), 'toJSON() works');
     doTest();
-    
+
     mltQuery.likeText('like text 2');
     expected.mlt_field.f1.like_text = 'like text 2';
     doTest();
-    
+
     mltQuery.field('f2');
     expected = {
       mlt_field: {
@@ -974,57 +839,57 @@ exports.queries = {
       }
     };
     doTest();
-    
+
     mltQuery.percentTermsToMatch(0.7);
     expected.mlt_field.f2.percent_terms_to_match = 0.7;
     doTest();
-    
+
     mltQuery.minTermFreq(3);
     expected.mlt_field.f2.min_term_freq = 3;
     doTest();
-    
+
     mltQuery.maxQueryTerms(6);
     expected.mlt_field.f2.max_query_terms = 6;
     doTest();
-    
+
     mltQuery.stopWords(['s1', 's2']);
     expected.mlt_field.f2.stop_words = ['s1', 's2'];
     doTest();
-    
+
     mltQuery.minDocFreq(2);
     expected.mlt_field.f2.min_doc_freq = 2;
     doTest();
-    
+
     mltQuery.maxDocFreq(4);
     expected.mlt_field.f2.max_doc_freq = 4;
     doTest();
-    
+
     mltQuery.minWordLen(3);
     expected.mlt_field.f2.min_word_len = 3;
     doTest();
-    
+
     mltQuery.maxWordLen(6);
     expected.mlt_field.f2.max_word_len = 6;
     doTest();
-    
+
     mltQuery.boostTerms(1.3);
     expected.mlt_field.f2.boost_terms = 1.3;
     doTest();
-    
+
     mltQuery.failOnUnsupportedField(false);
     expected.mlt_field.f2.fail_on_unsupported_field = false;
     doTest();
-      
+
     mltQuery.analyzer('some analyzer');
     expected.mlt_field.f2.analyzer = 'some analyzer';
     doTest();
-    
+
     mltQuery.boost(1.2);
     expected.mlt_field.f2.boost = 1.2;
     doTest();
-    
+
     test.strictEqual(mltQuery._type(), 'query');
-    
+
 
     test.done();
   },
@@ -1047,7 +912,7 @@ exports.queries = {
     test.ok(mltQuery, 'MoreLikeThisQuery exists');
     test.ok(mltQuery.toJSON(), 'toJSON() works');
     doTest();
-    
+
     mltQuery = ejs.MoreLikeThisQuery('f', 'like text');
     expected = {
       mlt: {
@@ -1056,78 +921,78 @@ exports.queries = {
       }
     };
     doTest();
-    
+
     mltQuery.fields('f2');
     expected.mlt.fields.push('f2');
     doTest();
-    
+
     mltQuery.fields(['f3', 'f4']);
     expected.mlt.fields = ['f3', 'f4'];
     doTest();
-    
+
     mltQuery.likeText('like text 2');
     expected.mlt.like_text = 'like text 2';
     doTest();
-    
+
     mltQuery.percentTermsToMatch(0.7);
     expected.mlt.percent_terms_to_match = 0.7;
     doTest();
-    
+
     mltQuery.minTermFreq(3);
     expected.mlt.min_term_freq = 3;
     doTest();
-    
+
     mltQuery.maxQueryTerms(6);
     expected.mlt.max_query_terms = 6;
     doTest();
-    
+
     mltQuery.stopWords(['s1', 's2']);
     expected.mlt.stop_words = ['s1', 's2'];
     doTest();
-    
+
     mltQuery.minDocFreq(2);
     expected.mlt.min_doc_freq = 2;
     doTest();
-    
+
     mltQuery.maxDocFreq(4);
     expected.mlt.max_doc_freq = 4;
     doTest();
-    
+
     mltQuery.minWordLen(3);
     expected.mlt.min_word_len = 3;
     doTest();
-    
+
     mltQuery.maxWordLen(6);
     expected.mlt.max_word_len = 6;
     doTest();
-    
+
     mltQuery.boostTerms(1.3);
     expected.mlt.boost_terms = 1.3;
     doTest();
-    
+
     mltQuery.failOnUnsupportedField(false);
     expected.mlt.fail_on_unsupported_field = false;
     doTest();
-    
+
     mltQuery.analyzer('some analyzer');
     expected.mlt.analyzer = 'some analyzer';
     doTest();
-    
+
     mltQuery.boost(1.2);
     expected.mlt.boost = 1.2;
     doTest();
-    
+
     test.strictEqual(mltQuery._type(), 'query');
-    
+
 
     test.throws(function () {
       ejs.MoreLikeThisQuery(9, 'like');
     }, TypeError);
-    
+
     test.throws(function () {
       mltQuery.fields(3);
     }, TypeError);
-    
+
     test.done();
   },
   HasParentQuery: function (test) {
@@ -1151,52 +1016,52 @@ exports.queries = {
     test.ok(hasParentQuery, 'HasParentQuery exists');
     test.ok(hasParentQuery.toJSON(), 'toJSON() works');
     doTest();
-    
+
     hasParentQuery.query(termQuery2);
     expected.has_parent.query = termQuery2.toJSON();
     doTest();
-    
+
     hasParentQuery.parentType('t2');
     expected.has_parent.parent_type = 't2';
     doTest();
-    
+
     hasParentQuery.scoreType('none');
     expected.has_parent.score_type = 'none';
     doTest();
-    
+
     hasParentQuery.scoreType('INVALID');
     doTest();
-    
+
     hasParentQuery.scoreType('SCORE');
     expected.has_parent.score_type = 'score';
     doTest();
-    
+
     hasParentQuery.scoreMode('none');
     expected.has_parent.score_mode = 'none';
     doTest();
-    
+
     hasParentQuery.scoreMode('INVALID');
     doTest();
-    
+
     hasParentQuery.scoreMode('SCORE');
     expected.has_parent.score_mode = 'score';
     doTest();
-    
+
     hasParentQuery.boost(1.2);
     expected.has_parent.boost = 1.2;
     doTest();
-    
+
     test.strictEqual(hasParentQuery._type(), 'query');
-    
+
 
     test.throws(function () {
       ejs.HasParentQuery('invalid', 'type');
     }, TypeError);
-    
+
     test.throws(function () {
       hasParentQuery.query('invalid');
     }, TypeError);
-    
+
     test.done();
   },
   HasChildQuery: function (test) {
@@ -1220,72 +1085,72 @@ exports.queries = {
     test.ok(hasChildQuery, 'HasChildQuery exists');
     test.ok(hasChildQuery.toJSON(), 'toJSON() works');
     doTest();
-    
+
     hasChildQuery.query(termQuery2);
     expected.has_child.query = termQuery2.toJSON();
     doTest();
-    
+
     hasChildQuery.type('t2');
     expected.has_child.type = 't2';
     doTest();
-    
+
     hasChildQuery.scoreType('none');
     expected.has_child.score_type = 'none';
     doTest();
-    
+
     hasChildQuery.scoreType('INVALID');
     doTest();
-    
+
     hasChildQuery.scoreType('MAX');
     expected.has_child.score_type = 'max';
     doTest();
-    
+
     hasChildQuery.scoreType('Avg');
     expected.has_child.score_type = 'avg';
     doTest();
-    
+
     hasChildQuery.scoreType('sum');
     expected.has_child.score_type = 'sum';
     doTest();
-    
+
     hasChildQuery.scoreMode('none');
     expected.has_child.score_mode = 'none';
     doTest();
-    
+
     hasChildQuery.scoreMode('INVALID');
     doTest();
-    
+
     hasChildQuery.scoreMode('MAX');
     expected.has_child.score_mode = 'max';
     doTest();
-    
+
     hasChildQuery.scoreMode('Avg');
     expected.has_child.score_mode = 'avg';
     doTest();
-    
+
     hasChildQuery.scoreMode('sum');
     expected.has_child.score_mode = 'sum';
     doTest();
-    
+
     hasChildQuery.shortCircuitCutoff(8192);
     expected.has_child.short_circuit_cutoff = 8192;
     doTest();
-    
+
     hasChildQuery.boost(1.2);
     expected.has_child.boost = 1.2;
     doTest();
-    
+
     test.strictEqual(hasChildQuery._type(), 'query');
-    
+
 
     test.throws(function () {
       ejs.HasChildQuery('invalid', 'type');
     }, TypeError);
-    
+
     test.throws(function () {
       hasChildQuery.query('invalid');
     }, TypeError);
-    
+
     test.done();
   },
   FuzzyQuery: function (test) {
@@ -1308,11 +1173,11 @@ exports.queries = {
     test.ok(fuzzyQuery, 'FuzzyQuery exists');
     test.ok(fuzzyQuery.toJSON(), 'toJSON() works');
     doTest();
-    
+
     fuzzyQuery.value('fuzz2');
     expected.fuzzy.f1.value = 'fuzz2';
     doTest();
-    
+
     fuzzyQuery.field('f2');
     expected = {
       fuzzy: {
@@ -1322,56 +1187,56 @@ exports.queries = {
       }
     };
     doTest();
-    
+
     fuzzyQuery.transpositions(false);
     expected.fuzzy.f2.transpositions = false;
     doTest();
-    
+
     fuzzyQuery.maxExpansions(10);
     expected.fuzzy.f2.max_expansions = 10;
     doTest();
-    
+
     fuzzyQuery.minSimilarity(0.6);
     expected.fuzzy.f2.min_similarity = 0.6;
     doTest();
-    
+
     fuzzyQuery.prefixLength(4);
     expected.fuzzy.f2.prefix_length = 4;
     doTest();
-    
+
     fuzzyQuery.rewrite('constant_score_auto');
     expected.fuzzy.f2.rewrite = 'constant_score_auto';
     doTest();
-    
+
     fuzzyQuery.rewrite('invalid');
     doTest();
-    
+
     fuzzyQuery.rewrite('scoring_boolean');
     expected.fuzzy.f2.rewrite = 'scoring_boolean';
     doTest();
-    
+
     fuzzyQuery.rewrite('constant_score_boolean');
     expected.fuzzy.f2.rewrite = 'constant_score_boolean';
     doTest();
-    
+
     fuzzyQuery.rewrite('constant_score_filter');
     expected.fuzzy.f2.rewrite = 'constant_score_filter';
     doTest();
-    
+
     fuzzyQuery.rewrite('top_terms_boost_5');
     expected.fuzzy.f2.rewrite = 'top_terms_boost_5';
     doTest();
-    
+
     fuzzyQuery.rewrite('top_terms_9');
     expected.fuzzy.f2.rewrite = 'top_terms_9';
     doTest();
-    
+
     fuzzyQuery.boost(1.2);
     expected.fuzzy.f2.boost = 1.2;
     doTest();
-    
+
     test.strictEqual(fuzzyQuery._type(), 'query');
-    
+
 
     test.done();
   },
@@ -1395,11 +1260,11 @@ exports.queries = {
     test.ok(fltQuery, 'FuzzyLikeThisFieldQuery exists');
     test.ok(fltQuery.toJSON(), 'toJSON() works');
     doTest();
-    
+
     fltQuery.likeText('like text 2');
     expected.flt_field.f1.like_text = 'like text 2';
     doTest();
-    
+
     fltQuery.field('f2');
     expected = {
       flt_field: {
@@ -1409,37 +1274,37 @@ exports.queries = {
       }
     };
     doTest();
-    
+
     fltQuery.ignoreTf(false);
     expected.flt_field.f2.ignore_tf = false;
     doTest();
-    
+
     fltQuery.maxQueryTerms(10);
     expected.flt_field.f2.max_query_terms = 10;
     doTest();
-    
+
     fltQuery.minSimilarity(0.6);
     expected.flt_field.f2.min_similarity = 0.6;
     doTest();
-    
+
     fltQuery.prefixLength(4);
     expected.flt_field.f2.prefix_length = 4;
     doTest();
-    
+
     fltQuery.analyzer('some analyzer');
     expected.flt_field.f2.analyzer = 'some analyzer';
     doTest();
-    
+
     fltQuery.failOnUnsupportedField(false);
     expected.flt_field.f2.fail_on_unsupported_field = false;
     doTest();
-    
+
     fltQuery.boost(1.2);
     expected.flt_field.f2.boost = 1.2;
     doTest();
-    
+
     test.strictEqual(fltQuery._type(), 'query');
-    
+
 
     test.done();
   },
@@ -1461,182 +1326,58 @@ exports.queries = {
     test.ok(fltQuery, 'FuzzyLikeThisQuery exists');
     test.ok(fltQuery.toJSON(), 'toJSON() works');
     doTest();
-    
+
     fltQuery.fields('f1');
     expected.flt.fields = ['f1'];
     doTest();
-    
+
     fltQuery.fields('f2');
     expected.flt.fields.push('f2');
     doTest();
-    
+
     fltQuery.fields(['f3', 'f4']);
     expected.flt.fields = ['f3', 'f4'];
     doTest();
-    
+
     fltQuery.likeText('like text 2');
     expected.flt.like_text = 'like text 2';
     doTest();
-    
+
     fltQuery.ignoreTf(false);
     expected.flt.ignore_tf = false;
     doTest();
-    
+
     fltQuery.maxQueryTerms(10);
     expected.flt.max_query_terms = 10;
     doTest();
-    
+
     fltQuery.minSimilarity(0.6);
     expected.flt.min_similarity = 0.6;
     doTest();
-    
+
     fltQuery.prefixLength(4);
     expected.flt.prefix_length = 4;
     doTest();
-    
+
     fltQuery.analyzer('some analyzer');
     expected.flt.analyzer = 'some analyzer';
     doTest();
-    
+
     fltQuery.failOnUnsupportedField(false);
     expected.flt.fail_on_unsupported_field = false;
     doTest();
-    
+
     fltQuery.boost(1.2);
     expected.flt.boost = 1.2;
     doTest();
-    
+
     test.strictEqual(fltQuery._type(), 'query');
-    
+
 
     test.throws(function () {
       fltQuery.fields(2);
     }, TypeError);
-    
-    test.done();
-  },
-  CustomBoostFactorQuery: function (test) {
-    test.expect(9);
 
-    var termQuery = ejs.TermQuery('t1', 'v1'),
-      termQuery2 = ejs.TermQuery('t2', 'v2'),
-      cbfQuery = ejs.CustomBoostFactorQuery(termQuery),
-      expected,
-      doTest = function () {
-        test.deepEqual(cbfQuery.toJSON(), expected);
-      };
-
-    expected = {
-      custom_boost_factor: {
-        query: termQuery.toJSON()
-      }
-    };
-
-    test.ok(cbfQuery, 'CustomBoostFactorQuery exists');
-    test.ok(cbfQuery.toJSON(), 'toJSON() works');
-    doTest();
-    
-    cbfQuery.query(termQuery2);
-    expected.custom_boost_factor.query = termQuery2.toJSON();
-    doTest();
-    
-    cbfQuery.boostFactor(5.1);
-    expected.custom_boost_factor.boost_factor = 5.1;
-    doTest();
-    
-    cbfQuery.boost(1.2);
-    expected.custom_boost_factor.boost = 1.2;
-    doTest();
-    
-    test.strictEqual(cbfQuery._type(), 'query');
-    
-
-    test.throws(function () {
-      ejs.CustomBoostFactorQuery('invalid');
-    }, TypeError);
-    
-    test.throws(function () {
-      cbfQuery.query('invalid');
-    }, TypeError);
-    
-    test.done();
-  },
-  CustomScoreQuery: function (test) {
-    test.expect(15);
-
-    var termQuery = ejs.TermQuery('t1', 'v1'),
-      termQuery2 = ejs.TermQuery('t2', 'v2'),
-      termFilter = ejs.TermFilter('tf1', 'vf1'),
-      termFilter2 = ejs.TermFilter('tf2', 'vf2'),
-      customScoreQuery = ejs.CustomScoreQuery(termQuery, 's1'),
-      expected,
-      doTest = function () {
-        test.deepEqual(customScoreQuery.toJSON(), expected);
-      };
-
-    expected = {
-      custom_score: {
-        script: 's1',
-        query: termQuery.toJSON()
-      }
-    };
-
-    test.ok(customScoreQuery, 'CustomScoreQuery exists');
-    test.ok(customScoreQuery.toJSON(), 'toJSON() works');
-    doTest();
-    
-    customScoreQuery = ejs.CustomScoreQuery(termFilter, 's1');
-    expected = {
-      custom_score: {
-        script: 's1',
-        filter: termFilter.toJSON()
-      }
-    };
-    doTest();
-    
-    customScoreQuery.query(termQuery2);
-    expected.custom_score.query = termQuery2.toJSON();
-    doTest();
-    
-    customScoreQuery.filter(termFilter2);
-    expected.custom_score.filter = termFilter2.toJSON();
-    doTest();
-    
-    customScoreQuery.script('s2');
-    expected.custom_score.script = 's2';
-    doTest();
-    
-    customScoreQuery.lang('native');
-    expected.custom_score.lang = 'native';
-    doTest();
-    
-    customScoreQuery.boost(1.2);
-    expected.custom_score.boost = 1.2;
-    doTest();
-    
-    customScoreQuery.params({p1: 'v1', p2: 'v2'});
-    expected.custom_score.params = {p1: 'v1', p2: 'v2'};
-    doTest();
-    
-    customScoreQuery.params({p3: 'v3'});
-    expected.custom_score.params = {p3: 'v3'};
-    doTest();
-    
-    test.strictEqual(customScoreQuery._type(), 'query');
-    
-
-    test.throws(function () {
-      ejs.CustomScoreQuery('invalid', 's');
-    }, TypeError);
-    
-    test.throws(function () {
-      customScoreQuery.query('invalid');
-    }, TypeError);
-    
-    test.throws(function () {
-      customScoreQuery.filter('invalid');
-    }, TypeError);
-    
     test.done();
   },
   IdsQuery: function (test) {
@@ -1657,50 +1398,50 @@ exports.queries = {
     test.ok(idsQuery, 'IdsQuery exists');
     test.ok(idsQuery.toJSON(), 'toJSON() works');
     doTest();
-    
+
     idsQuery = ejs.IdsQuery(['id2', 'id3']);
     expected.ids.values = ['id2', 'id3'];
     doTest();
-    
+
     idsQuery.values('id4');
     expected.ids.values.push('id4');
     doTest();
-    
+
     idsQuery.values(['id5', 'id6']);
     expected.ids.values = ['id5', 'id6'];
     doTest();
-    
+
     idsQuery.type('type1');
     expected.ids.type = ['type1'];
     doTest();
-    
+
     idsQuery.type('type2');
     expected.ids.type.push('type2');
     doTest();
-    
+
     idsQuery.type(['type3', 'type4']);
     expected.ids.type = ['type3', 'type4'];
     doTest();
-    
+
     idsQuery.boost(0.5);
     expected.ids.boost = 0.5;
     doTest();
-    
+
     test.strictEqual(idsQuery._type(), 'query');
-    
+
 
     test.throws(function () {
       ejs.IdsQuery(2);
     }, TypeError);
-    
+
     test.throws(function () {
       idsQuery.values(5);
     }, TypeError);
-    
+
     test.throws(function () {
       idsQuery.type(9);
     }, TypeError);
-    
+
     test.done();
   },
   BoostingQuery: function (test) {
@@ -1729,38 +1470,38 @@ exports.queries = {
     boostingQuery.positive(termQuery2);
     expected.boosting.positive = termQuery2.toJSON();
     doTest();
-    
+
     boostingQuery.negative(termQuery1);
     expected.boosting.negative = termQuery1.toJSON();
     doTest();
-    
+
     boostingQuery.negativeBoost(0.6);
     expected.boosting.negative_boost = 0.6;
     doTest();
-    
+
     boostingQuery.boost(3);
     expected.boosting.boost = 3;
     doTest();
-    
+
     test.strictEqual(boostingQuery._type(), 'query');
-    
+
 
     test.throws(function () {
       ejs.BoostingQuery('invalid', termQuery1, 0.2);
     }, TypeError);
-    
+
     test.throws(function () {
       ejs.BoostingQuery(termQuery1, 'invalid', 0.2);
     }, TypeError);
-    
+
     test.throws(function () {
       boostingQuery.positive('invalid');
     }, TypeError);
-    
+
     test.throws(function () {
       boostingQuery.negative('invalid');
     }, TypeError);
-    
+
     test.done();
   },
   MatchQuery: function (test) {
@@ -1810,7 +1551,7 @@ exports.queries = {
     matchQuery.cutoffFrequency(0.6);
     expected.match.t1.cutoff_frequency = 0.6;
     doTest();
-    
+
     matchQuery.fuzziness(0.5);
     expected.match.t1.fuzziness = 0.5;
     doTest();
@@ -1845,82 +1586,82 @@ exports.queries = {
     matchQuery.minimumShouldMatch(10);
     expected.match.t1.minimum_should_match = 10;
     doTest();
-    
+
     matchQuery.fuzzyRewrite('constant_score_auto');
     expected.match.t1.fuzzy_rewrite = 'constant_score_auto';
     doTest();
-    
+
     matchQuery.fuzzyRewrite('invalid');
     doTest();
-    
+
     matchQuery.fuzzyRewrite('scoring_boolean');
     expected.match.t1.fuzzy_rewrite = 'scoring_boolean';
     doTest();
-    
+
     matchQuery.fuzzyRewrite('constant_score_boolean');
     expected.match.t1.fuzzy_rewrite = 'constant_score_boolean';
     doTest();
-    
+
     matchQuery.fuzzyRewrite('constant_score_filter');
     expected.match.t1.fuzzy_rewrite = 'constant_score_filter';
     doTest();
-    
+
     matchQuery.fuzzyRewrite('top_terms_boost_5');
     expected.match.t1.fuzzy_rewrite = 'top_terms_boost_5';
     doTest();
-    
+
     matchQuery.fuzzyRewrite('top_terms_9');
     expected.match.t1.fuzzy_rewrite = 'top_terms_9';
     doTest();
-    
+
     matchQuery.rewrite('constant_score_auto');
     expected.match.t1.rewrite = 'constant_score_auto';
     doTest();
-    
+
     matchQuery.rewrite('invalid');
     doTest();
-    
+
     matchQuery.rewrite('scoring_boolean');
     expected.match.t1.rewrite = 'scoring_boolean';
     doTest();
-    
+
     matchQuery.rewrite('constant_score_boolean');
     expected.match.t1.rewrite = 'constant_score_boolean';
     doTest();
-    
+
     matchQuery.rewrite('constant_score_filter');
     expected.match.t1.rewrite = 'constant_score_filter';
     doTest();
-    
+
     matchQuery.rewrite('top_terms_boost_5');
     expected.match.t1.rewrite = 'top_terms_boost_5';
     doTest();
-    
+
     matchQuery.rewrite('top_terms_9');
     expected.match.t1.rewrite = 'top_terms_9';
     doTest();
-    
+
     matchQuery.fuzzyTranspositions(true);
     expected.match.t1.fuzzy_transpositions = true;
     doTest();
-    
+
     matchQuery.lenient(true);
     expected.match.t1.lenient = true;
     doTest();
-    
+
     matchQuery.zeroTermsQuery('all');
     expected.match.t1.zero_terms_query = 'all';
     doTest();
-    
+
     matchQuery.zeroTermsQuery('invalid');
     doTest();
-    
+
     matchQuery.zeroTermsQuery('NONE');
     expected.match.t1.zero_terms_query = 'none';
     doTest();
-    
+
     test.strictEqual(matchQuery._type(), 'query');
-    
+
 
     test.done();
   },
@@ -1943,7 +1684,7 @@ exports.queries = {
     mmQuery = ejs.MultiMatchQuery(['t1', 't2'], 'v1');
     expected.multi_match.fields = ['t1', 't2'];
     doTest();
-    
+
     test.ok(mmQuery, 'MultiMatchQuery exists');
     test.ok(mmQuery.toJSON(), 'toJSON() works');
     doTest();
@@ -1959,19 +1700,19 @@ exports.queries = {
     mmQuery.fields(['f3', 'f4']);
     expected.multi_match.fields = ['f3', 'f4'];
     doTest();
-    
+
     mmQuery.fields('f5');
     expected.multi_match.fields.push('f5');
     doTest();
-    
+
     mmQuery.useDisMax(true);
     expected.multi_match.use_dis_max = true;
     doTest();
-    
+
     mmQuery.tieBreaker(0.6);
     expected.multi_match.tie_breaker = 0.6;
     doTest();
-    
+
     mmQuery.type('boolean');
     expected.multi_match.type = 'boolean';
     doTest();
@@ -1990,7 +1731,7 @@ exports.queries = {
     mmQuery.cutoffFrequency(0.6);
     expected.multi_match.cutoff_frequency = 0.6;
     doTest();
-    
+
     mmQuery.fuzziness(0.5);
     expected.multi_match.fuzziness = 0.5;
     doTest();
@@ -2025,87 +1766,87 @@ exports.queries = {
     mmQuery.minimumShouldMatch(10);
     expected.multi_match.minimum_should_match = 10;
     doTest();
-    
+
     mmQuery.fuzzyRewrite('constant_score_auto');
     expected.multi_match.fuzzy_rewrite = 'constant_score_auto';
     doTest();
-    
+
     mmQuery.fuzzyRewrite('invalid');
     doTest();
-    
+
     mmQuery.fuzzyRewrite('scoring_boolean');
     expected.multi_match.fuzzy_rewrite = 'scoring_boolean';
     doTest();
-    
+
     mmQuery.fuzzyRewrite('constant_score_boolean');
     expected.multi_match.fuzzy_rewrite = 'constant_score_boolean';
     doTest();
-    
+
     mmQuery.fuzzyRewrite('constant_score_filter');
     expected.multi_match.fuzzy_rewrite = 'constant_score_filter';
     doTest();
-    
+
     mmQuery.fuzzyRewrite('top_terms_boost_5');
     expected.multi_match.fuzzy_rewrite = 'top_terms_boost_5';
     doTest();
-    
+
     mmQuery.fuzzyRewrite('top_terms_9');
     expected.multi_match.fuzzy_rewrite = 'top_terms_9';
     doTest();
-    
+
     mmQuery.rewrite('constant_score_auto');
     expected.multi_match.rewrite = 'constant_score_auto';
     doTest();
-    
+
     mmQuery.rewrite('invalid');
     doTest();
-    
+
     mmQuery.rewrite('scoring_boolean');
     expected.multi_match.rewrite = 'scoring_boolean';
     doTest();
-    
+
     mmQuery.rewrite('constant_score_boolean');
     expected.multi_match.rewrite = 'constant_score_boolean';
     doTest();
-    
+
     mmQuery.rewrite('constant_score_filter');
     expected.multi_match.rewrite = 'constant_score_filter';
     doTest();
-    
+
     mmQuery.rewrite('top_terms_boost_5');
     expected.multi_match.rewrite = 'top_terms_boost_5';
     doTest();
-    
+
     mmQuery.rewrite('top_terms_9');
     expected.multi_match.rewrite = 'top_terms_9';
     doTest();
-    
+
     mmQuery.lenient(true);
     expected.multi_match.lenient = true;
     doTest();
-    
+
     mmQuery.zeroTermsQuery('all');
     expected.multi_match.zero_terms_query = 'all';
     doTest();
-    
+
     mmQuery.zeroTermsQuery('invalid');
     doTest();
-    
+
     mmQuery.zeroTermsQuery('NONE');
     expected.multi_match.zero_terms_query = 'none';
     doTest();
-    
+
     test.strictEqual(mmQuery._type(), 'query');
-    
+
 
     test.throws(function () {
       ejs.MultiMatchQuery(3, 'v');
     }, TypeError);
-    
+
     test.throws(function () {
       mmQuery.fields(2);
     }, TypeError);
-    
+
     test.done();
   },
   TermQuery: function (test) {
@@ -2143,13 +1884,13 @@ exports.queries = {
       }
     };
     doTest();
-    
+
     termQuery.term('t2');
     expected.term.f2.term = 't2';
     doTest();
-    
+
     test.strictEqual(termQuery._type(), 'query');
-    
+
 
     test.done();
   },
@@ -2181,7 +1922,7 @@ exports.queries = {
     boolQuery.must([termQuery2, termQuery3]);
     expected.bool.must = [termQuery2.toJSON(), termQuery3.toJSON()];
     doTest();
-    
+
     boolQuery.mustNot(termQuery2);
     expected.bool.must_not = [termQuery2.toJSON()];
     doTest();
@@ -2189,7 +1930,7 @@ exports.queries = {
     boolQuery.mustNot([termQuery3, termQuery4]);
     expected.bool.must_not = [termQuery3.toJSON(), termQuery4.toJSON()];
     doTest();
-    
+
     boolQuery.should(termQuery3);
     expected.bool.should = [termQuery3.toJSON()];
     doTest();
@@ -2201,7 +1942,7 @@ exports.queries = {
     boolQuery.should([termQuery1, termQuery3]);
     expected.bool.should = [termQuery1.toJSON(), termQuery3.toJSON()];
     doTest();
-    
+
     boolQuery.boost(1.5);
     expected.bool.boost = 1.5;
     doTest();
@@ -2209,7 +1950,7 @@ exports.queries = {
     boolQuery.adjustPureNegative(false);
     expected.bool.adjust_pure_negative = false;
     doTest();
-    
+
     boolQuery.disableCoord(false);
     expected.bool.disable_coord = false;
     doTest();
@@ -2219,196 +1960,31 @@ exports.queries = {
     doTest();
 
     test.strictEqual(boolQuery._type(), 'query');
-    
-    
+
+
     test.throws(function () {
       boolQuery.must('junk');
     }, TypeError);
-    
+
     test.throws(function () {
       boolQuery.must([termQuery1, 'junk']);
     }, TypeError);
-    
+
     test.throws(function () {
       boolQuery.mustNot('junk');
     }, TypeError);
-    
+
     test.throws(function () {
       boolQuery.mustNot([termQuery1, 'junk']);
     }, TypeError);
-    
+
     test.throws(function () {
       boolQuery.should('junk');
     }, TypeError);
-    
+
     test.throws(function () {
       boolQuery.should([termQuery1, 'junk']);
     }, TypeError);
-    
-    test.done();
-  },
-  FieldQuery: function (test) {
-    test.expect(38);
-
-    var fieldQuery = ejs.FieldQuery('f', 'v1'),
-      expected,
-      doTest = function () {
-        test.deepEqual(fieldQuery.toJSON(), expected);
-      };
-
-    expected = {
-      field: {
-        f: {
-          query: 'v1'
-        }
-      }
-    };
-
-    test.ok(fieldQuery, 'FieldQuery exists');
-    test.ok(fieldQuery.toJSON(), 'toJSON() works');
-    doTest();
-
-    fieldQuery.field('f1');
-    expected = {
-      field: {
-        f1: {
-          query: 'v1'
-        }
-      }
-    };
-    doTest();
-    
-    fieldQuery.query('v2');
-    expected.field.f1.query = 'v2';
-    doTest();
-    
-    fieldQuery.defaultOperator('and');
-    expected.field.f1.default_operator = 'AND';
-    doTest();
-
-    fieldQuery.defaultOperator('or');
-    expected.field.f1.default_operator = 'OR';
-    doTest();
-
-    fieldQuery.defaultOperator('invalid');
-    doTest();
-
-    fieldQuery.analyzer('someAnalyzer');
-    expected.field.f1.analyzer = 'someAnalyzer';
-    doTest();
-
-    fieldQuery.quoteAnalyzer('qAnalyzer');
-    expected.field.f1.quote_analyzer = 'qAnalyzer';
-    doTest();
-    
-    fieldQuery.autoGeneratePhraseQueries(false);
-    expected.field.f1.auto_generate_phrase_queries = false;
-    doTest();
-
-    fieldQuery.allowLeadingWildcard(true);
-    expected.field.f1.allow_leading_wildcard = true;
-    doTest();
-
-    fieldQuery.lowercaseExpandedTerms(false);
-    expected.field.f1.lowercase_expanded_terms = false;
-    doTest();
-
-    fieldQuery.enablePositionIncrements(true);
-    expected.field.f1.enable_position_increments = true;
-    doTest();
-
-    fieldQuery.fuzzyMinSim(0.2);
-    expected.field.f1.fuzzy_min_sim = 0.2;
-    doTest();
-
-    fieldQuery.boost(1.5);
-    expected.field.f1.boost = 1.5;
-    doTest();
-
-    fieldQuery.fuzzyPrefixLength(4);
-    expected.field.f1.fuzzy_prefix_length = 4;
-    doTest();
-
-    fieldQuery.fuzzyMaxExpansions(6);
-    expected.field.f1.fuzzy_max_expansions = 6;
-    doTest();
-    
-    fieldQuery.fuzzyRewrite('constant_score_auto');
-    expected.field.f1.fuzzy_rewrite = 'constant_score_auto';
-    doTest();
-    
-    fieldQuery.fuzzyRewrite('invalid');
-    doTest();
-    
-    fieldQuery.fuzzyRewrite('scoring_boolean');
-    expected.field.f1.fuzzy_rewrite = 'scoring_boolean';
-    doTest();
-    
-    fieldQuery.fuzzyRewrite('constant_score_boolean');
-    expected.field.f1.fuzzy_rewrite = 'constant_score_boolean';
-    doTest();
-    
-    fieldQuery.fuzzyRewrite('constant_score_filter');
-    expected.field.f1.fuzzy_rewrite = 'constant_score_filter';
-    doTest();
-    
-    fieldQuery.fuzzyRewrite('top_terms_boost_5');
-    expected.field.f1.fuzzy_rewrite = 'top_terms_boost_5';
-    doTest();
-    
-    fieldQuery.fuzzyRewrite('top_terms_9');
-    expected.field.f1.fuzzy_rewrite = 'top_terms_9';
-    doTest();
-    
-    fieldQuery.rewrite('constant_score_auto');
-    expected.field.f1.rewrite = 'constant_score_auto';
-    doTest();
-    
-    fieldQuery.rewrite('invalid');
-    doTest();
-    
-    fieldQuery.rewrite('scoring_boolean');
-    expected.field.f1.rewrite = 'scoring_boolean';
-    doTest();
-    
-    fieldQuery.rewrite('constant_score_boolean');
-    expected.field.f1.rewrite = 'constant_score_boolean';
-    doTest();
-    
-    fieldQuery.rewrite('constant_score_filter');
-    expected.field.f1.rewrite = 'constant_score_filter';
-    doTest();
-    
-    fieldQuery.rewrite('top_terms_boost_5');
-    expected.field.f1.rewrite = 'top_terms_boost_5';
-    doTest();
-    
-    fieldQuery.rewrite('top_terms_9');
-    expected.field.f1.rewrite = 'top_terms_9';
-    doTest();
-    
-    fieldQuery.quoteFieldSuffix('s');
-    expected.field.f1.quote_field_suffix = 's';
-    doTest();
-    
-    fieldQuery.escape(true);
-    expected.field.f1.escape = true;
-    doTest();
-    
-    fieldQuery.phraseSlop(2);
-    expected.field.f1.phrase_slop = 2;
-    doTest();
-
-    fieldQuery.analyzeWildcard(false);
-    expected.field.f1.analyze_wildcard = false;
-    doTest();
-
-    fieldQuery.minimumShouldMatch(5);
-    expected.field.f1.minimum_should_match = 5;
-    doTest();
-
-    test.strictEqual(fieldQuery._type(), 'query');
-    
 
     test.done();
   },
@@ -2417,7 +1993,7 @@ exports.queries = {
 
     var disMaxQuery = ejs.DisMaxQuery(),
       termQuery1 = ejs.TermQuery('t1', 'v1').boost(1.5),
-      fieldQuery1 = ejs.FieldQuery('f1', 'v1'),
+      termQuery2 = ejs.TermQuery('t2', 'v2'),
       boolQuery1 = ejs.BoolQuery().must(termQuery1).boost(2),
       expected,
       doTest = function () {
@@ -2432,8 +2008,8 @@ exports.queries = {
     test.ok(disMaxQuery.toJSON(), 'toJSON() works');
     doTest();
 
-    disMaxQuery.queries(fieldQuery1);
-    expected.dis_max.queries = [fieldQuery1.toJSON()];
+    disMaxQuery.queries(termQuery2);
+    expected.dis_max.queries = [termQuery2.toJSON()];
     doTest();
 
     disMaxQuery.queries(boolQuery1);
@@ -2443,7 +2019,7 @@ exports.queries = {
     disMaxQuery.queries([termQuery1, boolQuery1]);
     expected.dis_max.queries = [termQuery1.toJSON(), boolQuery1.toJSON()];
     doTest();
-    
+
     disMaxQuery.boost(3);
     expected.dis_max.boost = 3;
     doTest();
@@ -2453,16 +2029,16 @@ exports.queries = {
     doTest();
 
     test.strictEqual(disMaxQuery._type(), 'query');
-    
+
 
     test.throws(function () {
       disMaxQuery.queries('invalid');
     }, TypeError);
-    
+
     test.throws(function () {
       disMaxQuery.queries([termQuery1, 'invalid']);
     }, TypeError);
-    
+
     test.done();
   },
   QueryStringQuery: function (test) {
@@ -2499,7 +2075,7 @@ exports.queries = {
     queryString.fields('field3');
     expected.query_string.fields.push('field3');
     doTest();
-    
+
     queryString.useDisMax(true);
     expected.query_string.use_dis_max = true;
     doTest();
@@ -2566,84 +2142,84 @@ exports.queries = {
     queryString.fuzzyMaxExpansions(6);
     expected.query_string.fuzzy_max_expansions = 6;
     doTest();
-    
+
     queryString.fuzzyRewrite('constant_score_auto');
     expected.query_string.fuzzy_rewrite = 'constant_score_auto';
     doTest();
-    
+
     queryString.fuzzyRewrite('invalid');
     doTest();
-    
+
     queryString.fuzzyRewrite('scoring_boolean');
     expected.query_string.fuzzy_rewrite = 'scoring_boolean';
     doTest();
-    
+
     queryString.fuzzyRewrite('constant_score_boolean');
     expected.query_string.fuzzy_rewrite = 'constant_score_boolean';
     doTest();
-    
+
     queryString.fuzzyRewrite('constant_score_filter');
     expected.query_string.fuzzy_rewrite = 'constant_score_filter';
     doTest();
-    
+
     queryString.fuzzyRewrite('top_terms_boost_5');
     expected.query_string.fuzzy_rewrite = 'top_terms_boost_5';
     doTest();
-    
+
     queryString.fuzzyRewrite('top_terms_9');
     expected.query_string.fuzzy_rewrite = 'top_terms_9';
     doTest();
-    
+
     queryString.rewrite('constant_score_auto');
     expected.query_string.rewrite = 'constant_score_auto';
     doTest();
-    
+
     queryString.rewrite('invalid');
     doTest();
-    
+
     queryString.rewrite('scoring_boolean');
     expected.query_string.rewrite = 'scoring_boolean';
     doTest();
-    
+
     queryString.rewrite('constant_score_boolean');
     expected.query_string.rewrite = 'constant_score_boolean';
     doTest();
-    
+
     queryString.rewrite('constant_score_filter');
     expected.query_string.rewrite = 'constant_score_filter';
     doTest();
-    
+
     queryString.rewrite('top_terms_boost_5');
     expected.query_string.rewrite = 'top_terms_boost_5';
     doTest();
-    
+
     queryString.rewrite('top_terms_9');
     expected.query_string.rewrite = 'top_terms_9';
     doTest();
-    
+
     queryString.quoteFieldSuffix('s');
     expected.query_string.quote_field_suffix = 's';
     doTest();
-    
+
     queryString.escape(true);
     expected.query_string.escape = true;
     doTest();
-    
+
     queryString.quoteAnalyzer('qAnalyzer');
     expected.query_string.quote_analyzer = 'qAnalyzer';
     doTest();
-    
+
     queryString.lenient(true);
     expected.query_string.lenient = true;
     doTest();
-    
+
     test.strictEqual(queryString._type(), 'query');
-    
+
 
     test.throws(function () {
       queryString.fields(2);
     }, TypeError);
-    
+
     test.done();
   },
   FilteredQuery: function (test) {
@@ -2678,69 +2254,69 @@ exports.queries = {
       }
     };
     doTest();
-    
+
     filterQuery.filter(termFilter2);
     expected.filtered.filter = termFilter2.toJSON();
     doTest();
-    
+
     filterQuery.query(termQuery3);
     expected.filtered.query = termQuery3.toJSON();
     doTest();
-    
+
     filterQuery.strategy('query_first');
     expected.filtered.strategy = 'query_first';
     doTest();
-    
+
     filterQuery.strategy('INVALID');
     doTest();
-    
+
     filterQuery.strategy('random_access_always');
     expected.filtered.strategy = 'random_access_always';
     doTest();
-    
+
     filterQuery.strategy('LEAP_FROG');
     expected.filtered.strategy = 'leap_frog';
     doTest();
-    
+
     filterQuery.strategy('leap_frog_filter_first');
     expected.filtered.strategy = 'leap_frog_filter_first';
     doTest();
-    
+
     filterQuery.strategy('random_access_5');
     expected.filtered.strategy = 'random_access_5';
     doTest();
-    
+
     filterQuery.cache(true);
     expected.filtered._cache = true;
     doTest();
-    
+
     filterQuery.cacheKey('filter_cache_key');
     expected.filtered._cache_key = 'filter_cache_key';
     doTest();
-    
+
     filterQuery.boost(2.6);
     expected.filtered.boost = 2.6;
     doTest();
-    
+
     test.strictEqual(filterQuery._type(), 'query');
-    
+
 
     test.throws(function () {
       ejs.FilteredQuery('invalid', termFilter1);
     }, TypeError);
-    
+
     test.throws(function () {
       ejs.FilteredQuery(termQuery1, 'invalid');
     }, TypeError);
-    
+
     test.throws(function () {
       filterQuery.query('invalid');
     }, TypeError);
-    
+
     test.throws(function () {
       filterQuery.filter('invalid');
     }, TypeError);
-    
+
     test.done();
   },
   NestedQuery: function (test) {
@@ -2773,57 +2349,57 @@ exports.queries = {
     nestedQuery.query(termQuery1);
     expected.nested.query = termQuery1.toJSON();
     doTest();
-    
+
     nestedQuery.filter(termFilter1);
     expected.nested.filter = termFilter1.toJSON();
     doTest();
-    
+
     nestedQuery.query(termQuery2);
     expected.nested.query = termQuery2.toJSON();
     doTest();
-    
+
     nestedQuery.filter(termFilter2);
     expected.nested.filter = termFilter2.toJSON();
     doTest();
-    
+
     nestedQuery.scoreMode('avg');
     expected.nested.score_mode = 'avg';
     doTest();
 
     nestedQuery.scoreMode('INVALID');
     doTest();
-    
+
     nestedQuery.scoreMode('TOTAL');
     expected.nested.score_mode = 'total';
     doTest();
-    
+
     nestedQuery.scoreMode('Max');
     expected.nested.score_mode = 'max';
     doTest();
-    
+
     nestedQuery.scoreMode('none');
     expected.nested.score_mode = 'none';
     doTest();
-    
+
     nestedQuery.scoreMode('sum');
     expected.nested.score_mode = 'sum';
     doTest();
-    
+
     nestedQuery.boost(3.2);
     expected.nested.boost = 3.2;
     doTest();
 
     test.strictEqual(nestedQuery._type(), 'query');
-    
+
 
     test.throws(function () {
       nestedQuery.query('invalid');
     }, TypeError);
-    
+
     test.throws(function () {
       nestedQuery.filter('invalid');
     }, TypeError);
-    
+
     test.done();
   },
   ConstantScoreQuery: function (test) {
@@ -2850,7 +2426,7 @@ exports.queries = {
     doTest();
 
     test.strictEqual(constantScoreQuery._type(), 'query');
-    
+
 
     constantScoreQuery = ejs.ConstantScoreQuery();
     constantScoreQuery.filter(termFilter1);
@@ -2864,21 +2440,21 @@ exports.queries = {
     constantScoreQuery.cache(true);
     expected.constant_score._cache = true;
     doTest();
-    
+
     constantScoreQuery.cacheKey('key');
     expected.constant_score._cache_key = 'key';
     doTest();
-    
-    
+
+
 
     test.throws(function () {
       constantScoreQuery.query('invalid');
     }, TypeError);
-    
+
     test.throws(function () {
       constantScoreQuery.filter('invalid');
     }, TypeError);
-    
+
     test.done();
   },
   MatchAllQuery: function (test) {
@@ -2901,9 +2477,9 @@ exports.queries = {
     matchAllQuery.boost(2.2);
     expected.match_all.boost = 2.2;
     doTest();
-    
+
     test.strictEqual(matchAllQuery._type(), 'query');
-    
+
 
     test.done();
   },
@@ -2937,17 +2513,17 @@ exports.queries = {
       }
     };
     doTest();
-    
+
     spanTermQuery.term('v2');
     expected.span_term.t2.term = 'v2';
     doTest();
-    
+
     spanTermQuery.boost(1.5);
     expected.span_term.t2.boost = 1.5;
     doTest();
 
     test.strictEqual(spanTermQuery._type(), 'query');
-    
+
 
     test.done();
   },
@@ -2991,7 +2567,7 @@ exports.queries = {
       }
     };
     doTest();
-    
+
     spanNearQuery.slop(3);
     expected.span_near.slop = 3;
     doTest();
@@ -3009,24 +2585,24 @@ exports.queries = {
     doTest();
 
     test.strictEqual(spanNearQuery._type(), 'query');
-    
+
 
     test.throws(function () {
       ejs.SpanNearQuery('invalid', 2);
     }, TypeError);
-    
+
     test.throws(function () {
       ejs.SpanNearQuery([spanTermQuery1, 'invalid'], 4);
     }, TypeError);
-    
+
     test.throws(function () {
       spanNearQuery.clauses('invalid');
     }, TypeError);
-    
+
     test.throws(function () {
       spanNearQuery.clauses([spanTermQuery2, 'invalid']);
     }, TypeError);
-    
+
     test.done();
   },
   SpanNotQuery: function (test) {
@@ -3064,26 +2640,26 @@ exports.queries = {
     spanNotQuery.boost(4.1);
     expected.span_not.boost = 4.1;
     doTest();
-    
+
     test.strictEqual(spanNotQuery._type(), 'query');
-    
+
 
     test.throws(function () {
       ejs.SpanNotQuery('invalid', spanTermQuery1);
     }, TypeError);
-    
+
     test.throws(function () {
       ejs.SpanNotQuery(spanTermQuery1, 'invalid');
     }, TypeError);
-    
+
     test.throws(function () {
       spanNotQuery.include('invalid');
     }, TypeError);
-    
+
     test.throws(function () {
       spanNotQuery.exclude('invalid');
     }, TypeError);
-    
+
     test.done();
   },
   SpanOrQuery: function (test) {
@@ -3109,7 +2685,7 @@ exports.queries = {
     test.ok(spanOrQuery, 'SpanOrQuery exists');
     test.ok(spanOrQuery.toJSON(), 'toJSON() works');
     doTest();
-    
+
     spanOrQuery = ejs.SpanOrQuery([spanTermQuery2, spanTermQuery3]);
     expected.span_or.clauses = [spanTermQuery2.toJSON(), spanTermQuery3.toJSON()];
     doTest();
@@ -3125,26 +2701,26 @@ exports.queries = {
     spanOrQuery.boost(1.1);
     expected.span_or.boost = 1.1;
     doTest();
-    
+
     test.strictEqual(spanOrQuery._type(), 'query');
-    
+
 
     test.throws(function () {
       ejs.SpanOrQuery('invalid');
     }, TypeError);
-    
+
     test.throws(function () {
       ejs.SpanOrQuery([spanTermQuery1, 'invalid']);
     }, TypeError);
-    
+
     test.throws(function () {
       spanOrQuery.clauses('invalid');
     }, TypeError);
-    
+
     test.throws(function () {
       spanOrQuery.clauses([spanTermQuery1, 'invalid']);
     }, TypeError);
-    
+
     test.done();
   },
   SpanFirstQuery: function (test) {
@@ -3180,18 +2756,18 @@ exports.queries = {
     spanFirstQuery.boost(3.1);
     expected.span_first.boost = 3.1;
     doTest();
-    
+
     test.strictEqual(spanFirstQuery._type(), 'query');
-    
+
 
     test.throws(function () {
       ejs.SpanFirstQuery('invalid', 3);
     }, TypeError);
-    
+
     test.throws(function () {
       spanFirstQuery.match('invalid');
     }, TypeError);
-    
+
     test.done();
   },
   SpanMultiTermQuery: function (test) {
@@ -3218,22 +2794,22 @@ exports.queries = {
     spanMultiTermQuery = ejs.SpanMultiTermQuery(mtQuery1);
     expected.span_multi.match = mtQuery1.toJSON();
     doTest();
-    
+
     spanMultiTermQuery.match(mtQuery2);
     expected.span_multi.match = mtQuery2.toJSON();
     doTest();
-    
+
     test.strictEqual(spanMultiTermQuery._type(), 'query');
-    
+
 
     test.throws(function () {
       ejs.SpanMultiTermQuery('invalid');
     }, TypeError);
-    
+
     test.throws(function () {
       spanMultiTermQuery.match('invalid');
     }, TypeError);
-    
+
     test.done();
   },
   FieldMaskingSpanQuery: function (test) {
@@ -3269,18 +2845,18 @@ exports.queries = {
     fieldMaskingSpanQuery.boost(5.1);
     expected.field_masking_span.boost = 5.1;
     doTest();
-    
+
     test.strictEqual(fieldMaskingSpanQuery._type(), 'query');
-    
+
 
     test.throws(function () {
       ejs.FieldMaskingSpanQuery('invalid', 'mf');
     }, TypeError);
-    
+
     test.throws(function () {
       fieldMaskingSpanQuery.query('invalid');
     }, TypeError);
-    
+
     test.done();
   }
 };
