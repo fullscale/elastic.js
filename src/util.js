@@ -128,7 +128,7 @@
   isAggregation = function (obj) {
     return (isEJSObject(obj) && obj._type() === 'aggregation');
   };
-  
+
   isScriptField = function (obj) {
     return (isEJSObject(obj) && obj._type() === 'script field');
   };
@@ -159,4 +159,8 @@
 
   isGenerator = function (obj) {
     return (isEJSObject(obj) && obj._type() === 'generator');
+  };
+
+  isScoreFunction = function (obj) {
+    return (isEJSObject(obj) && obj._type() === 'score function');
   };

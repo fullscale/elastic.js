@@ -28,7 +28,7 @@ exports.queries = {
     done();
   },
   exists: function (test) {
-    test.expect(35);
+    test.expect(40);
 
     test.ok(ejs.CommonTermsQuery, 'CommonTermsQuery');
     test.ok(ejs.RegexpQuery, 'RegexpQuery');
@@ -65,6 +65,325 @@ exports.queries = {
     test.ok(ejs.SpanFirstQuery, 'SpanFirstQuery');
     test.ok(ejs.SpanMultiTermQuery, 'SpanMultiTermQuery');
     test.ok(ejs.FieldMaskingSpanQuery, 'FieldMaskingSpanQuery');
+    test.ok(ejs.FunctionScoreQuery, 'FunctionScoreQuery');
+
+    // scoring functions for FunctionScoreQuery
+    test.ok(ejs.BoostFactorScoreFunction, 'BoostFactorScoreFunction');
+    test.ok(ejs.DecayScoreFunction, 'DecayScoreFunction');
+    test.ok(ejs.RandomScoreFunction, 'RandomScoreFunction');
+    test.ok(ejs.ScriptScoreFunction, 'ScriptScoreFunction');
+
+    test.done();
+  },
+  DecayScoreFunction: function (test) {
+    test.expect(16);
+
+    var scoreFunc = ejs.DecayScoreFunction('f'),
+      termFilter1 = ejs.TermFilter('tf1', 'fv1'),
+      geoPoint = ejs.GeoPoint([37.7819288, -122.396480]),
+      expected,
+      doTest = function () {
+        test.deepEqual(scoreFunc.toJSON(), expected);
+      };
+
+    expected = {
+      gauss: {f: {}}
+    };
+
+    test.ok(scoreFunc, 'DecayScoreFunction exists');
+    test.ok(scoreFunc.toJSON(), 'toJSON() works');
+    doTest();
+
+    scoreFunc.field('f2');
+    expected.gauss = {f2: {}};
+    doTest();
+
+    scoreFunc.decay(0.5);
+    expected.gauss.f2.decay = 0.5;
+    doTest();
+
+    scoreFunc.linear();
+    expected.linear = expected.gauss;
+    delete expected.gauss;
+    doTest();
+
+    scoreFunc.exp();
+    expected.exp = expected.linear;
+    delete expected.linear;
+    doTest();
+
+    scoreFunc.gauss();
+    expected.gauss = expected.exp;
+    delete expected.exp;
+    doTest();
+
+    scoreFunc.scale('10d');
+    expected.gauss.f2.scale = '10d';
+    doTest();
+
+    scoreFunc.origin('2013-09-17');
+    expected.gauss.f2.origin = '2013-09-17';
+    doTest();
+
+    scoreFunc.origin(geoPoint);
+    expected.gauss.f2.origin = geoPoint.toJSON();
+    doTest();
+
+    scoreFunc.offset('2d');
+    expected.gauss.f2.offset = '2d';
+    doTest();
+
+    scoreFunc.filter(termFilter1);
+    expected.filter = termFilter1.toJSON();
+    doTest();
+
+    test.strictEqual(scoreFunc._type(), 'score function');
+
+    test.throws(function () {
+      scoreFunc.filter('invalid');
+    }, TypeError);
+
+    test.throws(function () {
+      scoreFunc.origin(termFilter1);
+    }, TypeError);
+
+    test.done();
+  },
+  ScriptScoreFunction: function (test) {
+    test.expect(9);
+
+    var scoreFunc = ejs.ScriptScoreFunction(),
+      termFilter1 = ejs.TermFilter('tf1', 'fv1'),
+      expected,
+      doTest = function () {
+        test.deepEqual(scoreFunc.toJSON(), expected);
+      };
+
+    expected = {
+      script_score: {}
+    };
+
+    test.ok(scoreFunc, 'ScriptScoreFunction exists');
+    test.ok(scoreFunc.toJSON(), 'toJSON() works');
+    doTest();
+
+    scoreFunc.script('s1');
+    expected.script_score.script = 's1';
+    doTest();
+
+    scoreFunc.lang('mvel');
+    expected.script_score.lang = 'mvel';
+    doTest();
+
+    scoreFunc.params({p1: 'v1'});
+    expected.script_score.params = {p1: 'v1'};
+    doTest();
+
+    scoreFunc.filter(termFilter1);
+    expected.filter = termFilter1.toJSON();
+    doTest();
+
+    test.strictEqual(scoreFunc._type(), 'score function');
+
+    test.throws(function () {
+      scoreFunc.filter('invalid');
+    }, TypeError);
+
+    test.done();
+  },
+  RandomScoreFunction: function (test) {
+    test.expect(7);
+
+    var scoreFunc = ejs.RandomScoreFunction(),
+      termFilter1 = ejs.TermFilter('tf1', 'fv1'),
+      expected,
+      doTest = function () {
+        test.deepEqual(scoreFunc.toJSON(), expected);
+      };
+
+    expected = {
+      random_score: {}
+    };
+
+    test.ok(scoreFunc, 'RandomScoreFunction exists');
+    test.ok(scoreFunc.toJSON(), 'toJSON() works');
+    doTest();
+
+    scoreFunc.seed(123);
+    expected.random_score.seed = 123;
+    doTest();
+
+    scoreFunc.filter(termFilter1);
+    expected.filter = termFilter1.toJSON();
+    doTest();
+
+    test.strictEqual(scoreFunc._type(), 'score function');
+
+    test.throws(function () {
+      scoreFunc.filter('invalid');
+    }, TypeError);
+
+    test.done();
+  },
+  BoostFactorScoreFunction: function (test) {
+    test.expect(7);
+
+    var scoreFunc = ejs.BoostFactorScoreFunction(2),
+      termFilter1 = ejs.TermFilter('tf1', 'fv1'),
+      expected,
+      doTest = function () {
+        test.deepEqual(scoreFunc.toJSON(), expected);
+      };
+
+    expected = {
+      boost_factor: 2
+    };
+
+    test.ok(scoreFunc, 'BoostFactorScoreFunction exists');
+    test.ok(scoreFunc.toJSON(), 'toJSON() works');
+    doTest();
+
+    scoreFunc.boost(3);
+    expected.boost_factor = 3;
+    doTest();
+
+    scoreFunc.filter(termFilter1);
+    expected.filter = termFilter1.toJSON();
+    doTest();
+
+    test.strictEqual(scoreFunc._type(), 'score function');
+
+    test.throws(function () {
+      scoreFunc.filter('invalid');
+    }, TypeError);
+
+    test.done();
+  },
+  FunctionScoreQuery: function (test) {
+    test.expect(30);
+
+    var termQuery1 = ejs.TermQuery('t1', 'v1'),
+      termFilter1 = ejs.TermFilter('tf1', 'fv1'),
+      randomScore = ejs.RandomScoreFunction(),
+      randomScore2 = ejs.RandomScoreFunction().seed(3),
+      boostFactor = ejs.BoostFactorScoreFunction(1.1).filter(termFilter1),
+      funcQuery = ejs.FunctionScoreQuery(),
+      expected,
+      doTest = function () {
+        test.deepEqual(funcQuery.toJSON(), expected);
+      };
+
+    expected = {
+      function_score: {}
+    };
+
+    test.ok(funcQuery, 'FunctionScoreQuery exists');
+    test.ok(funcQuery.toJSON(), 'toJSON() works');
+    doTest();
+
+    funcQuery.query(termQuery1);
+    expected.function_score.query = termQuery1.toJSON();
+    doTest();
+
+    funcQuery.filter(termFilter1);
+    expected.function_score.filter = termFilter1.toJSON();
+    doTest();
+
+    funcQuery.scoreMode('avg');
+    expected.function_score.score_mode = 'avg';
+    doTest();
+
+    funcQuery.scoreMode('invalid');
+    doTest();
+
+    funcQuery.scoreMode('MAX');
+    expected.function_score.score_mode = 'max';
+    doTest();
+
+    funcQuery.scoreMode('mIN');
+    expected.function_score.score_mode = 'min';
+    doTest();
+
+    funcQuery.scoreMode('sum');
+    expected.function_score.score_mode = 'sum';
+    doTest();
+
+    funcQuery.scoreMode('multiply');
+    expected.function_score.score_mode = 'multiply';
+    doTest();
+
+    funcQuery.scoreMode('FIRST');
+    expected.function_score.score_mode = 'first';
+    doTest();
+
+    funcQuery.boostMode('multiply');
+    expected.function_score.boost_mode = 'multiply';
+    doTest();
+
+    funcQuery.boostMode('invalid');
+    doTest();
+
+    funcQuery.boostMode('REPLACE');
+    expected.function_score.boost_mode = 'replace';
+    doTest();
+
+    funcQuery.boostMode('Sum');
+    expected.function_score.boost_mode = 'sum';
+    doTest();
+
+    funcQuery.boostMode('avg');
+    expected.function_score.boost_mode = 'avg';
+    doTest();
+
+    funcQuery.boostMode('MAX');
+    expected.function_score.boost_mode = 'max';
+    doTest();
+
+    funcQuery.boostMode('min');
+    expected.function_score.boost_mode = 'min';
+    doTest();
+
+    funcQuery.boost(2);
+    expected.function_score.boost = 2;
+    doTest();
+
+    funcQuery.function(randomScore);
+    expected.function_score.functions = [randomScore.toJSON()];
+    doTest();
+
+    funcQuery.function(boostFactor);
+    expected.function_score.functions.push(boostFactor.toJSON());
+    doTest();
+
+    funcQuery.functions([boostFactor, randomScore2]);
+    expected.function_score.functions = [boostFactor.toJSON(), randomScore2.toJSON()];
+    doTest();
+
+    funcQuery.function(randomScore.filter(termFilter1));
+    expected.function_score.functions.push(randomScore.toJSON());
+    doTest();
+
+    test.strictEqual(funcQuery._type(), 'query');
+
+    test.throws(function () {
+      funcQuery.query('invalid');
+    }, TypeError);
+
+    test.throws(function () {
+      funcQuery.filter('invalid');
+    }, TypeError);
+
+    test.throws(function () {
+      funcQuery.function('invalid');
+    }, TypeError);
+
+    test.throws(function () {
+      funcQuery.functions('invalid');
+    }, TypeError);
+
+    test.throws(function () {
+      funcQuery.functions([randomScore, 'invalid']);
+    }, TypeError);
 
     test.done();
   },

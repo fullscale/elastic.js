@@ -50,6 +50,7 @@
     isHighlight, // checks valid ejs Highlight object
     isSuggest, // checks valid ejs Suggest object
     isGenerator, // checks valid ejs Generator object
+    isScoreFunction, // checks valid ejs ScoreFunction object
 
     // create ejs object
     ejs;

@@ -24,7 +24,7 @@ module.exports = function (grunt) {
           'src/facet/*.js',
           'src/aggregations/*.js',
           'src/filter/*.js',
-          'src/query/*.js',
+          'src/query/**/*.js',
           'src/search/**/*.js',
           'src/utils.js',
           'src/post.js'

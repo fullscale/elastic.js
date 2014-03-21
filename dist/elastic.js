@@ -54,6 +54,7 @@
     isHighlight, // checks valid ejs Highlight object
     isSuggest, // checks valid ejs Suggest object
     isGenerator, // checks valid ejs Generator object
+    isScoreFunction, // checks valid ejs ScoreFunction object
 
     // create ejs object
     ejs;
@@ -194,7 +195,7 @@
   isAggregation = function (obj) {
     return (isEJSObject(obj) && obj._type() === 'aggregation');
   };
-  
+
   isScriptField = function (obj) {
     return (isEJSObject(obj) && obj._type() === 'script field');
   };
@@ -225,6 +226,10 @@
 
   isGenerator = function (obj) {
     return (isEJSObject(obj) && obj._type() === 'generator');
+  };
+
+  isScoreFunction = function (obj) {
+    return (isEJSObject(obj) && obj._type() === 'score function');
   };
 
   /**
@@ -919,6 +924,65 @@
         return query;
       }
   
+    };
+  };
+
+  /**
+    @mixin
+    <p>The ScoreFunctionMixin provides support for common options used across
+    various <code>ScoreFunction</code> implementations.  This object should not be
+    used directly.</p>
+
+    @name ejs.ScoreFunctionMixin
+    */
+  ejs.ScoreFunctionMixin = function (name) {
+
+    var func = {};
+    func[name] = {};
+
+    return {
+
+      /**
+      Adds a filter whose matching documents will have the score function applied.
+
+      @member ejs.ScoreFunctionMixin
+      @param {Filter} oFilter Any valid <code>Filter</code> object.
+      @returns {Object} returns <code>this</code> so that calls can be chained.
+      */
+      filter: function(oFilter) {
+        if (oFilter == null) {
+          return func.filter;
+        }
+
+        if (!isFilter(oFilter)) {
+          throw new TypeError('Argument must be a Filter');
+        }
+
+        func.filter = oFilter.toJSON();
+        return this;
+      },
+
+      /**
+      The type of ejs object.  For internal use only.
+
+      @member ejs.ScoreFunctionMixin
+      @returns {String} the type of object
+      */
+      _type: function () {
+        return 'score function';
+      },
+
+      /**
+      <p>Retrieves the internal <code>agg</code> object. This is typically used by
+         internal API functions so use with caution.</p>
+
+      @member ejs.ScoreFunctionMixin
+      @returns {String} returns this object's internal object.
+      */
+      toJSON: function () {
+        return func;
+      }
+
     };
   };
 
@@ -9664,6 +9728,189 @@
 
   /**
     @class
+    <p>The function_score allows you to modify the score of documents that are
+    retrieved by a query. This can be useful if, for example, a score function is
+    computationally expensive and it is sufficient to compute the score on a
+    filtered set of documents.</p>
+
+    @name ejs.FunctionScoreQuery
+    @ejs query
+    @borrows ejs.QueryMixin.boost as boost
+    @borrows ejs.QueryMixin._type as _type
+    @borrows ejs.QueryMixin.toJSON as toJSON
+
+    @desc
+    <p>A query that allows you to modify the score of matching documents.</p>
+
+     */
+  ejs.FunctionScoreQuery = function () {
+
+    var
+      _common = ejs.QueryMixin('function_score'),
+      query = _common.toJSON();
+
+    return extend(_common, {
+
+      /**
+      Set the source query.
+
+      @member ejs.FunctionScoreQuery
+      @param {Query} oQuery A valid <code>Query</code> object
+      @returns {Object} returns <code>this</code> so that calls can be chained.
+      */
+      query: function (oQuery) {
+        if (oQuery == null) {
+          return query.function_score.query;
+        }
+
+        if (!isQuery(oQuery)) {
+          throw new TypeError('Argument must be a Query');
+        }
+
+        query.function_score.query = oQuery.toJSON();
+        return this;
+      },
+
+      /**
+      Set the source filter.
+
+      @member ejs.FunctionScoreQuery
+      @param {Filter} oFilter A valid <code>Filter</code> object
+      @returns {Object} returns <code>this</code> so that calls can be chained.
+      */
+      filter: function (oFilter) {
+        if (oFilter == null) {
+          return query.function_score.filter;
+        }
+
+        if (!isFilter(oFilter)) {
+          throw new TypeError('Argument must be a Filter');
+        }
+
+        query.function_score.filter = oFilter.toJSON();
+        return this;
+      },
+
+      /**
+      Set the scoring mode which specifies how the computed scores are combined.
+      Valid values are: avg, max, min, sum, multiply, and first.
+
+      @member ejs.FunctionScoreQuery
+      @param {String} mode A scoring mode.
+      @returns {Object} returns <code>this</code> so that calls can be chained.
+      */
+      scoreMode: function (mode) {
+        if (mode == null) {
+          return query.function_score.score_mode;
+        }
+
+        mode = mode.toLowerCase();
+        if (mode === 'avg' || mode === 'max' || mode === 'min' ||
+              mode === 'sum' || mode === 'multiply' || mode === 'first') {
+          query.function_score.score_mode = mode;
+        }
+
+        return this;
+      },
+
+      /**
+      Set the setermines how the new calculated score is combined with the
+      score from the original query. Valid values are: multiply, replace, sum,
+      avg, max, and min.
+
+      @member ejs.FunctionScoreQuery
+      @param {String} mode A boosting mode.
+      @returns {Object} returns <code>this</code> so that calls can be chained.
+      */
+      boostMode: function (mode) {
+        if (mode == null) {
+          return query.function_score.boost_mode;
+        }
+
+        mode = mode.toLowerCase();
+        if (mode === 'multiply' || mode === 'replace' || mode === 'sum' ||
+              mode === 'avg' || mode === 'max' || mode === 'min') {
+          query.function_score.boost_mode = mode;
+        }
+
+        return this;
+      },
+
+      /**
+      Sets the boost value for all documents matching the query.
+
+      @member ejs.FunctionScoreQuery
+      @param {Float} boost A positive <code>float</code> value.
+      @returns {Object} returns <code>this</code> so that calls can be chained.
+      */
+      boost: function (boost) {
+        if (boost == null) {
+          return query.function_score.boost;
+        }
+
+        query.function_score.boost = boost;
+        return this;
+      },
+
+      /**
+      Add a single score function to the list of existing functions.
+
+      @member ejs.FunctionScoreQuery
+      @param {ScoreFunction} func A valid <code>ScoreFunction</code> object.
+      @returns {Object} returns <code>this</code> so that calls can be chained.
+      */
+      function: function (func) {
+        if (query.function_score.functions == null) {
+          query.function_score.functions = [];
+        }
+
+        if (func == null) {
+          return query.function_score.functions;
+        }
+
+        if (!isScoreFunction(func)) {
+          throw new TypeError('Argument must be a ScoreFunction');
+        }
+
+        query.function_score.functions.push(func.toJSON());
+        return this;
+      },
+
+      /**
+      Sets the score functions.  Replaces any existing score functions.
+
+      @member ejs.FunctionScoreQuery
+      @param {ScoreFunction[]} funcs A array of <code>ScoreFunctions</code>.
+      @returns {Object} returns <code>this</code> so that calls can be chained.
+      */
+      functions: function (funcs) {
+        var i, len;
+
+        if (funcs == null) {
+          return query.function_score.functions;
+        }
+
+        if (!isArray(funcs)) {
+          throw new TypeError('Argument must be an array of ScoreFunctions');
+        }
+
+        query.function_score.functions = [];
+        for (i = 0, len = funcs.length; i < len; i++) {
+          if (!isScoreFunction(funcs[i])) {
+            throw new TypeError('Argument must be an array of ScoreFunctions');
+          }
+
+          query.function_score.functions.push(funcs[i].toJSON());
+        }
+
+        return this;
+      }
+
+    });
+  };
+
+  /**
+    @class
     <p>The fuzzy_like_this_field query is the same as the fuzzy_like_this 
     query, except that it runs against a single field. It provides nicer query 
     DSL over the generic fuzzy_like_this query, and support typed fields 
@@ -14430,6 +14677,344 @@
         return this;
       }
       
+    });
+  };
+
+  /**
+    @class
+    <p>The boost_factor score allows you to multiply the score by the provided
+    boost_factor. This can sometimes be desired since boost value set on specific
+    queries gets normalized, while for this score function it does not.</p>
+
+    @name ejs.BoostFactorScoreFunction
+    @ejs scorefunction
+    @borrows ejs.ScoreFunctionMixin.filter as filter
+    @borrows ejs.ScoreFunctionMixin._type as _type
+    @borrows ejs.ScoreFunctionMixin.toJSON as toJSON
+
+    @param {Float} boostVal the boost factor.
+
+    @desc
+    <p>Multiply the score by the provided boost_factor.</p>
+
+    */
+  ejs.BoostFactorScoreFunction = function (boostVal) {
+
+    var
+      _common = ejs.ScoreFunctionMixin('boost_factor'),
+      func = _common.toJSON();
+
+    func.boost_factor = boostVal;
+
+    return extend(_common, {
+
+      /**
+      Sets the boost factor.
+
+      @member ejs.BoostFactorScoreFunction
+      @param {Float} b the boost factor.
+      @returns {Object} returns <code>this</code> so that calls can be chained.
+      */
+      boost: function (b) {
+        if (b == null) {
+          return func.boost_factor;
+        }
+
+        func.boost_factor = b;
+        return this;
+      }
+
+    });
+  };
+
+  /**
+    @class
+    <p>Decay functions score a document with a function that decays depending on
+    the distance of a numeric field value of the document from a user given
+    origin. This is similar to a range query, but with smooth edges instead of
+    boxes.</p>
+
+    <p>Supported decay functions are: linear, exp, and gauss.</p>
+
+    @name ejs.DecayScoreFunction
+    @ejs scorefunction
+    @borrows ejs.ScoreFunctionMixin.filter as filter
+    @borrows ejs.ScoreFunctionMixin._type as _type
+    @borrows ejs.ScoreFunctionMixin.toJSON as toJSON
+
+    @param {String} field the document field to run decay function against.
+
+    @desc
+    <p>Score a document with a function that decays depending on the distance
+    of a numeric field value of the document from given origin.</p>
+
+    */
+  ejs.DecayScoreFunction = function (field) {
+
+    var
+      mode = 'gauss', // default decay function
+      _common = ejs.ScoreFunctionMixin(mode),
+      func = _common.toJSON(),
+      changeMode = function (newMode) {
+        var oldValue;
+        if (mode !== newMode) {
+          oldValue = func[mode];
+          delete func[mode];
+          mode = newMode;
+          func[mode] = oldValue;
+        }
+      };
+
+    func[mode][field] = {};
+
+    return extend(_common, {
+
+      /**
+      Use the linear decay function. Linear decay.
+
+      @member ejs.DecayScoreFunction
+      @returns {Object} returns <code>this</code> so that calls can be chained.
+      */
+      linear: function () {
+        changeMode('linear');
+      },
+
+      /**
+      Use the exp decay function. Exponential decay.
+
+      @member ejs.DecayScoreFunction
+      @returns {Object} returns <code>this</code> so that calls can be chained.
+      */
+      exp: function () {
+        changeMode('exp');
+      },
+
+      /**
+      Use the gauss decay function. Normal decay.
+
+      @member ejs.DecayScoreFunction
+      @returns {Object} returns <code>this</code> so that calls can be chained.
+      */
+      gauss: function () {
+        changeMode('gauss');
+      },
+
+      /**
+      Sets the fields to run the decay function against.
+
+      @member ejs.DecayScoreFunction
+      @param {String} f A valid field name.
+      @returns {Object} returns <code>this</code> so that calls can be chained.
+      */
+      field: function (f) {
+        var oldValue = func[mode][field];
+
+        if (f == null) {
+          return field;
+        }
+
+        delete func[mode][field];
+        field = f;
+        func[mode][field] = oldValue;
+
+        return this;
+      },
+
+      /**
+      Sets the scale/rate of decay.
+
+      @member ejs.DecayScoreFunction
+      @param {String} s A valid scale value for the field type.
+      @returns {Object} returns <code>this</code> so that calls can be chained.
+      */
+      scale: function (s) {
+        if (s == null) {
+          return func[mode][field].scale;
+        }
+
+        func[mode][field].scale = s;
+        return this;
+      },
+
+      /**
+      Sets the origin which is the “central point” from which the distance is
+      calculated.
+
+      @member ejs.DecayScoreFunction
+      @param {String} o A valid origin value for the field type.
+      @returns {Object} returns <code>this</code> so that calls can be chained.
+      */
+      origin: function (o) {
+        if (o == null) {
+          return func[mode][field].origin;
+        }
+
+        if (isGeoPoint(o)) {
+          func[mode][field].origin = o.toJSON();
+        } else if (isEJSObject(o)) {
+          throw new TypeError('origin must be a GeoPoint or native type');
+        } else {
+          func[mode][field].origin = o;
+        }
+
+        return this;
+      },
+
+      /**
+      Sets the decay value which defines how documents are scored at the distance
+      given at scale.
+
+      @member ejs.DecayScoreFunction
+      @param {Double} d A decay value as a double.
+      @returns {Object} returns <code>this</code> so that calls can be chained.
+      */
+      decay: function (d) {
+        if (d == null) {
+          return func[mode][field].decay;
+        }
+
+        func[mode][field].decay = d;
+        return this;
+      },
+
+      /**
+      Sets the decay offset.  The decay function will only compute a the decay
+      function for documents with a distance greater that the defined offset.
+      The default is 0.
+
+      @member ejs.DecayScoreFunction
+      @param {String} o A valid offset value for the field type.
+      @returns {Object} returns <code>this</code> so that calls can be chained.
+      */
+      offset: function (o) {
+        if (o == null) {
+          return func[mode][field].offset;
+        }
+
+        func[mode][field].offset = o;
+        return this;
+      }
+
+    });
+  };
+
+  /**
+    @class
+    <p>The random_score generates scores via a pseudo random number algorithm
+    that is initialized with a seed.</p>
+
+    @name ejs.RandomScoreFunction
+    @ejs scorefunction
+    @borrows ejs.ScoreFunctionMixin.filter as filter
+    @borrows ejs.ScoreFunctionMixin._type as _type
+    @borrows ejs.ScoreFunctionMixin.toJSON as toJSON
+
+    @desc
+    <p>Randomly score documents.</p>
+
+    */
+  ejs.RandomScoreFunction = function () {
+
+    var
+      _common = ejs.ScoreFunctionMixin('random_score'),
+      func = _common.toJSON();
+
+    return extend(_common, {
+
+      /**
+      Sets random seed value.
+
+      @member ejs.RandomScoreFunction
+      @param {Long} s A seed value.
+      @returns {Object} returns <code>this</code> so that calls can be chained.
+      */
+      seed: function (s) {
+        if (s == null) {
+          return func.random_score.seed;
+        }
+
+        func.random_score.seed = s;
+        return this;
+      }
+
+    });
+  };
+
+  /**
+    @class
+    <p>The script_score function allows you to wrap another query and customize
+    the scoring of it optionally with a computation derived from other numeric
+    field values in the doc using a script expression.</p>
+
+    @name ejs.ScriptScoreFunction
+    @ejs scorefunction
+    @borrows ejs.ScoreFunctionMixin.filter as filter
+    @borrows ejs.ScoreFunctionMixin._type as _type
+    @borrows ejs.ScoreFunctionMixin.toJSON as toJSON
+
+    @desc
+    <p>Modify a documents score using a script.</p>
+
+    */
+  ejs.ScriptScoreFunction = function () {
+
+    var
+      _common = ejs.ScoreFunctionMixin('script_score'),
+      func = _common.toJSON();
+
+    return extend(_common, {
+
+      /**
+      Set the script that will modify the score.
+
+      @member ejs.ScriptScoreFunction
+      @param {String} scriptCode A valid script string to execute.
+      @returns {Object} returns <code>this</code> so that calls can be chained.
+      */
+      script: function (scriptCode) {
+        if (scriptCode == null) {
+          return func.script_score.script;
+        }
+
+        func.script_score.script = scriptCode;
+        return this;
+      },
+
+      /**
+      The script language being used.
+
+      @member ejs.ScriptScoreFunction
+      @param {String} language The language of the script.
+      @returns {Object} returns <code>this</code> so that calls can be chained.
+      */
+      lang: function (language) {
+        if (language == null) {
+          return func.script_score.lang;
+        }
+
+        func.script_score.lang = language;
+        return this;
+      },
+
+      /**
+      Sets parameters that will be applied to the script.  Overwrites
+      any existing params.
+
+      @member ejs.ScriptScoreFunction
+      @param {Object} p An object where the keys are the parameter name and
+        values are the parameter value.
+      @returns {Object} returns <code>this</code> so that calls can be chained.
+      */
+      params: function (p) {
+        if (p == null) {
+          return func.script_score.params;
+        }
+
+        func.script_score.params = p;
+        return this;
+      }
+
+
     });
   };
 
