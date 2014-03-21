@@ -15175,16 +15175,16 @@
 
   /**
     @class
-    <p>Allows to highlight search results on one or more fields.  In order to 
-    perform highlighting, the actual content of the field is required. If the 
-    field in question is stored (has store set to yes in the mapping), it will 
-    be used, otherwise, the actual _source will be loaded and the relevant 
+    <p>Allows to highlight search results on one or more fields.  In order to
+    perform highlighting, the actual content of the field is required. If the
+    field in question is stored (has store set to yes in the mapping), it will
+    be used, otherwise, the actual _source will be loaded and the relevant
     field will be extracted from it.</p>
 
-    <p>If no term_vector information is provided (by setting it to 
-    with_positions_offsets in the mapping), then the plain highlighter will be 
-    used. If it is provided, then the fast vector highlighter will be used. 
-    When term vectors are available, highlighting will be performed faster at 
+    <p>If no term_vector information is provided (by setting it to
+    with_positions_offsets in the mapping), then the plain highlighter will be
+    used. If it is provided, then the fast vector highlighter will be used.
+    When term vectors are available, highlighting will be performed faster at
     the cost of bigger index size.</p>
 
     <p>See http://www.elasticsearch.org/guide/reference/api/search/highlighting.html</p>
@@ -15198,11 +15198,11 @@
     @param {(String|String[])} fields An optional field or array of fields to highlight.
     */
   ejs.Highlight = function (fields) {
-  
+
     var highlight = {
       fields: {}
     },
-  
+
     addOption = function (field, option, val) {
       if (field == null) {
         highlight[option] = val;
@@ -15210,7 +15210,7 @@
         if (!has(highlight.fields, field)) {
           highlight.fields[field] = {};
         }
-      
+
         highlight.fields[field][option] = val;
       }
     };
@@ -15224,12 +15224,12 @@
         });
       }
     }
-  
+
     return {
 
       /**
-            Allows you to set the fields that will be highlighted.  You can 
-            specify a single field or an array of fields.  All fields are 
+            Allows you to set the fields that will be highlighted.  You can
+            specify a single field or an array of fields.  All fields are
             added to the current list of fields.
 
             @member ejs.Highlight
@@ -15240,7 +15240,7 @@
         if (vals == null) {
           return highlight.fields;
         }
-      
+
         if (isString(vals)) {
           if (!has(highlight.fields, vals)) {
             highlight.fields[vals] = {};
@@ -15253,12 +15253,12 @@
           });
         }
       },
-    
+
       /**
             Sets the pre tags for highlighted fragments.  You can apply the
-            tags to a specific field by passing the field name in to the 
+            tags to a specific field by passing the field name in to the
             <code>oField</code> parameter.
-        
+
             @member ejs.Highlight
             @param {(String|String[])} tags A single tag or an array of tags.
             @param {String} oField An optional field name
@@ -15270,21 +15270,21 @@
         } else if (tags == null) {
           return highlight.pre_tags;
         }
-  
+
         if (isString(tags)) {
           addOption(oField, 'pre_tags', [tags]);
         } else if (isArray(tags)) {
           addOption(oField, 'pre_tags', tags);
         }
-        
+
         return this;
       },
 
       /**
             Sets the post tags for highlighted fragments.  You can apply the
-            tags to a specific field by passing the field name in to the 
+            tags to a specific field by passing the field name in to the
             <code>oField</code> parameter.
-        
+
             @member ejs.Highlight
             @param {(String|String[])} tags A single tag or an array of tags.
             @param {String} oField An optional field name
@@ -15296,23 +15296,23 @@
         } else if (tags == null) {
           return highlight.post_tags;
         }
-  
+
         if (isString(tags)) {
           addOption(oField, 'post_tags', [tags]);
         } else if (isArray(tags)) {
           addOption(oField, 'post_tags', tags);
         }
-        
+
         return this;
       },
-      
+
       /**
             Sets the order of highlight fragments.  You can apply the option
-            to a specific field by passing the field name in to the 
+            to a specific field by passing the field name in to the
             <code>oField</code> parameter.  Valid values for order are:
-            
+
             score - the score calculated by Lucene's highlighting framework.
-        
+
             @member ejs.Highlight
             @param {String} o The order.  Currently only "score".
             @param {String} oField An optional field name
@@ -15324,20 +15324,20 @@
         } else if (o == null) {
           return highlight.order;
         }
-  
+
         o = o.toLowerCase();
         if (o === 'score') {
           addOption(oField, 'order', o);
         }
-        
+
         return this;
       },
-      
+
       /**
             Sets the schema to be used for the tags. Valid values are:
-            
+
             styled - 10 <em> pre tags with css class of hltN, where N is 1-10
-        
+
             @member ejs.Highlight
             @param {String} s The schema.  Currently only "styled".
             @returns {Object} returns <code>this</code> so that calls can be chained.
@@ -15346,20 +15346,20 @@
         if (s == null) {
           return highlight.tags_schema;
         }
-  
+
         s = s.toLowerCase();
         if (s === 'styled') {
           highlight.tags_schema = s;
         }
-        
+
         return this;
       },
-      
+
       /**
-            Enables highlights in documents matched by a filter.  
-            You can apply the option to a specific field by passing the field 
+            Enables highlights in documents matched by a filter.
+            You can apply the option to a specific field by passing the field
             name in to the <code>oField</code> parameter.  Defaults to false.
-            
+
             @member ejs.Highlight
             @param {Boolean} trueFalse If filtered docs should be highlighted.
             @param {String} oField An optional field name
@@ -15371,16 +15371,16 @@
         } else if (trueFalse == null) {
           return highlight.highlight_filter;
         }
-  
+
         addOption(oField, 'highlight_filter', trueFalse);
         return this;
       },
-      
+
       /**
-            Sets the size of each highlight fragment in characters.  
-            You can apply the option to a specific field by passing the field 
+            Sets the size of each highlight fragment in characters.
+            You can apply the option to a specific field by passing the field
             name in to the <code>oField</code> parameter. Default:  100
-            
+
             @member ejs.Highlight
             @param {Integer} size The fragment size in characters.
             @param {String} oField An optional field name
@@ -15392,14 +15392,14 @@
         } else if (size == null) {
           return highlight.fragment_size;
         }
-  
+
         addOption(oField, 'fragment_size', size);
         return this;
       },
-      
+
       /**
             Sets the number of highlight fragments.
-            You can apply the option to a specific field by passing the field 
+            You can apply the option to a specific field by passing the field
             name in to the <code>oField</code> parameter. Default:  5
 
             @member ejs.Highlight
@@ -15416,14 +15416,14 @@
 
         addOption(oField, 'number_of_fragments', cnt);
         return this;
-      },       
+      },
 
       /**
             Sets highlight encoder.  Valid values are:
-            
+
             default - the default, no encoding
             html - to encode html characters if you use html tags
-        
+
             @member ejs.Highlight
             @param {String} e The encoder.  default or html
             @returns {Object} returns <code>this</code> so that calls can be chained.
@@ -15432,23 +15432,23 @@
         if (e == null) {
           return highlight.encoder;
         }
-  
+
         e = e.toLowerCase();
         if (e === 'default' || e === 'html') {
           highlight.encoder = e;
         }
-        
+
         return this;
       },
 
       /**
-            When enabled it will cause a field to be highlighted only if a 
-            query matched that field. false means that terms are highlighted 
-            on all requested fields regardless if the query matches 
-            specifically on them.  You can apply the option to a specific 
-            field by passing the field name in to the <code>oField</code> 
+            When enabled it will cause a field to be highlighted only if a
+            query matched that field. false means that terms are highlighted
+            on all requested fields regardless if the query matches
+            specifically on them.  You can apply the option to a specific
+            field by passing the field name in to the <code>oField</code>
             parameter.  Defaults to false.
-            
+
             @member ejs.Highlight
             @param {Boolean} trueFalse If filtered docs should be highlighted.
             @param {String} oField An optional field name
@@ -15460,15 +15460,15 @@
         } else if (trueFalse == null) {
           return highlight.require_field_match;
         }
-  
+
         addOption(oField, 'require_field_match', trueFalse);
         return this;
       },
 
       /**
-            Sets the max number of characters to scan while looking for the 
-            start of a boundary character. You can apply the option to a 
-            specific field by passing the field name in to the 
+            Sets the max number of characters to scan while looking for the
+            start of a boundary character. You can apply the option to a
+            specific field by passing the field name in to the
             <code>oField</code> parameter. Default:  20
 
             @member ejs.Highlight
@@ -15485,16 +15485,16 @@
 
         addOption(oField, 'boundary_max_scan', cnt);
         return this;
-      },       
+      },
 
       /**
-            Set's the boundary characters.  When highlighting a field that is 
-            mapped with term vectors, boundary_chars can be configured to 
-            define what constitutes a boundary for highlighting. It’s a single 
+            Set's the boundary characters.  When highlighting a field that is
+            mapped with term vectors, boundary_chars can be configured to
+            define what constitutes a boundary for highlighting. It’s a single
             string with each boundary character defined in it. You can apply
-            the option to a specific field by passing the field name in to 
+            the option to a specific field by passing the field name in to
             the <code>oField</code> parameter. It defaults to ".,!? \t\n".
-            
+
             @member ejs.Highlight
             @param {String} charStr The boundary chars in a string.
             @param {String} oField An optional field name
@@ -15506,21 +15506,21 @@
         } else if (charStr == null) {
           return highlight.boundary_chars;
         }
-  
+
         addOption(oField, 'boundary_chars', charStr);
         return this;
       },
-      
+
       /**
             Sets the highligher type.  You can apply the option
-            to a specific field by passing the field name in to the 
+            to a specific field by passing the field name in to the
             <code>oField</code> parameter.  Valid values for order are:
-            
+
             fast-vector-highlighter - the fast vector based highligher
             highlighter - the slower plain highligher
-        
+
             @member ejs.Highlight
-            @param {String} t The highligher. 
+            @param {String} t The highligher.
             @param {String} oField An optional field name
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
@@ -15530,27 +15530,28 @@
         } else if (t == null) {
           return highlight.type;
         }
-  
+
         t = t.toLowerCase();
-        if (t === 'fast-vector-highlighter' || t === 'highlighter') {
+        if (t === 'fast-vector-highlighter' || t === 'highlighter' ||
+            t === 'postings') {
           addOption(oField, 'type', t);
         }
-        
+
         return this;
       },
 
       /**
             Sets the fragmenter type.  You can apply the option
-            to a specific field by passing the field name in to the 
+            to a specific field by passing the field name in to the
             <code>oField</code> parameter.  Valid values for order are:
-            
-            simple - breaks text up into same-size fragments with no concerns 
+
+            simple - breaks text up into same-size fragments with no concerns
               over spotting sentence boundaries.
-            span - breaks text up into same-size fragments but does not split 
+            span - breaks text up into same-size fragments but does not split
               up Spans.
-            
+
             @member ejs.Highlight
-            @param {String} f The fragmenter. 
+            @param {String} f The fragmenter.
             @param {String} oField An optional field name
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
@@ -15560,21 +15561,21 @@
         } else if (f == null) {
           return highlight.fragmenter;
         }
-  
+
         f = f.toLowerCase();
         if (f === 'simple' || f === 'span') {
           addOption(oField, 'fragmenter', f);
         }
-        
+
         return this;
       },
-      
+
       /**
             Sets arbitrary options that can be passed to the highlighter
             implementation in use.
-            
+
             @since elasticsearch 0.90.1
-            
+
             @member ejs.Highlight
             @param {String} opts A map/object of option name and values.
             @param {Object} oField An optional field name
@@ -15590,21 +15591,21 @@
         if (!isObject(opts) || isArray(opts) || isEJSObject(opts)) {
           throw new TypeError('Parameter must be an object');
         }
-        
+
         addOption(oField, 'options', opts);
         return this;
       },
 
       /**
             The type of ejs object.  For internal use only.
-          
+
             @member ejs.Highlight
             @returns {String} the type of object
             */
       _type: function () {
         return 'highlight';
       },
-    
+
       /**
             Retrieves the internal <code>script</code> object. This is typically used by
             internal API functions so use with caution.
@@ -17423,8 +17424,8 @@
     @class
     <p>PhraseSuggester extends the <code>PhraseSuggester</code> and suggests
     entire corrected phrases instead of individual tokens.  The individual
-    phrase suggestions are weighted based on ngram-langugage models. In practice 
-    it will be able to make better decision about which tokens to pick based on 
+    phrase suggestions are weighted based on ngram-langugage models. In practice
+    it will be able to make better decision about which tokens to pick based on
     co-occurence and frequencies.</p>
 
     @name ejs.PhraseSuggester
@@ -17436,9 +17437,9 @@
     @borrows ejs.SuggestContextMixin.field as field
     @borrows ejs.SuggestContextMixin.size as size
     @borrows ejs.SuggestContextMixin.shardSize as shardSize
-  
+
     @since elasticsearch 0.90
-    
+
     @desc
     <p>A suggester that suggests entire corrected phrases.</p>
 
@@ -17450,34 +17451,34 @@
       _context,
       _common = ejs.SuggesterMixin(name),
       suggest = _common.toJSON();
-      
+
     suggest[name].phrase = {};
     _context = ejs.SuggestContextMixin(suggest[name].phrase);
-    
+
     return extend(_common, _context, {
-      
+
       /**
-            <p>Sets the likelihood of a term being a misspelled even if the 
-            term exists in the dictionary. The default it 0.95 corresponding 
+            <p>Sets the likelihood of a term being a misspelled even if the
+            term exists in the dictionary. The default it 0.95 corresponding
             to 5% or the real words are misspelled.</p>
 
             @member ejs.PhraseSuggester
             @param {Double} l A positive double value greater than 0.0.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
-      realWorldErrorLikelihood: function (l) {
+      realWordErrorLikelihood: function (l) {
         if (l == null) {
-          return suggest[name].phrase.real_world_error_likelihood;
+          return suggest[name].phrase.real_word_error_likelihood;
         }
-    
-        suggest[name].phrase.real_world_error_likelihood = l;
+
+        suggest[name].phrase.real_word_error_likelihood = l;
         return this;
       },
-      
+
       /**
-            <p>Sets the confidence level defines a factor applied to the input 
-            phrases score which is used as a threshold for other suggest 
-            candidates. Only candidates that score higher than the threshold 
+            <p>Sets the confidence level defines a factor applied to the input
+            phrases score which is used as a threshold for other suggest
+            candidates. Only candidates that score higher than the threshold
             will be included in the result.</p>
 
             @member ejs.PhraseSuggester
@@ -17488,14 +17489,14 @@
         if (c == null) {
           return suggest[name].phrase.confidence;
         }
-    
+
         suggest[name].phrase.confidence = c;
         return this;
       },
-      
+
       /**
-            <p>Sets the separator that is used to separate terms in the bigram 
-            field. If not set the whitespce character is used as a 
+            <p>Sets the separator that is used to separate terms in the bigram
+            field. If not set the whitespce character is used as a
             separator.</p>
 
             @member ejs.PhraseSuggester
@@ -17506,13 +17507,13 @@
         if (sep == null) {
           return suggest[name].phrase.separator;
         }
-    
+
         suggest[name].phrase.separator = sep;
         return this;
       },
-      
+
       /**
-            <p>Sets the maximum percentage of the terms that at most 
+            <p>Sets the maximum percentage of the terms that at most
             considered to be misspellings in order to form a correction.</p>
 
             @member ejs.PhraseSuggester
@@ -17523,14 +17524,14 @@
         if (max == null) {
           return suggest[name].phrase.max_errors;
         }
-    
+
         suggest[name].phrase.max_errors = max;
         return this;
       },
-      
+
       /**
-            <p>Sets the max size of the n-grams (shingles) in the field. If 
-            the field doesn't contain n-grams (shingles) this should be 
+            <p>Sets the max size of the n-grams (shingles) in the field. If
+            the field doesn't contain n-grams (shingles) this should be
             omitted or set to 1.</p>
 
             @member ejs.PhraseSuggester
@@ -17541,11 +17542,11 @@
         if (s == null) {
           return suggest[name].phrase.gram_size;
         }
-    
+
         suggest[name].phrase.gram_size = s;
         return this;
       },
-      
+
       /**
             <p>Forces the use of unigrams.</p>
 
@@ -17557,11 +17558,11 @@
         if (trueFalse == null) {
           return suggest[name].phrase.force_unigrams;
         }
-    
+
         suggest[name].phrase.force_unigrams = trueFalse;
         return this;
       },
-      
+
       /**
             <p>Sets the token limit.</p>
 
@@ -17573,13 +17574,13 @@
         if (l == null) {
           return suggest[name].phrase.token_limit;
         }
-    
+
         suggest[name].phrase.token_limit = l;
         return this;
       },
-      
+
       /**
-            <p>A smoothing model that takes the weighted mean of the unigrams, 
+            <p>A smoothing model that takes the weighted mean of the unigrams,
             bigrams and trigrams based on user supplied weights (lambdas). The
             sum of tl, bl, and ul must equal 1.</p>
 
@@ -17593,7 +17594,7 @@
         if (arguments.length === 0) {
           return suggest[name].phrase.smoothing;
         }
-    
+
         suggest[name].phrase.smoothing = {
           linear: {
             trigram_lambda: tl,
@@ -17601,13 +17602,13 @@
             unigram_lambda: ul
           }
         };
-        
+
         return this;
       },
-      
+
       /**
-            <p>A smoothing model that uses an additive smoothing model where a 
-            constant (typically 1.0 or smaller) is added to all counts to 
+            <p>A smoothing model that uses an additive smoothing model where a
+            constant (typically 1.0 or smaller) is added to all counts to
             balance weights, The default alpha is 0.5.</p>
 
             @member ejs.PhraseSuggester
@@ -17618,20 +17619,20 @@
         if (alpha == null) {
           return suggest[name].phrase.smoothing;
         }
-    
+
         suggest[name].phrase.smoothing = {
           laplace: {
             alpha: alpha
           }
         };
-        
+
         return this;
       },
-      
+
       /**
-            <p>A simple backoff model that backs off to lower order n-gram 
-            models if the higher order count is 0 and discounts the lower 
-            order n-gram model by a constant factor. The default discount is 
+            <p>A simple backoff model that backs off to lower order n-gram
+            models if the higher order count is 0 and discounts the lower
+            order n-gram model by a constant factor. The default discount is
             0.4.</p>
 
             @member ejs.PhraseSuggester
@@ -17642,16 +17643,16 @@
         if (discount == null) {
           return suggest[name].phrase.smoothing;
         }
-    
+
         suggest[name].phrase.smoothing = {
           stupid_backoff: {
             discount: discount
           }
         };
-        
+
         return this;
       },
-      
+
       /**
             <p>Enables highlighting of suggestions</p>
 
@@ -17664,22 +17665,22 @@
         if (arguments.length === 0) {
           return suggest[name].phrase.highlight;
         }
-    
+
         suggest[name].phrase.highlight = {
           pre_tag: preTag,
           post_tag: postTag
         };
-        
+
         return this;
       },
-      
+
       /**
             Adds a direct generator. If passed a single <code>Generator</code>
-            it is added to the list of existing generators.  If passed an 
+            it is added to the list of existing generators.  If passed an
             array of Generators, they replace all existing generators.
 
             @member ejs.PhraseSuggester
-            @param {(Generator|Generator[])} oGenerator A valid Generator or 
+            @param {(Generator|Generator[])} oGenerator A valid Generator or
               array of Generator objects.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
@@ -17711,7 +17712,7 @@
 
         return this;
       }
-      
+
     });
   };
 
