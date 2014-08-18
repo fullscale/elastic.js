@@ -35,7 +35,7 @@
       @returns {Object} returns <code>this</code> so that calls can be chained.
       */
       from: function (from) {
-      if (from === null) {
+        if (from === null) {
           return agg[name].top_hits.from;
         }
 
