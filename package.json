@@ -32,7 +32,7 @@
   "main": "elastic.js",
   "scripts": {
     "test": "grunt nodeunit",
-    "prepublish": "cp dist/elastic.js ."
+    "install": "cp dist/elastic.js ."
   },
   "dependencies": {
     "elasticsearch": "*",
