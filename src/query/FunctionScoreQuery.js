@@ -138,7 +138,7 @@
 
         query.function_score.boost_factor = boost;
         return this;
-      }
+      },
 
       /**
       Add a single score function to the list of existing functions.
