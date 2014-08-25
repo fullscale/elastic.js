@@ -125,6 +125,22 @@
       },
 
       /**
+      Sets the boost factor value for all documents matching the query.
+
+      @member ejs.FunctionScoreQuery
+      @param {Float} boost A positive <code>float</code> value.
+      @returns {Object} returns <code>this</code> so that calls can be chained.
+      */
+      boost_factor: function(boost){
+        if (boost == null) {
+          return query.function_score.boost_factor;
+        }
+
+        query.function_score.boost_factor = boost;
+        return this;
+      }
+
+      /**
       Add a single score function to the list of existing functions.
 
       @member ejs.FunctionScoreQuery
