@@ -736,15 +736,15 @@ exports.search = {
     expected.fields.content.boundary_chars = '#';
     doTest();
 
-    highlight.type('highlighter');
-    expected.type = 'highlighter';
+    highlight.type('plain');
+    expected.type = 'plain';
     doTest();
 
     highlight.type('INVALID');
     doTest();
 
-    highlight.type('FAST-VECTOR-HIGHLIGHTER', 'body');
-    expected.fields.body.type = 'fast-vector-highlighter';
+    highlight.type('FVH', 'body');
+    expected.fields.body.type = 'fvh';
     doTest();
 
     highlight.type('Postings');
