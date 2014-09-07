@@ -1,6 +1,6 @@
   /**
     @class
-    <p>The has_child filter results in parent documents that have child docs 
+    <p>The has_child filter results in parent documents that have child docs
     matching the query being returned.</p>
 
     @name ejs.HasChildFilter
@@ -14,20 +14,23 @@
     @desc
     Returns results that have child documents matching the filter.
 
-    @param {Object} qry A valid query object.
+    @param {Object} qryOrFltr A valid query or filter object.
     @param {String} type The child type
     */
-  ejs.HasChildFilter = function (qry, type) {
+  ejs.HasChildFilter = function (qryOrFltr, type) {
 
-    if (!isQuery(qry)) {
-      throw new TypeError('No Query object found');
-    }
-    
-    var 
+    var
       _common = ejs.FilterMixin('has_child'),
       filter = _common.toJSON();
-    
-    filter.has_child.query = qry.toJSON();
+
+    if (isQuery(qryOrFltr)) {
+      filter.has_child.query = qryOrFltr.toJSON();
+    } else if (isFilter(qryOrFltr)) {
+      filter.has_child.filter = qryOrFltr.toJSON();
+    } else if (qryOrFltr != null) {
+      throw new TypeError('Argument must be query or filter');
+    }
+
     filter.has_child.type = type;
 
     return extend(_common, {
@@ -43,11 +46,11 @@
         if (q == null) {
           return filter.has_child.query;
         }
-  
+
         if (!isQuery(q)) {
           throw new TypeError('Argument must be a Query object');
         }
-        
+
         filter.has_child.query = q.toJSON();
         return this;
       },
@@ -64,11 +67,11 @@
         if (f == null) {
           return filter.has_child.filter;
         }
-  
+
         if (!isFilter(f)) {
           throw new TypeError('Argument must be a Filter object');
         }
-        
+
         filter.has_child.filter = f.toJSON();
         return this;
       },
@@ -84,7 +87,7 @@
         if (t == null) {
           return filter.has_child.type;
         }
-  
+
         filter.has_child.type = t;
         return this;
       },
@@ -104,10 +107,10 @@
         filter.has_child.short_circuit_cutoff = cutoff;
         return this;
       },
-      
+
       /**
-            Sets the scope of the filter.  A scope allows to run facets on the 
-            same scope name that will work against the child documents. 
+            Sets the scope of the filter.  A scope allows to run facets on the
+            same scope name that will work against the child documents.
 
             @deprecated since elasticsearch 0.90
             @member ejs.HasChildFilter
@@ -117,6 +120,6 @@
       scope: function (s) {
         return this;
       }
-      
+
     });
   };

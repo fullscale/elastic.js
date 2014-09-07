@@ -84,7 +84,7 @@ exports.filters = {
     regexFilter.value('regex2');
     expected.regexp.title.value = 'regex2';
     doTest();
-    
+
     regexFilter.field('body');
     expected = {
       regexp: {
@@ -94,29 +94,29 @@ exports.filters = {
       }
     };
     doTest();
-    
+
     regexFilter.flags('INTERSECTION|EMPTY');
     expected.regexp.body.flags = 'INTERSECTION|EMPTY';
     doTest();
-    
+
     regexFilter.flagsValue(-1);
     expected.regexp.body.flags_value = -1;
     doTest();
-    
+
     regexFilter.name('filter_name');
     expected.regexp._name = 'filter_name';
     doTest();
-    
+
     regexFilter.cache(true);
     expected.regexp._cache = true;
     doTest();
-    
+
     regexFilter.cacheKey('filter_cache_key');
     expected.regexp._cache_key = 'filter_cache_key';
     doTest();
-    
+
     test.strictEqual(regexFilter._type(), 'filter');
-    
+
 
     test.done();
   },
@@ -146,53 +146,53 @@ exports.filters = {
     indicesFilter = ejs.IndicesFilter(termFilter, ['i2', 'i3']);
     expected.indices.indices = ['i2', 'i3'];
     doTest();
-    
+
     indicesFilter.indices('i4');
     expected.indices.indices.push('i4');
     doTest();
-    
+
     indicesFilter.indices(['i5']);
     expected.indices.indices = ['i5'];
     doTest();
-    
+
     indicesFilter.filter(termFilter2);
     expected.indices.filter = termFilter2.toJSON();
     doTest();
-    
+
     indicesFilter.noMatchFilter('invalid');
     doTest();
-    
+
     indicesFilter.noMatchFilter('none');
     expected.indices.no_match_filter = 'none';
     doTest();
-    
+
     indicesFilter.noMatchFilter('ALL');
     expected.indices.no_match_filter = 'all';
     doTest();
-    
+
     indicesFilter.noMatchFilter(termFilter3);
     expected.indices.no_match_filter = termFilter3.toJSON();
     doTest();
-    
+
     indicesFilter.filter(termFilter2);
     expected.indices.filter = termFilter2.toJSON();
     doTest();
-    
+
     test.strictEqual(indicesFilter._type(), 'filter');
-    
+
 
     test.throws(function () {
       ejs.IndicesFilter('invalid', 'index1');
     }, TypeError);
-    
+
     test.throws(function () {
       ejs.IndicesFilter(termFilter2, 3);
     }, TypeError);
-    
+
     test.throws(function () {
       indicesFilter.filter('invalid');
     }, TypeError);
-    
+
     test.throws(function () {
       indicesFilter.noMatchFilter(2);
     }, TypeError);
@@ -225,7 +225,7 @@ exports.filters = {
     termsFilter = ejs.TermsFilter('f1', 't3');
     expected.terms.f1 = ['t3'];
     doTest();
-    
+
     termsFilter.field('f2');
     expected = {
       terms: {
@@ -233,39 +233,39 @@ exports.filters = {
       }
     };
     doTest();
-    
+
     termsFilter.terms('t3');
     expected.terms.f2.push('t3');
     doTest();
-    
+
     termsFilter.terms(['t4']);
     expected.terms.f2 = ['t4'];
     doTest();
-    
+
     termsFilter.index('myidx');
     expected.terms.f2 = {index: 'myidx'};
     doTest();
-    
+
     termsFilter.type('mytype');
     expected.terms.f2.type = 'mytype';
     doTest();
-    
+
     termsFilter.id('id1');
     expected.terms.f2.id = 'id1';
     doTest();
-    
+
     termsFilter.path('terms_data');
     expected.terms.f2.path = 'terms_data';
     doTest();
-    
+
     termsFilter.routing('r1');
     expected.terms.f2.routing = 'r1';
     doTest();
-    
+
     termsFilter.cacheLookup(true);
     expected.terms.f2.cache = true;
     doTest();
-    
+
     termsFilter.field('f3');
     expected = {
       terms: {
@@ -280,56 +280,56 @@ exports.filters = {
       }
     };
     doTest();
-    
+
     termsFilter.terms('t5');
     expected.terms.f3 = ['t5'];
     doTest();
-    
+
     termsFilter.execution('plain');
     expected.terms.execution = 'plain';
     doTest();
-    
+
     termsFilter.execution('INVALID');
     doTest();
-    
+
     termsFilter.execution('AND');
     expected.terms.execution = 'and';
     doTest();
-    
+
     termsFilter.execution('and_NOCACHE');
     expected.terms.execution = 'and_nocache';
     doTest();
-    
+
     termsFilter.execution('or');
     expected.terms.execution = 'or';
     doTest();
-    
+
     termsFilter.execution('or_nocache');
     expected.terms.execution = 'or_nocache';
     doTest();
-    
+
     termsFilter.execution('BOOL');
     expected.terms.execution = 'bool';
     doTest();
-    
+
     termsFilter.execution('BOOL_nocache');
     expected.terms.execution = 'bool_nocache';
     doTest();
-    
+
     termsFilter.name('filter_name');
     expected.terms._name = 'filter_name';
     doTest();
-    
+
     termsFilter.cache(true);
     expected.terms._cache = true;
     doTest();
-    
+
     termsFilter.cacheKey('filter_cache_key');
     expected.terms._cache_key = 'filter_cache_key';
     doTest();
-    
+
     test.strictEqual(termsFilter._type(), 'filter');
-    
+
 
     test.done();
   },
@@ -357,46 +357,46 @@ exports.filters = {
     nestedFilter.path('new.root');
     expected.nested.path = 'new.root';
     doTest();
-    
+
     nestedFilter.query(termQuery);
     expected.nested.query = termQuery.toJSON();
     doTest();
-    
+
     nestedFilter.filter(termFilter);
     expected.nested.filter = termFilter.toJSON();
     doTest();
-    
+
     nestedFilter.boost(2.2);
     expected.nested.boost = 2.2;
     doTest();
-    
+
     nestedFilter.join(true);
     expected.nested.join = true;
     doTest();
-    
+
     nestedFilter.name('filter_name');
     expected.nested._name = 'filter_name';
     doTest();
-    
+
     nestedFilter.cache(true);
     expected.nested._cache = true;
     doTest();
-    
+
     nestedFilter.cacheKey('filter_cache_key');
     expected.nested._cache_key = 'filter_cache_key';
     doTest();
-    
+
     test.strictEqual(nestedFilter._type(), 'filter');
-    
+
 
     test.throws(function () {
       nestedFilter.query('junk');
     }, TypeError);
-    
+
     test.throws(function () {
       nestedFilter.filter('junk');
     }, TypeError);
-    
+
     test.done();
   },
   ScriptFilter: function (test) {
@@ -421,29 +421,29 @@ exports.filters = {
     scriptFilter.params({param1: 1});
     expected.script.params = {param1: 1};
     doTest();
-    
+
     scriptFilter.params({param1: 2, param2: 3});
     expected.script.params = {param1: 2, param2: 3};
     doTest();
-    
+
     scriptFilter.lang('python');
     expected.script.lang = 'python';
     doTest();
-    
+
     scriptFilter.name('script_filter');
     expected.script._name = 'script_filter';
     doTest();
-    
+
     scriptFilter.cache(true);
     expected.script._cache = true;
     doTest();
-    
+
     scriptFilter.cacheKey('script_filter_key');
     expected.script._cache_key = 'script_filter_key';
     doTest();
-    
+
     test.strictEqual(scriptFilter._type(), 'filter');
-    
+
 
     test.done();
   },
@@ -465,11 +465,11 @@ exports.filters = {
     test.ok(rangeFilter, 'RangeFilter exists');
     test.ok(rangeFilter.toJSON(), 'toJSON() works');
     doTest();
-    
+
     rangeFilter.from(1);
     expected.range.f1.from = 1;
     doTest();
-    
+
     rangeFilter.field('f2');
     expected = {
       range: {
@@ -479,49 +479,49 @@ exports.filters = {
       }
     };
     doTest();
-    
+
     rangeFilter.to(3);
     expected.range.f2.to = 3;
     doTest();
-    
+
     rangeFilter.includeLower(false);
     expected.range.f2.include_lower = false;
     doTest();
-    
+
     rangeFilter.includeUpper(true);
     expected.range.f2.include_upper = true;
     doTest();
-    
+
     rangeFilter.gt(4);
     expected.range.f2.gt = 4;
     doTest();
-    
+
     rangeFilter.gte(4);
     expected.range.f2.gte = 4;
     doTest();
-    
+
     rangeFilter.lt(6);
     expected.range.f2.lt = 6;
     doTest();
-    
+
     rangeFilter.lte(6);
     expected.range.f2.lte = 6;
     doTest();
-    
+
     rangeFilter.name('range_filter');
     expected.range._name = 'range_filter';
     doTest();
-    
+
     rangeFilter.cache(true);
     expected.range._cache = true;
     doTest();
-    
+
     rangeFilter.cacheKey('range_filter_key');
     expected.range._cache_key = 'range_filter_key';
     doTest();
-    
+
     test.strictEqual(rangeFilter._type(), 'filter');
-    
+
 
     test.done();
   },
@@ -545,34 +545,34 @@ exports.filters = {
     test.ok(queryFilter, 'QueryFilter exists');
     test.ok(queryFilter.toJSON(), 'toJSON() works');
     doTest();
-    
+
     queryFilter.query(termQuery2);
     expected.fquery.query = termQuery2.toJSON();
     doTest();
-    
+
     queryFilter.name('fquery');
     expected.fquery._name = 'fquery';
     doTest();
-    
+
     queryFilter.cache(true);
     expected.fquery._cache = true;
     doTest();
-    
+
     queryFilter.cacheKey('fquery_cached');
     expected.fquery._cache_key = 'fquery_cached';
     doTest();
-    
+
     test.strictEqual(queryFilter._type(), 'filter');
-    
+
 
     test.throws(function () {
       ejs.QueryFilter('invalid');
     }, TypeError);
-    
+
     test.throws(function () {
       queryFilter.query('invalid');
     }, TypeError);
-    
+
     test.done();
   },
   MatchAllFilter: function (test) {
@@ -593,12 +593,12 @@ exports.filters = {
     doTest();
 
     test.strictEqual(matchAllFilter._type(), 'filter');
-    
+
 
     test.done();
   },
   HasParentFilter: function (test) {
-    test.expect(13);
+    test.expect(14);
 
     var termQuery = ejs.TermQuery('t1', 'v1'),
       termQuery2 = ejs.TermQuery('t2', 'v2'),
@@ -619,38 +619,46 @@ exports.filters = {
     test.ok(hasParentFilter, 'HasParentFilter exists');
     test.ok(hasParentFilter.toJSON(), 'toJSON() works');
     doTest();
-    
+
     hasParentFilter.query(termQuery2);
     expected.has_parent.query = termQuery2.toJSON();
     doTest();
-    
+
     hasParentFilter.parentType('t2');
     expected.has_parent.parent_type = 't2';
     doTest();
-    
+
     hasParentFilter.name('has_parent');
     expected.has_parent._name = 'has_parent';
     doTest();
-    
+
     hasParentFilter.cache(true);
     expected.has_parent._cache = true;
     doTest();
-    
+
     hasParentFilter.cacheKey('hasp_cached');
     expected.has_parent._cache_key = 'hasp_cached';
     doTest();
-    
+
     hasParentFilter.filter(termFilter);
     expected.has_parent.filter = termFilter.toJSON();
     doTest();
-    
+
+    hasParentFilter = ejs.HasParentFilter(termFilter, 't1');
+    expected = {
+      has_parent: {
+        filter: termFilter.toJSON(),
+        parent_type: 't1'
+      }
+    };
+    doTest();
+
     test.strictEqual(hasParentFilter._type(), 'filter');
-    
 
     test.throws(function () {
       hasParentFilter.query('invalid');
     }, TypeError);
-    
+
     test.throws(function () {
       ejs.HasParentFilter('invalid', 't1');
     }, TypeError);
@@ -658,11 +666,11 @@ exports.filters = {
     test.throws(function () {
       hasParentFilter.filter('invalid');
     }, TypeError);
-    
+
     test.done();
   },
   HasChildFilter: function (test) {
-    test.expect(14);
+    test.expect(15);
 
     var termQuery = ejs.TermQuery('t1', 'v1'),
       termQuery2 = ejs.TermQuery('t2', 'v2'),
@@ -683,50 +691,58 @@ exports.filters = {
     test.ok(hasChildFilter, 'HasChildFilter exists');
     test.ok(hasChildFilter.toJSON(), 'toJSON() works');
     doTest();
-    
+
     hasChildFilter.query(termQuery2);
     expected.has_child.query = termQuery2.toJSON();
     doTest();
-    
+
     hasChildFilter.type('t2');
     expected.has_child.type = 't2';
     doTest();
-    
+
     hasChildFilter.shortCircuitCutoff(8192);
     expected.has_child.short_circuit_cutoff = 8192;
     doTest();
-    
+
     hasChildFilter.name('haschild');
     expected.has_child._name = 'haschild';
     doTest();
-    
+
     hasChildFilter.cache(true);
     expected.has_child._cache = true;
     doTest();
-    
+
     hasChildFilter.cacheKey('hasc_cached');
     expected.has_child._cache_key = 'hasc_cached';
     doTest();
-    
+
     hasChildFilter.filter(termFilter);
     expected.has_child.filter = termFilter.toJSON();
     doTest();
-    
+
+    hasChildFilter = ejs.HasChildFilter(termFilter, 't1');
+    expected = {
+      has_child: {
+        filter: termFilter.toJSON(),
+        type: 't1'
+      }
+    };
+    doTest();
+
     test.strictEqual(hasChildFilter._type(), 'filter');
-    
 
     test.throws(function () {
       hasChildFilter.query('invalid');
     }, TypeError);
-    
+
     test.throws(function () {
       ejs.HasChildFilter('invalid', 't1');
     }, TypeError);
-    
+
     test.throws(function () {
       hasChildFilter.filter('invalid');
     }, TypeError);
-    
+
     test.done();
   },
   LimitFilter: function (test) {
@@ -747,18 +763,18 @@ exports.filters = {
     test.ok(limitFilter, 'LimitFilter exists');
     test.ok(limitFilter.toJSON(), 'toJSON() works');
     doTest();
-    
+
     limitFilter.value(1000);
     expected.limit.value = 1000;
     doTest();
 
     test.strictEqual(limitFilter._type(), 'filter');
-    
+
 
     test.throws(function () {
       limitFilter.value('invalid');
     }, TypeError);
-    
+
     test.done();
   },
   IdsFilter: function (test) {
@@ -779,50 +795,50 @@ exports.filters = {
     test.ok(idsFilter, 'IdsFilter exists');
     test.ok(idsFilter.toJSON(), 'toJSON() works');
     doTest();
-    
+
     idsFilter = ejs.IdsFilter(['id2', 'id3']);
     expected.ids.values = ['id2', 'id3'];
     doTest();
-    
+
     idsFilter.values('id4');
     expected.ids.values.push('id4');
     doTest();
-    
+
     idsFilter.values(['id5', 'id6']);
     expected.ids.values = ['id5', 'id6'];
     doTest();
-    
+
     idsFilter.type('type1');
     expected.ids.type = ['type1'];
     doTest();
-    
+
     idsFilter.type('type2');
     expected.ids.type.push('type2');
     doTest();
-    
+
     idsFilter.type(['type3', 'type4']);
     expected.ids.type = ['type3', 'type4'];
     doTest();
-    
+
     idsFilter.name('idsfilter');
     expected.ids._name = 'idsfilter';
     doTest();
-    
+
     test.strictEqual(idsFilter._type(), 'filter');
-    
+
 
     test.throws(function () {
       idsFilter.values(2);
     }, TypeError);
-    
+
     test.throws(function () {
       idsFilter.type(3);
     }, TypeError);
-    
+
     test.throws(function () {
       ejs.IdsFilter(4);
     }, TypeError);
-    
+
     test.done();
   },
   BoolFilter: function (test) {
@@ -853,7 +869,7 @@ exports.filters = {
     boolFilter.must([termFilter2, termFilter3]);
     expected.bool.must = [termFilter2.toJSON(), termFilter3.toJSON()];
     doTest();
-    
+
     boolFilter.mustNot(termFilter2);
     expected.bool.must_not = [termFilter2.toJSON()];
     doTest();
@@ -861,7 +877,7 @@ exports.filters = {
     boolFilter.mustNot([termFilter3, termFilter4]);
     expected.bool.must_not = [termFilter3.toJSON(), termFilter4.toJSON()];
     doTest();
-    
+
     boolFilter.should(termFilter3);
     expected.bool.should = [termFilter3.toJSON()];
     doTest();
@@ -873,46 +889,46 @@ exports.filters = {
     boolFilter.should([termFilter, termFilter2]);
     expected.bool.should = [termFilter.toJSON(), termFilter2.toJSON()];
     doTest();
-    
+
     boolFilter.name('boolfilter');
     expected.bool._name = 'boolfilter';
     doTest();
-    
+
     boolFilter.cache(true);
     expected.bool._cache = true;
     doTest();
-    
+
     boolFilter.cacheKey('testkey');
     expected.bool._cache_key = 'testkey';
     doTest();
-    
+
     test.strictEqual(boolFilter._type(), 'filter');
-    
+
 
     test.throws(function () {
       boolFilter.must('junk');
     }, TypeError);
-    
+
     test.throws(function () {
       boolFilter.must([termFilter, 'junk']);
     }, TypeError);
-    
+
     test.throws(function () {
       boolFilter.mustNot('junk');
     }, TypeError);
-    
+
     test.throws(function () {
       boolFilter.mustNot([termFilter, 'junk']);
     }, TypeError);
-    
+
     test.throws(function () {
       boolFilter.should('junk');
     }, TypeError);
-    
+
     test.throws(function () {
       boolFilter.should([termFilter, 'junk']);
     }, TypeError);
-    
+
     test.done();
   },
   GeoShapeFilter: function (test) {
@@ -920,7 +936,7 @@ exports.filters = {
 
     var geoShapeFilter = ejs.GeoShapeFilter('f1'),
       shape1 = ejs.Shape('envelope', [[-45.0, 45.0], [45.0, -45.0]]),
-      shape2 = ejs.Shape('polygon', [[-180.0, 10.0], [20.0, 90.0], 
+      shape2 = ejs.Shape('polygon', [[-180.0, 10.0], [20.0, 90.0],
         [180.0, -5.0], [-30.0, -90.0]]),
       iShape1 = ejs.IndexedShape('countries', 'New Zealand'),
       iShape2 = ejs.IndexedShape('state', 'CA')
@@ -944,7 +960,7 @@ exports.filters = {
     geoShapeFilter.shape(shape1);
     expected.geo_shape.f1.shape = shape1.toJSON();
     doTest();
-    
+
     geoShapeFilter.field('f2');
     expected = {
       geo_shape: {
@@ -954,61 +970,61 @@ exports.filters = {
       }
     };
     doTest();
-    
+
     geoShapeFilter.shape(shape2);
     expected.geo_shape.f2.shape = shape2.toJSON();
     doTest();
-    
+
     geoShapeFilter.relation('intersects');
     expected.geo_shape.f2.relation = 'intersects';
     doTest();
-    
+
     geoShapeFilter.relation('INVALID');
     doTest();
-    
+
     geoShapeFilter.relation('DisJoint');
     expected.geo_shape.f2.relation = 'disjoint';
     doTest();
-    
+
     geoShapeFilter.relation('WITHIN');
     expected.geo_shape.f2.relation = 'within';
     doTest();
-    
+
     geoShapeFilter.indexedShape(iShape1);
     delete expected.geo_shape.f2.shape;
     expected.geo_shape.f2.indexed_shape = iShape1.toJSON();
     doTest();
-    
+
     geoShapeFilter.indexedShape(iShape2);
     expected.geo_shape.f2.indexed_shape = iShape2.toJSON();
     doTest();
-    
+
     geoShapeFilter.strategy('recursive');
     expected.geo_shape.f2.strategy = 'recursive';
     doTest();
-    
+
     geoShapeFilter.strategy('INVALID');
     doTest();
-    
+
     geoShapeFilter.strategy('TERM');
     expected.geo_shape.f2.strategy = 'term';
     doTest();
-    
+
     geoShapeFilter.cache(true);
     expected.geo_shape._cache = true;
     doTest();
-    
+
     geoShapeFilter.name('geofiltername');
     expected.geo_shape._name = 'geofiltername';
     doTest();
-    
+
     geoShapeFilter.cacheKey('test_key');
     expected.geo_shape._cache_key = 'test_key';
     doTest();
-    
+
     test.strictEqual(geoShapeFilter._type(), 'filter');
-    
-    
+
+
     test.done();
   },
   TermFilter: function (test) {
@@ -1039,25 +1055,25 @@ exports.filters = {
       }
     };
     doTest();
-    
+
     termFilter.term('v2');
     expected.term.t2 = 'v2';
     doTest();
-    
+
     termFilter.name('filter_name');
     expected.term._name = 'filter_name';
     doTest();
-    
+
     termFilter.cache(true);
     expected.term._cache = true;
     doTest();
-    
+
     termFilter.cacheKey('filter_cache_key');
     expected.term._cache_key = 'filter_cache_key';
     doTest();
-    
+
     test.strictEqual(termFilter._type(), 'filter');
-    
+
 
     test.done();
   },
@@ -1085,7 +1101,7 @@ exports.filters = {
     doTest();
 
     test.strictEqual(typeFilter._type(), 'filter');
-    
+
 
     test.done();
   },
@@ -1118,16 +1134,16 @@ exports.filters = {
     geoPolygonFilter.points(point1);
     expected.geo_polygon.location.points.push(point1.toJSON());
     doTest();
-    
+
     geoPolygonFilter.points(point2).points(point3);
     expected.geo_polygon.location.points.push(point2.toJSON());
     expected.geo_polygon.location.points.push(point3.toJSON());
     doTest();
-    
+
     geoPolygonFilter.points([point4, point5]);
     expected.geo_polygon.location.points = [point4.toJSON(), point5.toJSON()];
     doTest();
-    
+
     geoPolygonFilter.field('location2');
     expected = {
       geo_polygon: {
@@ -1137,34 +1153,34 @@ exports.filters = {
       }
     };
     doTest();
-    
+
     geoPolygonFilter.normalize(true);
     expected.geo_polygon.normalize = true;
     doTest();
-    
+
     geoPolygonFilter.name('filter_name');
     expected.geo_polygon._name = 'filter_name';
     doTest();
-    
+
     geoPolygonFilter.cache(true);
     expected.geo_polygon._cache = true;
     doTest();
-    
+
     geoPolygonFilter.cacheKey('filter_cache_key');
     expected.geo_polygon._cache_key = 'filter_cache_key';
     doTest();
-    
+
     test.strictEqual(geoPolygonFilter._type(), 'filter');
-    
+
 
     test.throws(function () {
       geoPolygonFilter.points('invalid');
     }, TypeError);
-    
+
     test.throws(function () {
       geoPolygonFilter.points([point1, 'invalid']);
     }, TypeError);
-    
+
     test.done();
   },
   GeoBboxFilter: function (test) {
@@ -1191,23 +1207,23 @@ exports.filters = {
 
     geoBboxFilter.topLeft(point1);
     expected.geo_bounding_box.location.top_left = point1.toJSON();
-    doTest(); 
-    
+    doTest();
+
     geoBboxFilter.bottomRight(point2);
     expected.geo_bounding_box.location.bottom_right = point2.toJSON();
     doTest();
-    
+
     geoBboxFilter.type('memory');
     expected.geo_bounding_box.type = 'memory';
     doTest();
-    
+
     geoBboxFilter.type('INVALID');
     doTest();
-    
+
     geoBboxFilter.type('Indexed');
     expected.geo_bounding_box.type = 'indexed';
     doTest();
-    
+
     geoBboxFilter.field('location2');
     expected = {
       geo_bounding_box: {
@@ -1219,34 +1235,34 @@ exports.filters = {
       }
     };
     doTest();
-    
+
     geoBboxFilter.normalize(true);
     expected.geo_bounding_box.normalize = true;
     doTest();
-    
+
     geoBboxFilter.name('filter_name');
     expected.geo_bounding_box._name = 'filter_name';
     doTest();
-    
+
     geoBboxFilter.cache(true);
     expected.geo_bounding_box._cache = true;
     doTest();
-    
+
     geoBboxFilter.cacheKey('filter_cache_key');
     expected.geo_bounding_box._cache_key = 'filter_cache_key';
     doTest();
-    
+
     test.strictEqual(geoBboxFilter._type(), 'filter');
-    
-    
+
+
     test.throws(function () {
       geoBboxFilter.topLeft('invalid');
     }, TypeError);
-    
+
     test.throws(function () {
       geoBboxFilter.bottomRight('invalid');
     }, TypeError);
-    
+
     test.done();
   },
   GeoDistanceFilter: function (test) {
@@ -1264,7 +1280,7 @@ exports.filters = {
         location: [0, 0]
       }
     };
-    
+
     test.ok(geoDistanceFilter, 'GeoDistanceFilter exists');
     test.ok(geoDistanceFilter.toJSON(), 'toJSON() works');
     doTest();
@@ -1272,11 +1288,11 @@ exports.filters = {
     geoDistanceFilter.distance(10);
     expected.geo_distance.distance = 10;
     doTest();
-    
+
     geoDistanceFilter.point(point1);
     expected.geo_distance.location = point1.toJSON();
     doTest();
-    
+
     geoDistanceFilter.field('location2');
     expected = {
       geo_distance: {
@@ -1285,71 +1301,71 @@ exports.filters = {
       }
     };
     doTest();
-    
+
     geoDistanceFilter.unit('mi');
     expected.geo_distance.unit = 'mi';
     doTest();
-    
+
     geoDistanceFilter.unit('INVALID');
     doTest();
-    
+
     geoDistanceFilter.unit('Km');
     expected.geo_distance.unit = 'km';
     doTest();
-    
+
     geoDistanceFilter.distanceType('arc');
     expected.geo_distance.distance_type = 'arc';
     doTest();
-    
+
     geoDistanceFilter.distanceType('INVALID');
     doTest();
-    
+
     geoDistanceFilter.distanceType('Plane');
     expected.geo_distance.distance_type = 'plane';
     doTest();
-    
+
     geoDistanceFilter.normalize(true);
     expected.geo_distance.normalize = true;
     doTest();
-    
+
     geoDistanceFilter.optimizeBbox('memory');
     expected.geo_distance.optimize_bbox = 'memory';
     doTest();
-    
+
     geoDistanceFilter.optimizeBbox('INVALID');
     doTest();
-    
+
     geoDistanceFilter.optimizeBbox('Indexed');
     expected.geo_distance.optimize_bbox = 'indexed';
     doTest();
-    
+
     geoDistanceFilter.optimizeBbox('none');
     expected.geo_distance.optimize_bbox = 'none';
     doTest();
-    
+
     geoDistanceFilter.name('filter_name');
     expected.geo_distance._name = 'filter_name';
     doTest();
-    
+
     geoDistanceFilter.cache(true);
     expected.geo_distance._cache = true;
     doTest();
-    
+
     geoDistanceFilter.cacheKey('filter_cache_key');
     expected.geo_distance._cache_key = 'filter_cache_key';
     doTest();
-    
+
     test.strictEqual(geoDistanceFilter._type(), 'filter');
-    
+
 
     test.throws(function () {
       geoDistanceFilter.point('invalid');
     }, TypeError);
-    
+
     test.throws(function () {
       geoDistanceFilter.distance('invalid');
     }, TypeError);
-    
+
     test.done();
   },
   GeoDistanceRangeFilter: function (test) {
@@ -1367,7 +1383,7 @@ exports.filters = {
         location: [0, 0]
       }
     };
-    
+
     test.ok(geoDistanceRangeFilter, 'GeoDistanceRangeFilter exists');
     test.ok(geoDistanceRangeFilter.toJSON(), 'toJSON() works');
     doTest();
@@ -1375,15 +1391,15 @@ exports.filters = {
     geoDistanceRangeFilter.from(10);
     expected.geo_distance_range.from = 10;
     doTest();
-    
+
     geoDistanceRangeFilter.to(30);
     expected.geo_distance_range.to = 30;
     doTest();
-    
+
     geoDistanceRangeFilter.point(point1);
     expected.geo_distance_range.location = point1.toJSON();
     doTest();
-    
+
     geoDistanceRangeFilter.field('location2');
     expected = {
       geo_distance_range: {
@@ -1393,115 +1409,115 @@ exports.filters = {
       }
     };
     doTest();
-    
+
     geoDistanceRangeFilter.includeUpper(true);
     expected.geo_distance_range.include_upper = true;
     doTest();
-    
+
     geoDistanceRangeFilter.includeLower(false);
     expected.geo_distance_range.include_lower = false;
     doTest();
-    
+
     geoDistanceRangeFilter.gt(10);
     expected.geo_distance_range.gt = 10;
     doTest();
-    
+
     geoDistanceRangeFilter.gte(11);
     expected.geo_distance_range.gte = 11;
     doTest();
-    
+
     geoDistanceRangeFilter.lt(30);
     expected.geo_distance_range.lt = 30;
     doTest();
-    
+
     geoDistanceRangeFilter.lte(31);
     expected.geo_distance_range.lte = 31;
     doTest();
-    
+
     geoDistanceRangeFilter.unit('mi');
     expected.geo_distance_range.unit = 'mi';
     doTest();
-    
+
     geoDistanceRangeFilter.unit('INVALID');
     doTest();
-    
+
     geoDistanceRangeFilter.unit('Km');
     expected.geo_distance_range.unit = 'km';
     doTest();
-    
+
     geoDistanceRangeFilter.distanceType('arc');
     expected.geo_distance_range.distance_type = 'arc';
     doTest();
-    
+
     geoDistanceRangeFilter.distanceType('INVALID');
     doTest();
-    
+
     geoDistanceRangeFilter.distanceType('Plane');
     expected.geo_distance_range.distance_type = 'plane';
     doTest();
-    
+
     geoDistanceRangeFilter.normalize(true);
     expected.geo_distance_range.normalize = true;
     doTest();
-    
+
     geoDistanceRangeFilter.optimizeBbox('memory');
     expected.geo_distance_range.optimize_bbox = 'memory';
     doTest();
-    
+
     geoDistanceRangeFilter.optimizeBbox('INVALID');
     doTest();
-    
+
     geoDistanceRangeFilter.optimizeBbox('Indexed');
     expected.geo_distance_range.optimize_bbox = 'indexed';
     doTest();
-    
+
     geoDistanceRangeFilter.optimizeBbox('none');
     expected.geo_distance_range.optimize_bbox = 'none';
     doTest();
-    
+
     geoDistanceRangeFilter.name('filter_name');
     expected.geo_distance_range._name = 'filter_name';
     doTest();
-    
+
     geoDistanceRangeFilter.cache(true);
     expected.geo_distance_range._cache = true;
     doTest();
-    
+
     geoDistanceRangeFilter.cacheKey('filter_cache_key');
     expected.geo_distance_range._cache_key = 'filter_cache_key';
     doTest();
-    
+
     test.strictEqual(geoDistanceRangeFilter._type(), 'filter');
-    
-    
+
+
     test.throws(function () {
       geoDistanceRangeFilter.point('invalid');
     }, TypeError);
-    
+
     test.throws(function () {
       geoDistanceRangeFilter.from('invalid');
     }, TypeError);
-    
+
     test.throws(function () {
       geoDistanceRangeFilter.to('invalid');
     }, TypeError);
-    
+
     test.throws(function () {
       geoDistanceRangeFilter.gt('invalid');
     }, TypeError);
-    
+
     test.throws(function () {
       geoDistanceRangeFilter.gte('invalid');
     }, TypeError);
-    
+
     test.throws(function () {
       geoDistanceRangeFilter.lt('invalid');
     }, TypeError);
-    
+
     test.throws(function () {
       geoDistanceRangeFilter.lte('invalid');
     }, TypeError);
-    
+
     test.done();
   },
   NotFilter: function (test) {
@@ -1530,26 +1546,26 @@ exports.filters = {
     notFilter.name('filter_name');
     expected.not._name = 'filter_name';
     doTest();
-    
+
     notFilter.cache(true);
     expected.not._cache = true;
     doTest();
-    
+
     notFilter.cacheKey('filter_cache_key');
     expected.not._cache_key = 'filter_cache_key';
     doTest();
-    
+
     test.strictEqual(notFilter._type(), 'filter');
-    
+
 
     test.throws(function () {
       ejs.NotFilter('invalid');
     }, TypeError);
-    
+
     test.throws(function () {
       notFilter.filter('invalid');
     }, TypeError);
-    
+
     test.done();
   },
   AndFilter: function (test) {
@@ -1582,26 +1598,26 @@ exports.filters = {
     andFilter.filters([termFilter3, termFilter4]);
     expected.and.filters = [termFilter3.toJSON(), termFilter4.toJSON()];
     doTest();
-    
+
     andFilter.name('filter_name');
     expected.and._name = 'filter_name';
     doTest();
-    
+
     andFilter.cache(true);
     expected.and._cache = true;
     doTest();
-    
+
     andFilter.cacheKey('filter_cache_key');
     expected.and._cache_key = 'filter_cache_key';
     doTest();
-    
+
     test.strictEqual(andFilter._type(), 'filter');
-    
+
 
     test.throws(function () {
       ejs.AndFilter('junk');
     }, TypeError);
-    
+
     test.throws(function () {
       ejs.AndFilter([termFilter1, 'junk']);
     }, TypeError);
@@ -1609,11 +1625,11 @@ exports.filters = {
     test.throws(function () {
       andFilter.filters('junk');
     }, TypeError);
-    
+
     test.throws(function () {
       andFilter.filters([termFilter1, 'junk']);
     }, TypeError);
-    
+
     test.done();
   },
   NumericRangeFilter: function (test) {
@@ -1659,70 +1675,70 @@ exports.filters = {
       }
     };
     doTest();
-    
+
     numericRangeFilter.includeUpper(true);
     expected.numeric_range.f2.include_upper = true;
     doTest();
-    
+
     numericRangeFilter.includeLower(false);
     expected.numeric_range.f2.include_lower = false;
     doTest();
-    
+
     numericRangeFilter.gt(start.getTime());
     expected.numeric_range.f2.gt = start.getTime();
     doTest();
-    
+
     numericRangeFilter.gte(start.getTime());
     expected.numeric_range.f2.gte = start.getTime();
     doTest();
-    
+
     numericRangeFilter.lt(end.getTime());
     expected.numeric_range.f2.lt = end.getTime();
     doTest();
-    
+
     numericRangeFilter.lte(end.getTime());
     expected.numeric_range.f2.lte = end.getTime();
     doTest();
-    
+
     numericRangeFilter.name('filter_name');
     expected.numeric_range._name = 'filter_name';
     doTest();
-    
+
     numericRangeFilter.cache(true);
     expected.numeric_range._cache = true;
     doTest();
-    
+
     numericRangeFilter.cacheKey('filter_cache_key');
     expected.numeric_range._cache_key = 'filter_cache_key';
     doTest();
-    
+
     test.strictEqual(numericRangeFilter._type(), 'filter');
-    
+
 
     test.throws(function () {
       numericRangeFilter.from('invalid');
     }, TypeError);
-    
+
     test.throws(function () {
       numericRangeFilter.to('invalid');
     }, TypeError);
-    
+
     test.throws(function () {
       numericRangeFilter.gt('invalid');
     }, TypeError);
-    
+
     test.throws(function () {
       numericRangeFilter.gte('invalid');
     }, TypeError);
-    
+
     test.throws(function () {
       numericRangeFilter.lt('invalid');
     }, TypeError);
-    
+
     test.throws(function () {
       numericRangeFilter.lte('invalid');
     }, TypeError);
-    
+
     test.done();
   },
   ExistsFilter: function (test) {
@@ -1747,13 +1763,13 @@ exports.filters = {
     existsFilter.field('body');
     expected.exists.field = 'body';
     doTest();
-    
+
     existsFilter.name('filter_name');
     expected.exists._name = 'filter_name';
     doTest();
-    
+
     test.strictEqual(existsFilter._type(), 'filter');
-    
+
 
     test.done();
   },
@@ -1779,7 +1795,7 @@ exports.filters = {
     prefixFilter.prefix('th');
     expected.prefix.title = 'th';
     doTest();
-    
+
     prefixFilter.field('body');
     expected = {
       prefix: {
@@ -1787,21 +1803,21 @@ exports.filters = {
       }
     };
     doTest();
-    
+
     prefixFilter.name('filter_name');
     expected.prefix._name = 'filter_name';
     doTest();
-    
+
     prefixFilter.cache(true);
     expected.prefix._cache = true;
     doTest();
-    
+
     prefixFilter.cacheKey('filter_cache_key');
     expected.prefix._cache_key = 'filter_cache_key';
     doTest();
-    
+
     test.strictEqual(prefixFilter._type(), 'filter');
-    
+
 
     test.done();
   },
@@ -1827,21 +1843,21 @@ exports.filters = {
     missingFilter.field('body');
     expected.missing.field = 'body';
     doTest();
-    
+
     missingFilter.existence(true);
     expected.missing.existence = true;
     doTest();
-    
+
     missingFilter.nullValue(true);
     expected.missing.null_value = true;
     doTest();
-    
+
     missingFilter.name('missing_filter');
     expected.missing._name = 'missing_filter';
     doTest();
-    
+
     test.strictEqual(missingFilter._type(), 'filter');
-    
+
 
     test.done();
   },
@@ -1874,42 +1890,42 @@ exports.filters = {
     orFilter.filters([termFilter1, termFilter3]);
     expected.or.filters = [termFilter1.toJSON(), termFilter3.toJSON()];
     doTest();
-    
+
     orFilter = ejs.OrFilter([termFilter2, termFilter3]);
     expected.or.filters = [termFilter2.toJSON(), termFilter3.toJSON()];
     doTest();
-    
+
     orFilter.name('filter_name');
     expected.or._name = 'filter_name';
     doTest();
-    
+
     orFilter.cache(true);
     expected.or._cache = true;
     doTest();
-    
+
     orFilter.cacheKey('filter_cache_key');
     expected.or._cache_key = 'filter_cache_key';
     doTest();
-    
+
     test.strictEqual(orFilter._type(), 'filter');
-    
+
 
     test.throws(function () {
       ejs.OrFilter('invalid');
     }, TypeError);
-    
+
     test.throws(function () {
       ejs.OrFilter([termFilter1, 'invalid']);
     }, TypeError);
-    
+
     test.throws(function () {
       orFilter.filters('invalid');
     }, TypeError);
-    
+
     test.throws(function () {
       orFilter.filters([termFilter1, 'invalid']);
     }, TypeError);
-    
+
     test.done();
   }
 };

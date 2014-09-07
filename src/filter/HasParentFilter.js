@@ -1,6 +1,6 @@
   /**
     @class
-    <p>The has_parent results in child documents that have parent docs matching 
+    <p>The has_parent results in child documents that have parent docs matching
     the query being returned.</p>
 
     @name ejs.HasParentFilter
@@ -14,20 +14,23 @@
     @desc
     Returns results that have parent documents matching the filter.
 
-    @param {Object} qry A valid query object.
+    @param {Object} qryOrFltr A valid query or filter object.
     @param {String} parentType The child type
     */
-  ejs.HasParentFilter = function (qry, parentType) {
+  ejs.HasParentFilter = function (qryOrFltr, parentType) {
 
-    if (!isQuery(qry)) {
-      throw new TypeError('No Query object found');
-    }
-    
-    var 
+    var
       _common = ejs.FilterMixin('has_parent'),
       filter = _common.toJSON();
-    
-    filter.has_parent.query = qry.toJSON();
+
+    if (isQuery(qryOrFltr)) {
+      filter.has_parent.query = qryOrFltr.toJSON();
+    } else if (isFilter(qryOrFltr)) {
+      filter.has_parent.filter = qryOrFltr.toJSON();
+    } else if (qryOrFltr != null) {
+      throw new TypeError('Argument must be query or filter');
+    }
+
     filter.has_parent.parent_type = parentType;
 
     return extend(_common, {
@@ -47,11 +50,11 @@
         if (!isQuery(q)) {
           throw new TypeError('Argument must be a Query object');
         }
-        
+
         filter.has_parent.query = q.toJSON();
         return this;
       },
-      
+
       /**
             Sets the filter
 
@@ -68,7 +71,7 @@
         if (!isFilter(f)) {
           throw new TypeError('Argument must be a Filter object');
         }
-        
+
         filter.has_parent.filter = f.toJSON();
         return this;
       },
@@ -90,8 +93,8 @@
       },
 
       /**
-            Sets the scope of the filter.  A scope allows to run facets on the 
-            same scope name that will work against the parent documents. 
+            Sets the scope of the filter.  A scope allows to run facets on the
+            same scope name that will work against the parent documents.
 
             @deprecated since elasticsearch 0.90
             @member ejs.HasParentFilter
@@ -101,6 +104,6 @@
       scope: function (s) {
         return this;
       }
-      
+
     });
   };
