@@ -15516,8 +15516,9 @@
             to a specific field by passing the field name in to the
             <code>oField</code> parameter.  Valid values for order are:
 
-            fast-vector-highlighter - the fast vector based highligher
-            highlighter - the slower plain highligher
+            plain - the slower Lucene standard highligher
+            postings - the postings highligher
+            fvh - the fast vector based highligher
 
             @member ejs.Highlight
             @param {String} t The highligher.
@@ -15532,7 +15533,7 @@
         }
 
         t = t.toLowerCase();
-        if (t === 'fast-vector-highlighter' || t === 'highlighter' ||
+        if (t === 'fvh' || t === 'plain' ||
             t === 'postings') {
           addOption(oField, 'type', t);
         }
