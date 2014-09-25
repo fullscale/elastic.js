@@ -154,7 +154,7 @@
           return agg[name].top_hits.script_fields;
         }
 
-        if (agg[name].top_hits.script_fields === null) {
+        if (agg[name].top_hits.script_fields === undefined) {
           agg[name].top_hits.script_fields = {};
         }
 
@@ -196,7 +196,7 @@
        @returns {Object} returns <code>this</code> so that calls can be chained.
        */
       source: function (includes, excludes) {
-        if (includes === null && excludes === null) {
+        if (includes === undefined && excludes === undefined) {
           return agg[name].top_hits._source;
         }
 
@@ -204,7 +204,7 @@
           throw new TypeError('Argument includes must be a string, an array, or a boolean');
         }
 
-        if (excludes !== null && !isArray(excludes) && !isString(excludes)) {
+        if (excludes !== undefined && !isArray(excludes) && !isString(excludes)) {
           throw new TypeError('Argument excludes must be a string or an array');
         }
 
@@ -215,7 +215,7 @@
             includes: includes
           };
 
-          if (excludes !== null) {
+          if (excludes !== undefined) {
             agg[name].top_hits._source = excludes;
           }
         }
