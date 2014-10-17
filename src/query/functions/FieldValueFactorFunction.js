@@ -23,7 +23,7 @@
       _common = ejs.ScoreFunctionMixin('field_value_factor'),
       func = _common.toJSON();
 
-    func.field = field;
+    func.field_value_factor.field = field;
 
     return extend(_common, {
 
@@ -36,10 +36,10 @@
       */
       factor: function (factor) {
         if (factor == null) {
-          return func.factor;
+          return func.field_value_factor.factor;
         }
 
-        func.factor = factor;
+        func.field_value_factor.factor = factor;
         return this;
       },
 
@@ -52,10 +52,10 @@
       */
       modifier: function (modifier) {
         if (modifier == null) {
-          return func.modifier;
+          return func.field_value_factor.modifier;
         }
 
-        func.modifier = modifier;
+        func.field_value_factor.modifier = modifier;
         return this;
       }
 
