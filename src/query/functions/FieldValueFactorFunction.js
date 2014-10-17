@@ -20,7 +20,7 @@
   ejs.FieldValueFactorFunction = function (field) {
 
     var
-      _common = ejs.ScoreFunctionMixin('field_value_function'),
+      _common = ejs.ScoreFunctionMixin('field_value_factor'),
       func = _common.toJSON();
 
     func.field = field;
