@@ -5,7 +5,6 @@
     @name ejs.GeoBoundsAggregation
     @ejs aggregation
     @borrows ejs.MetricsAggregationMixin.field as field
-    @borrows ejs.MetricsAggregationMixin.params as params
     @borrows ejs.AggregationMixin._type as _type
     @borrows ejs.AggregationMixin.toJSON as toJSON
 
