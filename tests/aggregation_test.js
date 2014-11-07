@@ -53,7 +53,7 @@ exports.aggregations = {
     test.ok(ejs.GeoDistanceAggregation, 'GeoDistanceAggregation');
     test.ok(ejs.IPv4RangeAggregation, 'IPv4RangeAggregation');
     test.ok(ejs.TopHitsAggregation, 'TopHitsAggregation');
-    test.ok(ejs.TopHitsAggregation, 'GeoBoundsAggregation');
+    test.ok(ejs.GeoBoundsAggregation, 'GeoBoundsAggregation');
 
 
     test.done();
