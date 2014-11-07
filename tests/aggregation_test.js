@@ -28,7 +28,7 @@ exports.aggregations = {
     done();
   },
   exists: function (test) {
-    test.expect(23);
+    test.expect(24);
 
     test.ok(ejs.GlobalAggregation, 'GlobalAggregation');
     test.ok(ejs.FilterAggregation, 'FilterAggregation');
@@ -53,6 +53,7 @@ exports.aggregations = {
     test.ok(ejs.GeoDistanceAggregation, 'GeoDistanceAggregation');
     test.ok(ejs.IPv4RangeAggregation, 'IPv4RangeAggregation');
     test.ok(ejs.TopHitsAggregation, 'TopHitsAggregation');
+    test.ok(ejs.TopHitsAggregation, 'GeoBoundsAggregation');
 
 
     test.done();
@@ -1478,6 +1479,35 @@ exports.aggregations = {
     expected.myagg.top_hits._source = 'bar';
     doTest();
 
+
+    test.done();
+  },
+  GeoBoundsAggregation: function (test) {
+    test.expect(6);
+
+    var agg = ejs.GeoBoundsAggregation('myagg'),
+      expected,
+      doTest = function () {
+        test.deepEqual(agg.toJSON(), expected);
+      };
+
+    expected = {
+      myagg: {geo_bounds: {}}
+    };
+
+    test.ok(agg, 'GeoBoundsAggregation exists');
+    test.ok(agg.toJSON(), 'toJSON() works');
+    doTest();
+
+    agg.field('f1');
+    expected.myagg.geo_bounds.field = 'f1';
+    doTest();
+
+    agg.wrapLongitude(false);
+    expected.myagg.geo_bounds.wrap_longitude = false;
+    doTest();
+
+    test.strictEqual(agg._type(), 'aggregation');
 
     test.done();
   }
