@@ -290,7 +290,7 @@ exports.queries = {
     test.done();
   },
   FunctionScoreQuery: function (test) {
-    test.expect(30);
+    test.expect(31);
 
     var termQuery1 = ejs.TermQuery('t1', 'v1'),
       termFilter1 = ejs.TermFilter('tf1', 'fv1'),
@@ -375,6 +375,10 @@ exports.queries = {
 
     funcQuery.boost(2);
     expected.function_score.boost = 2;
+    doTest();
+
+    funcQuery.maxBoost(5);
+    expected.function_score.max_boost = 5;
     doTest();
 
     funcQuery.function(randomScore);
