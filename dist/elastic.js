@@ -1,4 +1,4 @@
-/*! elastic.js - v1.2.0 - 2014-10-13
+/*! elastic.js - v1.2.0 - 2014-11-19
  * https://github.com/fullscale/elastic.js
  * Copyright (c) 2014 FullScale Labs, LLC; Licensed MIT */
 
@@ -10082,6 +10082,22 @@
         }
 
         query.function_score.boost = boost;
+        return this;
+      },
+
+      /**
+      Sets the maximum boost value.
+
+      @member ejs.FunctionScoreQuery
+      @param {Float} maxBoost A positive <code>float</code> value.
+      @returns {Object} returns <code>this</code> so that calls can be chained.
+      */
+      maxBoost: function (maxBoost) {
+        if (maxBoost == null) {
+          return query.function_score.max_boost;
+        }
+
+        query.function_score.max_boost = maxBoost;
         return this;
       },
 
