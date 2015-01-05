@@ -280,7 +280,7 @@
         }
 
         type = type.toLowerCase();
-        if (type === 'boolean' || type === 'phrase' || type === 'phrase_prefix') {
+        if (type === 'best_fields' || type === 'most_fields' || type === 'cross_fields' || type === 'phrase' || type === 'phrase_prefix') {
           query.multi_match.type = type;
         }
 
