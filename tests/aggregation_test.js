@@ -1474,8 +1474,8 @@ exports.aggregations = {
     expected.myagg.top_hits._source = {includes: ['foo', 'bar']};
     doTest();
 
-    agg.source(['foo'], 'bar');
-    expected.myagg.top_hits._source = 'bar';
+    agg.source(['foo'], ['bar']);
+    expected.myagg.top_hits._source = {includes: ['foo'], excludes: ['bar']};
     doTest();
 
 
