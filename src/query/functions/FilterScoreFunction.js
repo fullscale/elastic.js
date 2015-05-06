@@ -17,15 +17,14 @@
   ejs.FilterScoreFunction = function (filter, weight) {
 
     var
-      _common = ejs.ScoreFunctionMixin(),
-      func = _common.toJSON();
+      _common = ejs.ScoreFunctionMixin();
 
-    if ((filter == null || !isFilter(filter)) || weight == null) {
-      throw new Error("filter must be a Filter and weight must be a Number");
+    if (filter == null || weight == null) {
+      throw new Error("Filter and weight is required");
     }
 
-    func.filter = filter;
-    func.weight = weight;
+    _common.filter(filter);
+    _common.weight(weight);
 
-    return extend(_common, {});
+    return _common;
   };
