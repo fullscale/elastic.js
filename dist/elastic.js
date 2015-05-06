@@ -1,6 +1,6 @@
-/*! elastic.js - v1.2.0 - 2014-11-19
+/*! elastic.js - v1.2.0 - 2015-05-06
  * https://github.com/fullscale/elastic.js
- * Copyright (c) 2014 FullScale Labs, LLC; Licensed MIT */
+ * Copyright (c) 2015 FullScale Labs, LLC; Licensed MIT */
 
 /**
  @namespace
@@ -938,7 +938,10 @@
   ejs.ScoreFunctionMixin = function (name) {
 
     var func = {};
-    func[name] = {};
+
+    if (name != null) {
+      func[name] = {};
+    }
 
     return {
 
@@ -959,6 +962,26 @@
         }
 
         func.filter = oFilter.toJSON();
+        return this;
+      },
+
+      /**
+      Sets the weight of the score function
+
+      @member ejs.ScoreFunctionMixin
+      @param {Number} oWeight The weight of this score function.
+      @returns {Object} returns <code>this</code> so that calls can be chained.
+      */
+      weight: function (oWeight) {
+        if (oWeight == null) {
+          return func.weight;
+        }
+
+        if (!isNumber(oWeight)) {
+          throw new TypeError('Argument must be a Number');
+        }
+
+        func.weight = oWeight;
         return this;
       },
 
@@ -10102,6 +10125,22 @@
       },
 
       /**
+      Sets the minimum score a document should have to be included.
+
+      @member ejs.FunctionScoreQuery
+      @param {Float} minScore A positive <code>float</code> value.
+      @returns {Object} returns <code>this</code> so that calls can be chained.
+      */
+      minScore: function (minScore) {
+        if (minScore == null) {
+          return query.function_score.min_score;
+        }
+
+        query.function_score.min_score = minScore;
+        return this;
+      },
+
+      /**
       Add a single score function to the list of existing functions.
 
       @member ejs.FunctionScoreQuery
@@ -15209,6 +15248,31 @@
       }
 
     });
+  };
+
+  /**
+    @class
+    <p>A basic filter score function, which mathces a filter and applies a
+    weight.</p>
+
+    @name ejs.FilterScoreFunction
+    @ejs scorefunction
+    @borrows ejs.ScoreFunctionMixin.filter as filter
+    @borrows ejs.ScoreFunctionMixin.weight as weight
+    @borrows ejs.ScoreFunctionMixin._type as _type
+    @borrows ejs.ScoreFunctionMixin.toJSON as toJSON
+
+    @desc
+    <p>Randomly score documents.</p>
+
+    */
+  ejs.FilterScoreFunction = function () {
+
+    var
+      _common = ejs.ScoreFunctionMixin(),
+      func = _common.toJSON();
+
+    return extend(_common, {});
   };
 
   /**
