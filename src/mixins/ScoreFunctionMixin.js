@@ -34,6 +34,26 @@
       },
 
       /**
+      Sets the weight of the score function
+
+      @member ejs.ScoreFunctionMixin
+      @param {Number} oWeight The weight of this score function.
+      @returns {Object} returns <code>this</code> so that calls can be chained.
+      */
+      weight: function (oWeight) {
+        if (oWeight == null) {
+          return func.weight;
+        }
+
+        if (!isNumber(oWeight)) {
+          throw new TypeError('Argument must be a Number');
+        }
+
+        func.weight = oWeight;
+        return this;
+      },
+
+      /**
       The type of ejs object.  For internal use only.
 
       @member ejs.ScoreFunctionMixin
