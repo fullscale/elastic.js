@@ -14,11 +14,18 @@
     <p>Randomly score documents.</p>
 
     */
-  ejs.FilterScoreFunction = function () {
+  ejs.FilterScoreFunction = function (filter, weight) {
 
     var
       _common = ejs.ScoreFunctionMixin(),
       func = _common.toJSON();
+
+    if ((filter == null || !isFilter(filter)) || weight == null) {
+      throw new Error("filter must be a Filter and weight must be a Number");
+    }
+
+    func.filter = filter;
+    func.weight = weight;
 
     return extend(_common, {});
   };
