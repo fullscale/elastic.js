@@ -9,7 +9,10 @@
   ejs.ScoreFunctionMixin = function (name) {
 
     var func = {};
-    func[name] = {};
+
+    if (name != null) {
+      func[name] = {};
+    }
 
     return {
 
