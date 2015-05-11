@@ -1,4 +1,4 @@
-/*! elastic.js - v1.2.0 - 2015-05-06
+/*! elastic.js - v1.2.0 - 2015-05-11
  * https://github.com/fullscale/elastic.js
  * Copyright (c) 2015 FullScale Labs, LLC; Licensed MIT */
 
@@ -15252,37 +15252,6 @@
 
   /**
     @class
-    <p>A basic filter score function, which mathces a filter and applies a
-    weight.</p>
-
-    @name ejs.FilterScoreFunction
-    @ejs scorefunction
-    @borrows ejs.ScoreFunctionMixin.filter as filter
-    @borrows ejs.ScoreFunctionMixin.weight as weight
-    @borrows ejs.ScoreFunctionMixin._type as _type
-    @borrows ejs.ScoreFunctionMixin.toJSON as toJSON
-
-    @desc
-    <p>Randomly score documents.</p>
-
-    */
-  ejs.FilterScoreFunction = function (filter, weight) {
-
-    var
-      _common = ejs.ScoreFunctionMixin();
-
-    if (filter == null || weight == null) {
-      throw new Error("Filter and weight is required");
-    }
-
-    _common.filter(filter);
-    _common.weight(weight);
-
-    return _common;
-  };
-
-  /**
-    @class
     <p>The random_score generates scores via a pseudo random number algorithm
     that is initialized with a seed.</p>
 
@@ -15321,6 +15290,30 @@
       }
 
     });
+  };
+
+  /**
+    @class
+    <p>A basic filter score function, which mathces a filter and applies a
+    weight.</p>
+
+    @name ejs.ScoreFunction
+    @ejs scorefunction
+    @borrows ejs.ScoreFunctionMixin.filter as filter
+    @borrows ejs.ScoreFunctionMixin.weight as weight
+    @borrows ejs.ScoreFunctionMixin._type as _type
+    @borrows ejs.ScoreFunctionMixin.toJSON as toJSON
+
+    @desc
+    <p>Randomly score documents.</p>
+
+    */
+  ejs.ScoreFunction = function () {
+
+    var
+      _common = ejs.ScoreFunctionMixin();
+
+    return _common;
   };
 
   /**
