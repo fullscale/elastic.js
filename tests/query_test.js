@@ -28,7 +28,7 @@ exports.queries = {
     done();
   },
   exists: function (test) {
-    test.expect(41);
+    test.expect(42);
 
     test.ok(ejs.CommonTermsQuery, 'CommonTermsQuery');
     test.ok(ejs.RegexpQuery, 'RegexpQuery');
@@ -73,6 +73,7 @@ exports.queries = {
     test.ok(ejs.DecayScoreFunction, 'FieldValueFactorFunction');
     test.ok(ejs.RandomScoreFunction, 'RandomScoreFunction');
     test.ok(ejs.ScriptScoreFunction, 'ScriptScoreFunction');
+    test.ok(ejs.ScoreFunction, 'ScoreFunction');
 
     test.done();
   },
@@ -279,6 +280,39 @@ exports.queries = {
 
     scoreFunc.filter(termFilter1);
     expected.filter = termFilter1.toJSON();
+    doTest();
+
+    test.strictEqual(scoreFunc._type(), 'score function');
+
+    test.throws(function () {
+      scoreFunc.filter('invalid');
+    }, TypeError);
+
+    test.done();
+  },
+  ScoreFunction: function (test) {
+    test.expect(6);
+
+    var scoreFunc = ejs.ScoreFunction(),
+      termFilter = ejs.TermFilter('tf1', 'vf1'),
+      expected,
+      doTest = function () {
+        test.deepEqual(scoreFunc.toJSON(), expected);
+      };
+
+    scoreFunc.weight(1.2);
+
+    expected = {
+      weight: 1.2
+    };
+
+    test.ok(scoreFunc, 'ScoreFunction exists');
+    test.ok(scoreFunc.toJSON(), 'toJSON() works');
+    doTest();
+
+    expected.filter = termFilter.toJSON();
+
+    scoreFunc.filter(termFilter);
     doTest();
 
     test.strictEqual(scoreFunc._type(), 'score function');
