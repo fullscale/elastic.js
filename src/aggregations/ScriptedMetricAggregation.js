@@ -38,7 +38,7 @@
       @param {String} init_script_file A valid script file name.
       @returns {Object} returns <code>this</code> so that calls can be chained.
       */
-      init_script_file: function (init_script_file) {
+      initScriptFile: function (init_script_file) {
         if (init_script_file == null) {
           return agg[name].scripted_metric.init_script_file;
         }
@@ -54,7 +54,7 @@
       @param {String} map_script_file A valid script file name.
       @returns {Object} returns <code>this</code> so that calls can be chained.
       */
-      map_script_file : function (map_script_file) {
+      mapScriptFile : function (map_script_file) {
         if (map_script_file == null) {
           return agg[name].scripted_metric.map_script_file;
         }
@@ -70,7 +70,7 @@
       @param {String} combine_script_file A valid script file name.
       @returns {Object} returns <code>this</code> so that calls can be chained.
       */
-      combine_script_file: function (combine_script_file) {
+      combineScriptFile: function (combine_script_file) {
         if (combine_script_file == null) {
           return agg[name].scripted_metric.combine_script_file;
         }
@@ -86,7 +86,7 @@
       @param {String} reduce_script_file A valid script file name.
       @returns {Object} returns <code>this</code> so that calls can be chained.
       */
-      reduce_script_file: function (reduce_script_file) {
+      reduceScriptFile: function (reduce_script_file) {
         if (reduce_script_file == null) {
           return agg[name].scripted_metric.reduce_script_file;
         }
