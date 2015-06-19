@@ -60,3 +60,5 @@
   } else {
     ejs = root.ejs = {};
   }
+  
+})();
