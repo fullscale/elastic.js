@@ -1,4 +1,4 @@
-/*! elastic.js - v1.2.0 - 2015-05-11
+/*! elastic.js - v1.2.1 - 2015-06-29
  * https://github.com/fullscale/elastic.js
  * Copyright (c) 2015 FullScale Labs, LLC; Licensed MIT */
 
@@ -15353,6 +15353,32 @@
         }
 
         func.script_score.script = scriptCode;
+
+        if (func.script_score.script_id) {
+          delete func.script_score.script_id;
+        }
+
+        return this;
+      },
+
+      /**
+      Set the script id that will modify the score.
+
+      @member ejs.ScriptScoreFunction
+      @param {String} scriptId Id of an indexed script.
+      @returns {Object} returns <code>this</code> so that calls can be chained.
+      */
+      scriptId: function (scriptId) {
+        if (scriptId == null) {
+          return func.script_score.scriptId;
+        }
+
+        func.script_score.script_id = scriptId;
+
+        if (func.script_score.script) {
+          delete func.script_score.script;
+        }
+
         return this;
       },
 
@@ -16213,6 +16239,30 @@
               query.sort.push(sortObj);
             }
           }
+        }
+
+        return this;
+      },
+
+      /**
+           Allows to set the search type for request.
+
+           @member ejs.Request
+           @param {String} searchType Search type to set for this query.
+           @returns {Object} returns <code>this</code> so that calls can be chained.
+           */
+      searchType: function (searchType) {
+        if (searchType == null) {
+          return query.search_type;
+        }
+
+        if (searchType === "query_then_fetch" ||
+              searchType === "dfs_query_then_fetch" ||
+              searchType === "query_and_fetch" ||
+              searchType === "dfs_query_and_fetch" ||
+              searchType === "count" ||
+              searchType === "scan") {
+          query.search_type = searchType;
         }
 
         return this;
