@@ -105,30 +105,6 @@
       },
 
       /**
-           Allows to set the search type for request.
-
-           @member ejs.Request
-           @param {String} searchType Search type to set for this query.
-           @returns {Object} returns <code>this</code> so that calls can be chained.
-           */
-      searchType: function (searchType) {
-        if (searchType == null) {
-          return query.search_type;
-        }
-
-        if (searchType === "query_then_fetch" ||
-              searchType === "dfs_query_then_fetch" ||
-              searchType === "query_and_fetch" ||
-              searchType === "dfs_query_and_fetch" ||
-              searchType === "count" ||
-              searchType === "scan") {
-          query.search_type = searchType;
-        }
-
-        return this;
-      },
-
-      /**
            Enables score computation and tracking during sorting.  Be default,
            when sorting scores are not computed.
 
