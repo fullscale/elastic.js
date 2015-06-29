@@ -62,7 +62,7 @@
         }
 
         return this;
-      }
+      },
 
       /**
       The script language being used.

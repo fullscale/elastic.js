@@ -126,7 +126,7 @@
         }
 
         return this;
-      }
+      },
 
       /**
            Enables score computation and tracking during sorting.  Be default,
