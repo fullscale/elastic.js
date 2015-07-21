@@ -380,6 +380,26 @@
       },
 
       /**
+            Allows you to set a specified post_filter on this request object.
+
+            @member ejs.Request
+            @param {Object} filter Any valid <code>Filter</code> object.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      post_filter: function (filter) {
+        if (filter == null) {
+          return query.filter;
+        }
+
+        if (!isFilter(filter)) {
+          throw new TypeError('Argument must be a Filter');
+        }
+
+        query.post_filter = filter.toJSON();
+        return this;
+      },
+
+      /**
             Performs highlighting based on the <code>Highlight</code>
             settings.
 
