@@ -2013,7 +2013,7 @@ exports.queries = {
     test.done();
   },
   MultiMatchQuery: function (test) {
-    test.expect(45);
+    test.expect(47);
 
     var mmQuery = ejs.MultiMatchQuery('t', 'v1'),
       expected,
@@ -2060,8 +2060,16 @@ exports.queries = {
     expected.multi_match.tie_breaker = 0.6;
     doTest();
 
-    mmQuery.type('boolean');
-    expected.multi_match.type = 'boolean';
+    mmQuery.type('best_fields');
+    expected.multi_match.type = 'best_fields';
+    doTest();
+
+    mmQuery.type('cross_fields');
+    expected.multi_match.type = 'cross_fields';
+    doTest();
+
+    mmQuery.type('most_fields');
+    expected.multi_match.type = 'most_fields';
     doTest();
 
     mmQuery.type('junk');
