@@ -28,7 +28,7 @@ exports.aggregations = {
     done();
   },
   exists: function (test) {
-    test.expect(24);
+    test.expect(25);
 
     test.ok(ejs.GlobalAggregation, 'GlobalAggregation');
     test.ok(ejs.FilterAggregation, 'FilterAggregation');
@@ -54,6 +54,7 @@ exports.aggregations = {
     test.ok(ejs.IPv4RangeAggregation, 'IPv4RangeAggregation');
     test.ok(ejs.TopHitsAggregation, 'TopHitsAggregation');
     test.ok(ejs.GeoBoundsAggregation, 'GeoBoundsAggregation');
+    test.ok(ejs.ScriptedMetricAggregation, 'ScriptedMetricAggregation');
 
 
     test.done();
@@ -1505,6 +1506,43 @@ exports.aggregations = {
 
     agg.wrapLongitude(false);
     expected.myagg.geo_bounds.wrap_longitude = false;
+    doTest();
+
+    test.strictEqual(agg._type(), 'aggregation');
+
+    test.done();
+  },
+  ScriptedMetricAggregation: function (test) {
+    test.expect(8);
+
+    var agg = ejs.ScriptedMetricAggregation('myagg'),
+      expected,
+      doTest = function () {
+        test.deepEqual(agg.toJSON(), expected);
+      };
+
+    expected = {
+      myagg: {scripted_metric: {}}
+    };
+
+    test.ok(agg, 'ScriptedMetricAggregation exists');
+    test.ok(agg.toJSON(), 'toJSON() works');
+    doTest();
+
+    agg.initScriptFile('s1');
+    expected.myagg.scripted_metric.init_script_file = 's1';
+    doTest();
+
+    agg.mapScriptFile('m1');
+    expected.myagg.scripted_metric.map_script_file = 'm1';
+    doTest();
+
+    agg.combineScriptFile('c1');
+    expected.myagg.scripted_metric.combine_script_file = 'c1';
+    doTest();
+
+    agg.reduceScriptFile('r1');
+    expected.myagg.scripted_metric.reduce_script_file = 'r1';
     doTest();
 
     test.strictEqual(agg._type(), 'aggregation');
