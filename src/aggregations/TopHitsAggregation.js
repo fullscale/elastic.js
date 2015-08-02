@@ -215,8 +215,8 @@
             includes: includes
           };
 
-          if (excludes !== undefined) {
-            agg[name].top_hits._source = excludes;
+          if (excludes != null) {
+            agg[name].top_hits._source.excludes = excludes;
           }
         }
 
