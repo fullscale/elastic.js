@@ -28,7 +28,7 @@ exports.queries = {
     done();
   },
   exists: function (test) {
-    test.expect(40);
+    test.expect(41);
 
     test.ok(ejs.CommonTermsQuery, 'CommonTermsQuery');
     test.ok(ejs.RegexpQuery, 'RegexpQuery');
@@ -70,6 +70,7 @@ exports.queries = {
     // scoring functions for FunctionScoreQuery
     test.ok(ejs.BoostFactorScoreFunction, 'BoostFactorScoreFunction');
     test.ok(ejs.DecayScoreFunction, 'DecayScoreFunction');
+    test.ok(ejs.DecayScoreFunction, 'FieldValueFactorFunction');
     test.ok(ejs.RandomScoreFunction, 'RandomScoreFunction');
     test.ok(ejs.ScriptScoreFunction, 'ScriptScoreFunction');
 
@@ -146,6 +147,35 @@ exports.queries = {
     test.throws(function () {
       scoreFunc.origin(termFilter1);
     }, TypeError);
+
+    test.done();
+  },
+  FieldValueFactorFunction: function (test) {
+    test.expect(6);
+
+    var func = ejs.FieldValueFactorFunction('f'),
+      expected,
+      doTest = function () {
+        test.deepEqual(func.toJSON(), expected);
+      };
+
+    expected = {
+      field_value_factor: { field: 'f' }
+    };
+
+    test.ok(func, 'FieldValueFactorFunction exists');
+    test.ok(func.toJSON(), 'toJSON() works');
+    doTest();
+
+    func.factor(2);
+    expected.field_value_factor.factor = 2;
+    doTest();
+
+    func.modifier('sqrt');
+    expected.field_value_factor.modifier = 'sqrt';
+    doTest();
+
+    test.strictEqual(func._type(), 'score function');
 
     test.done();
   },
@@ -260,7 +290,7 @@ exports.queries = {
     test.done();
   },
   FunctionScoreQuery: function (test) {
-    test.expect(30);
+    test.expect(31);
 
     var termQuery1 = ejs.TermQuery('t1', 'v1'),
       termFilter1 = ejs.TermFilter('tf1', 'fv1'),
@@ -345,6 +375,10 @@ exports.queries = {
 
     funcQuery.boost(2);
     expected.function_score.boost = 2;
+    doTest();
+
+    funcQuery.maxBoost(5);
+    expected.function_score.max_boost = 5;
     doTest();
 
     funcQuery.function(randomScore);
