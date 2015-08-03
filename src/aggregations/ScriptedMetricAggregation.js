@@ -23,7 +23,11 @@
       agg = _common.toJSON();
       
     delete _common.field;
-
+    delete _common.script;
+    delete _common.scriptId;
+    delete _common.scriptFile;
+    delete _common.scriptValuesSorted;
+  
     return extend(_common, {
 
       /**

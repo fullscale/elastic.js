@@ -60,7 +60,7 @@ exports.aggregations = {
     test.done();
   },
   ExtendedStatsAggregation: function (test) {
-    test.expect(9);
+    test.expect(10);
 
     var agg = ejs.ExtendedStatsAggregation('myagg'),
       ta1 = ejs.TermsAggregation('ta1').field('f1'),
@@ -85,12 +85,16 @@ exports.aggregations = {
     expected.myagg.extended_stats.script = 's1';
     doTest();
 
-    agg.lang('mvel');
-    expected.myagg.extended_stats.lang = 'mvel';
+    agg.scriptId('id1');
+    expected.myagg.extended_stats.script_id = 'id1';
     doTest();
 
-    agg.scriptValuesSorted(false);
-    expected.myagg.extended_stats.script_values_sorted = false;
+    agg.scriptFile('file1');
+    expected.myagg.extended_stats.script_file = 'file1';
+    doTest();
+
+    agg.lang('mvel');
+    expected.myagg.extended_stats.lang = 'mvel';
     doTest();
 
     agg.params({p1: 'v1'});
@@ -102,7 +106,7 @@ exports.aggregations = {
     test.done();
   },
   ValueCountAggregation: function (test) {
-    test.expect(9);
+    test.expect(10);
 
     var agg = ejs.ValueCountAggregation('myagg'),
       ta1 = ejs.TermsAggregation('ta1').field('f1'),
@@ -123,16 +127,21 @@ exports.aggregations = {
     expected.myagg.value_count.field = 'f1';
     doTest();
 
+
     agg.script('s1');
     expected.myagg.value_count.script = 's1';
     doTest();
 
-    agg.lang('mvel');
-    expected.myagg.value_count.lang = 'mvel';
+    agg.scriptId('id1');
+    expected.myagg.value_count.script_id = 'id1';
     doTest();
 
-    agg.scriptValuesUnique(false);
-    expected.myagg.value_count.script_values_unique = false;
+    agg.scriptFile('file1');
+    expected.myagg.value_count.script_file = 'file1';
+    doTest();
+
+    agg.lang('mvel');
+    expected.myagg.value_count.lang = 'mvel';
     doTest();
 
     agg.params({p1: 'v1'});
@@ -144,7 +153,7 @@ exports.aggregations = {
     test.done();
   },
   SumAggregation: function (test) {
-    test.expect(9);
+    test.expect(10);
 
     var agg = ejs.SumAggregation('myagg'),
       ta1 = ejs.TermsAggregation('ta1').field('f1'),
@@ -169,12 +178,16 @@ exports.aggregations = {
     expected.myagg.sum.script = 's1';
     doTest();
 
-    agg.lang('mvel');
-    expected.myagg.sum.lang = 'mvel';
+    agg.scriptId('id1');
+    expected.myagg.sum.script_id = 'id1';
     doTest();
 
-    agg.scriptValuesSorted(false);
-    expected.myagg.sum.script_values_sorted = false;
+    agg.scriptFile('file1');
+    expected.myagg.sum.script_file = 'file1';
+    doTest();
+
+    agg.lang('mvel');
+    expected.myagg.sum.lang = 'mvel';
     doTest();
 
     agg.params({p1: 'v1'});
@@ -186,7 +199,7 @@ exports.aggregations = {
     test.done();
   },
   StatsAggregation: function (test) {
-    test.expect(9);
+    test.expect(10);
 
     var agg = ejs.StatsAggregation('myagg'),
       ta1 = ejs.TermsAggregation('ta1').field('f1'),
@@ -211,12 +224,16 @@ exports.aggregations = {
     expected.myagg.stats.script = 's1';
     doTest();
 
-    agg.lang('mvel');
-    expected.myagg.stats.lang = 'mvel';
+    agg.scriptId('id1');
+    expected.myagg.stats.script_id = 'id1';
     doTest();
 
-    agg.scriptValuesSorted(false);
-    expected.myagg.stats.script_values_sorted = false;
+    agg.scriptFile('file1');
+    expected.myagg.stats.script_file = 'file1';
+    doTest();
+
+    agg.lang('mvel');
+    expected.myagg.stats.lang = 'mvel';
     doTest();
 
     agg.params({p1: 'v1'});
@@ -228,7 +245,7 @@ exports.aggregations = {
     test.done();
   },
   PercentilesAggregation: function (test) {
-    test.expect(15);
+    test.expect(16);
 
     var agg = ejs.PercentilesAggregation('myagg'),
       ta1 = ejs.TermsAggregation('ta1').field('f1'),
@@ -253,12 +270,16 @@ exports.aggregations = {
     expected.myagg.percentiles.script = 's1';
     doTest();
 
-    agg.lang('mvel');
-    expected.myagg.percentiles.lang = 'mvel';
+    agg.scriptId('id1');
+    expected.myagg.percentiles.script_id = 'id1';
     doTest();
 
-    agg.scriptValuesSorted(false);
-    expected.myagg.percentiles.script_values_sorted = false;
+    agg.scriptFile('file1');
+    expected.myagg.percentiles.script_file = 'file1';
+    doTest();
+
+    agg.lang('mvel');
+    expected.myagg.percentiles.lang = 'mvel';
     doTest();
 
     agg.params({p1: 'v1'});
@@ -294,7 +315,7 @@ exports.aggregations = {
     test.done();
   },
   MinAggregation: function (test) {
-    test.expect(9);
+    test.expect(10);
 
     var agg = ejs.MinAggregation('myagg'),
       ta1 = ejs.TermsAggregation('ta1').field('f1'),
@@ -319,12 +340,16 @@ exports.aggregations = {
     expected.myagg.min.script = 's1';
     doTest();
 
-    agg.lang('mvel');
-    expected.myagg.min.lang = 'mvel';
+    agg.scriptId('id1');
+    expected.myagg.min.script_id = 'id1';
     doTest();
 
-    agg.scriptValuesSorted(false);
-    expected.myagg.min.script_values_sorted = false;
+    agg.scriptFile('file1');
+    expected.myagg.min.script_file = 'file1';
+    doTest();
+
+    agg.lang('mvel');
+    expected.myagg.min.lang = 'mvel';
     doTest();
 
     agg.params({p1: 'v1'});
@@ -336,7 +361,7 @@ exports.aggregations = {
     test.done();
   },
   MaxAggregation: function (test) {
-    test.expect(9);
+    test.expect(10);
 
     var agg = ejs.MaxAggregation('myagg'),
       ta1 = ejs.TermsAggregation('ta1').field('f1'),
@@ -361,12 +386,16 @@ exports.aggregations = {
     expected.myagg.max.script = 's1';
     doTest();
 
-    agg.lang('mvel');
-    expected.myagg.max.lang = 'mvel';
+    agg.scriptId('id1');
+    expected.myagg.max.script_id = 'id1';
     doTest();
 
-    agg.scriptValuesSorted(false);
-    expected.myagg.max.script_values_sorted = false;
+    agg.scriptFile('file1');
+    expected.myagg.max.script_file = 'file1';
+    doTest();
+
+    agg.lang('mvel');
+    expected.myagg.max.lang = 'mvel';
     doTest();
 
     agg.params({p1: 'v1'});
@@ -378,7 +407,7 @@ exports.aggregations = {
     test.done();
   },
   CardinalityAggregation: function (test) {
-    test.expect(10);
+    test.expect(12);
 
     var agg = ejs.CardinalityAggregation('myagg'),
       ta1 = ejs.TermsAggregation('ta1').field('f1'),
@@ -403,6 +432,14 @@ exports.aggregations = {
     expected.myagg.cardinality.script = 's1';
     doTest();
 
+    agg.scriptId('id1');
+    expected.myagg.cardinality.script_id = 'id1';
+    doTest();
+
+    agg.scriptFile('file1');
+    expected.myagg.cardinality.script_file = 'file1';
+    doTest();
+
     agg.lang('mvel');
     expected.myagg.cardinality.lang = 'mvel';
     doTest();
@@ -424,7 +461,7 @@ exports.aggregations = {
     test.done();
   },
   AvgAggregation: function (test) {
-    test.expect(9);
+    test.expect(10);
 
     var agg = ejs.AvgAggregation('myagg'),
       ta1 = ejs.TermsAggregation('ta1').field('f1'),
@@ -449,12 +486,16 @@ exports.aggregations = {
     expected.myagg.avg.script = 's1';
     doTest();
 
-    agg.lang('mvel');
-    expected.myagg.avg.lang = 'mvel';
+    agg.scriptId('id1');
+    expected.myagg.avg.script_id = 'id1';
     doTest();
 
-    agg.scriptValuesSorted(false);
-    expected.myagg.avg.script_values_sorted = false;
+    agg.scriptFile('file1');
+    expected.myagg.avg.script_file = 'file1';
+    doTest();
+
+    agg.lang('mvel');
+    expected.myagg.avg.lang = 'mvel';
     doTest();
 
     agg.params({p1: 'v1'});
@@ -670,7 +711,7 @@ exports.aggregations = {
     test.done();
   },
   IPv4RangeAggregation: function (test) {
-    test.expect(16);
+    test.expect(17);
 
     var agg = ejs.IPv4RangeAggregation('myagg'),
       ta1 = ejs.TermsAggregation('ta1').field('f1'),
@@ -693,6 +734,14 @@ exports.aggregations = {
 
     agg.script('s1');
     expected.myagg.ip_range.script = 's1';
+    doTest();
+
+    agg.scriptId('id1');
+    expected.myagg.ip_range.script_id = 'id1';
+    doTest();
+
+    agg.scriptFile('file1');
+    expected.myagg.ip_range.script_file = 'file1';
     doTest();
 
     agg.lang('mvel');
@@ -719,10 +768,6 @@ exports.aggregations = {
     expected.myagg.ip_range.keyed = true;
     doTest();
 
-    agg.scriptValuesSorted(false);
-    expected.myagg.ip_range.script_values_sorted = false;
-    doTest();
-
     agg.params({p1: 'v1'});
     expected.myagg.ip_range.params = {p1: 'v1'};
     doTest();
@@ -740,7 +785,7 @@ exports.aggregations = {
     test.done();
   },
   DateRangeAggregation: function (test) {
-    test.expect(17);
+    test.expect(18);
 
     var agg = ejs.DateRangeAggregation('myagg'),
       ta1 = ejs.TermsAggregation('ta1').field('f1'),
@@ -763,6 +808,14 @@ exports.aggregations = {
 
     agg.script('s1');
     expected.myagg.date_range.script = 's1';
+    doTest();
+
+    agg.scriptId('id1');
+    expected.myagg.date_range.script_id = 'id1';
+    doTest();
+
+    agg.scriptFile('file1');
+    expected.myagg.date_range.script_file = 'file1';
     doTest();
 
     agg.lang('mvel');
@@ -793,10 +846,6 @@ exports.aggregations = {
     expected.myagg.date_range.keyed = true;
     doTest();
 
-    agg.scriptValuesSorted(false);
-    expected.myagg.date_range.script_values_sorted = false;
-    doTest();
-
     agg.params({p1: 'v1'});
     expected.myagg.date_range.params = {p1: 'v1'};
     doTest();
@@ -814,7 +863,7 @@ exports.aggregations = {
     test.done();
   },
   RangeAggregation: function (test) {
-    test.expect(16);
+    test.expect(17);
 
     var agg = ejs.RangeAggregation('myagg'),
       ta1 = ejs.TermsAggregation('ta1').field('f1'),
@@ -839,6 +888,14 @@ exports.aggregations = {
     expected.myagg.range.script = 's1';
     doTest();
 
+    agg.scriptId('id1');
+    expected.myagg.range.script_id = 'id1';
+    doTest();
+
+    agg.scriptFile('file1');
+    expected.myagg.range.script_file = 'file1';
+    doTest();
+
     agg.lang('mvel');
     expected.myagg.range.lang = 'mvel';
     doTest();
@@ -861,10 +918,6 @@ exports.aggregations = {
 
     agg.keyed(true);
     expected.myagg.range.keyed = true;
-    doTest();
-
-    agg.scriptValuesSorted(false);
-    expected.myagg.range.script_values_sorted = false;
     doTest();
 
     agg.params({p1: 'v1'});
@@ -952,7 +1005,7 @@ exports.aggregations = {
     test.done();
   },
   DateHistogramAggregation: function (test) {
-    test.expect(26);
+    test.expect(27);
 
     var agg = ejs.DateHistogramAggregation('myagg'),
       ta1 = ejs.TermsAggregation('ta1').field('f1'),
@@ -975,6 +1028,14 @@ exports.aggregations = {
 
     agg.script('s1');
     expected.myagg.date_histogram.script = 's1';
+    doTest();
+
+    agg.scriptId('id1');
+    expected.myagg.date_histogram.script_id = 'id1';
+    doTest();
+
+    agg.scriptFile('file1');
+    expected.myagg.date_histogram.script_file = 'file1';
     doTest();
 
     agg.lang('mvel');
@@ -1029,10 +1090,6 @@ exports.aggregations = {
     expected.myagg.date_histogram.keyed = true;
     doTest();
 
-    agg.scriptValuesSorted(false);
-    expected.myagg.date_histogram.script_values_sorted = false;
-    doTest();
-
     agg.preZoneAdjustLargeInterval(true);
     expected.myagg.date_histogram.pre_zone_adjust_large_interval = true;
     doTest();
@@ -1062,7 +1119,7 @@ exports.aggregations = {
     test.done();
   },
   HistogramAggregation: function (test) {
-    test.expect(20);
+    test.expect(21);
 
     var agg = ejs.HistogramAggregation('myagg'),
       ta1 = ejs.TermsAggregation('ta1').field('f1'),
@@ -1085,6 +1142,14 @@ exports.aggregations = {
 
     agg.script('s1');
     expected.myagg.histogram.script = 's1';
+    doTest();
+
+    agg.scriptId('id1');
+    expected.myagg.histogram.script_id = 'id1';
+    doTest();
+
+    agg.scriptFile('file1');
+    expected.myagg.histogram.script_file = 'file1';
     doTest();
 
     agg.lang('mvel');
@@ -1117,10 +1182,6 @@ exports.aggregations = {
 
     agg.keyed(true);
     expected.myagg.histogram.keyed = true;
-    doTest();
-
-    agg.scriptValuesSorted(false);
-    expected.myagg.histogram.script_values_sorted = false;
     doTest();
 
     agg.params({p1: 'v1'});
@@ -1194,7 +1255,7 @@ exports.aggregations = {
     test.done();
   },
   TermsAggregation: function (test) {
-    test.expect(32);
+    test.expect(25);
 
     var agg = ejs.TermsAggregation('myagg'),
       ta1 = ejs.TermsAggregation('ta1').field('f1'),
@@ -1219,40 +1280,48 @@ exports.aggregations = {
     expected.myagg.terms.script = 's1';
     doTest();
 
+    agg.scriptId('id1');
+    expected.myagg.terms.script_id = 'id1';
+    doTest();
+
+    agg.scriptFile('file1');
+    expected.myagg.terms.script_file = 'file1';
+    doTest();
+
     agg.lang('mvel');
     expected.myagg.terms.lang = 'mvel';
     doTest();
 
-    agg.valueType('string');
-    expected.myagg.terms.value_type = 'string';
-    doTest();
+    // agg.valueType('string');
+    // expected.myagg.terms.value_type = 'string';
+    // doTest();
 
-    agg.valueType('invalid');
-    doTest();
+    // agg.valueType('invalid');
+    // doTest();
 
-    agg.valueType('DOUBLE');
-    expected.myagg.terms.value_type = 'double';
-    doTest();
+    // agg.valueType('DOUBLE');
+    // expected.myagg.terms.value_type = 'double';
+    // doTest();
 
-    agg.valueType('Float');
-    expected.myagg.terms.value_type = 'float';
-    doTest();
+    // agg.valueType('Float');
+    // expected.myagg.terms.value_type = 'float';
+    // doTest();
 
-    agg.valueType('long');
-    expected.myagg.terms.value_type = 'long';
-    doTest();
+    // agg.valueType('long');
+    // expected.myagg.terms.value_type = 'long';
+    // doTest();
 
-    agg.valueType('integer');
-    expected.myagg.terms.value_type = 'integer';
-    doTest();
+    // agg.valueType('integer');
+    // expected.myagg.terms.value_type = 'integer';
+    // doTest();
 
-    agg.valueType('short');
-    expected.myagg.terms.value_type = 'short';
-    doTest();
+    // agg.valueType('short');
+    // expected.myagg.terms.value_type = 'short';
+    // doTest();
 
-    agg.valueType('byte');
-    expected.myagg.terms.value_type = 'byte';
-    doTest();
+    // agg.valueType('byte');
+    // expected.myagg.terms.value_type = 'byte';
+    // doTest();
 
     agg.format('%Y-%m-%d');
     expected.myagg.terms.format = '%Y-%m-%d';
@@ -1283,10 +1352,6 @@ exports.aggregations = {
 
     agg.executionHint('ORDINALS');
     expected.myagg.terms.execution_hint = 'ordinals';
-    doTest();
-
-    agg.scriptValuesUnique(false);
-    expected.myagg.terms.script_values_unique = false;
     doTest();
 
     agg.size(10);

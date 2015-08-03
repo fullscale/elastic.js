@@ -23,6 +23,8 @@
     // not supported in geo bounds aggregation
     delete _common.scriptValuesSorted;
     delete _common.script;
+    delete _common.scriptId;
+    delete _common.scriptFile;
     delete _common.lang;
     delete _common.params;
 

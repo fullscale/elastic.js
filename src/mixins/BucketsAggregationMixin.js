@@ -1,25 +1,21 @@
   /**
     @mixin
-    <p>The MetricsAggregationMixin provides support for common options used across
-    various metrics <code>Aggregation</code> implementations.  This object should
+    <p>The BucketsAggregationMixin provides support for common options used across
+    various buckets <code>Aggregation</code> implementations.  This object should
     not be used directly.</p>
 
-    @name ejs.MetricsAggregationMixin
+    @name ejs.BucketsAggregationMixin
     @ejs aggregation
     @borrows ejs.AggregationMixin._type as _type
     @borrows ejs.AggregationMixin.toJSON as toJSON
 
     */
-  ejs.MetricsAggregationMixin = function (name, type) {
+  ejs.BucketsAggregationMixin = function (name, type) {
 
     var
       _common = ejs.AggregationMixin(name),
       agg = _common.toJSON();
 
-    // remove ability for sub-aggregations since metrics aggregations dont
-    // support them.
-    delete _common.aggregation;
-    delete _common.agg;
 
     agg[name][type] = {};
 

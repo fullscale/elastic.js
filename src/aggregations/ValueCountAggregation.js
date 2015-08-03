@@ -10,7 +10,7 @@
     @ejs aggregation
     @borrows ejs.MetricsAggregationMixin.field as field
     @borrows ejs.MetricsAggregationMixin.script as script
-    @borrows ejs.MetricsAggregationMixin.lang as lang
+    @borrows ejs.MetricsAggregationMixin.lang asr  lang
     @borrows ejs.MetricsAggregationMixin.params as params
     @borrows ejs.AggregationMixin._type as _type
     @borrows ejs.AggregationMixin.toJSON as toJSON
@@ -28,27 +28,6 @@
       _common = ejs.MetricsAggregationMixin(name, 'value_count'),
       agg = _common.toJSON();
 
-    // not supported in value count aggregation
-    delete _common.scriptValuesSorted;
-
-    return extend(_common, {
-
-      /**
-      Set to true to assume script values are unique.
-
-      @member ejs.ValueCountAggregation
-      @param {Boolean} trueFalse assume unique values or not
-      @returns {Object} returns <code>this</code> so that calls can be chained.
-      */
-      scriptValuesUnique: function (trueFalse) {
-        if (trueFalse == null) {
-          return agg[name].value_count.script_values_unique;
-        }
-
-        agg[name].value_count.script_values_unique = trueFalse;
-        return this;
-      }
-
-    });
+    return _common;
 
   };
