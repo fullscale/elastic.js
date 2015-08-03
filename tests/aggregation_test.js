@@ -1513,7 +1513,7 @@ exports.aggregations = {
     test.done();
   },
   ScriptedMetricAggregation: function (test) {
-    test.expect(8);
+    test.expect(19);
 
     var agg = ejs.ScriptedMetricAggregation('myagg'),
       expected,
@@ -1529,20 +1529,64 @@ exports.aggregations = {
     test.ok(agg.toJSON(), 'toJSON() works');
     doTest();
 
-    agg.initScriptFile('s1');
-    expected.myagg.scripted_metric.init_script_file = 's1';
+    agg.initScript('s1');
+    expected.myagg.scripted_metric.init_script = 's1';
     doTest();
 
-    agg.mapScriptFile('m1');
-    expected.myagg.scripted_metric.map_script_file = 'm1';
+    agg.mapScript('m1');
+    expected.myagg.scripted_metric.map_script = 'm1';
     doTest();
 
-    agg.combineScriptFile('c1');
-    expected.myagg.scripted_metric.combine_script_file = 'c1';
+    agg.combineScript('c1');
+    expected.myagg.scripted_metric.combine_script = 'c1';
     doTest();
 
-    agg.reduceScriptFile('r1');
-    expected.myagg.scripted_metric.reduce_script_file = 'r1';
+    agg.reduceScript('r1');
+    expected.myagg.scripted_metric.reduce_script = 'r1';
+    doTest();
+
+    agg.initScriptFile('fs1');
+    expected.myagg.scripted_metric.init_script_file = 'fs1';
+    doTest();
+
+    agg.mapScriptFile('fm1');
+    expected.myagg.scripted_metric.map_script_file = 'fm1';
+    doTest();
+
+    agg.combineScriptFile('fc1');
+    expected.myagg.scripted_metric.combine_script_file = 'fc1';
+    doTest();
+
+    agg.reduceScriptFile('fr1');
+    expected.myagg.scripted_metric.reduce_script_file = 'fr1';
+    doTest();
+
+    agg.initScriptId('is1');
+    expected.myagg.scripted_metric.init_script_id = 'is1';
+    doTest();
+
+    agg.mapScriptId('im1');
+    expected.myagg.scripted_metric.map_script_id = 'im1';
+    doTest();
+
+    agg.combineScriptId('ic1');
+    expected.myagg.scripted_metric.combine_script_id = 'ic1';
+    doTest();
+
+    agg.reduceScriptId('ir1');
+    expected.myagg.scripted_metric.reduce_script_id = 'ir1';
+    doTest();
+
+    agg.params({p1: 'v1'});
+    expected.myagg.scripted_metric.params = {p1: 'v1'};
+    doTest();
+
+    agg.reduceParams({p2: 'v1'});
+    expected.myagg.scripted_metric.reduce_params = {p2: 'v1'};
+    doTest();
+
+    agg.lang('mvel');
+    expected.myagg.scripted_metric.lang = 'mvel';
     doTest();
 
     test.strictEqual(agg._type(), 'aggregation');
