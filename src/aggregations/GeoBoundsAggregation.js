@@ -21,7 +21,6 @@
       agg = _common.toJSON();
 
     // not supported in geo bounds aggregation
-    delete _common.scriptValuesSorted;
     delete _common.script;
     delete _common.scriptId;
     delete _common.scriptFile;
@@ -34,7 +33,7 @@
       /**
       Optional parameter which specifies whether the bounding box should be allowed to overlap the international date line. The default value is true
 
-      @member ejs.wrapLongitude
+      @member ejs.GeoBoundsAggregation
       @param {Boolean} trueFalse to overlap the international date line. 
       @returns {Object} returns <code>this</code> so that calls can be chained.
       */

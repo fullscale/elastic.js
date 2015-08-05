@@ -11,8 +11,9 @@
     @ejs aggregation
     @borrows ejs.MetricsAggregationMixin.field as field
     @borrows ejs.MetricsAggregationMixin.script as script
+    @borrows ejs.MetricsAggregationMixin.scriptId as scriptId
+    @borrows ejs.MetricsAggregationMixin.scriptFile as scriptFile
     @borrows ejs.MetricsAggregationMixin.lang as lang
-    @borrows ejs.MetricsAggregationMixin.scriptValuesSorted as scriptValuesSorted
     @borrows ejs.MetricsAggregationMixin.params as params
     @borrows ejs.AggregationMixin._type as _type
     @borrows ejs.AggregationMixin.toJSON as toJSON

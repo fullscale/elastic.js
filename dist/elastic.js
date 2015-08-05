@@ -1,4 +1,4 @@
-/*! elastic.js - v1.3.3 - 2015-08-04
+/*! elastic.js - v1.3.3 - 2015-08-06
  * https://github.com/fullscale/elastic.js
  * Copyright (c) 2015 FullScale Labs, LLC; Licensed MIT */
 
@@ -320,6 +320,8 @@
 
     @name ejs.BucketsAggregationMixin
     @ejs aggregation
+    @borrows ejs.AggregationMixin.aggregation as aggregation
+    @borrows ejs.AggregationMixin.agg as agg
     @borrows ejs.AggregationMixin._type as _type
     @borrows ejs.AggregationMixin.toJSON as toJSON
 
@@ -338,7 +340,7 @@
       /**
       <p>Sets the field to operate on.</p>
 
-      @member ejs.MetricsAggregationMixin
+      @member ejs.BucketsAggregationMixin
       @param {String} field a valid field name..
       @returns {Object} returns <code>this</code> so that calls can be chained.
       */
@@ -354,7 +356,7 @@
       /**
       Allows you generate or modify the terms/values using a script.
 
-      @member ejs.MetricsAggregationMixin
+      @member ejs.BucketsAggregationMixin
       @param {String} scriptCode A valid script string to execute.
       @returns {Object} returns <code>this</code> so that calls can be chained.
       */
@@ -370,7 +372,7 @@
       /**
       Allows you generate or modify the terms/values using a script.
 
-      @member ejs.MetricsAggregationMixin
+      @member ejs.BucketsAggregationMixin
       @param {String} scriptId A valid script id to execute.
       @returns {Object} returns <code>this</code> so that calls can be chained.
       */
@@ -386,7 +388,7 @@
       /**
       Allows you generate or modify the terms/values using a script.
 
-      @member ejs.MetricsAggregationMixin
+      @member ejs.BucketsAggregationMixin
       @param {String} scriptFile A valid script file to execute.
       @returns {Object} returns <code>this</code> so that calls can be chained.
       */
@@ -402,7 +404,7 @@
       /**
       The script language being used.
 
-      @member ejs.MetricsAggregationMixin
+      @member ejs.BucketsAggregationMixin
       @param {String} language The language of the script.
       @returns {Object} returns <code>this</code> so that calls can be chained.
       */
@@ -419,7 +421,7 @@
       Sets parameters that will be applied to the script.  Overwrites
       any existing params.
 
-      @member ejs.MetricsAggregationMixin
+      @member ejs.BucketsAggregationMixin
       @param {Object} p An object where the keys are the parameter name and
         values are the parameter value.
       @returns {Object} returns <code>this</code> so that calls can be chained.
@@ -3237,8 +3239,9 @@
     @ejs aggregation
     @borrows ejs.MetricsAggregationMixin.field as field
     @borrows ejs.MetricsAggregationMixin.script as script
+    @borrows ejs.MetricsAggregationMixin.scriptId as scriptId
+    @borrows ejs.MetricsAggregationMixin.scriptFile as scriptFile
     @borrows ejs.MetricsAggregationMixin.lang as lang
-    @borrows ejs.MetricsAggregationMixin.scriptValuesSorted as scriptValuesSorted
     @borrows ejs.MetricsAggregationMixin.params as params
     @borrows ejs.AggregationMixin._type as _type
     @borrows ejs.AggregationMixin.toJSON as toJSON
@@ -3269,6 +3272,8 @@
     @ejs aggregation
     @borrows ejs.MetricsAggregationMixin.field as field
     @borrows ejs.MetricsAggregationMixin.script as script
+    @borrows ejs.MetricsAggregationMixin.scriptId as scriptId
+    @borrows ejs.MetricsAggregationMixin.scriptFile as scriptFile
     @borrows ejs.MetricsAggregationMixin.lang as lang
     @borrows ejs.MetricsAggregationMixin.params as params
     @borrows ejs.AggregationMixin._type as _type
@@ -3285,9 +3290,6 @@
     var
       _common = ejs.MetricsAggregationMixin(name, 'cardinality'),
       agg = _common.toJSON();
-
-    // not supported in cardinality aggregation
-    delete _common.scriptValuesSorted;
 
     return extend(_common, {
 
@@ -3603,6 +3605,12 @@
 
     @name ejs.DateRangeAggregation
     @ejs aggregation
+    @borrows ejs.BucketsAggregationMixin.field as field
+    @borrows ejs.BucketsAggregationMixin.script as script
+    @borrows ejs.BucketsAggregationMixin.scriptId as scriptId
+    @borrows ejs.BucketsAggregationMixin.scriptFile as scriptFile
+    @borrows ejs.BucketsAggregationMixin.lang as lang
+    @borrows ejs.BucketsAggregationMixin.params as params
     @borrows ejs.AggregationMixin.aggregation as aggregation
     @borrows ejs.AggregationMixin.agg as agg
     @borrows ejs.AggregationMixin._type as _type
@@ -3708,8 +3716,9 @@
     @ejs aggregation
     @borrows ejs.MetricsAggregationMixin.field as field
     @borrows ejs.MetricsAggregationMixin.script as script
+    @borrows ejs.MetricsAggregationMixin.scriptId as scriptId
+    @borrows ejs.MetricsAggregationMixin.scriptFile as scriptFile
     @borrows ejs.MetricsAggregationMixin.lang as lang
-    @borrows ejs.MetricsAggregationMixin.scriptValuesSorted as scriptValuesSorted
     @borrows ejs.MetricsAggregationMixin.params as params
     @borrows ejs.AggregationMixin._type as _type
     @borrows ejs.AggregationMixin.toJSON as toJSON
@@ -3780,6 +3789,66 @@
     });
   };
 
+  /**
+    @class
+    <p>Defines a multi bucket aggregations where each bucket is 
+    associated with a filter. Each bucket will collect all documents 
+    that match its associated filter.</p>
+
+    @name ejs.FiltersAggregation
+    @ejs aggregation
+    @borrows ejs.AggregationMixin.aggregation as aggregation
+    @borrows ejs.AggregationMixin.agg as agg
+    @borrows ejs.AggregationMixin._type as _type
+    @borrows ejs.AggregationMixin.toJSON as toJSON
+
+    @desc
+    <p>Defines a multi bucket aggregations where each bucket is 
+    associated with a filter. Each bucket will collect all documents 
+    that match its associated filter.</p>
+
+    @param {String} name The name which be used to refer to this aggregation.
+
+    */
+  ejs.FiltersAggregation = function (name) {
+
+    var
+      _common = ejs.AggregationMixin(name),
+      agg = _common.toJSON();
+
+    agg[name].filters = {'filters':{}};
+
+    return extend(_common, {
+
+      /**
+      <p>Sets the filters to be used for this aggregation.</p>
+
+      @member ejs.FiltersAggregation
+      @param {Filter} oFilter A valid <code>Filter</code> object.
+      @param {string} id A name for the filter.
+      @returns {Object} returns <code>this</code> so that calls can be chained.
+      */
+      filter: function (oFilter, id) {
+        var filters = {};
+        // if (agg[name].filters.filters == null) {
+        //   agg[name].filters.filters = {};
+        // }
+
+        if (!isFilter(oFilter)) {
+          throw new TypeError('First argument must be a Filter');
+        }
+
+        if (id == null) {
+          throw new TypeError('Second argument must be a name for the filter');
+        }
+
+        agg[name].filters.filters[id] = oFilter.toJSON();
+        return this;
+      }
+
+    });
+  };
+
 /**
     @class
     <p>A metric aggregation that computes the bounding box containing all geo_point values for a field.</p>
@@ -3803,7 +3872,6 @@
       agg = _common.toJSON();
 
     // not supported in geo bounds aggregation
-    delete _common.scriptValuesSorted;
     delete _common.script;
     delete _common.scriptId;
     delete _common.scriptFile;
@@ -3816,7 +3884,7 @@
       /**
       Optional parameter which specifies whether the bounding box should be allowed to overlap the international date line. The default value is true
 
-      @member ejs.wrapLongitude
+      @member ejs.GeoBoundsAggregation
       @param {Boolean} trueFalse to overlap the international date line. 
       @returns {Object} returns <code>this</code> so that calls can be chained.
       */
@@ -4187,6 +4255,12 @@
 
     @name ejs.HistogramAggregation
     @ejs aggregation
+    @borrows ejs.BucketsAggregationMixin.field as field
+    @borrows ejs.BucketsAggregationMixin.script as script
+    @borrows ejs.BucketsAggregationMixin.scriptId as scriptId
+    @borrows ejs.BucketsAggregationMixin.scriptFile as scriptFile
+    @borrows ejs.BucketsAggregationMixin.lang as lang
+    @borrows ejs.BucketsAggregationMixin.params as params
     @borrows ejs.AggregationMixin.aggregation as aggregation
     @borrows ejs.AggregationMixin.agg as agg
     @borrows ejs.AggregationMixin._type as _type
@@ -4342,6 +4416,12 @@
 
     @name ejs.IPv4RangeAggregation
     @ejs aggregation
+    @borrows ejs.BucketsAggregationMixin.field as field
+    @borrows ejs.BucketsAggregationMixin.script as script
+    @borrows ejs.BucketsAggregationMixin.scriptId as scriptId
+    @borrows ejs.BucketsAggregationMixin.scriptFile as scriptFile
+    @borrows ejs.BucketsAggregationMixin.lang as lang
+    @borrows ejs.BucketsAggregationMixin.params as params
     @borrows ejs.AggregationMixin.aggregation as aggregation
     @borrows ejs.AggregationMixin.agg as agg
     @borrows ejs.AggregationMixin._type as _type
@@ -4431,8 +4511,9 @@
     @ejs aggregation
     @borrows ejs.MetricsAggregationMixin.field as field
     @borrows ejs.MetricsAggregationMixin.script as script
+    @borrows ejs.MetricsAggregationMixin.scriptId as scriptId
+    @borrows ejs.MetricsAggregationMixin.scriptFile as scriptFile
     @borrows ejs.MetricsAggregationMixin.lang as lang
-    @borrows ejs.MetricsAggregationMixin.scriptValuesSorted as scriptValuesSorted
     @borrows ejs.MetricsAggregationMixin.params as params
     @borrows ejs.AggregationMixin._type as _type
     @borrows ejs.AggregationMixin.toJSON as toJSON
@@ -4464,8 +4545,9 @@
     @ejs aggregation
     @borrows ejs.MetricsAggregationMixin.field as field
     @borrows ejs.MetricsAggregationMixin.script as script
+    @borrows ejs.MetricsAggregationMixin.scriptId as scriptId
+    @borrows ejs.MetricsAggregationMixin.scriptFile as scriptFile
     @borrows ejs.MetricsAggregationMixin.lang as lang
-    @borrows ejs.MetricsAggregationMixin.scriptValuesSorted as scriptValuesSorted
     @borrows ejs.MetricsAggregationMixin.params as params
     @borrows ejs.AggregationMixin._type as _type
     @borrows ejs.AggregationMixin.toJSON as toJSON
@@ -4593,8 +4675,9 @@
     @ejs aggregation
     @borrows ejs.MetricsAggregationMixin.field as field
     @borrows ejs.MetricsAggregationMixin.script as script
+    @borrows ejs.MetricsAggregationMixin.scriptId as scriptId
+    @borrows ejs.MetricsAggregationMixin.scriptFile as scriptFile
     @borrows ejs.MetricsAggregationMixin.lang as lang
-    @borrows ejs.MetricsAggregationMixin.scriptValuesSorted as scriptValuesSorted
     @borrows ejs.MetricsAggregationMixin.params as params
     @borrows ejs.AggregationMixin._type as _type
     @borrows ejs.AggregationMixin.toJSON as toJSON
@@ -4708,6 +4791,12 @@
 
     @name ejs.RangeAggregation
     @ejs aggregation
+    @borrows ejs.BucketsAggregationMixin.field as field
+    @borrows ejs.BucketsAggregationMixin.script as script
+    @borrows ejs.BucketsAggregationMixin.scriptId as scriptId
+    @borrows ejs.BucketsAggregationMixin.scriptFile as scriptFile
+    @borrows ejs.BucketsAggregationMixin.lang as lang
+    @borrows ejs.BucketsAggregationMixin.params as params    
     @borrows ejs.AggregationMixin.aggregation as aggregation
     @borrows ejs.AggregationMixin.agg as agg
     @borrows ejs.AggregationMixin._type as _type
@@ -4811,7 +4900,6 @@
     delete _common.script;
     delete _common.scriptId;
     delete _common.scriptFile;
-    delete _common.scriptValuesSorted;
   
     return extend(_common, {
 
@@ -5260,8 +5348,9 @@
     @ejs aggregation
     @borrows ejs.MetricsAggregationMixin.field as field
     @borrows ejs.MetricsAggregationMixin.script as script
+    @borrows ejs.MetricsAggregationMixin.scriptId as scriptId
+    @borrows ejs.MetricsAggregationMixin.scriptFile as scriptFile
     @borrows ejs.MetricsAggregationMixin.lang as lang
-    @borrows ejs.MetricsAggregationMixin.scriptValuesSorted as scriptValuesSorted
     @borrows ejs.MetricsAggregationMixin.params as params
     @borrows ejs.AggregationMixin._type as _type
     @borrows ejs.AggregationMixin.toJSON as toJSON
@@ -5293,8 +5382,9 @@
     @ejs aggregation
     @borrows ejs.MetricsAggregationMixin.field as field
     @borrows ejs.MetricsAggregationMixin.script as script
+    @borrows ejs.MetricsAggregationMixin.scriptId as scriptId
+    @borrows ejs.MetricsAggregationMixin.scriptFile as scriptFile
     @borrows ejs.MetricsAggregationMixin.lang as lang
-    @borrows ejs.MetricsAggregationMixin.scriptValuesSorted as scriptValuesSorted
     @borrows ejs.MetricsAggregationMixin.params as params
     @borrows ejs.AggregationMixin._type as _type
     @borrows ejs.AggregationMixin.toJSON as toJSON
@@ -5322,6 +5412,12 @@
 
     @name ejs.TermsAggregation
     @ejs aggregation
+    @borrows ejs.BucketsAggregationMixin.field as field
+    @borrows ejs.BucketsAggregationMixin.script as script
+    @borrows ejs.BucketsAggregationMixin.scriptId as scriptId
+    @borrows ejs.BucketsAggregationMixin.scriptFile as scriptFile
+    @borrows ejs.BucketsAggregationMixin.lang as lang
+    @borrows ejs.BucketsAggregationMixin.params as params
     @borrows ejs.AggregationMixin.aggregation as aggregation
     @borrows ejs.AggregationMixin.agg as agg
     @borrows ejs.AggregationMixin._type as _type
@@ -5544,8 +5640,10 @@
   ejs.TopHitsAggregation = function (name) {
 
     var
-    _common = ejs.MetricsAggregationMixin(name, 'top_hits'),
-    agg = _common.toJSON();
+      _common = ejs.AggregationMixin(name),
+      agg = _common.toJSON();
+
+    agg[name].top_hits = {};
 
     return extend(_common, {
       /**
@@ -5760,7 +5858,9 @@
     @ejs aggregation
     @borrows ejs.MetricsAggregationMixin.field as field
     @borrows ejs.MetricsAggregationMixin.script as script
-    @borrows ejs.MetricsAggregationMixin.lang asr  lang
+    @borrows ejs.MetricsAggregationMixin.scriptId as scriptId
+    @borrows ejs.MetricsAggregationMixin.scriptFile as scriptFile
+    @borrows ejs.MetricsAggregationMixin.lang as lang
     @borrows ejs.MetricsAggregationMixin.params as params
     @borrows ejs.AggregationMixin._type as _type
     @borrows ejs.AggregationMixin.toJSON as toJSON

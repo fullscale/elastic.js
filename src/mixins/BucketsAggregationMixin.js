@@ -6,6 +6,8 @@
 
     @name ejs.BucketsAggregationMixin
     @ejs aggregation
+    @borrows ejs.AggregationMixin.aggregation as aggregation
+    @borrows ejs.AggregationMixin.agg as agg
     @borrows ejs.AggregationMixin._type as _type
     @borrows ejs.AggregationMixin.toJSON as toJSON
 
@@ -24,7 +26,7 @@
       /**
       <p>Sets the field to operate on.</p>
 
-      @member ejs.MetricsAggregationMixin
+      @member ejs.BucketsAggregationMixin
       @param {String} field a valid field name..
       @returns {Object} returns <code>this</code> so that calls can be chained.
       */
@@ -40,7 +42,7 @@
       /**
       Allows you generate or modify the terms/values using a script.
 
-      @member ejs.MetricsAggregationMixin
+      @member ejs.BucketsAggregationMixin
       @param {String} scriptCode A valid script string to execute.
       @returns {Object} returns <code>this</code> so that calls can be chained.
       */
@@ -56,7 +58,7 @@
       /**
       Allows you generate or modify the terms/values using a script.
 
-      @member ejs.MetricsAggregationMixin
+      @member ejs.BucketsAggregationMixin
       @param {String} scriptId A valid script id to execute.
       @returns {Object} returns <code>this</code> so that calls can be chained.
       */
@@ -72,7 +74,7 @@
       /**
       Allows you generate or modify the terms/values using a script.
 
-      @member ejs.MetricsAggregationMixin
+      @member ejs.BucketsAggregationMixin
       @param {String} scriptFile A valid script file to execute.
       @returns {Object} returns <code>this</code> so that calls can be chained.
       */
@@ -88,7 +90,7 @@
       /**
       The script language being used.
 
-      @member ejs.MetricsAggregationMixin
+      @member ejs.BucketsAggregationMixin
       @param {String} language The language of the script.
       @returns {Object} returns <code>this</code> so that calls can be chained.
       */
@@ -105,7 +107,7 @@
       Sets parameters that will be applied to the script.  Overwrites
       any existing params.
 
-      @member ejs.MetricsAggregationMixin
+      @member ejs.BucketsAggregationMixin
       @param {Object} p An object where the keys are the parameter name and
         values are the parameter value.
       @returns {Object} returns <code>this</code> so that calls can be chained.

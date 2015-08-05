@@ -1,0 +1,2453 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+  	<title>elastic.js: Module: QueryStringQuery</title>
+	
+    <link rel="stylesheet" type="text/css" href="styles/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="styles/style.css" />
+    <link rel="stylesheet" type="text/css" href="styles/prettify.css" />
+    <script src="scripts/prettify.js" type="text/javascript"></script>
+    
+    <!--link type="text/css" rel="stylesheet" href="styles/node-dark.css"-->
+    <!--link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css"-->
+    <meta name="author" content="diji inc.">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <style type="text/css">
+      body {padding-top: 60px;padding-bottom:25px;}
+
+      .page-header {
+        background-color: #f5f5f5;
+        border:none;
+        padding: 20px 20px 10px;
+        text-align:right;
+        -webkit-border-radius: 6px 6px 6px 6px;
+           -moz-border-radius: 0 0 6px 6px;
+                border-radius: 4px 4px 4px 4px;
+      }
+      .toc-item {margin: 0 0 0 10px;list-style:none;}
+      .toc-item a {line-height:16px; color:#557e2f}
+      .doc-ref {text-decoration:none;}
+      .ancestors a {color:#557e2f;}
+      a {color:#557e2f}
+      a:visited {color:#557e2f}
+      a:hover {color:#78ab44}
+      h3 {font-size:18.5px;color:#6e6e6e}
+      code {background-color:transparent; color:#6e6e6e}
+      pre {margin: 18px 0px 0px;}
+      .alert-message.default{
+        background-color: #f5f5f5;
+        background-repeat: repeat-x;
+        background-image: -khtml-gradient(linear, left top, left bottom, from(#ffffff), to(#f5f5f5));
+        background-image: -moz-linear-gradient(top, #ffffff, #f5f5f5);
+        background-image: -ms-linear-gradient(top, #ffffff, #f5f5f5);
+        background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffffff), color-stop(100%, #f5f5f5));
+        background-image: -webkit-linear-gradient(top, #ffffff, #f5f5f5);
+        background-image: -o-linear-gradient(top, #ffffff, #f5f5f5);
+        background-image: linear-gradient(top, #ffffff, #f5f5f5);
+        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#f5f5f5', GradientType=0);
+        border: 1px solid #ddd;
+        -webkit-border-radius: 3px;
+        -moz-border-radius: 3px;
+        border-radius: 3px;
+        -webkit-box-shadow: inset 0 1px 0 #ffffff;
+        -moz-box-shadow: inset 0 1px 0 #ffffff;
+        box-shadow: inset 0 1px 0 #ffffff;
+      }
+
+    </style>
+
+    <!-- Le fav and touch icons -->
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+
+    <!-- Google analytics -->
+    <script type="text/javascript">
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-12991832-4']);
+      _gaq.push(['_setDomainName', 'fullscale.co']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+  </head>
+
+  <body onload="prettyPrint()">
+
+    <div class="navbar navbar-fixed-top">
+        <div class="navbar-inner">
+            <div class="container-fluid">
+                <span class="brand">Documentation {<span style="color:#557e2f;font-weight:500;"> elastic.js </span>}</span>
+                <div class="nav-collapse collapse">
+                <ul class="nav">
+                    <li><a href="/elasticjs/">Home</a></li>
+                    <li><a target="_blank" href="http://www.fullscale.co/elasticjs/">Guide</a></li>
+                    <li><a target="_blank" href="https://github.com/fullscale/elastic.js/tree/master/examples">Examples</a></li>
+                    <li><a target="_blank" href="https://github.com/fullscale/elastic.js">Source</a></li>
+                    <li><a target="_blank" href="/translator/">Translator</a></li>
+                </ul>
+            </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+
+        <div class="row-fluid">
+          <div class="span8 offset1">
+    
+            
+     
+              <header>
+                <h3>
+                  <div class="alert-message default"><span class="ancestors" style="margin-left:10px"><a href="ejs.html">ejs</a> &rang; </span>QueryStringQuery</div>
+                </h3>
+
+                <p class="class-description"><p>A query that is parsed using Lucene's default query parser. Although Lucene provides the
+    ability to create your own queries through its API, it also provides a rich query language
+    through the Query Parser, a lexer which interprets a string into a Lucene Query.</p>
+
+    </p>See the Lucene <a href="http://lucene.apache.org/java/2_9_1/queryparsersyntax.html">Query Parser Syntax</a>
+    for more information.</p></p>    
+              </header>  
+    
+              <article>    
+                <h3>Module</h3><table class="table table-bordered"><tbody><tr><td>
+<div id="ejs.QueryStringQuery" class="method-body">
+    <a style="text-decoration:none" name="ejs.QueryStringQuery">
+        <h3 style="color:#557e2f;background-color:#eee;font-family:Menlo,Monaco,Consolas,Courier New,monospace;" id="QueryStringQuery">&nbsp;QueryStringQuery</h3>
+    </a>
+        <code>
+        QueryStringQuery ( qstr )
+    </code>
+
+    <div style="margin-left:15px">A query that is parsed using Lucene's default query parser.</div><br>  
+   
+    <div class="alert-message block-message error">
+	<dl style="margin-left:15px;margin-right:20px;margin-top:0px;margin-bottom:3px;">
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</dl>
+</div>
+
+ 
+    <dl style="margin-left:15px;margin-right:20px;margin-top:0px;">  
+
+        
+    
+        <dt>Parameters</dt><dd>
+	
+
+            
+                <code>qstr</code>
+            
+
+            <code>&lt;String&gt;</code>
+            
+            
+            
+            
+            
+            <span>A valid Lucene query string.</span>
+            <br>
+	
+	
+</dd>
+    
+        
+    
+        
+    
+        
+    
+        
+
+    </dl>
+
+</div>
+</td></tr>
+</tbody></table>
+        
+                
+        
+                
+        
+                
+        
+                
+        
+                
+        
+                
+        
+                
+            
+                    <h3 class="subsection-title">Method Summary</h3>
+            
+                    <table class="table table-bordered table-striped table-hover table-condensed">
+                      <thead>
+                        <tr>
+                          <th>Returns</th>
+                          <th>Name</th>
+                          <th>Description</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                      <div class="method-body">
+    <tr>
+        <td><code>String</code></td><td><code><a href="#ejs.QueryStringQuery._type">_type()</a></code></td><td>The type of ejs object.  For internal use only.</td>
+    </tr>
+</div><div class="method-body">
+    <tr>
+        <td><code>Object</code></td><td><code><a href="#ejs.QueryStringQuery.allowLeadingWildcard">allowLeadingWildcard(trueFalse)</a></code></td><td>Sets whether or not wildcard characters (* and ?) are allowed as the
+            first character of the <code>Query</code>.  Default: true.</td>
+    </tr>
+</div><div class="method-body">
+    <tr>
+        <td><code>Object</code></td><td><code><a href="#ejs.QueryStringQuery.analyzer">analyzer(analyzer)</a></code></td><td>Sets the analyzer name used to analyze the <code>Query</code> object.</td>
+    </tr>
+</div><div class="method-body">
+    <tr>
+        <td><code>Object</code></td><td><code><a href="#ejs.QueryStringQuery.analyzeWildcard">analyzeWildcard(trueFalse)</a></code></td><td>Sets whether or not we should attempt to analyzed wilcard terms in the
+            <code>Query</code>. By default, wildcard terms are not analyzed.
+            Analysis of wildcard characters is not perfect.  Default: false.</td>
+    </tr>
+</div><div class="method-body">
+    <tr>
+        <td><code>Object</code></td><td><code><a href="#ejs.QueryStringQuery.autoGeneratePhraseQueries">autoGeneratePhraseQueries(trueFalse)</a></code></td><td>Sets whether or not we should auto generate phrase queries *if* the
+            analyzer returns more than one term. Default: false.</td>
+    </tr>
+</div><div class="method-body">
+    <tr>
+        <td><code>Object</code></td><td><code><a href="#ejs.QueryStringQuery.boost">boost(boost)</a></code></td><td>Sets the boost value for documents matching the <code>Query</code>.</td>
+    </tr>
+</div><div class="method-body">
+    <tr>
+        <td><code>Object</code></td><td><code><a href="#ejs.QueryStringQuery.defaultField">defaultField(fieldName)</a></code></td><td>Sets the default field/property this query should execute against.</td>
+    </tr>
+</div><div class="method-body">
+    <tr>
+        <td><code>Object</code></td><td><code><a href="#ejs.QueryStringQuery.defaultOperator">defaultOperator(op)</a></code></td><td>Set the default <em>Boolean</em> operator. This operator is used to join individual query
+            terms when no operator is explicity used in the query string (i.e., <code>this AND that</code>).
+            Defaults to <code>OR</code>.</td>
+    </tr>
+</div><div class="method-body">
+    <tr>
+        <td><code>Object</code></td><td><code><a href="#ejs.QueryStringQuery.enablePositionIncrements">enablePositionIncrements(trueFalse)</a></code></td><td>Sets whether or not position increments will be used in the
+            <code>Query</code>. Default: true.</td>
+    </tr>
+</div><div class="method-body">
+    <tr>
+        <td><code>Object</code></td><td><code><a href="#ejs.QueryStringQuery.escape">escape(trueFalse)</a></code></td><td>If they query string should be escaped or not.</td>
+    </tr>
+</div><div class="method-body">
+    <tr>
+        <td><code>Object</code></td><td><code><a href="#ejs.QueryStringQuery.fields">fields(fieldNames)</a></code></td><td>A set of fields/properties this query should execute against.  
+            Pass a single value to add to the existing list of fields and 
+            pass an array to overwrite all existing fields.  For each field, 
+            you can apply a field specific boost by appending a ^boost to the 
+            field name.  For example, title^10, to give the title field a
+            boost of 10.</td>
+    </tr>
+</div><div class="method-body">
+    <tr>
+        <td><code>Object</code></td><td><code><a href="#ejs.QueryStringQuery.fuzzyMaxExpansions">fuzzyMaxExpansions(max)</a></code></td><td>Sets the max number of term expansions for fuzzy queries.</td>
+    </tr>
+</div><div class="method-body">
+    <tr>
+        <td><code>Object</code></td><td><code><a href="#ejs.QueryStringQuery.fuzzyMinSim">fuzzyMinSim(minSim)</a></code></td><td>Set the minimum similarity for fuzzy queries.  Default: 0.5.</td>
+    </tr>
+</div><div class="method-body">
+    <tr>
+        <td><code>Object</code></td><td><code><a href="#ejs.QueryStringQuery.fuzzyPrefixLength">fuzzyPrefixLength(fuzzLen)</a></code></td><td>Sets the prefix length for fuzzy queries.  Default: 0.</td>
+    </tr>
+</div><div class="method-body">
+    <tr>
+        <td><code>Object</code></td><td><code><a href="#ejs.QueryStringQuery.fuzzyRewrite">fuzzyRewrite(m)</a></code></td><td>Sets fuzzy rewrite method.  Valid values are: 
+            
+            constant_score_auto - tries to pick the best constant-score rewrite 
+              method based on term and document counts from the query
+              
+            scoring_boolean - translates each term into boolean should and 
+              keeps the scores as computed by the query
+              
+            constant_score_boolean - same as scoring_boolean, expect no scores
+              are computed.
+              
+            constant_score_filter - first creates a private Filter, by visiting 
+              each term in sequence and marking all docs for that term
+              
+            top_terms_boost_N - first translates each term into boolean should
+              and scores are only computed as the boost using the top N
+              scoring terms.  Replace N with an integer value.
+              
+            top_terms_N -   first translates each term into boolean should
+                and keeps the scores as computed by the query. Only the top N
+                scoring terms are used.  Replace N with an integer value.
+            
+            Default is constant_score_auto.
+
+            This is an advanced option, use with care.</td>
+    </tr>
+</div><div class="method-body">
+    <tr>
+        <td><code>Object</code></td><td><code><a href="#ejs.QueryStringQuery.lenient">lenient(trueFalse)</a></code></td><td>Enables lenient parsing of the query string.</td>
+    </tr>
+</div><div class="method-body">
+    <tr>
+        <td><code>Object</code></td><td><code><a href="#ejs.QueryStringQuery.lowercaseExpandedTerms">lowercaseExpandedTerms(trueFalse)</a></code></td><td>Sets whether or not terms from wildcard, prefix, fuzzy, and
+            range queries should automatically be lowercased in the <code>Query</code>
+            since they are not analyzed.  Default: true.</td>
+    </tr>
+</div><div class="method-body">
+    <tr>
+        <td><code>Object</code></td><td><code><a href="#ejs.QueryStringQuery.minimumShouldMatch">minimumShouldMatch(minMatch)</a></code></td><td>Sets a percent value controlling how many "should" clauses in the
+            resulting <code>Query</code> should match.</td>
+    </tr>
+</div><div class="method-body">
+    <tr>
+        <td><code>Object</code></td><td><code><a href="#ejs.QueryStringQuery.phraseSlop">phraseSlop(slop)</a></code></td><td>Sets the default slop for phrases. If zero, then exact phrase matches
+            are required.  Default: 0.</td>
+    </tr>
+</div><div class="method-body">
+    <tr>
+        <td><code>Object</code></td><td><code><a href="#ejs.QueryStringQuery.query">query(qstr)</a></code></td><td>Sets the query string on this <code>Query</code> object.</td>
+    </tr>
+</div><div class="method-body">
+    <tr>
+        <td><code>Object</code></td><td><code><a href="#ejs.QueryStringQuery.quoteAnalyzer">quoteAnalyzer(analyzer)</a></code></td><td>Sets the quote analyzer name used to analyze the <code>query</code>
+            when in quoted text.</td>
+    </tr>
+</div><div class="method-body">
+    <tr>
+        <td><code>Object</code></td><td><code><a href="#ejs.QueryStringQuery.quoteFieldSuffix">quoteFieldSuffix(s)</a></code></td><td>Sets the suffix to automatically add to the field name when 
+            performing a quoted search.</td>
+    </tr>
+</div><div class="method-body">
+    <tr>
+        <td><code>Object</code></td><td><code><a href="#ejs.QueryStringQuery.rewrite">rewrite(m)</a></code></td><td>Sets rewrite method.  Valid values are: 
+            
+            constant_score_auto - tries to pick the best constant-score rewrite 
+              method based on term and document counts from the query
+              
+            scoring_boolean - translates each term into boolean should and 
+              keeps the scores as computed by the query
+              
+            constant_score_boolean - same as scoring_boolean, expect no scores
+              are computed.
+              
+            constant_score_filter - first creates a private Filter, by visiting 
+              each term in sequence and marking all docs for that term
+              
+            top_terms_boost_N - first translates each term into boolean should
+              and scores are only computed as the boost using the top N
+              scoring terms.  Replace N with an integer value.
+              
+            top_terms_N -   first translates each term into boolean should
+                and keeps the scores as computed by the query. Only the top N
+                scoring terms are used.  Replace N with an integer value.
+            
+            Default is constant_score_auto.
+
+            This is an advanced option, use with care.</td>
+    </tr>
+</div><div class="method-body">
+    <tr>
+        <td><code>Object</code></td><td><code><a href="#ejs.QueryStringQuery.tieBreaker">tieBreaker(tieBreaker)</a></code></td><td>Sets the tie breaker value for a <code>Query</code> using
+            <code>DisMax</code>.  The tie breaker capability allows results
+            that include the same term in multiple fields to be judged better than
+            results that include this term in only the best of those multiple
+            fields, without confusing this with the better case of two different
+            terms in the multiple fields.  Default: 0.0.</td>
+    </tr>
+</div><div class="method-body">
+    <tr>
+        <td><code>String</code></td><td><code><a href="#ejs.QueryStringQuery.toJSON">toJSON()</a></code></td><td>Retrieves the internal <code>query</code> object. This is typically used by
+            internal API functions so use with caution.</td>
+    </tr>
+</div><div class="method-body">
+    <tr>
+        <td><code>Object</code></td><td><code><a href="#ejs.QueryStringQuery.useDisMax">useDisMax(trueFalse)</a></code></td><td>Sets whether or not queries against multiple fields should be combined using Lucene's
+            <a href="http://lucene.apache.org/java/3_0_0/api/core/org/apache/lucene/search/DisjunctionMaxQuery.html">
+            DisjunctionMaxQuery</a></td>
+    </tr>
+</div>
+                      </tbody>
+                    </table>
+                    <br>
+
+                    <h3 class="subsection-title">Method Detail</h3>
+
+                    <table class="table table-bordered table-condensed">
+                      <tbody>
+                      <tr><td>
+<div id="ejs.QueryStringQuery._type" class="method-body">
+    <a style="text-decoration:none" name="ejs.QueryStringQuery._type">
+        <h3 style="color:#557e2f;background-color:#eee;font-family:Menlo,Monaco,Consolas,Courier New,monospace;" id="_type">&nbsp;_type</h3>
+    </a>
+        <code>
+        String _type ( )
+    </code>
+
+    <div style="margin-left:15px">The type of ejs object.  For internal use only.</div><br>  
+   
+    <div class="alert-message block-message error">
+	<dl style="margin-left:15px;margin-right:20px;margin-top:0px;margin-bottom:3px;">
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</dl>
+</div>
+
+ 
+    <dl style="margin-left:15px;margin-right:20px;margin-top:0px;">  
+
+        
+    
+        
+    
+        
+    
+        
+    
+        
+        <dt>Returns</dt>
+        <dd>
+    the type of object
+
+
+
+</dd>
+    
+        
+
+    </dl>
+
+</div>
+</td></tr>
+<tr><td>
+<div id="ejs.QueryStringQuery.allowLeadingWildcard" class="method-body">
+    <a style="text-decoration:none" name="ejs.QueryStringQuery.allowLeadingWildcard">
+        <h3 style="color:#557e2f;background-color:#eee;font-family:Menlo,Monaco,Consolas,Courier New,monospace;" id="allowLeadingWildcard">&nbsp;allowLeadingWildcard</h3>
+    </a>
+        <code>
+        Object allowLeadingWildcard ( trueFalse )
+    </code>
+
+    <div style="margin-left:15px">Sets whether or not wildcard characters (* and ?) are allowed as the
+            first character of the <code>Query</code>.  Default: true.</div><br>  
+   
+    <div class="alert-message block-message error">
+	<dl style="margin-left:15px;margin-right:20px;margin-top:0px;margin-bottom:3px;">
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</dl>
+</div>
+
+ 
+    <dl style="margin-left:15px;margin-right:20px;margin-top:0px;">  
+
+        
+    
+        <dt>Parameters</dt><dd>
+	
+
+            
+                <code>trueFalse</code>
+            
+
+            <code>&lt;Boolean&gt;</code>
+            
+            
+            
+            
+            
+            <span>A <code>true/false</code> value.</span>
+            <br>
+	
+	
+</dd>
+    
+        
+    
+        
+    
+        
+        <dt>Returns</dt>
+        <dd>
+    returns <code>this</code> so that calls can be chained.
+
+
+
+</dd>
+    
+        
+
+    </dl>
+
+</div>
+</td></tr>
+<tr><td>
+<div id="ejs.QueryStringQuery.analyzer" class="method-body">
+    <a style="text-decoration:none" name="ejs.QueryStringQuery.analyzer">
+        <h3 style="color:#557e2f;background-color:#eee;font-family:Menlo,Monaco,Consolas,Courier New,monospace;" id="analyzer">&nbsp;analyzer</h3>
+    </a>
+        <code>
+        Object analyzer ( analyzer )
+    </code>
+
+    <div style="margin-left:15px">Sets the analyzer name used to analyze the <code>Query</code> object.</div><br>  
+   
+    <div class="alert-message block-message error">
+	<dl style="margin-left:15px;margin-right:20px;margin-top:0px;margin-bottom:3px;">
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</dl>
+</div>
+
+ 
+    <dl style="margin-left:15px;margin-right:20px;margin-top:0px;">  
+
+        
+    
+        <dt>Parameters</dt><dd>
+	
+
+            
+                <code>analyzer</code>
+            
+
+            <code>&lt;String&gt;</code>
+            
+            
+            
+            
+            
+            <span>A valid analyzer name.</span>
+            <br>
+	
+	
+</dd>
+    
+        
+    
+        
+    
+        
+        <dt>Returns</dt>
+        <dd>
+    returns <code>this</code> so that calls can be chained.
+
+
+
+</dd>
+    
+        
+
+    </dl>
+
+</div>
+</td></tr>
+<tr><td>
+<div id="ejs.QueryStringQuery.analyzeWildcard" class="method-body">
+    <a style="text-decoration:none" name="ejs.QueryStringQuery.analyzeWildcard">
+        <h3 style="color:#557e2f;background-color:#eee;font-family:Menlo,Monaco,Consolas,Courier New,monospace;" id="analyzeWildcard">&nbsp;analyzeWildcard</h3>
+    </a>
+        <code>
+        Object analyzeWildcard ( trueFalse )
+    </code>
+
+    <div style="margin-left:15px">Sets whether or not we should attempt to analyzed wilcard terms in the
+            <code>Query</code>. By default, wildcard terms are not analyzed.
+            Analysis of wildcard characters is not perfect.  Default: false.</div><br>  
+   
+    <div class="alert-message block-message error">
+	<dl style="margin-left:15px;margin-right:20px;margin-top:0px;margin-bottom:3px;">
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</dl>
+</div>
+
+ 
+    <dl style="margin-left:15px;margin-right:20px;margin-top:0px;">  
+
+        
+    
+        <dt>Parameters</dt><dd>
+	
+
+            
+                <code>trueFalse</code>
+            
+
+            <code>&lt;Boolean&gt;</code>
+            
+            
+            
+            
+            
+            <span>A <code>true/false</code> value.</span>
+            <br>
+	
+	
+</dd>
+    
+        
+    
+        
+    
+        
+        <dt>Returns</dt>
+        <dd>
+    returns <code>this</code> so that calls can be chained.
+
+
+
+</dd>
+    
+        
+
+    </dl>
+
+</div>
+</td></tr>
+<tr><td>
+<div id="ejs.QueryStringQuery.autoGeneratePhraseQueries" class="method-body">
+    <a style="text-decoration:none" name="ejs.QueryStringQuery.autoGeneratePhraseQueries">
+        <h3 style="color:#557e2f;background-color:#eee;font-family:Menlo,Monaco,Consolas,Courier New,monospace;" id="autoGeneratePhraseQueries">&nbsp;autoGeneratePhraseQueries</h3>
+    </a>
+        <code>
+        Object autoGeneratePhraseQueries ( trueFalse )
+    </code>
+
+    <div style="margin-left:15px">Sets whether or not we should auto generate phrase queries *if* the
+            analyzer returns more than one term. Default: false.</div><br>  
+   
+    <div class="alert-message block-message error">
+	<dl style="margin-left:15px;margin-right:20px;margin-top:0px;margin-bottom:3px;">
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</dl>
+</div>
+
+ 
+    <dl style="margin-left:15px;margin-right:20px;margin-top:0px;">  
+
+        
+    
+        <dt>Parameters</dt><dd>
+	
+
+            
+                <code>trueFalse</code>
+            
+
+            <code>&lt;Boolean&gt;</code>
+            
+            
+            
+            
+            
+            <span>A <code>true/false</code> value.</span>
+            <br>
+	
+	
+</dd>
+    
+        
+    
+        
+    
+        
+        <dt>Returns</dt>
+        <dd>
+    returns <code>this</code> so that calls can be chained.
+
+
+
+</dd>
+    
+        
+
+    </dl>
+
+</div>
+</td></tr>
+<tr><td>
+<div id="ejs.QueryStringQuery.boost" class="method-body">
+    <a style="text-decoration:none" name="ejs.QueryStringQuery.boost">
+        <h3 style="color:#557e2f;background-color:#eee;font-family:Menlo,Monaco,Consolas,Courier New,monospace;" id="boost">&nbsp;boost</h3>
+    </a>
+        <code>
+        Object boost ( boost )
+    </code>
+
+    <div style="margin-left:15px">Sets the boost value for documents matching the <code>Query</code>.</div><br>  
+   
+    <div class="alert-message block-message error">
+	<dl style="margin-left:15px;margin-right:20px;margin-top:0px;margin-bottom:3px;">
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</dl>
+</div>
+
+ 
+    <dl style="margin-left:15px;margin-right:20px;margin-top:0px;">  
+
+        
+    
+        <dt>Parameters</dt><dd>
+	
+
+            
+                <code>boost</code>
+            
+
+            <code>&lt;Double&gt;</code>
+            
+            
+            
+            
+            
+            <span>A positive <code>double</code> value.</span>
+            <br>
+	
+	
+</dd>
+    
+        
+    
+        
+    
+        
+        <dt>Returns</dt>
+        <dd>
+    returns <code>this</code> so that calls can be chained.
+
+
+
+</dd>
+    
+        
+
+    </dl>
+
+</div>
+</td></tr>
+<tr><td>
+<div id="ejs.QueryStringQuery.defaultField" class="method-body">
+    <a style="text-decoration:none" name="ejs.QueryStringQuery.defaultField">
+        <h3 style="color:#557e2f;background-color:#eee;font-family:Menlo,Monaco,Consolas,Courier New,monospace;" id="defaultField">&nbsp;defaultField</h3>
+    </a>
+        <code>
+        Object defaultField ( fieldName )
+    </code>
+
+    <div style="margin-left:15px">Sets the default field/property this query should execute against.</div><br>  
+   
+    <div class="alert-message block-message error">
+	<dl style="margin-left:15px;margin-right:20px;margin-top:0px;margin-bottom:3px;">
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</dl>
+</div>
+
+ 
+    <dl style="margin-left:15px;margin-right:20px;margin-top:0px;">  
+
+        
+    
+        <dt>Parameters</dt><dd>
+	
+
+            
+                <code>fieldName</code>
+            
+
+            <code>&lt;String&gt;</code>
+            
+            
+            
+            
+            
+            <span>The name of document field/property.</span>
+            <br>
+	
+	
+</dd>
+    
+        
+    
+        
+    
+        
+        <dt>Returns</dt>
+        <dd>
+    returns <code>this</code> so that calls can be chained.
+
+
+
+</dd>
+    
+        
+
+    </dl>
+
+</div>
+</td></tr>
+<tr><td>
+<div id="ejs.QueryStringQuery.defaultOperator" class="method-body">
+    <a style="text-decoration:none" name="ejs.QueryStringQuery.defaultOperator">
+        <h3 style="color:#557e2f;background-color:#eee;font-family:Menlo,Monaco,Consolas,Courier New,monospace;" id="defaultOperator">&nbsp;defaultOperator</h3>
+    </a>
+        <code>
+        Object defaultOperator ( op )
+    </code>
+
+    <div style="margin-left:15px">Set the default <em>Boolean</em> operator. This operator is used to join individual query
+            terms when no operator is explicity used in the query string (i.e., <code>this AND that</code>).
+            Defaults to <code>OR</code>.</div><br>  
+   
+    <div class="alert-message block-message error">
+	<dl style="margin-left:15px;margin-right:20px;margin-top:0px;margin-bottom:3px;">
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</dl>
+</div>
+
+ 
+    <dl style="margin-left:15px;margin-right:20px;margin-top:0px;">  
+
+        
+    
+        <dt>Parameters</dt><dd>
+	
+
+            
+                <code>op</code>
+            
+
+            <code>&lt;String&gt;</code>
+            
+            
+            
+            
+            
+            <span>The operator to use, AND or OR.</span>
+            <br>
+	
+	
+</dd>
+    
+        
+    
+        
+    
+        
+        <dt>Returns</dt>
+        <dd>
+    returns <code>this</code> so that calls can be chained.
+
+
+
+</dd>
+    
+        
+
+    </dl>
+
+</div>
+</td></tr>
+<tr><td>
+<div id="ejs.QueryStringQuery.enablePositionIncrements" class="method-body">
+    <a style="text-decoration:none" name="ejs.QueryStringQuery.enablePositionIncrements">
+        <h3 style="color:#557e2f;background-color:#eee;font-family:Menlo,Monaco,Consolas,Courier New,monospace;" id="enablePositionIncrements">&nbsp;enablePositionIncrements</h3>
+    </a>
+        <code>
+        Object enablePositionIncrements ( trueFalse )
+    </code>
+
+    <div style="margin-left:15px">Sets whether or not position increments will be used in the
+            <code>Query</code>. Default: true.</div><br>  
+   
+    <div class="alert-message block-message error">
+	<dl style="margin-left:15px;margin-right:20px;margin-top:0px;margin-bottom:3px;">
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</dl>
+</div>
+
+ 
+    <dl style="margin-left:15px;margin-right:20px;margin-top:0px;">  
+
+        
+    
+        <dt>Parameters</dt><dd>
+	
+
+            
+                <code>trueFalse</code>
+            
+
+            <code>&lt;Boolean&gt;</code>
+            
+            
+            
+            
+            
+            <span>A <code>true/false</code> value.</span>
+            <br>
+	
+	
+</dd>
+    
+        
+    
+        
+    
+        
+        <dt>Returns</dt>
+        <dd>
+    returns <code>this</code> so that calls can be chained.
+
+
+
+</dd>
+    
+        
+
+    </dl>
+
+</div>
+</td></tr>
+<tr><td>
+<div id="ejs.QueryStringQuery.escape" class="method-body">
+    <a style="text-decoration:none" name="ejs.QueryStringQuery.escape">
+        <h3 style="color:#557e2f;background-color:#eee;font-family:Menlo,Monaco,Consolas,Courier New,monospace;" id="escape">&nbsp;escape</h3>
+    </a>
+        <code>
+        Object escape ( trueFalse )
+    </code>
+
+    <div style="margin-left:15px">If they query string should be escaped or not.</div><br>  
+   
+    <div class="alert-message block-message error">
+	<dl style="margin-left:15px;margin-right:20px;margin-top:0px;margin-bottom:3px;">
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</dl>
+</div>
+
+ 
+    <dl style="margin-left:15px;margin-right:20px;margin-top:0px;">  
+
+        
+    
+        <dt>Parameters</dt><dd>
+	
+
+            
+                <code>trueFalse</code>
+            
+
+            <code>&lt;Boolean&gt;</code>
+            
+            
+            
+            
+            
+            <span>A <code>true/false</code> value.</span>
+            <br>
+	
+	
+</dd>
+    
+        
+    
+        
+    
+        
+        <dt>Returns</dt>
+        <dd>
+    returns <code>this</code> so that calls can be chained.
+
+
+
+</dd>
+    
+        
+
+    </dl>
+
+</div>
+</td></tr>
+<tr><td>
+<div id="ejs.QueryStringQuery.fields" class="method-body">
+    <a style="text-decoration:none" name="ejs.QueryStringQuery.fields">
+        <h3 style="color:#557e2f;background-color:#eee;font-family:Menlo,Monaco,Consolas,Courier New,monospace;" id="fields">&nbsp;fields</h3>
+    </a>
+        <code>
+        Object fields ( fieldNames )
+    </code>
+
+    <div style="margin-left:15px">A set of fields/properties this query should execute against.  
+            Pass a single value to add to the existing list of fields and 
+            pass an array to overwrite all existing fields.  For each field, 
+            you can apply a field specific boost by appending a ^boost to the 
+            field name.  For example, title^10, to give the title field a
+            boost of 10.</div><br>  
+   
+    <div class="alert-message block-message error">
+	<dl style="margin-left:15px;margin-right:20px;margin-top:0px;margin-bottom:3px;">
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</dl>
+</div>
+
+ 
+    <dl style="margin-left:15px;margin-right:20px;margin-top:0px;">  
+
+        
+    
+        <dt>Parameters</dt><dd>
+	
+
+            
+                <code>fieldNames</code>
+            
+
+            <code>&lt;Array&gt;</code>
+            
+            
+            
+            
+            
+            <span>A list of document fields/properties.</span>
+            <br>
+	
+	
+</dd>
+    
+        
+    
+        
+    
+        
+        <dt>Returns</dt>
+        <dd>
+    returns <code>this</code> so that calls can be chained.
+
+
+
+</dd>
+    
+        
+
+    </dl>
+
+</div>
+</td></tr>
+<tr><td>
+<div id="ejs.QueryStringQuery.fuzzyMaxExpansions" class="method-body">
+    <a style="text-decoration:none" name="ejs.QueryStringQuery.fuzzyMaxExpansions">
+        <h3 style="color:#557e2f;background-color:#eee;font-family:Menlo,Monaco,Consolas,Courier New,monospace;" id="fuzzyMaxExpansions">&nbsp;fuzzyMaxExpansions</h3>
+    </a>
+        <code>
+        Object fuzzyMaxExpansions ( max )
+    </code>
+
+    <div style="margin-left:15px">Sets the max number of term expansions for fuzzy queries.</div><br>  
+   
+    <div class="alert-message block-message error">
+	<dl style="margin-left:15px;margin-right:20px;margin-top:0px;margin-bottom:3px;">
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</dl>
+</div>
+
+ 
+    <dl style="margin-left:15px;margin-right:20px;margin-top:0px;">  
+
+        
+    
+        <dt>Parameters</dt><dd>
+	
+
+            
+                <code>max</code>
+            
+
+            <code>&lt;Integer&gt;</code>
+            
+            
+            
+            
+            
+            <span>A positive <code>integer</code> value.</span>
+            <br>
+	
+	
+</dd>
+    
+        
+    
+        
+    
+        
+        <dt>Returns</dt>
+        <dd>
+    returns <code>this</code> so that calls can be chained.
+
+
+
+</dd>
+    
+        
+
+    </dl>
+
+</div>
+</td></tr>
+<tr><td>
+<div id="ejs.QueryStringQuery.fuzzyMinSim" class="method-body">
+    <a style="text-decoration:none" name="ejs.QueryStringQuery.fuzzyMinSim">
+        <h3 style="color:#557e2f;background-color:#eee;font-family:Menlo,Monaco,Consolas,Courier New,monospace;" id="fuzzyMinSim">&nbsp;fuzzyMinSim</h3>
+    </a>
+        <code>
+        Object fuzzyMinSim ( minSim )
+    </code>
+
+    <div style="margin-left:15px">Set the minimum similarity for fuzzy queries.  Default: 0.5.</div><br>  
+   
+    <div class="alert-message block-message error">
+	<dl style="margin-left:15px;margin-right:20px;margin-top:0px;margin-bottom:3px;">
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</dl>
+</div>
+
+ 
+    <dl style="margin-left:15px;margin-right:20px;margin-top:0px;">  
+
+        
+    
+        <dt>Parameters</dt><dd>
+	
+
+            
+                <code>minSim</code>
+            
+
+            <code>&lt;Double&gt;</code>
+            
+            
+            
+            
+            
+            <span>A <code>double</code> value between 0 and 1.</span>
+            <br>
+	
+	
+</dd>
+    
+        
+    
+        
+    
+        
+        <dt>Returns</dt>
+        <dd>
+    returns <code>this</code> so that calls can be chained.
+
+
+
+</dd>
+    
+        
+
+    </dl>
+
+</div>
+</td></tr>
+<tr><td>
+<div id="ejs.QueryStringQuery.fuzzyPrefixLength" class="method-body">
+    <a style="text-decoration:none" name="ejs.QueryStringQuery.fuzzyPrefixLength">
+        <h3 style="color:#557e2f;background-color:#eee;font-family:Menlo,Monaco,Consolas,Courier New,monospace;" id="fuzzyPrefixLength">&nbsp;fuzzyPrefixLength</h3>
+    </a>
+        <code>
+        Object fuzzyPrefixLength ( fuzzLen )
+    </code>
+
+    <div style="margin-left:15px">Sets the prefix length for fuzzy queries.  Default: 0.</div><br>  
+   
+    <div class="alert-message block-message error">
+	<dl style="margin-left:15px;margin-right:20px;margin-top:0px;margin-bottom:3px;">
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</dl>
+</div>
+
+ 
+    <dl style="margin-left:15px;margin-right:20px;margin-top:0px;">  
+
+        
+    
+        <dt>Parameters</dt><dd>
+	
+
+            
+                <code>fuzzLen</code>
+            
+
+            <code>&lt;Integer&gt;</code>
+            
+            
+            
+            
+            
+            <span>A positive <code>integer</code> value.</span>
+            <br>
+	
+	
+</dd>
+    
+        
+    
+        
+    
+        
+        <dt>Returns</dt>
+        <dd>
+    returns <code>this</code> so that calls can be chained.
+
+
+
+</dd>
+    
+        
+
+    </dl>
+
+</div>
+</td></tr>
+<tr><td>
+<div id="ejs.QueryStringQuery.fuzzyRewrite" class="method-body">
+    <a style="text-decoration:none" name="ejs.QueryStringQuery.fuzzyRewrite">
+        <h3 style="color:#557e2f;background-color:#eee;font-family:Menlo,Monaco,Consolas,Courier New,monospace;" id="fuzzyRewrite">&nbsp;fuzzyRewrite</h3>
+    </a>
+        <code>
+        Object fuzzyRewrite ( m )
+    </code>
+
+    <div style="margin-left:15px">Sets fuzzy rewrite method.  Valid values are: 
+            
+            constant_score_auto - tries to pick the best constant-score rewrite 
+              method based on term and document counts from the query
+              
+            scoring_boolean - translates each term into boolean should and 
+              keeps the scores as computed by the query
+              
+            constant_score_boolean - same as scoring_boolean, expect no scores
+              are computed.
+              
+            constant_score_filter - first creates a private Filter, by visiting 
+              each term in sequence and marking all docs for that term
+              
+            top_terms_boost_N - first translates each term into boolean should
+              and scores are only computed as the boost using the top N
+              scoring terms.  Replace N with an integer value.
+              
+            top_terms_N -   first translates each term into boolean should
+                and keeps the scores as computed by the query. Only the top N
+                scoring terms are used.  Replace N with an integer value.
+            
+            Default is constant_score_auto.
+
+            This is an advanced option, use with care.</div><br>  
+   
+    <div class="alert-message block-message error">
+	<dl style="margin-left:15px;margin-right:20px;margin-top:0px;margin-bottom:3px;">
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</dl>
+</div>
+
+ 
+    <dl style="margin-left:15px;margin-right:20px;margin-top:0px;">  
+
+        
+    
+        <dt>Parameters</dt><dd>
+	
+
+            
+                <code>m</code>
+            
+
+            <code>&lt;String&gt;</code>
+            
+            
+            
+            
+            
+            <span>The rewrite method as a string.</span>
+            <br>
+	
+	
+</dd>
+    
+        
+    
+        
+    
+        
+        <dt>Returns</dt>
+        <dd>
+    returns <code>this</code> so that calls can be chained.
+
+
+
+</dd>
+    
+        
+
+    </dl>
+
+</div>
+</td></tr>
+<tr><td>
+<div id="ejs.QueryStringQuery.lenient" class="method-body">
+    <a style="text-decoration:none" name="ejs.QueryStringQuery.lenient">
+        <h3 style="color:#557e2f;background-color:#eee;font-family:Menlo,Monaco,Consolas,Courier New,monospace;" id="lenient">&nbsp;lenient</h3>
+    </a>
+        <code>
+        Object lenient ( trueFalse )
+    </code>
+
+    <div style="margin-left:15px">Enables lenient parsing of the query string.</div><br>  
+   
+    <div class="alert-message block-message error">
+	<dl style="margin-left:15px;margin-right:20px;margin-top:0px;margin-bottom:3px;">
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</dl>
+</div>
+
+ 
+    <dl style="margin-left:15px;margin-right:20px;margin-top:0px;">  
+
+        
+    
+        <dt>Parameters</dt><dd>
+	
+
+            
+                <code>trueFalse</code>
+            
+
+            <code>&lt;Boolean&gt;</code>
+            
+            
+            
+            
+            
+            <span>A boolean value</span>
+            <br>
+	
+	
+</dd>
+    
+        
+    
+        
+    
+        
+        <dt>Returns</dt>
+        <dd>
+    returns <code>this</code> so that calls can be chained.
+
+
+
+</dd>
+    
+        
+
+    </dl>
+
+</div>
+</td></tr>
+<tr><td>
+<div id="ejs.QueryStringQuery.lowercaseExpandedTerms" class="method-body">
+    <a style="text-decoration:none" name="ejs.QueryStringQuery.lowercaseExpandedTerms">
+        <h3 style="color:#557e2f;background-color:#eee;font-family:Menlo,Monaco,Consolas,Courier New,monospace;" id="lowercaseExpandedTerms">&nbsp;lowercaseExpandedTerms</h3>
+    </a>
+        <code>
+        Object lowercaseExpandedTerms ( trueFalse )
+    </code>
+
+    <div style="margin-left:15px">Sets whether or not terms from wildcard, prefix, fuzzy, and
+            range queries should automatically be lowercased in the <code>Query</code>
+            since they are not analyzed.  Default: true.</div><br>  
+   
+    <div class="alert-message block-message error">
+	<dl style="margin-left:15px;margin-right:20px;margin-top:0px;margin-bottom:3px;">
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</dl>
+</div>
+
+ 
+    <dl style="margin-left:15px;margin-right:20px;margin-top:0px;">  
+
+        
+    
+        <dt>Parameters</dt><dd>
+	
+
+            
+                <code>trueFalse</code>
+            
+
+            <code>&lt;Boolean&gt;</code>
+            
+            
+            
+            
+            
+            <span>A <code>true/false</code> value.</span>
+            <br>
+	
+	
+</dd>
+    
+        
+    
+        
+    
+        
+        <dt>Returns</dt>
+        <dd>
+    returns <code>this</code> so that calls can be chained.
+
+
+
+</dd>
+    
+        
+
+    </dl>
+
+</div>
+</td></tr>
+<tr><td>
+<div id="ejs.QueryStringQuery.minimumShouldMatch" class="method-body">
+    <a style="text-decoration:none" name="ejs.QueryStringQuery.minimumShouldMatch">
+        <h3 style="color:#557e2f;background-color:#eee;font-family:Menlo,Monaco,Consolas,Courier New,monospace;" id="minimumShouldMatch">&nbsp;minimumShouldMatch</h3>
+    </a>
+        <code>
+        Object minimumShouldMatch ( minMatch )
+    </code>
+
+    <div style="margin-left:15px">Sets a percent value controlling how many "should" clauses in the
+            resulting <code>Query</code> should match.</div><br>  
+   
+    <div class="alert-message block-message error">
+	<dl style="margin-left:15px;margin-right:20px;margin-top:0px;margin-bottom:3px;">
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</dl>
+</div>
+
+ 
+    <dl style="margin-left:15px;margin-right:20px;margin-top:0px;">  
+
+        
+    
+        <dt>Parameters</dt><dd>
+	
+
+            
+                <code>minMatch</code>
+            
+
+            <code>&lt;Integer&gt;</code>
+            
+            
+            
+            
+            
+            <span>An <code>integer</code> between 0 and 100.</span>
+            <br>
+	
+	
+</dd>
+    
+        
+    
+        
+    
+        
+        <dt>Returns</dt>
+        <dd>
+    returns <code>this</code> so that calls can be chained.
+
+
+
+</dd>
+    
+        
+
+    </dl>
+
+</div>
+</td></tr>
+<tr><td>
+<div id="ejs.QueryStringQuery.phraseSlop" class="method-body">
+    <a style="text-decoration:none" name="ejs.QueryStringQuery.phraseSlop">
+        <h3 style="color:#557e2f;background-color:#eee;font-family:Menlo,Monaco,Consolas,Courier New,monospace;" id="phraseSlop">&nbsp;phraseSlop</h3>
+    </a>
+        <code>
+        Object phraseSlop ( slop )
+    </code>
+
+    <div style="margin-left:15px">Sets the default slop for phrases. If zero, then exact phrase matches
+            are required.  Default: 0.</div><br>  
+   
+    <div class="alert-message block-message error">
+	<dl style="margin-left:15px;margin-right:20px;margin-top:0px;margin-bottom:3px;">
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</dl>
+</div>
+
+ 
+    <dl style="margin-left:15px;margin-right:20px;margin-top:0px;">  
+
+        
+    
+        <dt>Parameters</dt><dd>
+	
+
+            
+                <code>slop</code>
+            
+
+            <code>&lt;Integer&gt;</code>
+            
+            
+            
+            
+            
+            <span>A positive <code>integer</code> value.</span>
+            <br>
+	
+	
+</dd>
+    
+        
+    
+        
+    
+        
+        <dt>Returns</dt>
+        <dd>
+    returns <code>this</code> so that calls can be chained.
+
+
+
+</dd>
+    
+        
+
+    </dl>
+
+</div>
+</td></tr>
+<tr><td>
+<div id="ejs.QueryStringQuery.query" class="method-body">
+    <a style="text-decoration:none" name="ejs.QueryStringQuery.query">
+        <h3 style="color:#557e2f;background-color:#eee;font-family:Menlo,Monaco,Consolas,Courier New,monospace;" id="query">&nbsp;query</h3>
+    </a>
+        <code>
+        Object query ( qstr )
+    </code>
+
+    <div style="margin-left:15px">Sets the query string on this <code>Query</code> object.</div><br>  
+   
+    <div class="alert-message block-message error">
+	<dl style="margin-left:15px;margin-right:20px;margin-top:0px;margin-bottom:3px;">
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</dl>
+</div>
+
+ 
+    <dl style="margin-left:15px;margin-right:20px;margin-top:0px;">  
+
+        
+    
+        <dt>Parameters</dt><dd>
+	
+
+            
+                <code>qstr</code>
+            
+
+            <code>&lt;String&gt;</code>
+            
+            
+            
+            
+            
+            <span>A valid Lucene query string.</span>
+            <br>
+	
+	
+</dd>
+    
+        
+    
+        
+    
+        
+        <dt>Returns</dt>
+        <dd>
+    returns <code>this</code> so that calls can be chained.
+
+
+
+</dd>
+    
+        
+
+    </dl>
+
+</div>
+</td></tr>
+<tr><td>
+<div id="ejs.QueryStringQuery.quoteAnalyzer" class="method-body">
+    <a style="text-decoration:none" name="ejs.QueryStringQuery.quoteAnalyzer">
+        <h3 style="color:#557e2f;background-color:#eee;font-family:Menlo,Monaco,Consolas,Courier New,monospace;" id="quoteAnalyzer">&nbsp;quoteAnalyzer</h3>
+    </a>
+        <code>
+        Object quoteAnalyzer ( analyzer )
+    </code>
+
+    <div style="margin-left:15px">Sets the quote analyzer name used to analyze the <code>query</code>
+            when in quoted text.</div><br>  
+   
+    <div class="alert-message block-message error">
+	<dl style="margin-left:15px;margin-right:20px;margin-top:0px;margin-bottom:3px;">
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</dl>
+</div>
+
+ 
+    <dl style="margin-left:15px;margin-right:20px;margin-top:0px;">  
+
+        
+    
+        <dt>Parameters</dt><dd>
+	
+
+            
+                <code>analyzer</code>
+            
+
+            <code>&lt;String&gt;</code>
+            
+            
+            
+            
+            
+            <span>A valid analyzer name.</span>
+            <br>
+	
+	
+</dd>
+    
+        
+    
+        
+    
+        
+        <dt>Returns</dt>
+        <dd>
+    returns <code>this</code> so that calls can be chained.
+
+
+
+</dd>
+    
+        
+
+    </dl>
+
+</div>
+</td></tr>
+<tr><td>
+<div id="ejs.QueryStringQuery.quoteFieldSuffix" class="method-body">
+    <a style="text-decoration:none" name="ejs.QueryStringQuery.quoteFieldSuffix">
+        <h3 style="color:#557e2f;background-color:#eee;font-family:Menlo,Monaco,Consolas,Courier New,monospace;" id="quoteFieldSuffix">&nbsp;quoteFieldSuffix</h3>
+    </a>
+        <code>
+        Object quoteFieldSuffix ( s )
+    </code>
+
+    <div style="margin-left:15px">Sets the suffix to automatically add to the field name when 
+            performing a quoted search.</div><br>  
+   
+    <div class="alert-message block-message error">
+	<dl style="margin-left:15px;margin-right:20px;margin-top:0px;margin-bottom:3px;">
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</dl>
+</div>
+
+ 
+    <dl style="margin-left:15px;margin-right:20px;margin-top:0px;">  
+
+        
+    
+        <dt>Parameters</dt><dd>
+	
+
+            
+                <code>s</code>
+            
+
+            <code>&lt;String&gt;</code>
+            
+            
+            
+            
+            
+            <span>The suffix as a string.</span>
+            <br>
+	
+	
+</dd>
+    
+        
+    
+        
+    
+        
+        <dt>Returns</dt>
+        <dd>
+    returns <code>this</code> so that calls can be chained.
+
+
+
+</dd>
+    
+        
+
+    </dl>
+
+</div>
+</td></tr>
+<tr><td>
+<div id="ejs.QueryStringQuery.rewrite" class="method-body">
+    <a style="text-decoration:none" name="ejs.QueryStringQuery.rewrite">
+        <h3 style="color:#557e2f;background-color:#eee;font-family:Menlo,Monaco,Consolas,Courier New,monospace;" id="rewrite">&nbsp;rewrite</h3>
+    </a>
+        <code>
+        Object rewrite ( m )
+    </code>
+
+    <div style="margin-left:15px">Sets rewrite method.  Valid values are: 
+            
+            constant_score_auto - tries to pick the best constant-score rewrite 
+              method based on term and document counts from the query
+              
+            scoring_boolean - translates each term into boolean should and 
+              keeps the scores as computed by the query
+              
+            constant_score_boolean - same as scoring_boolean, expect no scores
+              are computed.
+              
+            constant_score_filter - first creates a private Filter, by visiting 
+              each term in sequence and marking all docs for that term
+              
+            top_terms_boost_N - first translates each term into boolean should
+              and scores are only computed as the boost using the top N
+              scoring terms.  Replace N with an integer value.
+              
+            top_terms_N -   first translates each term into boolean should
+                and keeps the scores as computed by the query. Only the top N
+                scoring terms are used.  Replace N with an integer value.
+            
+            Default is constant_score_auto.
+
+            This is an advanced option, use with care.</div><br>  
+   
+    <div class="alert-message block-message error">
+	<dl style="margin-left:15px;margin-right:20px;margin-top:0px;margin-bottom:3px;">
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</dl>
+</div>
+
+ 
+    <dl style="margin-left:15px;margin-right:20px;margin-top:0px;">  
+
+        
+    
+        <dt>Parameters</dt><dd>
+	
+
+            
+                <code>m</code>
+            
+
+            <code>&lt;String&gt;</code>
+            
+            
+            
+            
+            
+            <span>The rewrite method as a string.</span>
+            <br>
+	
+	
+</dd>
+    
+        
+    
+        
+    
+        
+        <dt>Returns</dt>
+        <dd>
+    returns <code>this</code> so that calls can be chained.
+
+
+
+</dd>
+    
+        
+
+    </dl>
+
+</div>
+</td></tr>
+<tr><td>
+<div id="ejs.QueryStringQuery.tieBreaker" class="method-body">
+    <a style="text-decoration:none" name="ejs.QueryStringQuery.tieBreaker">
+        <h3 style="color:#557e2f;background-color:#eee;font-family:Menlo,Monaco,Consolas,Courier New,monospace;" id="tieBreaker">&nbsp;tieBreaker</h3>
+    </a>
+        <code>
+        Object tieBreaker ( tieBreaker )
+    </code>
+
+    <div style="margin-left:15px">Sets the tie breaker value for a <code>Query</code> using
+            <code>DisMax</code>.  The tie breaker capability allows results
+            that include the same term in multiple fields to be judged better than
+            results that include this term in only the best of those multiple
+            fields, without confusing this with the better case of two different
+            terms in the multiple fields.  Default: 0.0.</div><br>  
+   
+    <div class="alert-message block-message error">
+	<dl style="margin-left:15px;margin-right:20px;margin-top:0px;margin-bottom:3px;">
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</dl>
+</div>
+
+ 
+    <dl style="margin-left:15px;margin-right:20px;margin-top:0px;">  
+
+        
+    
+        <dt>Parameters</dt><dd>
+	
+
+            
+                <code>tieBreaker</code>
+            
+
+            <code>&lt;Double&gt;</code>
+            
+            
+            
+            
+            
+            <span>A positive <code>double</code> value.</span>
+            <br>
+	
+	
+</dd>
+    
+        
+    
+        
+    
+        
+        <dt>Returns</dt>
+        <dd>
+    returns <code>this</code> so that calls can be chained.
+
+
+
+</dd>
+    
+        
+
+    </dl>
+
+</div>
+</td></tr>
+<tr><td>
+<div id="ejs.QueryStringQuery.toJSON" class="method-body">
+    <a style="text-decoration:none" name="ejs.QueryStringQuery.toJSON">
+        <h3 style="color:#557e2f;background-color:#eee;font-family:Menlo,Monaco,Consolas,Courier New,monospace;" id="toJSON">&nbsp;toJSON</h3>
+    </a>
+        <code>
+        String toJSON ( )
+    </code>
+
+    <div style="margin-left:15px">Retrieves the internal <code>query</code> object. This is typically used by
+            internal API functions so use with caution.</div><br>  
+   
+    <div class="alert-message block-message error">
+	<dl style="margin-left:15px;margin-right:20px;margin-top:0px;margin-bottom:3px;">
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</dl>
+</div>
+
+ 
+    <dl style="margin-left:15px;margin-right:20px;margin-top:0px;">  
+
+        
+    
+        
+    
+        
+    
+        
+    
+        
+        <dt>Returns</dt>
+        <dd>
+    returns this object's internal <code>query</code> property.
+
+
+
+</dd>
+    
+        
+
+    </dl>
+
+</div>
+</td></tr>
+<tr><td>
+<div id="ejs.QueryStringQuery.useDisMax" class="method-body">
+    <a style="text-decoration:none" name="ejs.QueryStringQuery.useDisMax">
+        <h3 style="color:#557e2f;background-color:#eee;font-family:Menlo,Monaco,Consolas,Courier New,monospace;" id="useDisMax">&nbsp;useDisMax</h3>
+    </a>
+        <code>
+        Object useDisMax ( trueFalse )
+    </code>
+
+    <div style="margin-left:15px">Sets whether or not queries against multiple fields should be combined using Lucene's
+            <a href="http://lucene.apache.org/java/3_0_0/api/core/org/apache/lucene/search/DisjunctionMaxQuery.html">
+            DisjunctionMaxQuery</a></div><br>  
+   
+    <div class="alert-message block-message error">
+	<dl style="margin-left:15px;margin-right:20px;margin-top:0px;margin-bottom:3px;">
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</dl>
+</div>
+
+ 
+    <dl style="margin-left:15px;margin-right:20px;margin-top:0px;">  
+
+        
+    
+        <dt>Parameters</dt><dd>
+	
+
+            
+                <code>trueFalse</code>
+            
+
+            <code>&lt;String&gt;</code>
+            
+            
+            
+            
+            
+            <span>A <code>true/false</code> value.</span>
+            <br>
+	
+	
+</dd>
+    
+        
+    
+        
+    
+        
+        <dt>Returns</dt>
+        <dd>
+    returns <code>this</code> so that calls can be chained.
+
+
+
+</dd>
+    
+        
+
+    </dl>
+
+</div>
+</td></tr>
+
+                      </tbody>
+                    </table>
+
+                
+        
+                
+              </article>
+            
+
+          </div><!-- end span -->
+
+          <div class="span3">
+            <h3>Request</h3><ul class="toc-item"><li><a href="ejs.Highlight.html">Highlight</a></li><li><a href="ejs.Request.html">Request</a></li><li><a href="ejs.Rescore.html">Rescore</a></li><li><a href="ejs.ScriptField.html">ScriptField</a></li><li><a href="ejs.Sort.html">Sort</a></li></ul><h3>Queries</h3><ul class="toc-item"><li><a href="ejs.BoolQuery.html">BoolQuery</a></li><li><a href="ejs.BoostingQuery.html">BoostingQuery</a></li><li><a href="ejs.CommonTermsQuery.html">CommonTermsQuery</a></li><li><a href="ejs.ConstantScoreQuery.html">ConstantScoreQuery</a></li><li><a href="ejs.DisMaxQuery.html">DisMaxQuery</a></li><li><a href="ejs.FieldMaskingSpanQuery.html">FieldMaskingSpanQuery</a></li><li><a href="ejs.FilteredQuery.html">FilteredQuery</a></li><li><a href="ejs.FunctionScoreQuery.html">FunctionScoreQuery</a></li><li><a href="ejs.FuzzyLikeThisFieldQuery.html">FuzzyLikeThisFieldQuery</a></li><li><a href="ejs.FuzzyLikeThisQuery.html">FuzzyLikeThisQuery</a></li><li><a href="ejs.FuzzyQuery.html">FuzzyQuery</a></li><li><a href="ejs.GeoShapeQuery.html">GeoShapeQuery</a></li><li><a href="ejs.HasChildQuery.html">HasChildQuery</a></li><li><a href="ejs.HasParentQuery.html">HasParentQuery</a></li><li><a href="ejs.IdsQuery.html">IdsQuery</a></li><li><a href="ejs.IndicesQuery.html">IndicesQuery</a></li><li><a href="ejs.MatchAllQuery.html">MatchAllQuery</a></li><li><a href="ejs.MatchQuery.html">MatchQuery</a></li><li><a href="ejs.MoreLikeThisFieldQuery.html">MoreLikeThisFieldQuery</a></li><li><a href="ejs.MoreLikeThisQuery.html">MoreLikeThisQuery</a></li><li><a href="ejs.MultiMatchQuery.html">MultiMatchQuery</a></li><li><a href="ejs.NestedQuery.html">NestedQuery</a></li><li><a href="ejs.PrefixQuery.html">PrefixQuery</a></li><li><a href="ejs.QueryStringQuery.html">QueryStringQuery</a></li><li><a href="ejs.RangeQuery.html">RangeQuery</a></li><li><a href="ejs.RegexpQuery.html">RegexpQuery</a></li><li><a href="ejs.SpanFirstQuery.html">SpanFirstQuery</a></li><li><a href="ejs.SpanMultiTermQuery.html">SpanMultiTermQuery</a></li><li><a href="ejs.SpanNearQuery.html">SpanNearQuery</a></li><li><a href="ejs.SpanNotQuery.html">SpanNotQuery</a></li><li><a href="ejs.SpanOrQuery.html">SpanOrQuery</a></li><li><a href="ejs.SpanTermQuery.html">SpanTermQuery</a></li><li><a href="ejs.TermQuery.html">TermQuery</a></li><li><a href="ejs.TermsQuery.html">TermsQuery</a></li><li><a href="ejs.TopChildrenQuery.html">TopChildrenQuery</a></li><li><a href="ejs.WildcardQuery.html">WildcardQuery</a></li></ul><h3>Filters</h3><ul class="toc-item"><li><a href="ejs.AndFilter.html">AndFilter</a></li><li><a href="ejs.BoolFilter.html">BoolFilter</a></li><li><a href="ejs.ExistsFilter.html">ExistsFilter</a></li><li><a href="ejs.GeoBboxFilter.html">GeoBboxFilter</a></li><li><a href="ejs.GeoDistanceFilter.html">GeoDistanceFilter</a></li><li><a href="ejs.GeoDistanceRangeFilter.html">GeoDistanceRangeFilter</a></li><li><a href="ejs.GeoPolygonFilter.html">GeoPolygonFilter</a></li><li><a href="ejs.GeoShapeFilter.html">GeoShapeFilter</a></li><li><a href="ejs.HasChildFilter.html">HasChildFilter</a></li><li><a href="ejs.HasParentFilter.html">HasParentFilter</a></li><li><a href="ejs.IdsFilter.html">IdsFilter</a></li><li><a href="ejs.IndicesFilter.html">IndicesFilter</a></li><li><a href="ejs.LimitFilter.html">LimitFilter</a></li><li><a href="ejs.MatchAllFilter.html">MatchAllFilter</a></li><li><a href="ejs.MissingFilter.html">MissingFilter</a></li><li><a href="ejs.NestedFilter.html">NestedFilter</a></li><li><a href="ejs.NotFilter.html">NotFilter</a></li><li><a href="ejs.NumericRangeFilter.html">NumericRangeFilter</a></li><li><a href="ejs.OrFilter.html">OrFilter</a></li><li><a href="ejs.PrefixFilter.html">PrefixFilter</a></li><li><a href="ejs.QueryFilter.html">QueryFilter</a></li><li><a href="ejs.RangeFilter.html">RangeFilter</a></li><li><a href="ejs.RegexpFilter.html">RegexpFilter</a></li><li><a href="ejs.ScriptFilter.html">ScriptFilter</a></li><li><a href="ejs.TermFilter.html">TermFilter</a></li><li><a href="ejs.TermsFilter.html">TermsFilter</a></li><li><a href="ejs.TypeFilter.html">TypeFilter</a></li></ul><h3>Aggregations</h3><ul class="toc-item"><li><a href="ejs.AvgAggregation.html">AvgAggregation</a></li><li><a href="ejs.CardinalityAggregation.html">CardinalityAggregation</a></li><li><a href="ejs.DateHistogramAggregation.html">DateHistogramAggregation</a></li><li><a href="ejs.DateRangeAggregation.html">DateRangeAggregation</a></li><li><a href="ejs.ExtendedStatsAggregation.html">ExtendedStatsAggregation</a></li><li><a href="ejs.FilterAggregation.html">FilterAggregation</a></li><li><a href="ejs.FiltersAggregation.html">FiltersAggregation</a></li><li><a href="ejs.GeoBoundsAggregation.html">GeoBoundsAggregation</a></li><li><a href="ejs.GeoDistanceAggregation.html">GeoDistanceAggregation</a></li><li><a href="ejs.GeoHashGridAggregation.html">GeoHashGridAggregation</a></li><li><a href="ejs.GlobalAggregation.html">GlobalAggregation</a></li><li><a href="ejs.HistogramAggregation.html">HistogramAggregation</a></li><li><a href="ejs.IPv4RangeAggregation.html">IPv4RangeAggregation</a></li><li><a href="ejs.MaxAggregation.html">MaxAggregation</a></li><li><a href="ejs.MinAggregation.html">MinAggregation</a></li><li><a href="ejs.MissingAggregation.html">MissingAggregation</a></li><li><a href="ejs.NestedAggregation.html">NestedAggregation</a></li><li><a href="ejs.PercentilesAggregation.html">PercentilesAggregation</a></li><li><a href="ejs.RangeAggregation.html">RangeAggregation</a></li><li><a href="ejs.ScriptedMetricAggregation.html">ScriptedMetricAggregation</a></li><li><a href="ejs.SignificantTermsAggregation.html">SignificantTermsAggregation</a></li><li><a href="ejs.StatsAggregation.html">StatsAggregation</a></li><li><a href="ejs.SumAggregation.html">SumAggregation</a></li><li><a href="ejs.TermsAggregation.html">TermsAggregation</a></li><li><a href="ejs.TopHitsAggregation.html">TopHitsAggregation</a></li><li><a href="ejs.ValueCountAggregation.html">ValueCountAggregation</a></li></ul><h3>Facets</h3><ul class="toc-item"><li><a href="ejs.DateHistogramFacet.html">DateHistogramFacet</a></li><li><a href="ejs.FilterFacet.html">FilterFacet</a></li><li><a href="ejs.GeoDistanceFacet.html">GeoDistanceFacet</a></li><li><a href="ejs.HistogramFacet.html">HistogramFacet</a></li><li><a href="ejs.QueryFacet.html">QueryFacet</a></li><li><a href="ejs.RangeFacet.html">RangeFacet</a></li><li><a href="ejs.StatisticalFacet.html">StatisticalFacet</a></li><li><a href="ejs.TermStatsFacet.html">TermStatsFacet</a></li><li><a href="ejs.TermsFacet.html">TermsFacet</a></li></ul><h3>Suggesters</h3><ul class="toc-item"><li><a href="ejs.CompletionSuggester.html">CompletionSuggester</a></li><li><a href="ejs.DirectGenerator.html">DirectGenerator</a></li><li><a href="ejs.PhraseSuggester.html">PhraseSuggester</a></li><li><a href="ejs.TermSuggester.html">TermSuggester</a></li></ul><h3>Geo</h3><ul class="toc-item"><li><a href="ejs.GeoPoint.html">GeoPoint</a></li><li><a href="ejs.IndexedShape.html">IndexedShape</a></li><li><a href="ejs.Shape.html">Shape</a></li></ul>
+          </div>
+
+        </div><!-- end row -->
+      <hr>
+      <footer>
+        <span style="font-size:12px;">Copyright &copy; <a href="http://www.fullscale.co">FullScale Labs</a>, LLC. 2012</span>
+        <span style="font-size:12px;float:right;">
+          Documentation generated by <a style="font-size:12px" href="https://github.com/micmath/jsdoc">JSDoc 3</a> on Thu Aug 06 2015 00:31:54 GMT+0200 (CEST)
+        </span>
+      </footer>
+
+    </div><!-- end container -->
+  </body>
+</html>

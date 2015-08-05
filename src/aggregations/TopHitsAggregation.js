@@ -21,8 +21,10 @@
   ejs.TopHitsAggregation = function (name) {
 
     var
-    _common = ejs.MetricsAggregationMixin(name, 'top_hits'),
-    agg = _common.toJSON();
+      _common = ejs.AggregationMixin(name),
+      agg = _common.toJSON();
+
+    agg[name].top_hits = {};
 
     return extend(_common, {
       /**
