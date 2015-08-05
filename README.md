@@ -1,3 +1,11 @@
+It's a maintained fork
+
+doc is here : https://cdn.rawgit.com/ErwanPigneul/elastic.js/master/dist/docs/ejs.html
+
+
+
+
+
 # elastic.js
 
 A JavaScript implementation of the [ElasticSearch](http://www.elasticsearch.org/) DSL for use with the [official elasticsearch javascript client](http://www.elasticsearch.org/guide/en/elasticsearch/client/javascript-api/current/index.html).  
