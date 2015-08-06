@@ -1,7 +1,7 @@
 {
   "name": "elastic.js",
   "description": "Javascript API for ElasticSearch DSL",
-  "version": "1.3.3",
+  "version": "1.3.4",
   "homepage": "https://github.com/fullscale/elastic.js",
   "keywords": [
     "elasticsearch",

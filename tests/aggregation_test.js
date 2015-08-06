@@ -28,10 +28,11 @@ exports.aggregations = {
     done();
   },
   exists: function (test) {
-    test.expect(25);
+    test.expect(26);
 
     test.ok(ejs.GlobalAggregation, 'GlobalAggregation');
     test.ok(ejs.FilterAggregation, 'FilterAggregation');
+    test.ok(ejs.FiltersAggregation, 'FiltersAggregation');
     test.ok(ejs.TermsAggregation, 'TermsAggregation');
     test.ok(ejs.GeoHashGridAggregation, 'GeoHashGridAggregation');
     test.ok(ejs.HistogramAggregation, 'HistogramAggregation');
@@ -1416,6 +1417,50 @@ exports.aggregations = {
 
     agg.filter(tf2);
     expected.myagg.filter = tf2.toJSON();
+    doTest();
+
+    agg.agg(ta1);
+    expected.myagg.aggs = ta1.toJSON();
+    doTest();
+
+    test.strictEqual(agg._type(), 'aggregation');
+
+    test.throws(function () {
+      agg.agggregation('invalid');
+    }, TypeError);
+
+    test.throws(function () {
+      agg.filter('invalid');
+    }, TypeError);
+
+    test.done();
+  },
+  FiltersAggregation: function (test) {
+    test.expect(9);
+
+    var agg = ejs.FiltersAggregation('myagg'),
+      tf1 = ejs.TermFilter('t1', 'v1'),
+      tf2 = ejs.TermFilter('t2', 'v2'),
+      ta1 = ejs.TermsAggregation('ta1'),
+      expected,
+      doTest = function () {
+        test.deepEqual(agg.toJSON(), expected);
+      };
+
+    expected = {
+      myagg: {filters:{filters:{}}}
+    };
+
+    test.ok(agg, 'FiltersAggregation exists');
+    test.ok(agg.toJSON(), 'toJSON() works');
+    doTest();
+
+    agg.filter(tf1, 'f1');
+    expected.myagg.filters.filters.f1 = tf1.toJSON();
+    doTest();
+
+    agg.filter(tf2, 'f2');
+    expected.myagg.filters.filters.f2 = tf2.toJSON();
     doTest();
 
     agg.agg(ta1);
