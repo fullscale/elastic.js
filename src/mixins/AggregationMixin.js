@@ -14,7 +14,7 @@
     return {
 
       /**
-      Add a nesated aggregation.  This method can be called multiple times
+      Add a nested aggregation.  This method can be called multiple times
       in order to set multiple nested aggregations what will be executed
       at the same time as the parent aggregation.
 
@@ -41,7 +41,7 @@
       },
 
       /**
-      Add a nesated aggregation.  This method can be called multiple times
+      Add a nested aggregation.  This method can be called multiple times
       in order to set multiple nested aggregations what will be executed
       at the same time as the parent aggregation.  Alias for the
       aggregation method.
