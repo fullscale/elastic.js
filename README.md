@@ -72,6 +72,12 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 
 _Also, please don't edit elastic.js and elastic.min.js files as they are generated via grunt. You'll find source code in the "src" subdirectory!_
 
+## Some tips (memo)
+cd docs/
+./build.sh 
+
+## 
+
 ## License
 Copyright (c) 2012-2014 FullScale Labs, LLC
 Licensed under the MIT license.

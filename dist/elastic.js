@@ -1,4 +1,4 @@
-/*! elastic.js - v1.3.3 - 2015-08-06
+/*! elastic.js - v1.3.4 - 2015-09-21
  * https://github.com/fullscale/elastic.js
  * Copyright (c) 2015 FullScale Labs, LLC; Licensed MIT */
 
@@ -9498,23 +9498,19 @@
       },
     
       /**
-            Sets the minimum number of low freq matches that need to match in 
-            a document before that document is returned in the results.
+            Sets a string value controlling how many "should" clauses in the
+            resulting <code>Query</code> should match.
 
-            @member ejs.CommonTermsQuery
-            @param {Integer} min A positive integer.
+            @member ejs.MatchQuery
+            @param {String} minMatch A min should match parameter.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
-      minimumShouldMatch: function (min) {
-        if (min == null) {
-          return query.common[field].minimum_should_match.low_freq;
+      minimumShouldMatch: function (minMatch) {
+        if (minMatch == null) {
+          return query.common[field].minimum_should_match;
         }
-    
-        if (query.common[field].minimum_should_match == null) {
-          query.common[field].minimum_should_match = {};
-        }
-        
-        query.common[field].minimum_should_match.low_freq = min;
+
+        query.common[field].minimum_should_match = minMatch;
         return this;
       },
 
@@ -9527,7 +9523,16 @@
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       minimumShouldMatchLowFreq: function (min) {
-        return this.minimumShouldMatch(min);
+        if (min == null) {
+          return query.common[field].minimum_should_match.low_freq;
+        }
+    
+        if (query.common[field].minimum_should_match == null) {
+          query.common[field].minimum_should_match = {};
+        }
+        
+        query.common[field].minimum_should_match.low_freq = min;
+        return this;      
       },
       
       /**
@@ -11683,7 +11688,7 @@
             resulting <code>Query</code> should match.
 
             @member ejs.MatchQuery
-            @param {Integer} minMatch An <code>integer</code> between 0 and 100.
+            @param {String} minMatch A min should match parameter.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       minimumShouldMatch: function (minMatch) {
@@ -12540,7 +12545,7 @@
             resulting <code>Query</code> should match.
 
             @member ejs.MultiMatchQuery
-            @param {Integer} minMatch An <code>integer</code> between 0 and 100.
+            @param {String} minMatch A min should match parameter.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       minimumShouldMatch: function (minMatch) {
@@ -13396,7 +13401,7 @@
             resulting <code>Query</code> should match.
 
             @member ejs.QueryStringQuery
-            @param {Integer} minMatch An <code>integer</code> between 0 and 100.
+            @param {String} minMatch A min should match parameter.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       minimumShouldMatch: function (minMatch) {
@@ -14646,15 +14651,15 @@
             before that document is returned in the results.
 
             @member ejs.TermsQuery
-            @param {Integer} min A positive integer.
+            @param {String} minMatch A min should match parameter.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
-      minimumShouldMatch: function (min) {
-        if (min == null) {
+      minimumShouldMatch: function (minMatch) {
+        if (minMatch == null) {
           return query.terms.minimum_should_match;
         }
       
-        query.terms.minimum_should_match = min;
+        query.terms.minimum_should_match = minMatch;
         return this;
       },
       

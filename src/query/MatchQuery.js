@@ -189,7 +189,7 @@
             resulting <code>Query</code> should match.
 
             @member ejs.MatchQuery
-            @param {Integer} minMatch An <code>integer</code> between 0 and 100.
+            @param {String} minMatch A min should match parameter.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       minimumShouldMatch: function (minMatch) {

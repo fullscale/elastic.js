@@ -451,7 +451,7 @@ exports.queries = {
     test.done();
   },
   CommonTermsQuery: function (test) {
-    test.expect(21);
+    test.expect(22);
 
     var commonQuery = ejs.CommonTermsQuery(),
       expected,
@@ -539,8 +539,12 @@ exports.queries = {
     expected.common.field2.analyzer = 'the analyzer';
     doTest();
 
-    commonQuery.minimumShouldMatch(10);
-    expected.common.field2.minimum_should_match = {low_freq: 10};
+    commonQuery.minimumShouldMatch('10');
+    expected.common.field2.minimum_should_match = '10';
+    doTest();
+
+    commonQuery.minimumShouldMatch("3<90%");
+    expected.common.field2.minimum_should_match = "3<90%";
     doTest();
 
     commonQuery.minimumShouldMatchLowFreq(5);
@@ -977,7 +981,7 @@ exports.queries = {
     test.done();
   },
   TermsQuery: function (test) {
-    test.expect(13);
+    test.expect(14);
 
     var termsQuery = ejs.TermsQuery('f1', ['t1', 't2']),
       expected,
@@ -1011,11 +1015,15 @@ exports.queries = {
     expected.terms.minimum_should_match = 2;
     doTest();
 
+    termsQuery.minimumShouldMatch("3<90%");
+    expected.terms.minimum_should_match = "3<90%";
+    doTest();
+
     termsQuery.field('f2');
     expected = {
       terms: {
         boost: 1.5,
-        minimum_should_match: 2,
+        minimum_should_match: "3<90%",
         f2: ['t3']
       }
     };
@@ -1881,7 +1889,7 @@ exports.queries = {
     test.done();
   },
   MatchQuery: function (test) {
-    test.expect(39);
+    test.expect(40);
 
     var matchQuery = ejs.MatchQuery('t1', 'v1'),
       expected,
@@ -1963,6 +1971,10 @@ exports.queries = {
     expected.match.t1.minimum_should_match = 10;
     doTest();
 
+    matchQuery.minimumShouldMatch("3<90%");
+    expected.match.t1.minimum_should_match = "3<90%";
+    doTest();
+
     matchQuery.fuzzyRewrite('constant_score_auto');
     expected.match.t1.fuzzy_rewrite = 'constant_score_auto';
     doTest();
@@ -2042,7 +2054,7 @@ exports.queries = {
     test.done();
   },
   MultiMatchQuery: function (test) {
-    test.expect(47);
+    test.expect(48);
 
     var mmQuery = ejs.MultiMatchQuery('t', 'v1'),
       expected,
@@ -2149,6 +2161,10 @@ exports.queries = {
 
     mmQuery.minimumShouldMatch(10);
     expected.multi_match.minimum_should_match = 10;
+    doTest();
+
+    mmQuery.minimumShouldMatch("10%");
+    expected.multi_match.minimum_should_match = "10%";
     doTest();
 
     mmQuery.fuzzyRewrite('constant_score_auto');
@@ -2279,7 +2295,7 @@ exports.queries = {
     test.done();
   },
   BoolQuery: function (test) {
-    test.expect(21);
+    test.expect(22);
 
     var termQuery1 = ejs.TermQuery('t1', 'v1'),
       termQuery2 = ejs.TermQuery('t2', 'v2'),
@@ -2341,6 +2357,10 @@ exports.queries = {
 
     boolQuery.minimumNumberShouldMatch(2);
     expected.bool.minimum_number_should_match = 2;
+    doTest();
+
+    boolQuery.minimumNumberShouldMatch("2%");
+    expected.bool.minimum_number_should_match = "2%";
     doTest();
 
     test.strictEqual(boolQuery._type(), 'query');
@@ -2426,7 +2446,7 @@ exports.queries = {
     test.done();
   },
   QueryStringQuery: function (test) {
-    test.expect(44);
+    test.expect(45);
 
     var queryString = ejs.QueryStringQuery('this AND that'),
       expected,
@@ -2517,6 +2537,10 @@ exports.queries = {
 
     queryString.minimumShouldMatch(1);
     expected.query_string.minimum_should_match = 1;
+    doTest();
+
+    queryString.minimumShouldMatch("10%");
+    expected.query_string.minimum_should_match = "10%";
     doTest();
 
     queryString.tieBreaker(1.1);
