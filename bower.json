@@ -1,6 +1,6 @@
 {
   "name": "elastic.js",
-  "version": "1.3.4",
+  "version": "1.3.5",
   "description": "Javascript API for ElasticSearch DSL",
   "license": "MIT",
   "keywords": [
