@@ -1,4 +1,4 @@
-/*! elastic.js - v1.3.4 - 2015-09-21
+/*! elastic.js - v1.3.4 - 2015-09-22
  * https://github.com/fullscale/elastic.js
  * Copyright (c) 2015 FullScale Labs, LLC; Licensed MIT */
 
@@ -46,6 +46,7 @@
     isFilter, // checks valid ejs Filter object
     isFacet, // checks valid ejs Facet object
     isAggregation, // checks valid ejs Aggregation object
+    isPartialField, // checks valid ejs PartialField object
     isScriptField, // checks valid ejs ScriptField object
     isGeoPoint, // checks valid ejs GeoPoint object
     isIndexedShape, // checks valid ejs IndexedShape object
@@ -198,6 +199,10 @@
 
   isScriptField = function (obj) {
     return (isEJSObject(obj) && obj._type() === 'script field');
+  };
+
+  isPartialField = function (obj) {
+    return (isEJSObject(obj) && obj._type() === 'partial field');
   };
 
   isGeoPoint = function (obj) {
@@ -16161,6 +16166,101 @@
 
   /**
     @class
+    <p>When loading data from _source, partial fields can be used 
+    to use wildcards to control what part of the _source will be loaded 
+    based on include and exclude patterns. </p>
+
+    @name ejs.PartialField
+    @ejs request
+
+    @desc
+    <p>Control what part of the _source will be loaded.</p>
+
+    @param {String} fieldName A name of the partial field to create.
+
+    */
+  ejs.PartialField = function (fieldName) {
+    var partial = {};
+
+    partial[fieldName] = {};
+
+    return {
+
+      /**
+            Allows to control how the _source field is returned with every hit.
+            By default operations return the contents of the _source field
+            unless you have used the fields parameter or if the _source field
+            is disabled.  Set the includes parameter to false to completely
+            disable returning the source field.
+
+            @member ejs.PartialField
+            @param {(String|String[])} include The field or list of fields to include as array.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      include: function (include) {
+        if (include == null) {
+          return partial[fieldName].include;
+        }
+
+        if (!isArray(include) && !isString(include)) {
+          throw new TypeError('Argument include must be a string or an array');
+        }
+
+        partial[fieldName].include = include;
+
+        return this;
+      },
+
+      /**
+            Allows to control how the _source field is returned with every hit.
+            By default operations return the contents of the _source field
+            unless you have used the fields parameter or if the _source field
+            is disabled.  Set the includes parameter to false to completely
+            disable returning the source field.
+
+            @member ejs.PartialField
+            @param {(String|String[])} exclude The optional field or list of fields to exclude.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      exclude: function (exclude) {
+        if (exclude == null) {
+          return partial[fieldName].exclude;
+        }
+
+        if (!isArray(exclude) && !isString(exclude)) {
+          throw new TypeError('Argument exclude must be a string or an array');
+        }
+
+        partial[fieldName].exclude = exclude;
+
+        return this;
+      },
+  
+      /**
+            The type of ejs object.  For internal use only.
+            
+            @member ejs.PartialField
+            @returns {String} the type of object
+            */
+      _type: function () {
+        return 'partial field';
+      },
+      
+      /**
+            Retrieves the internal <code>script</code> object. This is typically used by
+            internal API functions so use with caution.
+
+            @member ejs.PartialField
+            @returns {String} returns this object's internal <code>facet</code> property.
+            */
+      toJSON: function () {
+        return partial;
+      }
+    };
+  };
+
+  /**
+    @class
     <p>The <code>Request</code> object provides methods generating an elasticsearch request body.</p>
 
     @name ejs.Request
@@ -16408,6 +16508,30 @@
           }
         }
 
+        return this;
+      },
+
+      /**
+            Control what part of the _source will be loaded based on <code>PartialField</code>.
+
+            @member ejs.Request
+            @param {PartialField} oPartialField A valid <code>PartialField</code>.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      partialField: function (oPartialField) {
+        if (oPartialField == null) {
+          return query.partial_fields;
+        }
+
+        if (query.partial_fields == null) {
+          query.partial_fields = {};
+        }
+
+        if (!isPartialField(oPartialField)) {
+          throw new TypeError('Argument must be a PartialField');
+        }
+
+        extend(query.partial_fields, oPartialField.toJSON());
         return this;
       },
 

@@ -251,6 +251,30 @@
       },
 
       /**
+            Control what part of the _source will be loaded based on <code>PartialField</code>.
+
+            @member ejs.Request
+            @param {PartialField} oPartialField A valid <code>PartialField</code>.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      partialField: function (oPartialField) {
+        if (oPartialField == null) {
+          return query.partial_fields;
+        }
+
+        if (query.partial_fields == null) {
+          query.partial_fields = {};
+        }
+
+        if (!isPartialField(oPartialField)) {
+          throw new TypeError('Argument must be a PartialField');
+        }
+
+        extend(query.partial_fields, oPartialField.toJSON());
+        return this;
+      },
+
+      /**
             Once a query executes, you can use rescore to run a secondary, more
             expensive query to re-order the results.
 

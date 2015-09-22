@@ -28,10 +28,11 @@ exports.search = {
     done();
   },
   exists: function (test) {
-    test.expect(15);
+    test.expect(16);
 
     test.ok(ejs.Request, 'Request');
-    test.ok(ejs.ScriptField, 'ScriptField');
+    test.ok(ejs.PartialField, 'PartialField');
+    test.ok(ejs.ScriptField, 'ScriptField');    
     test.ok(ejs.GeoPoint, 'GeoPoint');
     test.ok(ejs.IndexedShape, 'IndexedShape');
     test.ok(ejs.Shape, 'Shape');
@@ -1099,6 +1100,44 @@ exports.search = {
 
     test.done();
   },
+  PartialField: function (test) {
+    test.expect(8);
+
+    var cp = ejs.PartialField('f'),
+      expected,
+      doTest = function () {
+        test.deepEqual(cp.toJSON(), expected);
+      };
+
+    expected = {
+      f: {}
+    };
+
+    test.ok(cp, 'PartialField exists');
+    test.ok(cp.toJSON(), 'toJSON() works');
+    doTest();
+
+    cp.include('f1');
+    expected.f.include = 'f1';
+    doTest();
+
+    cp.include(['f1','f2']);
+    expected.f.include = ['f1','f2'];
+    doTest();
+
+    cp.exclude('f1');
+    expected.f.exclude = 'f1';
+    doTest();
+
+    cp.exclude(['f1','f2']);
+    expected.f.exclude = ['f1','f2'];
+    doTest();
+
+    test.strictEqual(cp._type(), 'partial field');
+
+
+    test.done();
+  },
   ScriptField: function (test) {
     test.expect(8);
 
@@ -1138,7 +1177,7 @@ exports.search = {
     test.done();
   },
   Request: function (test) {
-    test.expect(56);
+    test.expect(58);
 
     var req = ejs.Request(),
       matchAll = ejs.MatchAllQuery(),
@@ -1149,6 +1188,12 @@ exports.search = {
       globalAgg = ejs.GlobalAggregation('myglobal'),
       termsAgg = ejs.TermsAggregation('termsagg').field('afield'),
       filterAgg = ejs.FilterAggregation('filteragg').filter(termFilter),
+      partialField = ejs.PartialField('my_partial_field')
+        .include('f1')
+        .exclude('f2'),
+      partialField2 = ejs.PartialField('my_partial_field2')
+        .include('f1')
+        .exclude('f2'),
       scriptField = ejs.ScriptField('my_script_field')
         .script('doc["my_field_name"].value * 2'),
       scriptField2 = ejs.ScriptField('my_script_field2')
@@ -1301,6 +1346,14 @@ exports.search = {
 
     req.rescore(rescore);
     expected.rescore = rescore.toJSON();
+    doTest();
+
+    req.partialField(partialField);
+    expected.partial_fields = partialField.toJSON();
+    doTest();
+
+    req.partialField(partialField2);
+    expected.partial_fields.my_partial_field2 = partialField2.toJSON().my_partial_field2;
     doTest();
 
     req.scriptField(scriptField);
