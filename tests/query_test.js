@@ -548,7 +548,7 @@ exports.queries = {
     doTest();
 
     commonQuery.minimumShouldMatchLowFreq(5);
-    expected.common.field2.minimum_should_match.low_freq = 5;
+    expected.common.field2.minimum_should_match = { low_freq: 5 };
     doTest();
 
     commonQuery.minimumShouldMatchHighFreq(10);

@@ -203,11 +203,11 @@
         if (min == null) {
           return query.common[field].minimum_should_match.low_freq;
         }
-    
-        if (query.common[field].minimum_should_match == null) {
+
+        if (!isObject(query.common[field].minimum_should_match)) {
           query.common[field].minimum_should_match = {};
         }
-        
+
         query.common[field].minimum_should_match.low_freq = min;
         return this;      
       },
@@ -224,11 +224,11 @@
         if (min == null) {
           return query.common[field].minimum_should_match.high_freq;
         }
-    
-        if (query.common[field].minimum_should_match == null) {
+
+        if (!isObject(query.common[field].minimum_should_match)) {
           query.common[field].minimum_should_match = {};
         }
-        
+
         query.common[field].minimum_should_match.high_freq = min;
         return this;
       },
