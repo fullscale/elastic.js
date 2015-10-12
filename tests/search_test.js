@@ -28,7 +28,7 @@ exports.search = {
     done();
   },
   exists: function (test) {
-    test.expect(16);
+    test.expect(17);
 
     test.ok(ejs.Request, 'Request');
     test.ok(ejs.PartialField, 'PartialField');
@@ -46,6 +46,7 @@ exports.search = {
     test.ok(ejs.SuggestContextMixin, 'SuggestContextMixin');
     test.ok(ejs.CompletionSuggester, 'CompletionSuggester');
     test.ok(ejs.Rescore, 'Rescore');
+    test.ok(ejs.InnerHits, 'InnerHits');
 
     test.done();
   },
@@ -1173,6 +1174,69 @@ exports.search = {
 
     test.strictEqual(cp._type(), 'script field');
 
+
+    test.done();
+  },
+  InnerHits: function (test) {
+    test.expect(14);
+
+    var ih = ejs.InnerHits(),
+      scriptField = ejs.ScriptField('my_script_field'),
+      expected,
+      doTest = function() {
+        test.deepEqual(ih.toJSON(), expected);
+      };
+
+    expected = {};
+
+    test.ok(ih, 'InnerHits exists');
+    test.ok(ih.toJSON(), 'toJSON() works');
+
+    ih.name("foo");
+    expected.name = "foo";
+    doTest();
+
+    ih.from(5);
+    expected.from = 5;
+    doTest();
+
+    ih.size(10);
+    expected.size = 10;
+    doTest();
+
+    ih.sort('foo');
+    expected.sort = 'foo';
+    doTest();
+
+    ih.version(true);
+    expected.version = true;
+    doTest();
+
+    ih.explain(true);
+    expected.explain = true;
+    doTest();
+
+    ih.scriptField(scriptField);
+    expected.script_fields = scriptField.toJSON();
+    doTest();
+
+    ih.fieldDataFields(['foo', 'bar']);
+    expected.fielddata_fields = ['foo', 'bar'];
+    doTest();
+
+    ih.source(true);
+    expected._source = true;
+    doTest();
+
+    ih.source(['foo', 'bar']);
+    expected._source = {includes: ['foo', 'bar']};
+    doTest();
+
+    ih.source(['foo'], ['bar']);
+    expected._source = {includes: ['foo'], excludes: ['bar']};
+    doTest();
+
+    test.strictEqual(ih._type(), 'inner hits');
 
     test.done();
   },

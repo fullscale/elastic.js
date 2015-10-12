@@ -168,3 +168,7 @@
   isScoreFunction = function (obj) {
     return (isEJSObject(obj) && obj._type() === 'score function');
   };
+
+  isInnerHits = function(obj) {
+    return (isEJSObject(obj) && obj._type() === 'inner hits');
+  };

@@ -1380,10 +1380,11 @@ exports.queries = {
     test.done();
   },
   HasParentQuery: function (test) {
-    test.expect(15);
+    test.expect(16);
 
     var termQuery = ejs.TermQuery('t1', 'v1'),
       termQuery2 = ejs.TermQuery('t2', 'v2'),
+      innerHits = ejs.InnerHits(),
       hasParentQuery = ejs.HasParentQuery(termQuery, 't1'),
       expected,
       doTest = function () {
@@ -1435,6 +1436,10 @@ exports.queries = {
     expected.has_parent.boost = 1.2;
     doTest();
 
+    hasParentQuery.innerHits(innerHits);
+    expected.has_parent.inner_hits = innerHits.toJSON();
+    doTest();
+
     test.strictEqual(hasParentQuery._type(), 'query');
 
 
@@ -1449,10 +1454,11 @@ exports.queries = {
     test.done();
   },
   HasChildQuery: function (test) {
-    test.expect(20);
+    test.expect(21);
 
     var termQuery = ejs.TermQuery('t1', 'v1'),
       termQuery2 = ejs.TermQuery('t2', 'v2'),
+      innerHits = ejs.InnerHits(),
       hasChildQuery = ejs.HasChildQuery(termQuery, 't1'),
       expected,
       doTest = function () {
@@ -1522,6 +1528,10 @@ exports.queries = {
 
     hasChildQuery.boost(1.2);
     expected.has_child.boost = 1.2;
+    doTest();
+
+    hasChildQuery.innerHits(innerHits);
+    expected.has_child.inner_hits = innerHits.toJSON();
     doTest();
 
     test.strictEqual(hasChildQuery._type(), 'query');
@@ -2728,12 +2738,13 @@ exports.queries = {
     test.done();
   },
   NestedQuery: function (test) {
-    test.expect(18);
+    test.expect(19);
 
     var termQuery1 = ejs.TermQuery('t1', 'v1'),
       termQuery2 = ejs.TermQuery('t2', 'v2'),
       termFilter1 = ejs.TermFilter('tf1', 'v1'),
       termFilter2 = ejs.TermFilter('tf2', 'v2'),
+      innerHits = ejs.InnerHits(),
       nestedQuery = ejs.NestedQuery('root'),
       expected,
       doTest = function () {
@@ -2795,6 +2806,10 @@ exports.queries = {
 
     nestedQuery.boost(3.2);
     expected.nested.boost = 3.2;
+    doTest();
+
+    nestedQuery.innerHits(innerHits);
+    expected.nested.inner_hits = innerHits.toJSON();
     doTest();
 
     test.strictEqual(nestedQuery._type(), 'query');

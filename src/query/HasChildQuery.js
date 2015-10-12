@@ -146,7 +146,27 @@
 
         query.has_child.short_circuit_cutoff = cutoff;
         return this;
+      },
+
+      /**
+            Sets the inner hits options
+
+            @member ejs.HasChildQuery
+            @param {InnerHits} i A valid InnerHits object
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      innerHits: function(i) {
+        if (i == null) {
+          return query.has_child.inner_hits;
+        }
+
+        if (!isInnerHits(i)) {
+          throw new TypeError('Argument must be a Highlight object');
+        }
+
+        query.has_child.inner_hits = i.toJSON();
+        return this;
       }
-      
+
     });
   };
