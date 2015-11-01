@@ -1304,11 +1304,11 @@ exports.aggregations = {
     doTest();
 
     agg.order('_count', 'asc');
-    expected.myagg.terms.order = {'_count': 'asc'};
+    expected.myagg.terms.order = [{'_count': 'asc'}];
     doTest();
 
     agg.order('_term', 'invalid');
-    expected.myagg.terms.order = {'_term': 'desc'};
+    expected.myagg.terms.order = [{'_count': 'asc'},{'_term': 'desc'}];
     doTest();
 
     agg.agg(ta1);

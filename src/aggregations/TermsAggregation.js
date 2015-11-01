@@ -287,6 +287,8 @@
       @returns {Object} returns <code>this</code> so that calls can be chained.
       */
       order: function (order, direction) {
+        var orderAsObj = {};
+
         if (order == null) {
           return agg[name].terms.order;
         }
@@ -300,8 +302,9 @@
           direction = 'desc';
         }
 
-        agg[name].terms.order = {};
-        agg[name].terms.order[order] = direction;
+        orderAsObj[order] = direction;
+        agg[name].terms.order = agg[name].terms.order || [];
+        agg[name].terms.order.push(orderAsObj);
         return this;
       }
 
