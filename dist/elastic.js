@@ -1,4 +1,4 @@
-/*! elastic.js - v1.3.7 - 2015-11-02
+/*! elastic.js - v1.3.8 - 2015-11-02
  * https://github.com/fullscale/elastic.js
  * Copyright (c) 2015 FullScale Labs, LLC; Licensed MIT */
 
@@ -5605,6 +5605,8 @@
       @returns {Object} returns <code>this</code> so that calls can be chained.
       */
       order: function (order, direction) {
+        var orderAsObj = {};
+
         if (order == null) {
           return agg[name].terms.order;
         }
@@ -5618,8 +5620,9 @@
           direction = 'desc';
         }
 
-        agg[name].terms.order = {};
-        agg[name].terms.order[order] = direction;
+        orderAsObj[order] = direction;
+        agg[name].terms.order = agg[name].terms.order || [];
+        agg[name].terms.order.push(orderAsObj);
         return this;
       }
 
