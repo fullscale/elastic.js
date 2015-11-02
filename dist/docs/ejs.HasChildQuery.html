@@ -115,8 +115,8 @@
                   <div class="alert-message default"><span class="ancestors" style="margin-left:10px"><a href="ejs.html">ejs</a> &rang; </span>HasChildQuery</div>
                 </h3>
 
-                <p class="class-description"><p>The has_child query works the same as the has_child filter, 
-    by automatically wrapping the filter with a constant_score. Results in 
+                <p class="class-description"><p>The has_child query works the same as the has_child filter,
+    by automatically wrapping the filter with a constant_score. Results in
     parent documents that have child docs matching the query being returned.</p></p>    
               </header>  
     
@@ -246,17 +246,33 @@
     </tr>
 </div><div class="method-body">
     <tr>
+        <td><code>Object</code></td><td><code><a href="#ejs.HasChildQuery.maxChildren">maxChildren(max)</a></code></td><td>Sets the max_children value.</td>
+    </tr>
+</div><div class="method-body">
+    <tr>
+        <td><code>Object</code></td><td><code><a href="#ejs.HasChildQuery.maxChildren">maxChildren(max)</a></code></td><td>Sets the max_children value.</td>
+    </tr>
+</div><div class="method-body">
+    <tr>
+        <td><code>Object</code></td><td><code><a href="#ejs.HasChildQuery.minChildren">minChildren(min)</a></code></td><td>Sets the min_children value.</td>
+    </tr>
+</div><div class="method-body">
+    <tr>
+        <td><code>Object</code></td><td><code><a href="#ejs.HasChildQuery.minChildren">minChildren(min)</a></code></td><td>Sets the min_children value.</td>
+    </tr>
+</div><div class="method-body">
+    <tr>
         <td><code>Object</code></td><td><code><a href="#ejs.HasChildQuery.query">query(q)</a></code></td><td>Sets the query</td>
     </tr>
 </div><div class="method-body">
     <tr>
-        <td><code>Object</code></td><td><code><a href="#ejs.HasChildQuery.scope">scope(s)</a></code></td><td>Sets the scope of the query.  A scope allows to run facets on the 
+        <td><code>Object</code></td><td><code><a href="#ejs.HasChildQuery.scope">scope(s)</a></code></td><td>Sets the scope of the query.  A scope allows to run facets on the
             same scope name that will work against the child documents.</td>
     </tr>
 </div><div class="method-body">
     <tr>
         <td><code>Object</code></td><td><code><a href="#ejs.HasChildQuery.scoreMode">scoreMode(s)</a></code></td><td>Sets the scoring method.  Valid values are:
-            
+
             none - the default, no scoring
             max - the highest score of all matched child documents is used
             sum - the sum the all the matched child documents is used
@@ -265,7 +281,7 @@
 </div><div class="method-body">
     <tr>
         <td><code>Object</code></td><td><code><a href="#ejs.HasChildQuery.scoreType">scoreType(s)</a></code></td><td>Sets the scoring method.  Valid values are:
-            
+
             none - the default, no scoring
             max - the highest score of all matched child documents is used
             sum - the sum the all the matched child documents is used
@@ -505,6 +521,310 @@
 </div>
 </td></tr>
 <tr><td>
+<div id="ejs.HasChildQuery.maxChildren" class="method-body">
+    <a style="text-decoration:none" name="ejs.HasChildQuery.maxChildren">
+        <h3 style="color:#557e2f;background-color:#eee;font-family:Menlo,Monaco,Consolas,Courier New,monospace;" id="maxChildren">&nbsp;maxChildren</h3>
+    </a>
+        <code>
+        Object maxChildren ( max )
+    </code>
+
+    <div style="margin-left:15px">Sets the max_children value.</div><br>  
+   
+    <div class="alert-message block-message error">
+	<dl style="margin-left:15px;margin-right:20px;margin-top:0px;margin-bottom:3px;">
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</dl>
+</div>
+
+ 
+    <dl style="margin-left:15px;margin-right:20px;margin-top:0px;">  
+
+        
+    
+        <dt>Parameters</dt><dd>
+	
+
+            
+                <code>max</code>
+            
+
+            <code>&lt;Integer&gt;</code>
+            
+            
+            
+            
+            
+            <span>A positive <code>integer</code> value.</span>
+            <br>
+	
+	
+</dd>
+    
+        
+    
+        
+    
+        
+        <dt>Returns</dt>
+        <dd>
+    returns <code>this</code> so that calls can be chained.
+
+
+
+</dd>
+    
+        
+
+    </dl>
+
+</div>
+</td></tr>
+<tr><td>
+<div id="ejs.HasChildQuery.maxChildren" class="method-body">
+    <a style="text-decoration:none" name="ejs.HasChildQuery.maxChildren">
+        <h3 style="color:#557e2f;background-color:#eee;font-family:Menlo,Monaco,Consolas,Courier New,monospace;" id="maxChildren">&nbsp;maxChildren</h3>
+    </a>
+        <code>
+        Object maxChildren ( max )
+    </code>
+
+    <div style="margin-left:15px">Sets the max_children value.</div><br>  
+   
+    <div class="alert-message block-message error">
+	<dl style="margin-left:15px;margin-right:20px;margin-top:0px;margin-bottom:3px;">
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</dl>
+</div>
+
+ 
+    <dl style="margin-left:15px;margin-right:20px;margin-top:0px;">  
+
+        
+    
+        <dt>Parameters</dt><dd>
+	
+
+            
+                <code>max</code>
+            
+
+            <code>&lt;Integer&gt;</code>
+            
+            
+            
+            
+            
+            <span>A positive <code>integer</code> value.</span>
+            <br>
+	
+	
+</dd>
+    
+        
+    
+        
+    
+        
+        <dt>Returns</dt>
+        <dd>
+    returns <code>this</code> so that calls can be chained.
+
+
+
+</dd>
+    
+        
+
+    </dl>
+
+</div>
+</td></tr>
+<tr><td>
+<div id="ejs.HasChildQuery.minChildren" class="method-body">
+    <a style="text-decoration:none" name="ejs.HasChildQuery.minChildren">
+        <h3 style="color:#557e2f;background-color:#eee;font-family:Menlo,Monaco,Consolas,Courier New,monospace;" id="minChildren">&nbsp;minChildren</h3>
+    </a>
+        <code>
+        Object minChildren ( min )
+    </code>
+
+    <div style="margin-left:15px">Sets the min_children value.</div><br>  
+   
+    <div class="alert-message block-message error">
+	<dl style="margin-left:15px;margin-right:20px;margin-top:0px;margin-bottom:3px;">
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</dl>
+</div>
+
+ 
+    <dl style="margin-left:15px;margin-right:20px;margin-top:0px;">  
+
+        
+    
+        <dt>Parameters</dt><dd>
+	
+
+            
+                <code>min</code>
+            
+
+            <code>&lt;Integer&gt;</code>
+            
+            
+            
+            
+            
+            <span>A positive <code>integer</code> value.</span>
+            <br>
+	
+	
+</dd>
+    
+        
+    
+        
+    
+        
+        <dt>Returns</dt>
+        <dd>
+    returns <code>this</code> so that calls can be chained.
+
+
+
+</dd>
+    
+        
+
+    </dl>
+
+</div>
+</td></tr>
+<tr><td>
+<div id="ejs.HasChildQuery.minChildren" class="method-body">
+    <a style="text-decoration:none" name="ejs.HasChildQuery.minChildren">
+        <h3 style="color:#557e2f;background-color:#eee;font-family:Menlo,Monaco,Consolas,Courier New,monospace;" id="minChildren">&nbsp;minChildren</h3>
+    </a>
+        <code>
+        Object minChildren ( min )
+    </code>
+
+    <div style="margin-left:15px">Sets the min_children value.</div><br>  
+   
+    <div class="alert-message block-message error">
+	<dl style="margin-left:15px;margin-right:20px;margin-top:0px;margin-bottom:3px;">
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</dl>
+</div>
+
+ 
+    <dl style="margin-left:15px;margin-right:20px;margin-top:0px;">  
+
+        
+    
+        <dt>Parameters</dt><dd>
+	
+
+            
+                <code>min</code>
+            
+
+            <code>&lt;Integer&gt;</code>
+            
+            
+            
+            
+            
+            <span>A positive <code>integer</code> value.</span>
+            <br>
+	
+	
+</dd>
+    
+        
+    
+        
+    
+        
+        <dt>Returns</dt>
+        <dd>
+    returns <code>this</code> so that calls can be chained.
+
+
+
+</dd>
+    
+        
+
+    </dl>
+
+</div>
+</td></tr>
+<tr><td>
 <div id="ejs.HasChildQuery.query" class="method-body">
     <a style="text-decoration:none" name="ejs.HasChildQuery.query">
         <h3 style="color:#557e2f;background-color:#eee;font-family:Menlo,Monaco,Consolas,Courier New,monospace;" id="query">&nbsp;query</h3>
@@ -589,7 +909,7 @@
         Object scope ( s )
     </code>
 
-    <div style="margin-left:15px">Sets the scope of the query.  A scope allows to run facets on the 
+    <div style="margin-left:15px">Sets the scope of the query.  A scope allows to run facets on the
             same scope name that will work against the child documents.</div><br>  
    
     <div class="alert-message block-message error">
@@ -670,7 +990,7 @@
     </code>
 
     <div style="margin-left:15px">Sets the scoring method.  Valid values are:
-            
+
             none - the default, no scoring
             max - the highest score of all matched child documents is used
             sum - the sum the all the matched child documents is used
@@ -751,7 +1071,7 @@
     </code>
 
     <div style="margin-left:15px">Sets the scoring method.  Valid values are:
-            
+
             none - the default, no scoring
             max - the highest score of all matched child documents is used
             sum - the sum the all the matched child documents is used
@@ -1058,7 +1378,7 @@
       <footer>
         <span style="font-size:12px;">Copyright &copy; <a href="http://www.fullscale.co">FullScale Labs</a>, LLC. 2012</span>
         <span style="font-size:12px;float:right;">
-          Documentation generated by <a style="font-size:12px" href="https://github.com/micmath/jsdoc">JSDoc 3</a> on Mon Nov 02 2015 20:49:29 GMT+0100 (CET)
+          Documentation generated by <a style="font-size:12px" href="https://github.com/micmath/jsdoc">JSDoc 3</a> on Mon Nov 02 2015 21:20:46 GMT+0100 (CET)
         </span>
       </footer>
 

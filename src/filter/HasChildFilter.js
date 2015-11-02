@@ -138,6 +138,40 @@
         }
 
         filter.has_child.inner_hits = i.toJSON();
+        
+        return this;
+      },
+
+      /**
+            Sets the min_children value.
+
+            @member ejs.HasChildQuery
+            @param {Integer} min A positive <code>integer</code> value.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      minChildren: function(min) {
+        if (min == null) {
+          return filter.has_child.min_children;
+        }
+
+        filter.has_child.min_children = min;
+        return this;
+      },
+
+      /**
+            Sets the max_children value.
+
+            @member ejs.HasChildQuery
+            @param {Integer} max A positive <code>integer</code> value.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      maxChildren: function(max) {
+        if (max == null) {
+          return filter.has_child.max_children;
+        }
+
+        filter.has_child.max_children = max;
+
         return this;
       }
 

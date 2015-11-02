@@ -314,7 +314,7 @@ exports.queries = {
 
     scoreFunc.filter(termFilter);
     doTest();
- 
+
     test.strictEqual(scoreFunc._type(), 'score function');
     test.done();
   },
@@ -1454,7 +1454,8 @@ exports.queries = {
     test.done();
   },
   HasChildQuery: function (test) {
-    test.expect(21);
+
+    test.expect(23);
 
     var termQuery = ejs.TermQuery('t1', 'v1'),
       termQuery2 = ejs.TermQuery('t2', 'v2'),
@@ -1524,6 +1525,14 @@ exports.queries = {
 
     hasChildQuery.shortCircuitCutoff(8192);
     expected.has_child.short_circuit_cutoff = 8192;
+    doTest();
+
+    hasChildQuery.minChildren(10);
+    expected.has_child.min_children = 10;
+    doTest();
+
+    hasChildQuery.maxChildren(10);
+    expected.has_child.max_children = 10;
     doTest();
 
     hasChildQuery.boost(1.2);

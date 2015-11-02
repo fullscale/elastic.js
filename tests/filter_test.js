@@ -680,7 +680,8 @@ exports.filters = {
     test.done();
   },
   HasChildFilter: function (test) {
-    test.expect(16);
+
+    test.expect(18);
 
     var termQuery = ejs.TermQuery('t1', 'v1'),
       termQuery2 = ejs.TermQuery('t2', 'v2'),
@@ -713,6 +714,14 @@ exports.filters = {
 
     hasChildFilter.shortCircuitCutoff(8192);
     expected.has_child.short_circuit_cutoff = 8192;
+    doTest();
+
+    hasChildFilter.minChildren(10);
+    expected.has_child.min_children = 10;
+    doTest();
+
+    hasChildFilter.maxChildren(10);
+    expected.has_child.max_children = 10;
     doTest();
 
     hasChildFilter.name('haschild');
