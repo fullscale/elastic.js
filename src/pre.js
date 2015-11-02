@@ -52,6 +52,7 @@
     isSuggest, // checks valid ejs Suggest object
     isGenerator, // checks valid ejs Generator object
     isScoreFunction, // checks valid ejs ScoreFunction object
+    isInnerHits, // checks valid ejs InnerHits object
 
     // create ejs object
     ejs;

@@ -334,10 +334,11 @@ exports.filters = {
     test.done();
   },
   NestedFilter: function (test) {
-    test.expect(14);
+    test.expect(15);
 
     var termQuery = ejs.TermQuery('tq1', 'v1'),
       termFilter = ejs.TermFilter('tf1', 'v1'),
+      innerHits = ejs.InnerHits(),
       nestedFilter = ejs.NestedFilter('root'),
       expected,
       doTest = function () {
@@ -384,6 +385,10 @@ exports.filters = {
 
     nestedFilter.cacheKey('filter_cache_key');
     expected.nested._cache_key = 'filter_cache_key';
+    doTest();
+
+    nestedFilter.innerHits(innerHits);
+    expected.nested.inner_hits = innerHits.toJSON();
     doTest();
 
     test.strictEqual(nestedFilter._type(), 'filter');
@@ -598,11 +603,12 @@ exports.filters = {
     test.done();
   },
   HasParentFilter: function (test) {
-    test.expect(14);
+    test.expect(15);
 
     var termQuery = ejs.TermQuery('t1', 'v1'),
       termQuery2 = ejs.TermQuery('t2', 'v2'),
       termFilter = ejs.TermFilter('tf1', 'fv1'),
+      innerHits = ejs.InnerHits(),
       hasParentFilter = ejs.HasParentFilter(termQuery, 't1'),
       expected,
       doTest = function () {
@@ -644,6 +650,10 @@ exports.filters = {
     expected.has_parent.filter = termFilter.toJSON();
     doTest();
 
+    hasParentFilter.innerHits(innerHits);
+    expected.has_parent.inner_hits = innerHits.toJSON();
+    doTest();
+
     hasParentFilter = ejs.HasParentFilter(termFilter, 't1');
     expected = {
       has_parent: {
@@ -670,11 +680,12 @@ exports.filters = {
     test.done();
   },
   HasChildFilter: function (test) {
-    test.expect(15);
+    test.expect(16);
 
     var termQuery = ejs.TermQuery('t1', 'v1'),
       termQuery2 = ejs.TermQuery('t2', 'v2'),
       termFilter = ejs.TermFilter('tf1', 'fv1'),
+      innerHits = ejs.InnerHits(),
       hasChildFilter = ejs.HasChildFilter(termQuery, 't1'),
       expected,
       doTest = function () {
@@ -718,6 +729,10 @@ exports.filters = {
 
     hasChildFilter.filter(termFilter);
     expected.has_child.filter = termFilter.toJSON();
+    doTest();
+
+    hasChildFilter.innerHits(innerHits);
+    expected.has_child.inner_hits = innerHits.toJSON();
     doTest();
 
     hasChildFilter = ejs.HasChildFilter(termFilter, 't1');

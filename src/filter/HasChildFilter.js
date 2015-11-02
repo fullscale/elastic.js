@@ -119,6 +119,26 @@
             */
       scope: function (s) {
         return this;
+      },
+
+      /**
+            Sets the inner hits options
+
+            @member ejs.HasChildFilter
+            @param {InnerHits} i A valid InnerHits object
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      innerHits: function(i) {
+        if (i == null) {
+          return filter.has_child.inner_hits;
+        }
+
+        if (!isInnerHits(i)) {
+          throw new TypeError('Argument must be a Highlight object');
+        }
+
+        filter.has_child.inner_hits = i.toJSON();
+        return this;
       }
 
     });
