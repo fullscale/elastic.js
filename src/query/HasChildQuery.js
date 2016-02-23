@@ -52,6 +52,19 @@
       },
 
       /**
+       * https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-inner-hits.html
+       * q should be a json
+       */
+      inner_hits: function(q) {
+        if (q == null) {
+          return query.has_child.query;
+        }
+
+        query.has_child.inner_hits = q;
+        return this;
+      },
+
+      /**
             Sets the child document type to search against
 
             @member ejs.HasChildQuery

@@ -1,6 +1,6 @@
-/*! elastic.js - v1.2.0 - 2015-07-30
+/*! elastic.js - v1.2.0 - 2016-02-22
  * https://github.com/fullscale/elastic.js
- * Copyright (c) 2015 FullScale Labs, LLC; Licensed MIT */
+ * Copyright (c) 2016 FullScale Labs, LLC; Licensed MIT */
 
 /**
  @namespace
@@ -10957,6 +10957,19 @@
         }
         
         query.has_child.query = q.toJSON();
+        return this;
+      },
+
+      /**
+       * https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-inner-hits.html
+       * q should be a json
+       */
+      inner_hits: function(q) {
+        if (q == null) {
+          return query.has_child.query;
+        }
+
+        query.has_child.inner_hits = q;
         return this;
       },
 
