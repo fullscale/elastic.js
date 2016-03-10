@@ -1286,7 +1286,7 @@ exports.filters = {
     doTest();
 
     geoDistanceFilter.distance(10);
-    expected.geo_distance.distance = 10;
+    expected.geo_distance.distance = "10";
     doTest();
 
     geoDistanceFilter.point(point1);
@@ -1363,7 +1363,7 @@ exports.filters = {
     }, TypeError);
 
     test.throws(function () {
-      geoDistanceFilter.distance('invalid');
+      geoDistanceFilter.distance(true);
     }, TypeError);
 
     test.done();

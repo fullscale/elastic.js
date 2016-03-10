@@ -62,11 +62,11 @@
           return filter.geo_distance.distance;
         }
       
-        if (!isNumber(numericDistance)) {
-          throw new TypeError('Argument must be a numeric value');
+        if (!isNumber(numericDistance) && !isString(numericDistance)) {
+          throw new TypeError('Argument must be a numeric or string value');
         }
         
-        filter.geo_distance.distance = numericDistance;
+        filter.geo_distance.distance = numericDistance + "";
         return this;
       },
 
