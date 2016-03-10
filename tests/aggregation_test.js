@@ -1419,7 +1419,7 @@ exports.aggregations = {
 
     expected = {
       myagg: {
-        top_hits: {}
+        top_hits: { from: 0 }
       }
     };
 
@@ -1431,7 +1431,7 @@ exports.aggregations = {
     doTest();
 
     agg.sort('foo');
-    expected.myagg.top_hits.sort = 'foo';
+    expected.myagg.top_hits.sort = ['foo'];
     doTest();
 
     agg.trackScores(true);
@@ -1475,7 +1475,7 @@ exports.aggregations = {
     doTest();
 
     agg.source(['foo'], 'bar');
-    expected.myagg.top_hits._source = 'bar';
+    expected.myagg.top_hits._source = {includes: ['foo'], excludes: 'bar'};
     doTest();
 
 

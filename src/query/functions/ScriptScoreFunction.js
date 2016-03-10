@@ -39,6 +39,22 @@
       },
 
       /**
+       Set the script_id that will modify the score.
+
+       @member ejs.ScriptScoreFunction
+       @param {String} script_id A valid script_id string to execute.
+       @returns {Object} returns <code>this</code> so that calls can be chained.
+       */
+      scriptId: function (scriptId) {
+        if (scriptId == null) {
+          return func.script_score.id;
+        }
+
+        func.script_score.id = scriptId;
+        return this;
+      },
+
+      /**
       The script language being used.
 
       @member ejs.ScriptScoreFunction

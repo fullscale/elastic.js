@@ -24,6 +24,11 @@
     _common = ejs.MetricsAggregationMixin(name, 'top_hits'),
     agg = _common.toJSON();
 
+    agg[name].top_hits = {
+      size: 0,
+      from: 0
+    };
+
     return extend(_common, {
       /**
       <p> The offset from the first result you want to fetch. </p>
@@ -33,7 +38,7 @@
       @returns {Object} returns <code>this</code> so that calls can be chained.
       */
       from: function (from) {
-        if (from === null) {
+        if (from == null) {
           return agg[name].top_hits.from;
         }
 
@@ -49,7 +54,7 @@
       @returns {Object} returns <code>this</code> so that calls can be chained.
       */
       size: function (size) {
-        if (size === null) {
+        if (size == null) {
           return agg[name].top_hits.size;
         }
 
@@ -60,16 +65,80 @@
       /**
       <p>The maximum number of top matching hits to return per bucket.</p>
 
+       <dl>
+       <dd><code>sort()</code> - The current sorting values are returned.</dd>
+       <dd><code>sort(fieldName)</code> - Adds the field to the current list of sorting values.</dd>
+       <dd><code>sort(fieldName, order)</code> - Adds the field to the current list of
+       sorting with the specified order.  Order must be asc or desc.</dd>
+       <dd><code>sort(ejs.Sort)</code> - Adds the Sort value to the current list of sorting values.</dd>
+       <dd><code>sort(array)</code> - Replaces all current sorting values with values
+       from the array.  The array must contain only strings and Sort objects.</dd>
+       </dl>
+
+       <p>Multi-level sorting is supported so the order in which sort fields
+       are added to the query requests is relevant.</p>
+
+       <p>It is recommended to use <code>Sort</code> objects when possible.</p>
+
       @member ejs.TopHitsAggregation
       @param {Array} sort How to sort the the top matching hits
       @returns {Object} returns <code>this</code> so that calls can be chained.
       */
-      sort: function (sort) {
-        if (sort === null) {
-          return agg[name].top_hits.sort;
+      sort: function () {
+        var i, len;
+        var query = agg[name].top_hits;
+
+        if (!has(query, "sort")) {
+          query.sort = [];
         }
 
-        agg[name].top_hits.sort = sort;
+        if (arguments.length === 0) {
+          return query.sort;
+        }
+
+        // if passed a single argument
+        if (arguments.length === 1) {
+          var sortVal = arguments[0];
+
+          if (isString(sortVal)) {
+            // add  a single field name
+            query.sort.push(sortVal);
+          } else if (isSort(sortVal)) {
+            // add the Sort object
+            query.sort.push(sortVal.toJSON());
+          } else if (isArray(sortVal)) {
+            // replace with all values in the array
+            // the values must be a fieldName (string) or a
+            // Sort object.  Any other type throws an Error.
+            query.sort = [];
+            for (i = 0, len = sortVal.length; i < len; i++) {
+              if (isString(sortVal[i])) {
+                query.sort.push(sortVal[i]);
+              } else if (isSort(sortVal[i])) {
+                query.sort.push(sortVal[i].toJSON());
+              } else {
+                throw new TypeError('Invalid object in array');
+              }
+            }
+          } else {
+            // Invalid object type as argument.
+            throw new TypeError('Argument must be string, Sort, or array');
+          }
+        } else if (arguments.length === 2) {
+          // handle the case where a single field name and order are passed
+          var field = arguments[0],
+            order = arguments[1];
+
+          if (isString(field) && isString(order)) {
+            order = order.toLowerCase();
+            if (order === 'asc' || order === 'desc') {
+              var sortObj = {};
+              sortObj[field] = {order: order};
+              query.sort.push(sortObj);
+            }
+          }
+        }
+
         return this;
       },
 
@@ -82,7 +151,7 @@
       @returns {Object} returns <code>this</code> so that calls can be chained.
       */
       trackScores: function (trueFalse) {
-        if (trueFalse === null) {
+        if (trueFalse == null) {
           return agg[name].top_hits.track_scores;
         }
 
@@ -98,7 +167,7 @@
       @returns {Object} returns <code>this</code> so that calls can be chained.
       */
       version: function (trueFalse) {
-        if (trueFalse === null) {
+        if (trueFalse == null) {
           return agg[name].top_hits.version;
         }
 
@@ -114,7 +183,7 @@
       @returns {Object} returns <code>this</code> so that calls can be chained.
       */
       explain: function (trueFalse) {
-        if (trueFalse === null) {
+        if (trueFalse == null) {
           return agg[name].top_hits.explain;
         }
 
@@ -130,7 +199,7 @@
       @returns {Object} returns <code>this</code> so that calls can be chained.
       */
       highlight: function (h) {
-        if (h === null) {
+        if (h == null) {
           return agg[name].top_hits.highlight;
         }
 
@@ -150,11 +219,11 @@
       @returns {Object} returns <code>this</code> so that calls can be chained.
       */
       scriptField: function (oScriptField) {
-        if (oScriptField === null) {
+        if (oScriptField == null) {
           return agg[name].top_hits.script_fields;
         }
 
-        if (agg[name].top_hits.script_fields === undefined) {
+        if (agg[name].top_hits.script_fields == null) {
           agg[name].top_hits.script_fields = {};
         }
 
@@ -173,12 +242,24 @@
       @param {Array} Fields to return field data representation for.
       @returns {Object} returns <code>this</code> so that calls can be chained.
       */
-      fieldDataFields: function (fielddata_fields) {
-        if (fielddata_fields === null) {
-          return agg[name].top_hits.fielddata_fields;
+      fieldDataFields: function (fieldList) {
+        var query = agg[name].top_hits;
+        if (fieldList == null) {
+          return query.fielddata_fields;
         }
 
-        agg[name].top_hits.fielddata_fields = fielddata_fields;
+        if (query.fielddata_fields == null) {
+          query.fielddata_fields = [];
+        }
+
+        if (isString(fieldList)) {
+          query.fielddata_fields.push(fieldList);
+        } else if (isArray(fieldList)) {
+          query.fielddata_fields = fieldList;
+        } else {
+          throw new TypeError('Argument must be a string or an array');
+        }
+
         return this;
       },
 
@@ -196,27 +277,28 @@
        @returns {Object} returns <code>this</code> so that calls can be chained.
        */
       source: function (includes, excludes) {
-        if (includes === undefined && excludes === undefined) {
-          return agg[name].top_hits._source;
+        var query = agg[name].top_hits;
+        if (includes == null && excludes == null) {
+          return query._source;
         }
 
         if (!isArray(includes) && !isString(includes) && !isBoolean(includes)) {
           throw new TypeError('Argument includes must be a string, an array, or a boolean');
         }
 
-        if (excludes !== undefined && !isArray(excludes) && !isString(excludes)) {
+        if (excludes != null && !isArray(excludes) && !isString(excludes)) {
           throw new TypeError('Argument excludes must be a string or an array');
         }
 
         if (isBoolean(includes)) {
-          agg[name].top_hits._source = includes;
+          query._source = includes;
         } else {
-          agg[name].top_hits._source = {
+          query._source = {
             includes: includes
           };
 
-          if (excludes !== undefined) {
-            agg[name].top_hits._source = excludes;
+          if (excludes != null) {
+            query._source.excludes = excludes;
           }
         }
 
