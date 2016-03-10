@@ -209,6 +209,26 @@
         return this;
       },
 
+      fieldDataFields: function (fieldList) {
+        if (fieldList == null) {
+          return query.fielddata_fields;
+        }
+
+        if (query.fielddata_fields == null) {
+          query.fielddata_fields = [];
+        }
+
+        if (isString(fieldList)) {
+          query.fielddata_fields.push(fieldList);
+        } else if (isArray(fieldList)) {
+          query.fielddata_fields = fieldList;
+        } else {
+          throw new TypeError('Argument must be a string or an array');
+        }
+
+        return this;
+      },
+
       /**
             Allows to control how the _source field is returned with every hit.
             By default operations return the contents of the _source field

@@ -9363,8 +9363,48 @@
 
         query.bool.minimum_number_should_match = minMatch;
         return this;
+      },
+
+      /**
+       Adds the query to apply a constant score to.
+
+       @member ejs.BoolQuery
+       @param {Object} oQuery A valid <code>Query</code> object
+       @returns {Object} returns <code>this</code> so that calls can be chained.
+       */
+      query: function (oQuery) {
+        if (oQuery == null) {
+          return query.bool.query;
+        }
+
+        if (!isQuery(oQuery)) {
+          throw new TypeError('Argument must be a Query');
+        }
+
+        query.bool.query = oQuery.toJSON();
+        return this;
+      },
+
+      /**
+       Adds the filter to apply a constant score to.
+
+       @member ejs.BoolQuery
+       @param {Object} oFilter A valid <code>Filter</code> object
+       @returns {Object} returns <code>this</code> so that calls can be chained.
+       */
+      filter: function (oFilter) {
+        if (oFilter == null) {
+          return query.bool.filter;
+        }
+
+        if (!isFilter(oFilter)) {
+          throw new TypeError('Argument must be a Filter');
+        }
+
+        query.bool.filter = oFilter.toJSON();
+        return this;
       }
-      
+
     });
   };
 
@@ -16451,6 +16491,26 @@
           query.fields.push(fieldList);
         } else if (isArray(fieldList)) {
           query.fields = fieldList;
+        } else {
+          throw new TypeError('Argument must be a string or an array');
+        }
+
+        return this;
+      },
+
+      fieldDataFields: function (fieldList) {
+        if (fieldList == null) {
+          return query.fielddata_fields;
+        }
+
+        if (query.fielddata_fields == null) {
+          query.fielddata_fields = [];
+        }
+
+        if (isString(fieldList)) {
+          query.fielddata_fields.push(fieldList);
+        } else if (isArray(fieldList)) {
+          query.fielddata_fields = fieldList;
         } else {
           throw new TypeError('Argument must be a string or an array');
         }
