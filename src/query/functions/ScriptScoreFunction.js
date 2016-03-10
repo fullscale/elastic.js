@@ -47,10 +47,10 @@
        */
       scriptId: function (scriptId) {
         if (scriptId == null) {
-          return func.script_score.id;
+          return func.script_score.script_id;
         }
 
-        func.script_score.id = scriptId;
+        func.script_score.script_id = scriptId;
         return this;
       },
 
