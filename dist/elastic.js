@@ -1,4 +1,4 @@
-/*! elastic.js - v1.2.0 - 2016-03-10
+/*! elastic.js - v1.2.0 - 2016-03-11
  * https://github.com/fullscale/elastic.js
  * Copyright (c) 2016 FullScale Labs, LLC; Licensed MIT */
 
@@ -15524,10 +15524,10 @@
        */
       scriptId: function (scriptId) {
         if (scriptId == null) {
-          return func.script_score.id;
+          return func.script_score.script_id;
         }
 
-        func.script_score.id = scriptId;
+        func.script_score.script_id = scriptId;
         return this;
       },
 
