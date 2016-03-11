@@ -191,26 +191,6 @@
       },
 
       /**
-       Adds the query to apply a constant score to.
-
-       @member ejs.BoolQuery
-       @param {Object} oQuery A valid <code>Query</code> object
-       @returns {Object} returns <code>this</code> so that calls can be chained.
-       */
-      query: function (oQuery) {
-        if (oQuery == null) {
-          return query.bool.query;
-        }
-
-        if (!isQuery(oQuery)) {
-          throw new TypeError('Argument must be a Query');
-        }
-
-        query.bool.query = oQuery.toJSON();
-        return this;
-      },
-
-      /**
        Adds the filter to apply a constant score to.
 
        @member ejs.BoolQuery
