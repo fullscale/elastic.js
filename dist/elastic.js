@@ -4862,11 +4862,15 @@
       @returns {Object} returns <code>this</code> so that calls can be chained.
       */
       compression: function (c) {
+        var tdigest = agg[name].percentiles.tdigest;
         if (c == null) {
-          return agg[name].percentiles.compression;
+          return tdigest && tdigest.compression;
+        }
+        if (!tdigest) {
+          tdigest = agg[name].percentiles.tdigest = {};
         }
 
-        agg[name].percentiles.compression = c;
+        tdigest.compression = c;
         return this;
       }
 

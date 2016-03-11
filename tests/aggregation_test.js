@@ -280,7 +280,7 @@ exports.aggregations = {
     doTest();
 
     agg.compression(200);
-    expected.myagg.percentiles.compression = 200;
+    expected.myagg.percentiles.tdigest = { compression: 200 };
     doTest();
 
     test.strictEqual(agg._type(), 'aggregation');
