@@ -36,19 +36,17 @@
         if (oFilters == null) {
           return agg[name].filters;
         }
-        if (!isArray(oFilters)) {
-          throw new TypeError('Argument oFilters must be an array');
-        }
-
+        var filters = {}, key, oFilter;
         agg[name].filters = {
-          filters: oFilters.map(function (oFilter) {
-            if (!isFilter(oFilter)) {
-              throw new TypeError('Argument must be a Filter');
-            }
-
-            return oFilter.toJSON();
-          })
+          filters: filters
         };
+        for (key in oFilters) {
+          oFilter = oFilters[key];
+          if (!isFilter(oFilter)) {
+            throw new TypeError('Argument must be a Filter');
+          }
+          filters[key] = oFilter.toJSON();
+        }
         return this;
       }
 
