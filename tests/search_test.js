@@ -1138,7 +1138,7 @@ exports.search = {
     test.done();
   },
   Request: function (test) {
-    test.expect(56);
+    test.expect(57);
 
     var req = ejs.Request(),
       matchAll = ejs.MatchAllQuery(),
@@ -1149,6 +1149,7 @@ exports.search = {
       globalAgg = ejs.GlobalAggregation('myglobal'),
       termsAgg = ejs.TermsAggregation('termsagg').field('afield'),
       filterAgg = ejs.FilterAggregation('filteragg').filter(termFilter),
+      filterAgg2 = ejs.FilterAggregation('filteragg').filterQuery(termQuery),
       scriptField = ejs.ScriptField('my_script_field')
         .script('doc["my_field_name"].value * 2'),
       scriptField2 = ejs.ScriptField('my_script_field2')
@@ -1277,6 +1278,10 @@ exports.search = {
 
     req.agg(filterAgg);
     expected.aggs = filterAgg.toJSON();
+    doTest();
+
+    req.agg(filterAgg2);
+    expected.aggs = filterAgg2.toJSON();
     doTest();
 
     req.aggregation(globalAgg.agg(termsAgg));
