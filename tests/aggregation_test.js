@@ -28,7 +28,7 @@ exports.aggregations = {
     done();
   },
   exists: function (test) {
-    test.expect(23);
+    test.expect(25);
 
     test.ok(ejs.GlobalAggregation, 'GlobalAggregation');
     test.ok(ejs.FilterAggregation, 'FilterAggregation');
@@ -36,7 +36,9 @@ exports.aggregations = {
     test.ok(ejs.GeoHashGridAggregation, 'GeoHashGridAggregation');
     test.ok(ejs.HistogramAggregation, 'HistogramAggregation');
     test.ok(ejs.MissingAggregation, 'MissingAggregation');
+    test.ok(ejs.ChildrenAggregation, 'ChildrenAggregation');
     test.ok(ejs.NestedAggregation, 'NestedAggregation');
+    test.ok(ejs.ReverseNestedAggregation, 'ReverseNestedAggregation');
     test.ok(ejs.RangeAggregation, 'RangeAggregation');
     test.ok(ejs.SignificantTermsAggregation, 'SignificantTermsAggregation');
     test.ok(ejs.AvgAggregation, 'AvgAggregation');
@@ -881,6 +883,40 @@ exports.aggregations = {
 
     test.done();
   },
+  ChildrenAggregation: function (test) {
+    test.expect(7);
+
+    var agg = ejs.ChildrenAggregation('myagg'),
+      ta1 = ejs.ChildrenAggregation('ta1').type('f1'),
+      expected,
+      doTest = function () {
+        test.deepEqual(agg.toJSON(), expected);
+      };
+
+    expected = {
+      myagg: {children: {}}
+    };
+
+    test.ok(agg, 'ChildrenAggregation exists');
+    test.ok(agg.toJSON(), 'toJSON() works');
+    doTest();
+
+    agg.type('f1');
+    expected.myagg.children.type = 'f1';
+    doTest();
+
+    agg.agg(ta1);
+    expected.myagg.aggs = ta1.toJSON();
+    doTest();
+
+    test.strictEqual(agg._type(), 'aggregation');
+
+    test.throws(function () {
+      agg.agggregation('invalid');
+    }, TypeError);
+
+    test.done();
+  },
   NestedAggregation: function (test) {
     test.expect(7);
 
@@ -901,6 +937,36 @@ exports.aggregations = {
 
     agg.path('f1');
     expected.myagg.nested.path = 'f1';
+    doTest();
+
+    agg.agg(ta1);
+    expected.myagg.aggs = ta1.toJSON();
+    doTest();
+
+    test.strictEqual(agg._type(), 'aggregation');
+
+    test.throws(function () {
+      agg.agggregation('invalid');
+    }, TypeError);
+
+    test.done();
+  },
+  ReverseNestedAggregation: function (test) {
+    test.expect(6);
+
+    var agg = ejs.ReverseNestedAggregation('myagg'),
+      ta1 = ejs.TermsAggregation('ta1').field('f1'),
+      expected,
+      doTest = function () {
+        test.deepEqual(agg.toJSON(), expected);
+      };
+
+    expected = {
+      myagg: {reverse_nested: {}}
+    };
+
+    test.ok(agg, 'ReverseNestedAggregation exists');
+    test.ok(agg.toJSON(), 'toJSON() works');
     doTest();
 
     agg.agg(ta1);
@@ -1324,11 +1390,13 @@ exports.aggregations = {
     test.done();
   },
   FilterAggregation: function (test) {
-    test.expect(9);
+    test.expect(11);
 
     var agg = ejs.FilterAggregation('myagg'),
       tf1 = ejs.TermFilter('t1', 'v1'),
       tf2 = ejs.TermFilter('t2', 'v2'),
+      tq1 = ejs.TermQuery('t1', 'v1'),
+      tq2 = ejs.TermQuery('t2', 'v2'),
       ta1 = ejs.TermsAggregation('ta1').field('f1'),
       expected,
       doTest = function () {
@@ -1351,6 +1419,14 @@ exports.aggregations = {
     expected.myagg.filter = tf2.toJSON();
     doTest();
 
+    agg.filterQuery(tq1);
+    expected.myagg.filter = tq1.toJSON();
+    doTest();
+
+    agg.filterQuery(tq2);
+    expected.myagg.filter = tq2.toJSON();
+    doTest();
+
     agg.agg(ta1);
     expected.myagg.aggs = ta1.toJSON();
     doTest();
@@ -1358,7 +1434,7 @@ exports.aggregations = {
     test.strictEqual(agg._type(), 'aggregation');
 
     test.throws(function () {
-      agg.agggregation('invalid');
+      agg.aggregation('invalid');
     }, TypeError);
 
     test.throws(function () {

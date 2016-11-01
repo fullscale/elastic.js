@@ -29,7 +29,7 @@
       <p>Sets the filter to be used for this aggregation.</p>
 
       @member ejs.FilterAggregation
-      @param {Filter} oFilter A valid <code>Filter</code> object.
+      @param {Query} oFilter A valid <code>Filter</code> object.
       @returns {Object} returns <code>this</code> so that calls can be chained.
       */
       filter: function (oFilter) {
@@ -42,6 +42,25 @@
         }
 
         agg[name].filter = oFilter.toJSON();
+        return this;
+      },
+      /**
+      <p>Sets the filter to be used for this aggregation.</p>
+
+      @member ejs.FilterAggregation
+      @param {Query} oQuery A valid <code>Query</code> object.
+      @returns {Object} returns <code>this</code> so that calls can be chained.
+      */
+      filterQuery: function (oQuery) {
+        if (oQuery == null) {
+          return agg[name].filter;
+        }
+
+        if (!isQuery(oQuery)) {
+          throw new TypeError('Argument must be a Query');
+        }
+
+        agg[name].filter = oQuery.toJSON();
         return this;
       }
 
