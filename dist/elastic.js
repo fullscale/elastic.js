@@ -3783,55 +3783,55 @@
     return _common;
   };
 
-/**
-  @class
-  <p>Defines a single bucket of all the documents in the current document set
-  context that match a specified filter. Often this will be used to narrow down
-  the current aggregation context to a specific set of documents.</p>
+  /**
+    @class
+    <p>Defines a single bucket of all the documents in the current document set
+    context that match a specified filter. Often this will be used to narrow down
+    the current aggregation context to a specific set of documents.</p>
 
-  @name ejs.FilterAggregation
-  @ejs aggregation
-  @borrows ejs.AggregationMixin.aggregation as aggregation
-  @borrows ejs.AggregationMixin.agg as agg
-  @borrows ejs.AggregationMixin._type as _type
-  @borrows ejs.AggregationMixin.toJSON as toJSON
+    @name ejs.FilterAggregation
+    @ejs aggregation
+    @borrows ejs.AggregationMixin.aggregation as aggregation
+    @borrows ejs.AggregationMixin.agg as agg
+    @borrows ejs.AggregationMixin._type as _type
+    @borrows ejs.AggregationMixin.toJSON as toJSON
 
-  @desc
-  <p>Defines a single bucket of all the documents that match a given filter.</p>
+    @desc
+    <p>Defines a single bucket of all the documents that match a given filter.</p>
 
-  @param {String} name The name which be used to refer to this aggregation.
+    @param {String} name The name which be used to refer to this aggregation.
 
-  */
-ejs.FilterAggregation = function (name) {
-
-  var
-    _common = ejs.AggregationMixin(name),
-    agg = _common.toJSON();
-
-  return extend(_common, {
-
-    /**
-    <p>Sets the filter to be used for this aggregation.</p>
-
-    @member ejs.FilterAggregation
-    @param {Query} oQuery A valid <code>Query</code> object.
-    @returns {Object} returns <code>this</code> so that calls can be chained.
     */
-    filter: function (oQuery) {
-      if (oQuery == null) {
-        return agg[name].filter;
+  ejs.FilterAggregation = function (name) {
+
+    var
+      _common = ejs.AggregationMixin(name),
+      agg = _common.toJSON();
+
+    return extend(_common, {
+
+      /**
+      <p>Sets the filter to be used for this aggregation.</p>
+
+      @member ejs.FilterAggregation
+      @param {Query} oQuery A valid <code>Query</code> object.
+      @returns {Object} returns <code>this</code> so that calls can be chained.
+      */
+      filter: function (oQuery) {
+        if (oQuery == null) {
+          return agg[name].filter;
+        }
+
+        if (!isQuery(oQuery)) {
+          throw new TypeError('Argument must be a Query');
+        }
+
+        agg[name].filter = oQuery.toJSON();
+        return this;
       }
 
-      if (!isQuery(oQuery)) {
-        throw new TypeError('Argument must be a Query');
-      }
-
-      agg[name].filter = oQuery.toJSON();
-      return this;
-    }
-
-  });
-};
+    });
+  };
 
   /**
     @class
@@ -9843,45 +9843,45 @@ ejs.FilterAggregation = function (name) {
   };
   
 
-/**
-  @class
-  <p>An existsQuery matches documents where the specified field is present
-  and the field contains a legitimate value.</p>
-  @name ejs.ExistsQuery
-  @ejs query
-  @borrows ejs.QueryMixin._type as _type
-  @borrows ejs.QueryMixin.toJSON as toJSON
-  @desc
-  Queries documents where a specified field exists and contains a value.
-  @param {String} fieldName the field name that must exists and contain a value.
-  */
-ejs.ExistsQuery = function (fieldName) {
+  /**
+    @class
+    <p>An existsQuery matches documents where the specified field is present
+    and the field contains a legitimate value.</p>
+    @name ejs.ExistsQuery
+    @ejs query
+    @borrows ejs.QueryMixin._type as _type
+    @borrows ejs.QueryMixin.toJSON as toJSON
+    @desc
+    Queries documents where a specified field exists and contains a value.
+    @param {String} fieldName the field name that must exists and contain a value.
+    */
+  ejs.ExistsQuery = function (fieldName) {
 
-  var
-    _common = ejs.QueryMixin('exists'),
-    query = _common.toJSON();
+    var
+      _common = ejs.QueryMixin('exists'),
+      query = _common.toJSON();
 
-  query.exists.field = fieldName;
+    query.exists.field = fieldName;
 
-  return extend(_common, {
+    return extend(_common, {
 
-    /**
-          Sets the field to check for missing values.
-          @member ejs.ExistsQuery
-          @param {String} name A name of the field.
-          @returns {Object} returns <code>this</code> so that calls can be chained.
-          */
-    field: function (name) {
-      if (name == null) {
-        return query.exists.field;
+      /**
+            Sets the field to check for missing values.
+            @member ejs.ExistsQuery
+            @param {String} name A name of the field.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      field: function (name) {
+        if (name == null) {
+          return query.exists.field;
+        }
+
+        query.exists.field = name;
+        return this;
       }
 
-      query.exists.field = name;
-      return this;
-    }
-
-  });
-};
+    });
+  };
 
   /**
     @class
