@@ -3814,10 +3814,29 @@
       <p>Sets the filter to be used for this aggregation.</p>
 
       @member ejs.FilterAggregation
+      @param {Query} oFilter A valid <code>Filter</code> object.
+      @returns {Object} returns <code>this</code> so that calls can be chained.
+      */
+      filter: function (oFilter) {
+        if (oFilter == null) {
+          return agg[name].filter;
+        }
+
+        if (!isFilter(oFilter)) {
+          throw new TypeError('Argument must be a Filter');
+        }
+
+        agg[name].filter = oFilter.toJSON();
+        return this;
+      },
+      /**
+      <p>Sets the filter to be used for this aggregation.</p>
+
+      @member ejs.FilterAggregation
       @param {Query} oQuery A valid <code>Query</code> object.
       @returns {Object} returns <code>this</code> so that calls can be chained.
       */
-      filter: function (oQuery) {
+      filterQuery: function (oQuery) {
         if (oQuery == null) {
           return agg[name].filter;
         }
@@ -9229,6 +9248,42 @@
           }
         } else {
           throw new TypeError('Argument must be a Filter or array of Filters');
+        }
+
+        return this;
+      },
+
+      /**
+             Adds query in filter context to boolean container.
+
+             @member ejs.BoolQuery
+             @param {Object} oQuery A valid <code>Query</code> object
+             @returns {Object} returns <code>this</code> so that calls can be chained.
+             */
+      filterQuery: function (oQuery) {
+        var i, len;
+
+        if (query.bool.filter == null) {
+          query.bool.filter = [];
+        }
+
+        if (oQuery == null) {
+          return query.bool.filter;
+        }
+
+        if (isQuery(oQuery)) {
+          query.bool.filter.push(oQuery.toJSON());
+        } else if (isArray(oQuery)) {
+          query.bool.filter = [];
+          for (i = 0, len = oQuery.length; i < len; i++) {
+            if (!isQuery(oQuery[i])) {
+              throw new TypeError('Argument must be an array of Queries');
+            }
+
+            query.bool.filter.push(oQuery[i].toJSON());
+          }
+        } else {
+          throw new TypeError('Argument must be a Query or array of Queries');
         }
 
         return this;

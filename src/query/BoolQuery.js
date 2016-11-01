@@ -168,6 +168,42 @@
       },
 
       /**
+             Adds query in filter context to boolean container.
+
+             @member ejs.BoolQuery
+             @param {Object} oQuery A valid <code>Query</code> object
+             @returns {Object} returns <code>this</code> so that calls can be chained.
+             */
+      filterQuery: function (oQuery) {
+        var i, len;
+
+        if (query.bool.filter == null) {
+          query.bool.filter = [];
+        }
+
+        if (oQuery == null) {
+          return query.bool.filter;
+        }
+
+        if (isQuery(oQuery)) {
+          query.bool.filter.push(oQuery.toJSON());
+        } else if (isArray(oQuery)) {
+          query.bool.filter = [];
+          for (i = 0, len = oQuery.length; i < len; i++) {
+            if (!isQuery(oQuery[i])) {
+              throw new TypeError('Argument must be an array of Queries');
+            }
+
+            query.bool.filter.push(oQuery[i].toJSON());
+          }
+        } else {
+          throw new TypeError('Argument must be a Query or array of Queries');
+        }
+
+        return this;
+      },
+
+      /**
             Sets if the <code>Query</code> should be enhanced with a
             <code>MatchAllQuery</code> in order to act as a pure exclude when
             only negative (mustNot) clauses exist. Default: true.

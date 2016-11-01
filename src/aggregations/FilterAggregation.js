@@ -29,10 +29,29 @@
       <p>Sets the filter to be used for this aggregation.</p>
 
       @member ejs.FilterAggregation
+      @param {Query} oFilter A valid <code>Filter</code> object.
+      @returns {Object} returns <code>this</code> so that calls can be chained.
+      */
+      filter: function (oFilter) {
+        if (oFilter == null) {
+          return agg[name].filter;
+        }
+
+        if (!isFilter(oFilter)) {
+          throw new TypeError('Argument must be a Filter');
+        }
+
+        agg[name].filter = oFilter.toJSON();
+        return this;
+      },
+      /**
+      <p>Sets the filter to be used for this aggregation.</p>
+
+      @member ejs.FilterAggregation
       @param {Query} oQuery A valid <code>Query</code> object.
       @returns {Object} returns <code>this</code> so that calls can be chained.
       */
-      filter: function (oQuery) {
+      filterQuery: function (oQuery) {
         if (oQuery == null) {
           return agg[name].filter;
         }
