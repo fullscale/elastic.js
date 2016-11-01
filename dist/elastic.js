@@ -1,4 +1,4 @@
-/*! elastic.js - v1.2.0 - 2016-02-08
+/*! elastic.js - v1.3.0 - 2016-11-01
  * https://github.com/fullscale/elastic.js
  * Copyright (c) 2016 FullScale Labs, LLC; Licensed MIT */
 
@@ -3783,55 +3783,55 @@
     return _common;
   };
 
-  /**
-    @class
-    <p>Defines a single bucket of all the documents in the current document set
-    context that match a specified filter. Often this will be used to narrow down
-    the current aggregation context to a specific set of documents.</p>
+/**
+  @class
+  <p>Defines a single bucket of all the documents in the current document set
+  context that match a specified filter. Often this will be used to narrow down
+  the current aggregation context to a specific set of documents.</p>
 
-    @name ejs.FilterAggregation
-    @ejs aggregation
-    @borrows ejs.AggregationMixin.aggregation as aggregation
-    @borrows ejs.AggregationMixin.agg as agg
-    @borrows ejs.AggregationMixin._type as _type
-    @borrows ejs.AggregationMixin.toJSON as toJSON
+  @name ejs.FilterAggregation
+  @ejs aggregation
+  @borrows ejs.AggregationMixin.aggregation as aggregation
+  @borrows ejs.AggregationMixin.agg as agg
+  @borrows ejs.AggregationMixin._type as _type
+  @borrows ejs.AggregationMixin.toJSON as toJSON
 
-    @desc
-    <p>Defines a single bucket of all the documents that match a given filter.</p>
+  @desc
+  <p>Defines a single bucket of all the documents that match a given filter.</p>
 
-    @param {String} name The name which be used to refer to this aggregation.
+  @param {String} name The name which be used to refer to this aggregation.
 
+  */
+ejs.FilterAggregation = function (name) {
+
+  var
+    _common = ejs.AggregationMixin(name),
+    agg = _common.toJSON();
+
+  return extend(_common, {
+
+    /**
+    <p>Sets the filter to be used for this aggregation.</p>
+
+    @member ejs.FilterAggregation
+    @param {Query} oQuery A valid <code>Query</code> object.
+    @returns {Object} returns <code>this</code> so that calls can be chained.
     */
-  ejs.FilterAggregation = function (name) {
-
-    var
-      _common = ejs.AggregationMixin(name),
-      agg = _common.toJSON();
-
-    return extend(_common, {
-
-      /**
-      <p>Sets the filter to be used for this aggregation.</p>
-
-      @member ejs.FilterAggregation
-      @param {Filter} oFilter A valid <code>Filter</code> object.
-      @returns {Object} returns <code>this</code> so that calls can be chained.
-      */
-      filter: function (oFilter) {
-        if (oFilter == null) {
-          return agg[name].filter;
-        }
-
-        if (!isFilter(oFilter)) {
-          throw new TypeError('Argument must be a Filter');
-        }
-
-        agg[name].filter = oFilter.toJSON();
-        return this;
+    filter: function (oQuery) {
+      if (oQuery == null) {
+        return agg[name].filter;
       }
 
-    });
-  };
+      if (!isQuery(oQuery)) {
+        throw new TypeError('Argument must be a Query');
+      }
+
+      agg[name].filter = oQuery.toJSON();
+      return this;
+    }
+
+  });
+};
 
   /**
     @class
@@ -9099,11 +9099,11 @@
              */
       must: function (oQuery) {
         var i, len;
-        
+
         if (query.bool.must == null) {
           query.bool.must = [];
         }
-    
+
         if (oQuery == null) {
           return query.bool.must;
         }
@@ -9116,13 +9116,13 @@
             if (!isQuery(oQuery[i])) {
               throw new TypeError('Argument must be an array of Queries');
             }
-            
+
             query.bool.must.push(oQuery[i].toJSON());
           }
         } else {
           throw new TypeError('Argument must be a Query or array of Queries');
         }
-        
+
         return this;
       },
 
@@ -9135,7 +9135,7 @@
              */
       mustNot: function (oQuery) {
         var i, len;
-        
+
         if (query.bool.must_not == null) {
           query.bool.must_not = [];
         }
@@ -9143,7 +9143,7 @@
         if (oQuery == null) {
           return query.bool.must_not;
         }
-    
+
         if (isQuery(oQuery)) {
           query.bool.must_not.push(oQuery.toJSON());
         } else if (isArray(oQuery)) {
@@ -9152,13 +9152,13 @@
             if (!isQuery(oQuery[i])) {
               throw new TypeError('Argument must be an array of Queries');
             }
-            
+
             query.bool.must_not.push(oQuery[i].toJSON());
           }
         } else {
           throw new TypeError('Argument must be a Query or array of Queries');
         }
-        
+
         return this;
       },
 
@@ -9171,7 +9171,7 @@
              */
       should: function (oQuery) {
         var i, len;
-        
+
         if (query.bool.should == null) {
           query.bool.should = [];
         }
@@ -9179,7 +9179,7 @@
         if (oQuery == null) {
           return query.bool.should;
         }
-    
+
         if (isQuery(oQuery)) {
           query.bool.should.push(oQuery.toJSON());
         } else if (isArray(oQuery)) {
@@ -9188,13 +9188,49 @@
             if (!isQuery(oQuery[i])) {
               throw new TypeError('Argument must be an array of Queries');
             }
-            
+
             query.bool.should.push(oQuery[i].toJSON());
           }
         } else {
           throw new TypeError('Argument must be a Query or array of Queries');
         }
-        
+
+        return this;
+      },
+
+      /**
+             Adds filter to boolean container.
+
+             @member ejs.BoolQuery
+             @param {Object} oFilter A valid <code>Filter</code> object
+             @returns {Object} returns <code>this</code> so that calls can be chained.
+             */
+      filter: function (oFilter) {
+        var i, len;
+
+        if (query.bool.filter == null) {
+          query.bool.filter = [];
+        }
+
+        if (oFilter == null) {
+          return query.bool.filter;
+        }
+
+        if (isFilter(oFilter)) {
+          query.bool.filter.push(oFilter.toJSON());
+        } else if (isArray(oFilter)) {
+          query.bool.filter = [];
+          for (i = 0, len = oFilter.length; i < len; i++) {
+            if (!isFilter(oFilter[i])) {
+              throw new TypeError('Argument must be an array of Filters');
+            }
+
+            query.bool.filter.push(oFilter[i].toJSON());
+          }
+        } else {
+          throw new TypeError('Argument must be a Filter or array of Filters');
+        }
+
         return this;
       },
 
@@ -9215,7 +9251,7 @@
         query.bool.adjust_pure_negative = trueFalse;
         return this;
       },
-      
+
       /**
             Enables or disables similarity coordinate scoring of documents
             matching the <code>Query</code>. Default: false.
@@ -9235,7 +9271,7 @@
 
       /**
             <p>Sets the number of optional clauses that must match.</p>
-      
+
             <p>By default no optional clauses are necessary for a match
             (unless there are no required clauses).  If this method is used,
             then the specified number of clauses is required.</p>
@@ -9243,7 +9279,7 @@
             <p>Use of this method is totally independent of specifying that
             any specific clauses are required (or prohibited).  This number will
             only be compared against the number of matching optional clauses.</p>
-   
+
             @member ejs.BoolQuery
             @param {Integer} minMatch A positive <code>integer</code> value.
             @returns {Object} returns <code>this</code> so that calls can be chained.
@@ -9256,7 +9292,7 @@
         query.bool.minimum_number_should_match = minMatch;
         return this;
       }
-      
+
     });
   };
 
@@ -9806,6 +9842,46 @@
     });
   };
   
+
+/**
+  @class
+  <p>An existsQuery matches documents where the specified field is present
+  and the field contains a legitimate value.</p>
+  @name ejs.ExistsQuery
+  @ejs query
+  @borrows ejs.QueryMixin._type as _type
+  @borrows ejs.QueryMixin.toJSON as toJSON
+  @desc
+  Queries documents where a specified field exists and contains a value.
+  @param {String} fieldName the field name that must exists and contain a value.
+  */
+ejs.ExistsQuery = function (fieldName) {
+
+  var
+    _common = ejs.QueryMixin('exists'),
+    query = _common.toJSON();
+
+  query.exists.field = fieldName;
+
+  return extend(_common, {
+
+    /**
+          Sets the field to check for missing values.
+          @member ejs.ExistsQuery
+          @param {String} name A name of the field.
+          @returns {Object} returns <code>this</code> so that calls can be chained.
+          */
+    field: function (name) {
+      if (name == null) {
+        return query.exists.field;
+      }
+
+      query.exists.field = name;
+      return this;
+    }
+
+  });
+};
 
   /**
     @class
@@ -18084,5 +18160,5 @@
     root.ejs = _ejs;
     return this;
   };
-  
+
 }).call(this);

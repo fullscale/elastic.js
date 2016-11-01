@@ -1148,7 +1148,7 @@ exports.search = {
       termsFacet = ejs.TermsFacet('my_terms_facet').field('author'),
       globalAgg = ejs.GlobalAggregation('myglobal'),
       termsAgg = ejs.TermsAggregation('termsagg').field('afield'),
-      filterAgg = ejs.FilterAggregation('filteragg').filter(termFilter),
+      filterAgg = ejs.FilterAggregation('filteragg').filter(termQuery),
       scriptField = ejs.ScriptField('my_script_field')
         .script('doc["my_field_name"].value * 2'),
       scriptField2 = ejs.ScriptField('my_script_field2')

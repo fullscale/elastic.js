@@ -1395,6 +1395,8 @@ exports.aggregations = {
     var agg = ejs.FilterAggregation('myagg'),
       tf1 = ejs.TermFilter('t1', 'v1'),
       tf2 = ejs.TermFilter('t2', 'v2'),
+      tq1 = ejs.TermQuery('t1', 'v1'),
+      tq2 = ejs.TermQuery('t2', 'v2'),
       ta1 = ejs.TermsAggregation('ta1').field('f1'),
       expected,
       doTest = function () {
@@ -1409,12 +1411,12 @@ exports.aggregations = {
     test.ok(agg.toJSON(), 'toJSON() works');
     doTest();
 
-    agg.filter(tf1);
-    expected.myagg.filter = tf1.toJSON();
+    agg.filter(tq1);
+    expected.myagg.filter = tq1.toJSON();
     doTest();
 
-    agg.filter(tf2);
-    expected.myagg.filter = tf2.toJSON();
+    agg.filter(tq2);
+    expected.myagg.filter = tq2.toJSON();
     doTest();
 
     agg.agg(ta1);
