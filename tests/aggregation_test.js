@@ -28,7 +28,7 @@ exports.aggregations = {
     done();
   },
   exists: function (test) {
-    test.expect(26);
+    test.expect(27);
 
     test.ok(ejs.GlobalAggregation, 'GlobalAggregation');
     test.ok(ejs.FilterAggregation, 'FilterAggregation');
@@ -38,6 +38,7 @@ exports.aggregations = {
     test.ok(ejs.HistogramAggregation, 'HistogramAggregation');
     test.ok(ejs.MissingAggregation, 'MissingAggregation');
     test.ok(ejs.NestedAggregation, 'NestedAggregation');
+    test.ok(ejs.ChildrenAggregation, 'ChildrenAggregation');
     test.ok(ejs.RangeAggregation, 'RangeAggregation');
     test.ok(ejs.SignificantTermsAggregation, 'SignificantTermsAggregation');
     test.ok(ejs.AvgAggregation, 'AvgAggregation');
@@ -957,6 +958,40 @@ exports.aggregations = {
 
     agg.path('f1');
     expected.myagg.nested.path = 'f1';
+    doTest();
+
+    agg.agg(ta1);
+    expected.myagg.aggs = ta1.toJSON();
+    doTest();
+
+    test.strictEqual(agg._type(), 'aggregation');
+
+    test.throws(function () {
+      agg.agggregation('invalid');
+    }, TypeError);
+
+    test.done();
+  },
+  ChildrenAggregation: function (test) {
+    test.expect(7);
+
+    var agg = ejs.ChildrenAggregation('myagg'),
+      ta1 = ejs.TermsAggregation('ta1').field('f1'),
+      expected,
+      doTest = function () {
+        test.deepEqual(agg.toJSON(), expected);
+      };
+
+    expected = {
+      myagg: {children: {}}
+    };
+
+    test.ok(agg, 'ChildrenAggregation exists');
+    test.ok(agg.toJSON(), 'toJSON() works');
+    doTest();
+
+    agg.children('f1');
+    expected.myagg.children.type = 'f1';
     doTest();
 
     agg.agg(ta1);

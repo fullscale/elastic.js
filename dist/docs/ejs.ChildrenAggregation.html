@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-  	<title>elastic.js: Module: WildcardQuery</title>
+  	<title>elastic.js: Module: ChildrenAggregation</title>
 	
     <link rel="stylesheet" type="text/css" href="styles/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="styles/style.css" />
@@ -112,30 +112,25 @@
      
               <header>
                 <h3>
-                  <div class="alert-message default"><span class="ancestors" style="margin-left:10px"><a href="ejs.html">ejs</a> &rang; </span>WildcardQuery</div>
+                  <div class="alert-message default"><span class="ancestors" style="margin-left:10px"><a href="ejs.html">ejs</a> &rang; </span>ChildrenAggregation</div>
                 </h3>
 
-                <p class="class-description"><p>Matches documents that have fields matching a wildcard expression 
-    (not analyzed). Supported wildcards are *, which matches any character 
-    sequence (including the empty one), and ?, which matches any single 
-    character. Note this query can be slow, as it needs to iterate over many 
-    wildcards. In order to prevent extremely slow wildcard queries, a wildcard 
-    wildcard should not start with one of the wildcards * or ?. The wildcard query 
-    maps to Lucene WildcardQuery.</p></p>    
+                <p class="class-description"><p>A special single bucket aggregation that enables aggregating children
+    documents.</p></p>    
               </header>  
     
               <article>    
                 <h3>Module</h3><table class="table table-bordered"><tbody><tr><td>
-<div id="ejs.WildcardQuery" class="method-body">
-    <a style="text-decoration:none" name="ejs.WildcardQuery">
-        <h3 style="color:#557e2f;background-color:#eee;font-family:Menlo,Monaco,Consolas,Courier New,monospace;" id="WildcardQuery">&nbsp;WildcardQuery</h3>
+<div id="ejs.ChildrenAggregation" class="method-body">
+    <a style="text-decoration:none" name="ejs.ChildrenAggregation">
+        <h3 style="color:#557e2f;background-color:#eee;font-family:Menlo,Monaco,Consolas,Courier New,monospace;" id="ChildrenAggregation">&nbsp;ChildrenAggregation</h3>
     </a>
         <code>
-        WildcardQuery ( field, value )
+        ChildrenAggregation ( name )
     </code>
 
-    <div style="margin-left:15px">A Query that matches documents containing a wildcard. This may be
-    combined with other wildcards with a BooleanQuery.</div><br>  
+    <div style="margin-left:15px"><p>A special single bucket aggregation that enables aggregating children
+    documents.</p></div><br>  
    
     <div class="alert-message block-message error">
 	<dl style="margin-left:15px;margin-right:20px;margin-top:0px;margin-bottom:3px;">
@@ -168,7 +163,7 @@
 	
 
             
-                <code>field</code>
+                <code>name</code>
             
 
             <code>&lt;String&gt;</code>
@@ -177,22 +172,7 @@
             
             
             
-            <span>the document field/key to query against</span>
-            <br>
-	
-	
-
-            
-                <code>value</code>
-            
-
-            <code>&lt;String&gt;</code>
-            
-            
-            
-            
-            
-            <span>the literal value to be matched</span>
+            <span>The name which be used to refer to this aggregation.</span>
             <br>
 	
 	
@@ -239,52 +219,29 @@
                       <tbody>
                       <div class="method-body">
     <tr>
-        <td><code>String</code></td><td><code><a href="#ejs.WildcardQuery._type">_type()</a></code></td><td>The type of ejs object.  For internal use only.</td>
+        <td><code>String</code></td><td><code><a href="#ejs.ChildrenAggregation._type">_type()</a></code></td><td>The type of ejs object.  For internal use only.</td>
     </tr>
 </div><div class="method-body">
     <tr>
-        <td><code>Object</code></td><td><code><a href="#ejs.WildcardQuery.boost">boost(boost)</a></code></td><td>Sets the boost value for documents matching the <code>Query</code>.</td>
+        <td><code>Object</code></td><td><code><a href="#ejs.ChildrenAggregation.agg">agg(agg)</a></code></td><td>Add a nesated aggregation.  This method can be called multiple times
+      in order to set multiple nested aggregations what will be executed
+      at the same time as the parent aggregation.  Alias for the
+      aggregation method.</td>
     </tr>
 </div><div class="method-body">
     <tr>
-        <td><code>Object</code></td><td><code><a href="#ejs.WildcardQuery.field">field(f)</a></code></td><td>Sets the fields to query against.</td>
+        <td><code>Object</code></td><td><code><a href="#ejs.ChildrenAggregation.aggregation">aggregation(agg)</a></code></td><td>Add a nesated aggregation.  This method can be called multiple times
+      in order to set multiple nested aggregations what will be executed
+      at the same time as the parent aggregation.</td>
     </tr>
 </div><div class="method-body">
     <tr>
-        <td><code>Object</code></td><td><code><a href="#ejs.WildcardQuery.rewrite">rewrite(m)</a></code></td><td>Sets rewrite method.  Valid values are: 
-            
-            constant_score_auto - tries to pick the best constant-score rewrite 
-              method based on term and document counts from the query
-              
-            scoring_boolean - translates each term into boolean should and 
-              keeps the scores as computed by the query
-              
-            constant_score_boolean - same as scoring_boolean, expect no scores
-              are computed.
-              
-            constant_score_filter - first creates a private Filter, by visiting 
-              each term in sequence and marking all docs for that term
-              
-            top_terms_boost_N - first translates each term into boolean should
-              and scores are only computed as the boost using the top N
-              scoring terms.  Replace N with an integer value.
-              
-            top_terms_N -   first translates each term into boolean should
-                and keeps the scores as computed by the query. Only the top N
-                scoring terms are used.  Replace N with an integer value.
-            
-            Default is constant_score_auto.
-
-            This is an advanced option, use with care.</td>
+        <td><code>Object</code></td><td><code><a href="#ejs.ChildrenAggregation.children">children(children)</a></code></td><td><p>Sets the children type.</p></td>
     </tr>
 </div><div class="method-body">
     <tr>
-        <td><code>String</code></td><td><code><a href="#ejs.WildcardQuery.toJSON">toJSON()</a></code></td><td>Retrieves the internal <code>query</code> object. This is typically used by
-            internal API functions so use with caution.</td>
-    </tr>
-</div><div class="method-body">
-    <tr>
-        <td><code>Object</code></td><td><code><a href="#ejs.WildcardQuery.value">value(v)</a></code></td><td>Sets the wildcard query value.</td>
+        <td><code>String</code></td><td><code><a href="#ejs.ChildrenAggregation.toJSON">toJSON()</a></code></td><td><p>Retrieves the internal <code>agg</code> object. This is typically used by
+               internal API functions so use with caution.</p></td>
     </tr>
 </div>
                       </tbody>
@@ -296,8 +253,8 @@
                     <table class="table table-bordered table-condensed">
                       <tbody>
                       <tr><td>
-<div id="ejs.WildcardQuery._type" class="method-body">
-    <a style="text-decoration:none" name="ejs.WildcardQuery._type">
+<div id="ejs.ChildrenAggregation._type" class="method-body">
+    <a style="text-decoration:none" name="ejs.ChildrenAggregation._type">
         <h3 style="color:#557e2f;background-color:#eee;font-family:Menlo,Monaco,Consolas,Courier New,monospace;" id="_type">&nbsp;_type</h3>
     </a>
         <code>
@@ -355,15 +312,18 @@
 </div>
 </td></tr>
 <tr><td>
-<div id="ejs.WildcardQuery.boost" class="method-body">
-    <a style="text-decoration:none" name="ejs.WildcardQuery.boost">
-        <h3 style="color:#557e2f;background-color:#eee;font-family:Menlo,Monaco,Consolas,Courier New,monospace;" id="boost">&nbsp;boost</h3>
+<div id="ejs.ChildrenAggregation.agg" class="method-body">
+    <a style="text-decoration:none" name="ejs.ChildrenAggregation.agg">
+        <h3 style="color:#557e2f;background-color:#eee;font-family:Menlo,Monaco,Consolas,Courier New,monospace;" id="agg">&nbsp;agg</h3>
     </a>
         <code>
-        Object boost ( boost )
+        Object agg ( agg )
     </code>
 
-    <div style="margin-left:15px">Sets the boost value for documents matching the <code>Query</code>.</div><br>  
+    <div style="margin-left:15px">Add a nesated aggregation.  This method can be called multiple times
+      in order to set multiple nested aggregations what will be executed
+      at the same time as the parent aggregation.  Alias for the
+      aggregation method.</div><br>  
    
     <div class="alert-message block-message error">
 	<dl style="margin-left:15px;margin-right:20px;margin-top:0px;margin-bottom:3px;">
@@ -396,16 +356,16 @@
 	
 
             
-                <code>boost</code>
+                <code>agg</code>
             
 
-            <code>&lt;Number&gt;</code>
+            <code>&lt;Aggregation&gt;</code>
             
             
             
             
             
-            <span>A positive <code>double</code> value.</span>
+            <span>Any valid <code>Aggregation</code> object.</span>
             <br>
 	
 	
@@ -431,15 +391,17 @@
 </div>
 </td></tr>
 <tr><td>
-<div id="ejs.WildcardQuery.field" class="method-body">
-    <a style="text-decoration:none" name="ejs.WildcardQuery.field">
-        <h3 style="color:#557e2f;background-color:#eee;font-family:Menlo,Monaco,Consolas,Courier New,monospace;" id="field">&nbsp;field</h3>
+<div id="ejs.ChildrenAggregation.aggregation" class="method-body">
+    <a style="text-decoration:none" name="ejs.ChildrenAggregation.aggregation">
+        <h3 style="color:#557e2f;background-color:#eee;font-family:Menlo,Monaco,Consolas,Courier New,monospace;" id="aggregation">&nbsp;aggregation</h3>
     </a>
         <code>
-        Object field ( f )
+        Object aggregation ( agg )
     </code>
 
-    <div style="margin-left:15px">Sets the fields to query against.</div><br>  
+    <div style="margin-left:15px">Add a nesated aggregation.  This method can be called multiple times
+      in order to set multiple nested aggregations what will be executed
+      at the same time as the parent aggregation.</div><br>  
    
     <div class="alert-message block-message error">
 	<dl style="margin-left:15px;margin-right:20px;margin-top:0px;margin-bottom:3px;">
@@ -472,7 +434,83 @@
 	
 
             
-                <code>f</code>
+                <code>agg</code>
+            
+
+            <code>&lt;Aggregation&gt;</code>
+            
+            
+            
+            
+            
+            <span>Any valid <code>Aggregation</code> object.</span>
+            <br>
+	
+	
+</dd>
+    
+        
+    
+        
+    
+        
+        <dt>Returns</dt>
+        <dd>
+    returns <code>this</code> so that calls can be chained.
+
+
+
+</dd>
+    
+        
+
+    </dl>
+
+</div>
+</td></tr>
+<tr><td>
+<div id="ejs.ChildrenAggregation.children" class="method-body">
+    <a style="text-decoration:none" name="ejs.ChildrenAggregation.children">
+        <h3 style="color:#557e2f;background-color:#eee;font-family:Menlo,Monaco,Consolas,Courier New,monospace;" id="children">&nbsp;children</h3>
+    </a>
+        <code>
+        Object children ( children )
+    </code>
+
+    <div style="margin-left:15px"><p>Sets the children type.</p></div><br>  
+   
+    <div class="alert-message block-message error">
+	<dl style="margin-left:15px;margin-right:20px;margin-top:0px;margin-bottom:3px;">
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</dl>
+</div>
+
+ 
+    <dl style="margin-left:15px;margin-right:20px;margin-top:0px;">  
+
+        
+    
+        <dt>Parameters</dt><dd>
+	
+
+            
+                <code>children</code>
             
 
             <code>&lt;String&gt;</code>
@@ -481,7 +519,7 @@
             
             
             
-            <span>A valid field name.</span>
+            <span>The children type value.</span>
             <br>
 	
 	
@@ -507,116 +545,16 @@
 </div>
 </td></tr>
 <tr><td>
-<div id="ejs.WildcardQuery.rewrite" class="method-body">
-    <a style="text-decoration:none" name="ejs.WildcardQuery.rewrite">
-        <h3 style="color:#557e2f;background-color:#eee;font-family:Menlo,Monaco,Consolas,Courier New,monospace;" id="rewrite">&nbsp;rewrite</h3>
-    </a>
-        <code>
-        Object rewrite ( m )
-    </code>
-
-    <div style="margin-left:15px">Sets rewrite method.  Valid values are: 
-            
-            constant_score_auto - tries to pick the best constant-score rewrite 
-              method based on term and document counts from the query
-              
-            scoring_boolean - translates each term into boolean should and 
-              keeps the scores as computed by the query
-              
-            constant_score_boolean - same as scoring_boolean, expect no scores
-              are computed.
-              
-            constant_score_filter - first creates a private Filter, by visiting 
-              each term in sequence and marking all docs for that term
-              
-            top_terms_boost_N - first translates each term into boolean should
-              and scores are only computed as the boost using the top N
-              scoring terms.  Replace N with an integer value.
-              
-            top_terms_N -   first translates each term into boolean should
-                and keeps the scores as computed by the query. Only the top N
-                scoring terms are used.  Replace N with an integer value.
-            
-            Default is constant_score_auto.
-
-            This is an advanced option, use with care.</div><br>  
-   
-    <div class="alert-message block-message error">
-	<dl style="margin-left:15px;margin-right:20px;margin-top:0px;margin-bottom:3px;">
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-</dl>
-</div>
-
- 
-    <dl style="margin-left:15px;margin-right:20px;margin-top:0px;">  
-
-        
-    
-        <dt>Parameters</dt><dd>
-	
-
-            
-                <code>m</code>
-            
-
-            <code>&lt;String&gt;</code>
-            
-            
-            
-            
-            
-            <span>The rewrite method as a string.</span>
-            <br>
-	
-	
-</dd>
-    
-        
-    
-        
-    
-        
-        <dt>Returns</dt>
-        <dd>
-    returns <code>this</code> so that calls can be chained.
-
-
-
-</dd>
-    
-        
-
-    </dl>
-
-</div>
-</td></tr>
-<tr><td>
-<div id="ejs.WildcardQuery.toJSON" class="method-body">
-    <a style="text-decoration:none" name="ejs.WildcardQuery.toJSON">
+<div id="ejs.ChildrenAggregation.toJSON" class="method-body">
+    <a style="text-decoration:none" name="ejs.ChildrenAggregation.toJSON">
         <h3 style="color:#557e2f;background-color:#eee;font-family:Menlo,Monaco,Consolas,Courier New,monospace;" id="toJSON">&nbsp;toJSON</h3>
     </a>
         <code>
         String toJSON ( )
     </code>
 
-    <div style="margin-left:15px">Retrieves the internal <code>query</code> object. This is typically used by
-            internal API functions so use with caution.</div><br>  
+    <div style="margin-left:15px"><p>Retrieves the internal <code>agg</code> object. This is typically used by
+               internal API functions so use with caution.</p></div><br>  
    
     <div class="alert-message block-message error">
 	<dl style="margin-left:15px;margin-right:20px;margin-top:0px;margin-bottom:3px;">
@@ -654,83 +592,7 @@
         
         <dt>Returns</dt>
         <dd>
-    returns this object's internal <code>query</code> property.
-
-
-
-</dd>
-    
-        
-
-    </dl>
-
-</div>
-</td></tr>
-<tr><td>
-<div id="ejs.WildcardQuery.value" class="method-body">
-    <a style="text-decoration:none" name="ejs.WildcardQuery.value">
-        <h3 style="color:#557e2f;background-color:#eee;font-family:Menlo,Monaco,Consolas,Courier New,monospace;" id="value">&nbsp;value</h3>
-    </a>
-        <code>
-        Object value ( v )
-    </code>
-
-    <div style="margin-left:15px">Sets the wildcard query value.</div><br>  
-   
-    <div class="alert-message block-message error">
-	<dl style="margin-left:15px;margin-right:20px;margin-top:0px;margin-bottom:3px;">
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-</dl>
-</div>
-
- 
-    <dl style="margin-left:15px;margin-right:20px;margin-top:0px;">  
-
-        
-    
-        <dt>Parameters</dt><dd>
-	
-
-            
-                <code>v</code>
-            
-
-            <code>&lt;String&gt;</code>
-            
-            
-            
-            
-            
-            <span>A single term.</span>
-            <br>
-	
-	
-</dd>
-    
-        
-    
-        
-    
-        
-        <dt>Returns</dt>
-        <dd>
-    returns <code>this</code> so that calls can be chained.
+    returns this object's internal object.
 
 
 
@@ -763,7 +625,7 @@
       <footer>
         <span style="font-size:12px;">Copyright &copy; <a href="http://www.fullscale.co">FullScale Labs</a>, LLC. 2012</span>
         <span style="font-size:12px;float:right;">
-          Documentation generated by <a style="font-size:12px" href="https://github.com/micmath/jsdoc">JSDoc 3</a> on Wed Apr 13 2016 16:52:06 GMT+0100 (IST)
+          Documentation generated by <a style="font-size:12px" href="https://github.com/micmath/jsdoc">JSDoc 3</a> on Wed Apr 13 2016 16:51:00 GMT+0100 (IST)
         </span>
       </footer>
 
