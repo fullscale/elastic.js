@@ -42,6 +42,7 @@
     isFilter, // checks valid ejs Filter object
     isFacet, // checks valid ejs Facet object
     isAggregation, // checks valid ejs Aggregation object
+    isPartialField, // checks valid ejs PartialField object
     isScriptField, // checks valid ejs ScriptField object
     isGeoPoint, // checks valid ejs GeoPoint object
     isIndexedShape, // checks valid ejs IndexedShape object
@@ -51,6 +52,7 @@
     isSuggest, // checks valid ejs Suggest object
     isGenerator, // checks valid ejs Generator object
     isScoreFunction, // checks valid ejs ScoreFunction object
+    isInnerHits, // checks valid ejs InnerHits object
 
     // create ejs object
     ejs;

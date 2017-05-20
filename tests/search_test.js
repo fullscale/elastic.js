@@ -28,10 +28,11 @@ exports.search = {
     done();
   },
   exists: function (test) {
-    test.expect(15);
+    test.expect(17);
 
     test.ok(ejs.Request, 'Request');
-    test.ok(ejs.ScriptField, 'ScriptField');
+    test.ok(ejs.PartialField, 'PartialField');
+    test.ok(ejs.ScriptField, 'ScriptField');    
     test.ok(ejs.GeoPoint, 'GeoPoint');
     test.ok(ejs.IndexedShape, 'IndexedShape');
     test.ok(ejs.Shape, 'Shape');
@@ -45,6 +46,7 @@ exports.search = {
     test.ok(ejs.SuggestContextMixin, 'SuggestContextMixin');
     test.ok(ejs.CompletionSuggester, 'CompletionSuggester');
     test.ok(ejs.Rescore, 'Rescore');
+    test.ok(ejs.InnerHits, 'InnerHits');
 
     test.done();
   },
@@ -1099,6 +1101,44 @@ exports.search = {
 
     test.done();
   },
+  PartialField: function (test) {
+    test.expect(8);
+
+    var cp = ejs.PartialField('f'),
+      expected,
+      doTest = function () {
+        test.deepEqual(cp.toJSON(), expected);
+      };
+
+    expected = {
+      f: {}
+    };
+
+    test.ok(cp, 'PartialField exists');
+    test.ok(cp.toJSON(), 'toJSON() works');
+    doTest();
+
+    cp.include('f1');
+    expected.f.include = 'f1';
+    doTest();
+
+    cp.include(['f1','f2']);
+    expected.f.include = ['f1','f2'];
+    doTest();
+
+    cp.exclude('f1');
+    expected.f.exclude = 'f1';
+    doTest();
+
+    cp.exclude(['f1','f2']);
+    expected.f.exclude = ['f1','f2'];
+    doTest();
+
+    test.strictEqual(cp._type(), 'partial field');
+
+
+    test.done();
+  },
   ScriptField: function (test) {
     test.expect(8);
 
@@ -1137,8 +1177,71 @@ exports.search = {
 
     test.done();
   },
+  InnerHits: function (test) {
+    test.expect(14);
+
+    var ih = ejs.InnerHits(),
+      scriptField = ejs.ScriptField('my_script_field'),
+      expected,
+      doTest = function() {
+        test.deepEqual(ih.toJSON(), expected);
+      };
+
+    expected = {};
+
+    test.ok(ih, 'InnerHits exists');
+    test.ok(ih.toJSON(), 'toJSON() works');
+
+    ih.name("foo");
+    expected.name = "foo";
+    doTest();
+
+    ih.from(5);
+    expected.from = 5;
+    doTest();
+
+    ih.size(10);
+    expected.size = 10;
+    doTest();
+
+    ih.sort('foo');
+    expected.sort = 'foo';
+    doTest();
+
+    ih.version(true);
+    expected.version = true;
+    doTest();
+
+    ih.explain(true);
+    expected.explain = true;
+    doTest();
+
+    ih.scriptField(scriptField);
+    expected.script_fields = scriptField.toJSON();
+    doTest();
+
+    ih.fieldDataFields(['foo', 'bar']);
+    expected.fielddata_fields = ['foo', 'bar'];
+    doTest();
+
+    ih.source(true);
+    expected._source = true;
+    doTest();
+
+    ih.source(['foo', 'bar']);
+    expected._source = {includes: ['foo', 'bar']};
+    doTest();
+
+    ih.source(['foo'], ['bar']);
+    expected._source = {includes: ['foo'], excludes: ['bar']};
+    doTest();
+
+    test.strictEqual(ih._type(), 'inner hits');
+
+    test.done();
+  },
   Request: function (test) {
-    test.expect(56);
+    test.expect(58);
 
     var req = ejs.Request(),
       matchAll = ejs.MatchAllQuery(),
@@ -1149,6 +1252,12 @@ exports.search = {
       globalAgg = ejs.GlobalAggregation('myglobal'),
       termsAgg = ejs.TermsAggregation('termsagg').field('afield'),
       filterAgg = ejs.FilterAggregation('filteragg').filter(termFilter),
+      partialField = ejs.PartialField('my_partial_field')
+        .include('f1')
+        .exclude('f2'),
+      partialField2 = ejs.PartialField('my_partial_field2')
+        .include('f1')
+        .exclude('f2'),
       scriptField = ejs.ScriptField('my_script_field')
         .script('doc["my_field_name"].value * 2'),
       scriptField2 = ejs.ScriptField('my_script_field2')
@@ -1301,6 +1410,14 @@ exports.search = {
 
     req.rescore(rescore);
     expected.rescore = rescore.toJSON();
+    doTest();
+
+    req.partialField(partialField);
+    expected.partial_fields = partialField.toJSON();
+    doTest();
+
+    req.partialField(partialField2);
+    expected.partial_fields.my_partial_field2 = partialField2.toJSON().my_partial_field2;
     doTest();
 
     req.scriptField(scriptField);

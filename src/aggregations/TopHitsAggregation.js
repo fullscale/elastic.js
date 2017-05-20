@@ -21,8 +21,10 @@
   ejs.TopHitsAggregation = function (name) {
 
     var
-    _common = ejs.MetricsAggregationMixin(name, 'top_hits'),
-    agg = _common.toJSON();
+      _common = ejs.AggregationMixin(name),
+      agg = _common.toJSON();
+
+    agg[name].top_hits = {};
 
     return extend(_common, {
       /**
@@ -215,8 +217,8 @@
             includes: includes
           };
 
-          if (excludes !== undefined) {
-            agg[name].top_hits._source = excludes;
+          if (excludes != null) {
+            agg[name].top_hits._source.excludes = excludes;
           }
         }
 

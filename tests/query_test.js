@@ -28,7 +28,7 @@ exports.queries = {
     done();
   },
   exists: function (test) {
-    test.expect(40);
+    test.expect(42);
 
     test.ok(ejs.CommonTermsQuery, 'CommonTermsQuery');
     test.ok(ejs.RegexpQuery, 'RegexpQuery');
@@ -70,8 +70,10 @@ exports.queries = {
     // scoring functions for FunctionScoreQuery
     test.ok(ejs.BoostFactorScoreFunction, 'BoostFactorScoreFunction');
     test.ok(ejs.DecayScoreFunction, 'DecayScoreFunction');
+    test.ok(ejs.DecayScoreFunction, 'FieldValueFactorFunction');
     test.ok(ejs.RandomScoreFunction, 'RandomScoreFunction');
     test.ok(ejs.ScriptScoreFunction, 'ScriptScoreFunction');
+    test.ok(ejs.ScoreFunction, 'ScoreFunction');
 
     test.done();
   },
@@ -146,6 +148,35 @@ exports.queries = {
     test.throws(function () {
       scoreFunc.origin(termFilter1);
     }, TypeError);
+
+    test.done();
+  },
+  FieldValueFactorFunction: function (test) {
+    test.expect(6);
+
+    var func = ejs.FieldValueFactorFunction('f'),
+      expected,
+      doTest = function () {
+        test.deepEqual(func.toJSON(), expected);
+      };
+
+    expected = {
+      field_value_factor: { field: 'f' }
+    };
+
+    test.ok(func, 'FieldValueFactorFunction exists');
+    test.ok(func.toJSON(), 'toJSON() works');
+    doTest();
+
+    func.factor(2);
+    expected.field_value_factor.factor = 2;
+    doTest();
+
+    func.modifier('sqrt');
+    expected.field_value_factor.modifier = 'sqrt';
+    doTest();
+
+    test.strictEqual(func._type(), 'score function');
 
     test.done();
   },
@@ -259,8 +290,36 @@ exports.queries = {
 
     test.done();
   },
+  ScoreFunction: function (test) {
+    test.expect(5);
+
+    var scoreFunc = ejs.ScoreFunction(),
+      termFilter = ejs.TermFilter('tf1', 'vf1'),
+      expected,
+      doTest = function () {
+        test.deepEqual(scoreFunc.toJSON(), expected);
+      };
+
+    scoreFunc.weight(1.2);
+
+    expected = {
+      weight: 1.2
+    };
+
+    test.ok(scoreFunc, 'ScoreFunction exists');
+    test.ok(scoreFunc.toJSON(), 'toJSON() works');
+    doTest();
+
+    expected.filter = termFilter.toJSON();
+
+    scoreFunc.filter(termFilter);
+    doTest();
+
+    test.strictEqual(scoreFunc._type(), 'score function');
+    test.done();
+  },
   FunctionScoreQuery: function (test) {
-    test.expect(30);
+    test.expect(31);
 
     var termQuery1 = ejs.TermQuery('t1', 'v1'),
       termFilter1 = ejs.TermFilter('tf1', 'fv1'),
@@ -347,6 +406,10 @@ exports.queries = {
     expected.function_score.boost = 2;
     doTest();
 
+    funcQuery.maxBoost(5);
+    expected.function_score.max_boost = 5;
+    doTest();
+
     funcQuery.function(randomScore);
     expected.function_score.functions = [randomScore.toJSON()];
     doTest();
@@ -388,7 +451,7 @@ exports.queries = {
     test.done();
   },
   CommonTermsQuery: function (test) {
-    test.expect(21);
+    test.expect(22);
 
     var commonQuery = ejs.CommonTermsQuery(),
       expected,
@@ -476,12 +539,16 @@ exports.queries = {
     expected.common.field2.analyzer = 'the analyzer';
     doTest();
 
-    commonQuery.minimumShouldMatch(10);
-    expected.common.field2.minimum_should_match = {low_freq: 10};
+    commonQuery.minimumShouldMatch('10');
+    expected.common.field2.minimum_should_match = '10';
+    doTest();
+
+    commonQuery.minimumShouldMatch("3<90%");
+    expected.common.field2.minimum_should_match = "3<90%";
     doTest();
 
     commonQuery.minimumShouldMatchLowFreq(5);
-    expected.common.field2.minimum_should_match.low_freq = 5;
+    expected.common.field2.minimum_should_match = { low_freq: 5 };
     doTest();
 
     commonQuery.minimumShouldMatchHighFreq(10);
@@ -914,7 +981,7 @@ exports.queries = {
     test.done();
   },
   TermsQuery: function (test) {
-    test.expect(13);
+    test.expect(14);
 
     var termsQuery = ejs.TermsQuery('f1', ['t1', 't2']),
       expected,
@@ -948,11 +1015,15 @@ exports.queries = {
     expected.terms.minimum_should_match = 2;
     doTest();
 
+    termsQuery.minimumShouldMatch("3<90%");
+    expected.terms.minimum_should_match = "3<90%";
+    doTest();
+
     termsQuery.field('f2');
     expected = {
       terms: {
         boost: 1.5,
-        minimum_should_match: 2,
+        minimum_should_match: "3<90%",
         f2: ['t3']
       }
     };
@@ -1213,9 +1284,9 @@ exports.queries = {
     test.done();
   },
   MoreLikeThisQuery: function (test) {
-    test.expect(22);
+    test.expect(21);
 
-    var mltQuery = ejs.MoreLikeThisQuery(['f', 'f2'], 'like text'),
+    var mltQuery = ejs.MoreLikeThisQuery('like text'),
       expected,
       doTest = function () {
         test.deepEqual(mltQuery.toJSON(), expected);
@@ -1224,7 +1295,6 @@ exports.queries = {
     expected = {
       mlt: {
         like_text: 'like text',
-        fields: ['f', 'f2']
       }
     };
 
@@ -1232,16 +1302,16 @@ exports.queries = {
     test.ok(mltQuery.toJSON(), 'toJSON() works');
     doTest();
 
-    mltQuery = ejs.MoreLikeThisQuery('f', 'like text');
+    mltQuery = ejs.MoreLikeThisQuery('like text');
     expected = {
       mlt: {
         like_text: 'like text',
-        fields: ['f']
       }
     };
     doTest();
 
     mltQuery.fields('f2');
+    expected.mlt.fields = [];
     expected.mlt.fields.push('f2');
     doTest();
 
@@ -1303,11 +1373,6 @@ exports.queries = {
 
     test.strictEqual(mltQuery._type(), 'query');
 
-
-    test.throws(function () {
-      ejs.MoreLikeThisQuery(9, 'like');
-    }, TypeError);
-
     test.throws(function () {
       mltQuery.fields(3);
     }, TypeError);
@@ -1315,10 +1380,11 @@ exports.queries = {
     test.done();
   },
   HasParentQuery: function (test) {
-    test.expect(15);
+    test.expect(16);
 
     var termQuery = ejs.TermQuery('t1', 'v1'),
       termQuery2 = ejs.TermQuery('t2', 'v2'),
+      innerHits = ejs.InnerHits(),
       hasParentQuery = ejs.HasParentQuery(termQuery, 't1'),
       expected,
       doTest = function () {
@@ -1370,6 +1436,10 @@ exports.queries = {
     expected.has_parent.boost = 1.2;
     doTest();
 
+    hasParentQuery.innerHits(innerHits);
+    expected.has_parent.inner_hits = innerHits.toJSON();
+    doTest();
+
     test.strictEqual(hasParentQuery._type(), 'query');
 
 
@@ -1384,10 +1454,12 @@ exports.queries = {
     test.done();
   },
   HasChildQuery: function (test) {
-    test.expect(20);
+
+    test.expect(23);
 
     var termQuery = ejs.TermQuery('t1', 'v1'),
       termQuery2 = ejs.TermQuery('t2', 'v2'),
+      innerHits = ejs.InnerHits(),
       hasChildQuery = ejs.HasChildQuery(termQuery, 't1'),
       expected,
       doTest = function () {
@@ -1455,8 +1527,20 @@ exports.queries = {
     expected.has_child.short_circuit_cutoff = 8192;
     doTest();
 
+    hasChildQuery.minChildren(10);
+    expected.has_child.min_children = 10;
+    doTest();
+
+    hasChildQuery.maxChildren(10);
+    expected.has_child.max_children = 10;
+    doTest();
+
     hasChildQuery.boost(1.2);
     expected.has_child.boost = 1.2;
+    doTest();
+
+    hasChildQuery.innerHits(innerHits);
+    expected.has_child.inner_hits = innerHits.toJSON();
     doTest();
 
     test.strictEqual(hasChildQuery._type(), 'query');
@@ -1824,7 +1908,7 @@ exports.queries = {
     test.done();
   },
   MatchQuery: function (test) {
-    test.expect(39);
+    test.expect(40);
 
     var matchQuery = ejs.MatchQuery('t1', 'v1'),
       expected,
@@ -1906,6 +1990,10 @@ exports.queries = {
     expected.match.t1.minimum_should_match = 10;
     doTest();
 
+    matchQuery.minimumShouldMatch("3<90%");
+    expected.match.t1.minimum_should_match = "3<90%";
+    doTest();
+
     matchQuery.fuzzyRewrite('constant_score_auto');
     expected.match.t1.fuzzy_rewrite = 'constant_score_auto';
     doTest();
@@ -1985,7 +2073,7 @@ exports.queries = {
     test.done();
   },
   MultiMatchQuery: function (test) {
-    test.expect(45);
+    test.expect(48);
 
     var mmQuery = ejs.MultiMatchQuery('t', 'v1'),
       expected,
@@ -2032,8 +2120,16 @@ exports.queries = {
     expected.multi_match.tie_breaker = 0.6;
     doTest();
 
-    mmQuery.type('boolean');
-    expected.multi_match.type = 'boolean';
+    mmQuery.type('best_fields');
+    expected.multi_match.type = 'best_fields';
+    doTest();
+
+    mmQuery.type('cross_fields');
+    expected.multi_match.type = 'cross_fields';
+    doTest();
+
+    mmQuery.type('most_fields');
+    expected.multi_match.type = 'most_fields';
     doTest();
 
     mmQuery.type('junk');
@@ -2084,6 +2180,10 @@ exports.queries = {
 
     mmQuery.minimumShouldMatch(10);
     expected.multi_match.minimum_should_match = 10;
+    doTest();
+
+    mmQuery.minimumShouldMatch("10%");
+    expected.multi_match.minimum_should_match = "10%";
     doTest();
 
     mmQuery.fuzzyRewrite('constant_score_auto');
@@ -2214,7 +2314,7 @@ exports.queries = {
     test.done();
   },
   BoolQuery: function (test) {
-    test.expect(21);
+    test.expect(22);
 
     var termQuery1 = ejs.TermQuery('t1', 'v1'),
       termQuery2 = ejs.TermQuery('t2', 'v2'),
@@ -2276,6 +2376,10 @@ exports.queries = {
 
     boolQuery.minimumNumberShouldMatch(2);
     expected.bool.minimum_number_should_match = 2;
+    doTest();
+
+    boolQuery.minimumNumberShouldMatch("2%");
+    expected.bool.minimum_number_should_match = "2%";
     doTest();
 
     test.strictEqual(boolQuery._type(), 'query');
@@ -2361,7 +2465,7 @@ exports.queries = {
     test.done();
   },
   QueryStringQuery: function (test) {
-    test.expect(44);
+    test.expect(45);
 
     var queryString = ejs.QueryStringQuery('this AND that'),
       expected,
@@ -2452,6 +2556,10 @@ exports.queries = {
 
     queryString.minimumShouldMatch(1);
     expected.query_string.minimum_should_match = 1;
+    doTest();
+
+    queryString.minimumShouldMatch("10%");
+    expected.query_string.minimum_should_match = "10%";
     doTest();
 
     queryString.tieBreaker(1.1);
@@ -2639,12 +2747,13 @@ exports.queries = {
     test.done();
   },
   NestedQuery: function (test) {
-    test.expect(18);
+    test.expect(19);
 
     var termQuery1 = ejs.TermQuery('t1', 'v1'),
       termQuery2 = ejs.TermQuery('t2', 'v2'),
       termFilter1 = ejs.TermFilter('tf1', 'v1'),
       termFilter2 = ejs.TermFilter('tf2', 'v2'),
+      innerHits = ejs.InnerHits(),
       nestedQuery = ejs.NestedQuery('root'),
       expected,
       doTest = function () {
@@ -2706,6 +2815,10 @@ exports.queries = {
 
     nestedQuery.boost(3.2);
     expected.nested.boost = 3.2;
+    doTest();
+
+    nestedQuery.innerHits(innerHits);
+    expected.nested.inner_hits = innerHits.toJSON();
     doTest();
 
     test.strictEqual(nestedQuery._type(), 'query');

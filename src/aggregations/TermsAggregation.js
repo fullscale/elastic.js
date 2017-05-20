@@ -5,6 +5,12 @@
 
     @name ejs.TermsAggregation
     @ejs aggregation
+    @borrows ejs.BucketsAggregationMixin.field as field
+    @borrows ejs.BucketsAggregationMixin.script as script
+    @borrows ejs.BucketsAggregationMixin.scriptId as scriptId
+    @borrows ejs.BucketsAggregationMixin.scriptFile as scriptFile
+    @borrows ejs.BucketsAggregationMixin.lang as lang
+    @borrows ejs.BucketsAggregationMixin.params as params
     @borrows ejs.AggregationMixin.aggregation as aggregation
     @borrows ejs.AggregationMixin.agg as agg
     @borrows ejs.AggregationMixin._type as _type
@@ -19,82 +25,12 @@
   ejs.TermsAggregation = function (name) {
 
     var
-      _common = ejs.AggregationMixin(name),
+      _common = ejs.BucketsAggregationMixin(name, 'terms'),
       agg = _common.toJSON();
 
     agg[name].terms = {};
 
     return extend(_common, {
-
-      /**
-      <p>Sets the field to gather terms from.</p>
-
-      @member ejs.TermsAggregation
-      @param {String} field a valid field name..
-      @returns {Object} returns <code>this</code> so that calls can be chained.
-      */
-      field: function (field) {
-        if (field == null) {
-          return agg[name].terms.field;
-        }
-
-        agg[name].terms.field = field;
-        return this;
-      },
-
-      /**
-      Allows you generate or modify the terms using a script.
-
-      @member ejs.TermsAggregation
-      @param {String} scriptCode A valid script string to execute.
-      @returns {Object} returns <code>this</code> so that calls can be chained.
-      */
-      script: function (scriptCode) {
-        if (scriptCode == null) {
-          return agg[name].terms.script;
-        }
-
-        agg[name].terms.script = scriptCode;
-        return this;
-      },
-
-      /**
-      The script language being used.
-
-      @member ejs.TermsAggregation
-      @param {String} language The language of the script.
-      @returns {Object} returns <code>this</code> so that calls can be chained.
-      */
-      lang: function (language) {
-        if (language == null) {
-          return agg[name].terms.lang;
-        }
-
-        agg[name].terms.lang = language;
-        return this;
-      },
-
-      /**
-      Sets the type of the field value for use in scripts.  Current values are:
-      string, double, float, long, integer, short, and byte.
-
-      @member ejs.TermsAggregation
-      @param {String} v The value type
-      @returns {Object} returns <code>this</code> so that calls can be chained.
-      */
-      valueType: function (v) {
-        if (v == null) {
-          return agg[name].terms.value_type;
-        }
-
-        v = v.toLowerCase();
-        if (v === 'string' || v === 'double' || v === 'float' || v === 'long' ||
-            v === 'integer' || v === 'short' || v === 'byte') {
-          agg[name].terms.value_type = v;
-        }
-
-        return this;
-      },
 
       /**
       Sets the format expression for the terms.  Use for number or date
@@ -195,22 +131,6 @@
       },
 
       /**
-      Set to true to assume script values are unique.
-
-      @member ejs.TermsAggregation
-      @param {Boolean} trueFalse assume unique values or not
-      @returns {Object} returns <code>this</code> so that calls can be chained.
-      */
-      scriptValuesUnique: function (trueFalse) {
-        if (trueFalse == null) {
-          return agg[name].terms.script_values_unique;
-        }
-
-        agg[name].terms.script_values_unique = trueFalse;
-        return this;
-      },
-
-      /**
       Sets the number of aggregation entries that will be returned.
 
       @member ejs.TermsAggregation
@@ -261,24 +181,6 @@
       },
 
       /**
-      Sets parameters that will be applied to the script.  Overwrites
-      any existing params.
-
-      @member ejs.TermsAggregation
-      @param {Object} p An object where the keys are the parameter name and
-        values are the parameter value.
-      @returns {Object} returns <code>this</code> so that calls can be chained.
-      */
-      params: function (p) {
-        if (p == null) {
-          return agg[name].terms.params;
-        }
-
-        agg[name].terms.params = p;
-        return this;
-      },
-
-      /**
       Sets order for the aggregated values.
 
       @member ejs.TermsAggregation
@@ -287,6 +189,8 @@
       @returns {Object} returns <code>this</code> so that calls can be chained.
       */
       order: function (order, direction) {
+        var orderAsObj = {};
+
         if (order == null) {
           return agg[name].terms.order;
         }
@@ -300,8 +204,9 @@
           direction = 'desc';
         }
 
-        agg[name].terms.order = {};
-        agg[name].terms.order[order] = direction;
+        orderAsObj[order] = direction;
+        agg[name].terms.order = agg[name].terms.order || [];
+        agg[name].terms.order.push(orderAsObj);
         return this;
       }
 

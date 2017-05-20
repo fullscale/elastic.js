@@ -83,15 +83,15 @@
             before that document is returned in the results.
 
             @member ejs.TermsQuery
-            @param {Integer} min A positive integer.
+            @param {String} minMatch A min should match parameter.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
-      minimumShouldMatch: function (min) {
-        if (min == null) {
+      minimumShouldMatch: function (minMatch) {
+        if (minMatch == null) {
           return query.terms.minimum_should_match;
         }
       
-        query.terms.minimum_should_match = min;
+        query.terms.minimum_should_match = minMatch;
         return this;
       },
       

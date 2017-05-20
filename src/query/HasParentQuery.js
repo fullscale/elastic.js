@@ -124,9 +124,29 @@
         if (s === 'none' || s === 'score') {
           query.has_parent.score_mode = s;
         }
-        
+
+        return this;
+      },
+
+      /**
+            Sets the inner hits options
+
+            @member ejs.HasParentQuery
+            @param {InnerHits} i A valid InnerHits object
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      innerHits: function(i) {
+        if (i == null) {
+          return query.has_parent.inner_hits;
+        }
+
+        if (!isInnerHits(i)) {
+          throw new TypeError('Argument must be a Highlight object');
+        }
+
+        query.has_parent.inner_hits = i.toJSON();
         return this;
       }
-      
+
     });
   };

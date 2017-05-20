@@ -1,9 +1,9 @@
   /**
     @class
-    <p>The has_child query works the same as the has_child filter, 
-    by automatically wrapping the filter with a constant_score. Results in 
+    <p>The has_child query works the same as the has_child filter,
+    by automatically wrapping the filter with a constant_score. Results in
     parent documents that have child docs matching the query being returned.</p>
-  
+
     @name ejs.HasChildQuery
     @ejs query
     @borrows ejs.QueryMixin.boost as boost
@@ -21,11 +21,11 @@
     if (!isQuery(qry)) {
       throw new TypeError('Argument must be a valid Query');
     }
-    
-    var 
+
+    var
       _common = ejs.QueryMixin('has_child'),
       query = _common.toJSON();
-    
+
     query.has_child.query = qry.toJSON();
     query.has_child.type = type;
 
@@ -42,11 +42,11 @@
         if (q == null) {
           return query.has_child.query;
         }
-    
+
         if (!isQuery(q)) {
           throw new TypeError('Argument must be a valid Query');
         }
-        
+
         query.has_child.query = q.toJSON();
         return this;
       },
@@ -62,14 +62,14 @@
         if (t == null) {
           return query.has_child.type;
         }
-    
+
         query.has_child.type = t;
         return this;
       },
 
       /**
-            Sets the scope of the query.  A scope allows to run facets on the 
-            same scope name that will work against the child documents. 
+            Sets the scope of the query.  A scope allows to run facets on the
+            same scope name that will work against the child documents.
 
             @deprecated since elasticsearch 0.90
             @member ejs.HasChildQuery
@@ -82,14 +82,14 @@
 
       /**
             Sets the scoring method.  Valid values are:
-            
+
             none - the default, no scoring
             max - the highest score of all matched child documents is used
             sum - the sum the all the matched child documents is used
             avg - the average of all matched child documents is used
 
             @deprecated since elasticsearch 0.90.1, use scoreMode
-            
+
             @member ejs.HasChildQuery
             @param {String} s The score type as a string.
             @returns {Object} returns <code>this</code> so that calls can be chained.
@@ -98,18 +98,18 @@
         if (s == null) {
           return query.has_child.score_type;
         }
-    
+
         s = s.toLowerCase();
         if (s === 'none' || s === 'max' || s === 'sum' || s === 'avg') {
           query.has_child.score_type = s;
         }
-        
+
         return this;
       },
-      
+
       /**
             Sets the scoring method.  Valid values are:
-            
+
             none - the default, no scoring
             max - the highest score of all matched child documents is used
             sum - the sum the all the matched child documents is used
@@ -123,15 +123,15 @@
         if (s == null) {
           return query.has_child.score_mode;
         }
-    
+
         s = s.toLowerCase();
         if (s === 'none' || s === 'max' || s === 'sum' || s === 'avg') {
           query.has_child.score_mode = s;
         }
-        
+
         return this;
       },
-      
+
       /**
             Sets the cutoff value to short circuit processing.
 
@@ -146,7 +146,59 @@
 
         query.has_child.short_circuit_cutoff = cutoff;
         return this;
+      },
+
+      /**
+            Sets the inner hits options
+
+            @member ejs.HasChildQuery
+            @param {InnerHits} i A valid InnerHits object
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      innerHits: function(i) {
+        if (i == null) {
+          return query.has_child.inner_hits;
+        }
+
+        if (!isInnerHits(i)) {
+          throw new TypeError('Argument must be a Highlight object');
+        }
+
+        query.has_child.inner_hits = i.toJSON();
+        return this;
+      },
+
+      /**
+            Sets the min_children value.
+
+            @member ejs.HasChildQuery
+            @param {Integer} min A positive <code>integer</code> value.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      minChildren: function(min) {
+        if (min == null) {
+          return query.has_child.min_children;
+        }
+
+        query.has_child.min_children = min;
+        return this;
+      },
+
+      /**
+            Sets the max_children value.
+
+            @member ejs.HasChildQuery
+            @param {Integer} max A positive <code>integer</code> value.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      maxChildren: function(max) {
+        if (max == null) {
+          return query.has_child.max_children;
+        }
+
+        query.has_child.max_children = max;
+        return this;
       }
-      
+
     });
   };

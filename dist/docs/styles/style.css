@@ -1,0 +1,16 @@
+.btn.c9 {
+	color: white;
+	background-color: #557e2f;
+	background-repeat: repeat-x;
+	background-image: -khtml-gradient(linear, left top, left bottom, from(#78ab44), to(#557e2f));
+	background-image: -moz-linear-gradient(top, #78ab44, #557e2f);
+	background-image: -ms-linear-gradient(top, #78ab44, #557e2f);
+	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #78ab44), color-stop(100%, #557e2f));
+	background-image: -webkit-linear-gradient(top, #78ab44, #557e2f);
+	background-image: -o-linear-gradient(top, #78ab44, #557e2f);
+	background-image: linear-gradient(top, #78ab44, #557e2f);
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#78ab44', endColorstr='#557e2f', GradientType=0);
+	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+	border-color: #557e2f #557e2f #003F81;
+	border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1)
+}

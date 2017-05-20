@@ -1,0 +1,2295 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+  	<title>elastic.js: Module: Request</title>
+	
+    <link rel="stylesheet" type="text/css" href="styles/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="styles/style.css" />
+    <link rel="stylesheet" type="text/css" href="styles/prettify.css" />
+    <script src="scripts/prettify.js" type="text/javascript"></script>
+    
+    <!--link type="text/css" rel="stylesheet" href="styles/node-dark.css"-->
+    <!--link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css"-->
+    <meta name="author" content="diji inc.">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <style type="text/css">
+      body {padding-top: 60px;padding-bottom:25px;}
+
+      .page-header {
+        background-color: #f5f5f5;
+        border:none;
+        padding: 20px 20px 10px;
+        text-align:right;
+        -webkit-border-radius: 6px 6px 6px 6px;
+           -moz-border-radius: 0 0 6px 6px;
+                border-radius: 4px 4px 4px 4px;
+      }
+      .toc-item {margin: 0 0 0 10px;list-style:none;}
+      .toc-item a {line-height:16px; color:#557e2f}
+      .doc-ref {text-decoration:none;}
+      .ancestors a {color:#557e2f;}
+      a {color:#557e2f}
+      a:visited {color:#557e2f}
+      a:hover {color:#78ab44}
+      h3 {font-size:18.5px;color:#6e6e6e}
+      code {background-color:transparent; color:#6e6e6e}
+      pre {margin: 18px 0px 0px;}
+      .alert-message.default{
+        background-color: #f5f5f5;
+        background-repeat: repeat-x;
+        background-image: -khtml-gradient(linear, left top, left bottom, from(#ffffff), to(#f5f5f5));
+        background-image: -moz-linear-gradient(top, #ffffff, #f5f5f5);
+        background-image: -ms-linear-gradient(top, #ffffff, #f5f5f5);
+        background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffffff), color-stop(100%, #f5f5f5));
+        background-image: -webkit-linear-gradient(top, #ffffff, #f5f5f5);
+        background-image: -o-linear-gradient(top, #ffffff, #f5f5f5);
+        background-image: linear-gradient(top, #ffffff, #f5f5f5);
+        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#f5f5f5', GradientType=0);
+        border: 1px solid #ddd;
+        -webkit-border-radius: 3px;
+        -moz-border-radius: 3px;
+        border-radius: 3px;
+        -webkit-box-shadow: inset 0 1px 0 #ffffff;
+        -moz-box-shadow: inset 0 1px 0 #ffffff;
+        box-shadow: inset 0 1px 0 #ffffff;
+      }
+
+    </style>
+
+    <!-- Le fav and touch icons -->
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+
+    <!-- Google analytics -->
+    <script type="text/javascript">
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-12991832-4']);
+      _gaq.push(['_setDomainName', 'fullscale.co']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+  </head>
+
+  <body onload="prettyPrint()">
+
+    <div class="navbar navbar-fixed-top">
+        <div class="navbar-inner">
+            <div class="container-fluid">
+                <span class="brand">Documentation {<span style="color:#557e2f;font-weight:500;"> elastic.js </span>}</span>
+                <div class="nav-collapse collapse">
+                <ul class="nav">
+                    <li><a href="/elasticjs/">Home</a></li>
+                    <li><a target="_blank" href="http://www.fullscale.co/elasticjs/">Guide</a></li>
+                    <li><a target="_blank" href="https://github.com/fullscale/elastic.js/tree/master/examples">Examples</a></li>
+                    <li><a target="_blank" href="https://github.com/fullscale/elastic.js">Source</a></li>
+                    <li><a target="_blank" href="/translator/">Translator</a></li>
+                </ul>
+            </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+
+        <div class="row-fluid">
+          <div class="span8 offset1">
+    
+            
+     
+              <header>
+                <h3>
+                  <div class="alert-message default"><span class="ancestors" style="margin-left:10px"><a href="ejs.html">ejs</a> &rang; </span>Request</div>
+                </h3>
+
+                <p class="class-description"><p>The <code>Request</code> object provides methods generating an elasticsearch request body.</p></p>    
+              </header>  
+    
+              <article>    
+                <h3>Module</h3><table class="table table-bordered"><tbody><tr><td>
+<div id="ejs.Request" class="method-body">
+    <a style="text-decoration:none" name="ejs.Request">
+        <h3 style="color:#557e2f;background-color:#eee;font-family:Menlo,Monaco,Consolas,Courier New,monospace;" id="Request">&nbsp;Request</h3>
+    </a>
+        <code>
+        Request ( conf )
+    </code>
+
+    <div style="margin-left:15px"><p>Provides methods for generating request bodies.</p></div><br>  
+   
+    <div class="alert-message block-message error">
+	<dl style="margin-left:15px;margin-right:20px;margin-top:0px;margin-bottom:3px;">
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</dl>
+</div>
+
+ 
+    <dl style="margin-left:15px;margin-right:20px;margin-top:0px;">  
+
+        
+    
+        <dt>Parameters</dt><dd>
+	
+
+            
+                <code>conf</code>
+            
+
+            <code>&lt;Object&gt;</code>
+            
+            
+            
+            
+            
+            <span>A configuration object containing the initilization
+      parameters.  The following parameters can be set in the conf object:
+        indices - single index name or array of index names
+        types - single type name or array of types
+        routing - the shard routing value</span>
+            <br>
+	
+	
+</dd>
+    
+        
+    
+        
+    
+        
+    
+        
+
+    </dl>
+
+</div>
+</td></tr>
+</tbody></table>
+        
+                
+        
+                
+        
+                
+        
+                
+        
+                
+        
+                
+
+                    <h3 class="subsection-title">Properties</h3>
+            
+                    <table class="table table-bordered table-striped table-hover table-condensed">
+                      <tbody>
+                        <thead>
+                          <tr>
+                            <th>Name</th>
+                            <th>Description</th>
+                          </tr>
+                        </thead>
+                      <tr>
+<div id="property:ejs.Request.query" class="method-body">
+    <td><code>query<span class="type-signature"> &lt;Object&gt;</span></code></td>
+
+    
+    <td>
+        The internal query object.
+    </td>
+    
+    
+    
+</div>
+</tr>
+
+                      </tbody>
+                    </table><br>
+                
+        
+                
+            
+                    <h3 class="subsection-title">Method Summary</h3>
+            
+                    <table class="table table-bordered table-striped table-hover table-condensed">
+                      <thead>
+                        <tr>
+                          <th>Returns</th>
+                          <th>Name</th>
+                          <th>Description</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                      <div class="method-body">
+    <tr>
+        <td><code>String</code></td><td><code><a href="#ejs.Request._type">_type()</a></code></td><td>The type of ejs object.  For internal use only.</td>
+    </tr>
+</div><div class="method-body">
+    <tr>
+        <td><code>Object</code></td><td><code><a href="#ejs.Request.agg">agg(agg)</a></code></td><td>Add an aggregation.  This method can be called multiple times
+      in order to set multiple nested aggregations that will be executed
+      at the same time as the search request.  Alias for the aggregation method.</td>
+    </tr>
+</div><div class="method-body">
+    <tr>
+        <td><code>Object</code></td><td><code><a href="#ejs.Request.aggregation">aggregation(agg)</a></code></td><td>Add an aggregation.  This method can be called multiple times
+      in order to set multiple nested aggregations that will be executed
+      at the same time as the search request.</td>
+    </tr>
+</div><div class="method-body">
+    <tr>
+        <td><code>Object</code></td><td><code><a href="#ejs.Request.explain">explain(trueFalse)</a></code></td><td>Enable/Disable explanation of score for each search result.</td>
+    </tr>
+</div><div class="method-body">
+    <tr>
+        <td><code>Object</code></td><td><code><a href="#ejs.Request.facet">facet(facet)</a></code></td><td>Allows you to set the specified facet on this request object. Multiple facets can
+            be set, all of which will be returned when the search is executed.</td>
+    </tr>
+</div><div class="method-body">
+    <tr>
+        <td><code>Object</code></td><td><code><a href="#ejs.Request.fields">fields(s)</a></code></td><td>By default, searches return full documents, meaning every property or field.
+            This method allows you to specify which fields you want returned.
+
+            Pass a single field name and it is appended to the current list of
+            fields.  Pass an array of fields and it replaces all existing
+            fields.</td>
+    </tr>
+</div><div class="method-body">
+    <tr>
+        <td><code>Object</code></td><td><code><a href="#ejs.Request.filter">filter(filter)</a></code></td><td>Allows you to set a specified filter on this request object.</td>
+    </tr>
+</div><div class="method-body">
+    <tr>
+        <td><code>Object</code></td><td><code><a href="#ejs.Request.from">from(f)</a></code></td><td>A search result set could be very large (think Google). Setting the
+            <code>from</code> parameter allows you to page through the result set
+            by making multiple request. This parameters specifies the starting
+            result/document number point. Combine with <code>size()</code> to achieve paging.</td>
+    </tr>
+</div><div class="method-body">
+    <tr>
+        <td><code>Object</code></td><td><code><a href="#ejs.Request.highlight">highlight(h)</a></code></td><td>Performs highlighting based on the <code>Highlight</code>
+            settings.</td>
+    </tr>
+</div><div class="method-body">
+    <tr>
+        <td><code>Object</code></td><td><code><a href="#ejs.Request.indexBoost">indexBoost(index,boost)</a></code></td><td>Boosts hits in the specified index by the given boost value.</td>
+    </tr>
+</div><div class="method-body">
+    <tr>
+        <td><code>Object</code></td><td><code><a href="#ejs.Request.minScore">minScore(min)</a></code></td><td>Filters out search results will scores less than the specified minimum score.</td>
+    </tr>
+</div><div class="method-body">
+    <tr>
+        <td><code>Object</code></td><td><code><a href="#ejs.Request.partialField">partialField(oPartialField)</a></code></td><td>Control what part of the _source will be loaded based on <code>PartialField</code>.</td>
+    </tr>
+</div><div class="method-body">
+    <tr>
+        <td><code>Object</code></td><td><code><a href="#ejs.Request.post_filter">post_filter(filter)</a></code></td><td>Allows you to set a specified post_filter on this request object.</td>
+    </tr>
+</div><div class="method-body">
+    <tr>
+        <td><code>Object</code></td><td><code><a href="#ejs.Request.query">query(someQuery)</a></code></td><td>Allows you to set the specified query on this search object. This is the
+            query that will be used when the search is executed.</td>
+    </tr>
+</div><div class="method-body">
+    <tr>
+        <td><code>Object</code></td><td><code><a href="#ejs.Request.rescore">rescore(r)</a></code></td><td>Once a query executes, you can use rescore to run a secondary, more
+            expensive query to re-order the results.</td>
+    </tr>
+</div><div class="method-body">
+    <tr>
+        <td><code>Object</code></td><td><code><a href="#ejs.Request.scriptField">scriptField(oScriptField)</a></code></td><td>Computes a document property dynamically based on the supplied <code>ScriptField</code>.</td>
+    </tr>
+</div><div class="method-body">
+    <tr>
+        <td><code>Object</code></td><td><code><a href="#ejs.Request.size">size(s)</a></code></td><td>Sets the number of results/documents to be returned. This is set on a per page basis.</td>
+    </tr>
+</div><div class="method-body">
+    <tr>
+        <td><code>Object</code></td><td><code><a href="#ejs.Request.sort">sort(fieldName)</a></code></td><td><p>Sets the sorting for the query.  This accepts many input formats.</p>
+
+            <dl>
+                <dd><code>sort()</code> - The current sorting values are returned.</dd>
+                <dd><code>sort(fieldName)</code> - Adds the field to the current list of sorting values.</dd>
+                <dd><code>sort(fieldName, order)</code> - Adds the field to the current list of
+                    sorting with the specified order.  Order must be asc or desc.</dd>
+                <dd><code>sort(ejs.Sort)</code> - Adds the Sort value to the current list of sorting values.</dd>
+                <dd><code>sort(array)</code> - Replaces all current sorting values with values
+                    from the array.  The array must contain only strings and Sort objects.</dd>
+            </dl>
+
+            <p>Multi-level sorting is supported so the order in which sort fields
+            are added to the query requests is relevant.</p>
+
+            <p>It is recommended to use <code>Sort</code> objects when possible.</p></td>
+    </tr>
+</div><div class="method-body">
+    <tr>
+        <td><code>Object</code></td><td><code><a href="#ejs.Request.source">source(includes,excludes)</a></code></td><td>Allows to control how the _source field is returned with every hit.
+            By default operations return the contents of the _source field
+            unless you have used the fields parameter or if the _source field
+            is disabled.  Set the includes parameter to false to completely
+            disable returning the source field.</td>
+    </tr>
+</div><div class="method-body">
+    <tr>
+        <td><code>Object</code></td><td><code><a href="#ejs.Request.suggest">suggest(s)</a></code></td><td>Allows you to set the specified suggester on this request object.
+            Multiple suggesters can be set, all of which will be returned when
+            the search is executed.  Global suggestion text can be set by
+            passing in a string vs. a <code>Suggest</code> object.</td>
+    </tr>
+</div><div class="method-body">
+    <tr>
+        <td><code>Object</code></td><td><code><a href="#ejs.Request.timeout">timeout(t)</a></code></td><td>A timeout, bounding the request to be executed within the
+            specified time value and bail when expired. Defaults to no timeout.
+
+            <p>This option is valid during the following operations:
+                <code>search</code> and <code>delete by query</code></p></td>
+    </tr>
+</div><div class="method-body">
+    <tr>
+        <td><code>String</code></td><td><code><a href="#ejs.Request.toJSON">toJSON()</a></code></td><td>Retrieves the internal <code>query</code> object. This is typically used by
+            internal API functions so use with caution.</td>
+    </tr>
+</div><div class="method-body">
+    <tr>
+        <td><code>Object</code></td><td><code><a href="#ejs.Request.trackScores">trackScores(trueFalse)</a></code></td><td>Enables score computation and tracking during sorting.  Be default,
+           when sorting scores are not computed.</td>
+    </tr>
+</div><div class="method-body">
+    <tr>
+        <td><code>Object</code></td><td><code><a href="#ejs.Request.version">version(trueFalse)</a></code></td><td>Enable/Disable returning version number for each search result.</td>
+    </tr>
+</div>
+                      </tbody>
+                    </table>
+                    <br>
+
+                    <h3 class="subsection-title">Method Detail</h3>
+
+                    <table class="table table-bordered table-condensed">
+                      <tbody>
+                      <tr><td>
+<div id="ejs.Request._type" class="method-body">
+    <a style="text-decoration:none" name="ejs.Request._type">
+        <h3 style="color:#557e2f;background-color:#eee;font-family:Menlo,Monaco,Consolas,Courier New,monospace;" id="_type">&nbsp;_type</h3>
+    </a>
+        <code>
+        String _type ( )
+    </code>
+
+    <div style="margin-left:15px">The type of ejs object.  For internal use only.</div><br>  
+   
+    <div class="alert-message block-message error">
+	<dl style="margin-left:15px;margin-right:20px;margin-top:0px;margin-bottom:3px;">
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</dl>
+</div>
+
+ 
+    <dl style="margin-left:15px;margin-right:20px;margin-top:0px;">  
+
+        
+    
+        
+    
+        
+    
+        
+    
+        
+        <dt>Returns</dt>
+        <dd>
+    the type of object
+
+
+
+</dd>
+    
+        
+
+    </dl>
+
+</div>
+</td></tr>
+<tr><td>
+<div id="ejs.Request.agg" class="method-body">
+    <a style="text-decoration:none" name="ejs.Request.agg">
+        <h3 style="color:#557e2f;background-color:#eee;font-family:Menlo,Monaco,Consolas,Courier New,monospace;" id="agg">&nbsp;agg</h3>
+    </a>
+        <code>
+        Object agg ( agg )
+    </code>
+
+    <div style="margin-left:15px">Add an aggregation.  This method can be called multiple times
+      in order to set multiple nested aggregations that will be executed
+      at the same time as the search request.  Alias for the aggregation method.</div><br>  
+   
+    <div class="alert-message block-message error">
+	<dl style="margin-left:15px;margin-right:20px;margin-top:0px;margin-bottom:3px;">
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</dl>
+</div>
+
+ 
+    <dl style="margin-left:15px;margin-right:20px;margin-top:0px;">  
+
+        
+    
+        <dt>Parameters</dt><dd>
+	
+
+            
+                <code>agg</code>
+            
+
+            <code>&lt;Aggregation&gt;</code>
+            
+            
+            
+            
+            
+            <span>Any valid <code>Aggregation</code> object.</span>
+            <br>
+	
+	
+</dd>
+    
+        
+    
+        
+    
+        
+        <dt>Returns</dt>
+        <dd>
+    returns <code>this</code> so that calls can be chained.
+
+
+
+</dd>
+    
+        
+
+    </dl>
+
+</div>
+</td></tr>
+<tr><td>
+<div id="ejs.Request.aggregation" class="method-body">
+    <a style="text-decoration:none" name="ejs.Request.aggregation">
+        <h3 style="color:#557e2f;background-color:#eee;font-family:Menlo,Monaco,Consolas,Courier New,monospace;" id="aggregation">&nbsp;aggregation</h3>
+    </a>
+        <code>
+        Object aggregation ( agg )
+    </code>
+
+    <div style="margin-left:15px">Add an aggregation.  This method can be called multiple times
+      in order to set multiple nested aggregations that will be executed
+      at the same time as the search request.</div><br>  
+   
+    <div class="alert-message block-message error">
+	<dl style="margin-left:15px;margin-right:20px;margin-top:0px;margin-bottom:3px;">
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</dl>
+</div>
+
+ 
+    <dl style="margin-left:15px;margin-right:20px;margin-top:0px;">  
+
+        
+    
+        <dt>Parameters</dt><dd>
+	
+
+            
+                <code>agg</code>
+            
+
+            <code>&lt;Aggregation&gt;</code>
+            
+            
+            
+            
+            
+            <span>Any valid <code>Aggregation</code> object.</span>
+            <br>
+	
+	
+</dd>
+    
+        
+    
+        
+    
+        
+        <dt>Returns</dt>
+        <dd>
+    returns <code>this</code> so that calls can be chained.
+
+
+
+</dd>
+    
+        
+
+    </dl>
+
+</div>
+</td></tr>
+<tr><td>
+<div id="ejs.Request.explain" class="method-body">
+    <a style="text-decoration:none" name="ejs.Request.explain">
+        <h3 style="color:#557e2f;background-color:#eee;font-family:Menlo,Monaco,Consolas,Courier New,monospace;" id="explain">&nbsp;explain</h3>
+    </a>
+        <code>
+        Object explain ( trueFalse )
+    </code>
+
+    <div style="margin-left:15px">Enable/Disable explanation of score for each search result.</div><br>  
+   
+    <div class="alert-message block-message error">
+	<dl style="margin-left:15px;margin-right:20px;margin-top:0px;margin-bottom:3px;">
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</dl>
+</div>
+
+ 
+    <dl style="margin-left:15px;margin-right:20px;margin-top:0px;">  
+
+        
+    
+        <dt>Parameters</dt><dd>
+	
+
+            
+                <code>trueFalse</code>
+            
+
+            <code>&lt;Boolean&gt;</code>
+            
+            
+            
+            
+            
+            <span>true to enable, false to disable</span>
+            <br>
+	
+	
+</dd>
+    
+        
+    
+        
+    
+        
+        <dt>Returns</dt>
+        <dd>
+    returns <code>this</code> so that calls can be chained.
+
+
+
+</dd>
+    
+        
+
+    </dl>
+
+</div>
+</td></tr>
+<tr><td>
+<div id="ejs.Request.facet" class="method-body">
+    <a style="text-decoration:none" name="ejs.Request.facet">
+        <h3 style="color:#557e2f;background-color:#eee;font-family:Menlo,Monaco,Consolas,Courier New,monospace;" id="facet">&nbsp;facet</h3>
+    </a>
+        <code>
+        Object facet ( facet )
+    </code>
+
+    <div style="margin-left:15px">Allows you to set the specified facet on this request object. Multiple facets can
+            be set, all of which will be returned when the search is executed.</div><br>  
+   
+    <div class="alert-message block-message error">
+	<dl style="margin-left:15px;margin-right:20px;margin-top:0px;margin-bottom:3px;">
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</dl>
+</div>
+
+ 
+    <dl style="margin-left:15px;margin-right:20px;margin-top:0px;">  
+
+        
+    
+        <dt>Parameters</dt><dd>
+	
+
+            
+                <code>facet</code>
+            
+
+            <code>&lt;Facet&gt;</code>
+            
+            
+            
+            
+            
+            <span>Any valid <code>Facet</code> object.</span>
+            <br>
+	
+	
+</dd>
+    
+        
+    
+        
+    
+        
+        <dt>Returns</dt>
+        <dd>
+    returns <code>this</code> so that calls can be chained.
+
+
+
+</dd>
+    
+        
+
+    </dl>
+
+</div>
+</td></tr>
+<tr><td>
+<div id="ejs.Request.fields" class="method-body">
+    <a style="text-decoration:none" name="ejs.Request.fields">
+        <h3 style="color:#557e2f;background-color:#eee;font-family:Menlo,Monaco,Consolas,Courier New,monospace;" id="fields">&nbsp;fields</h3>
+    </a>
+        <code>
+        Object fields ( s )
+    </code>
+
+    <div style="margin-left:15px">By default, searches return full documents, meaning every property or field.
+            This method allows you to specify which fields you want returned.
+
+            Pass a single field name and it is appended to the current list of
+            fields.  Pass an array of fields and it replaces all existing
+            fields.</div><br>  
+   
+    <div class="alert-message block-message error">
+	<dl style="margin-left:15px;margin-right:20px;margin-top:0px;margin-bottom:3px;">
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</dl>
+</div>
+
+ 
+    <dl style="margin-left:15px;margin-right:20px;margin-top:0px;">  
+
+        
+    
+        <dt>Parameters</dt><dd>
+	
+
+            
+                <code>s</code>
+            
+
+            <code>&lt;String | String[]&gt;</code>
+            
+            
+            
+            
+            
+            <span>The field as a string or fields as array</span>
+            <br>
+	
+	
+</dd>
+    
+        
+    
+        
+    
+        
+        <dt>Returns</dt>
+        <dd>
+    returns <code>this</code> so that calls can be chained.
+
+
+
+</dd>
+    
+        
+
+    </dl>
+
+</div>
+</td></tr>
+<tr><td>
+<div id="ejs.Request.filter" class="method-body">
+    <a style="text-decoration:none" name="ejs.Request.filter">
+        <h3 style="color:#557e2f;background-color:#eee;font-family:Menlo,Monaco,Consolas,Courier New,monospace;" id="filter">&nbsp;filter</h3>
+    </a>
+        <code>
+        Object filter ( filter )
+    </code>
+
+    <div style="margin-left:15px">Allows you to set a specified filter on this request object.</div><br>  
+   
+    <div class="alert-message block-message error">
+	<dl style="margin-left:15px;margin-right:20px;margin-top:0px;margin-bottom:3px;">
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</dl>
+</div>
+
+ 
+    <dl style="margin-left:15px;margin-right:20px;margin-top:0px;">  
+
+        
+    
+        <dt>Parameters</dt><dd>
+	
+
+            
+                <code>filter</code>
+            
+
+            <code>&lt;Object&gt;</code>
+            
+            
+            
+            
+            
+            <span>Any valid <code>Filter</code> object.</span>
+            <br>
+	
+	
+</dd>
+    
+        
+    
+        
+    
+        
+        <dt>Returns</dt>
+        <dd>
+    returns <code>this</code> so that calls can be chained.
+
+
+
+</dd>
+    
+        
+
+    </dl>
+
+</div>
+</td></tr>
+<tr><td>
+<div id="ejs.Request.from" class="method-body">
+    <a style="text-decoration:none" name="ejs.Request.from">
+        <h3 style="color:#557e2f;background-color:#eee;font-family:Menlo,Monaco,Consolas,Courier New,monospace;" id="from">&nbsp;from</h3>
+    </a>
+        <code>
+        Object from ( f )
+    </code>
+
+    <div style="margin-left:15px">A search result set could be very large (think Google). Setting the
+            <code>from</code> parameter allows you to page through the result set
+            by making multiple request. This parameters specifies the starting
+            result/document number point. Combine with <code>size()</code> to achieve paging.</div><br>  
+   
+    <div class="alert-message block-message error">
+	<dl style="margin-left:15px;margin-right:20px;margin-top:0px;margin-bottom:3px;">
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</dl>
+</div>
+
+ 
+    <dl style="margin-left:15px;margin-right:20px;margin-top:0px;">  
+
+        
+    
+        <dt>Parameters</dt><dd>
+	
+
+            
+                <code>f</code>
+            
+
+            <code>&lt;Array&gt;</code>
+            
+            
+            
+            
+            
+            <span>The offset at which to start fetching results/documents from the result set.</span>
+            <br>
+	
+	
+</dd>
+    
+        
+    
+        
+    
+        
+        <dt>Returns</dt>
+        <dd>
+    returns <code>this</code> so that calls can be chained.
+
+
+
+</dd>
+    
+        
+
+    </dl>
+
+</div>
+</td></tr>
+<tr><td>
+<div id="ejs.Request.highlight" class="method-body">
+    <a style="text-decoration:none" name="ejs.Request.highlight">
+        <h3 style="color:#557e2f;background-color:#eee;font-family:Menlo,Monaco,Consolas,Courier New,monospace;" id="highlight">&nbsp;highlight</h3>
+    </a>
+        <code>
+        Object highlight ( h )
+    </code>
+
+    <div style="margin-left:15px">Performs highlighting based on the <code>Highlight</code>
+            settings.</div><br>  
+   
+    <div class="alert-message block-message error">
+	<dl style="margin-left:15px;margin-right:20px;margin-top:0px;margin-bottom:3px;">
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</dl>
+</div>
+
+ 
+    <dl style="margin-left:15px;margin-right:20px;margin-top:0px;">  
+
+        
+    
+        <dt>Parameters</dt><dd>
+	
+
+            
+                <code>h</code>
+            
+
+            <code>&lt;Highlight&gt;</code>
+            
+            
+            
+            
+            
+            <span>A valid Highlight object</span>
+            <br>
+	
+	
+</dd>
+    
+        
+    
+        
+    
+        
+        <dt>Returns</dt>
+        <dd>
+    returns <code>this</code> so that calls can be chained.
+
+
+
+</dd>
+    
+        
+
+    </dl>
+
+</div>
+</td></tr>
+<tr><td>
+<div id="ejs.Request.indexBoost" class="method-body">
+    <a style="text-decoration:none" name="ejs.Request.indexBoost">
+        <h3 style="color:#557e2f;background-color:#eee;font-family:Menlo,Monaco,Consolas,Courier New,monospace;" id="indexBoost">&nbsp;indexBoost</h3>
+    </a>
+        <code>
+        Object indexBoost ( index, boost )
+    </code>
+
+    <div style="margin-left:15px">Boosts hits in the specified index by the given boost value.</div><br>  
+   
+    <div class="alert-message block-message error">
+	<dl style="margin-left:15px;margin-right:20px;margin-top:0px;margin-bottom:3px;">
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</dl>
+</div>
+
+ 
+    <dl style="margin-left:15px;margin-right:20px;margin-top:0px;">  
+
+        
+    
+        <dt>Parameters</dt><dd>
+	
+
+            
+                <code>index</code>
+            
+
+            <code>&lt;String&gt;</code>
+            
+            
+            
+            
+            
+            <span>the index to boost</span>
+            <br>
+	
+	
+
+            
+                <code>boost</code>
+            
+
+            <code>&lt;Double&gt;</code>
+            
+            
+            
+            
+            
+            <span>the boost value</span>
+            <br>
+	
+	
+</dd>
+    
+        
+    
+        
+    
+        
+        <dt>Returns</dt>
+        <dd>
+    returns <code>this</code> so that calls can be chained.
+
+
+
+</dd>
+    
+        
+
+    </dl>
+
+</div>
+</td></tr>
+<tr><td>
+<div id="ejs.Request.minScore" class="method-body">
+    <a style="text-decoration:none" name="ejs.Request.minScore">
+        <h3 style="color:#557e2f;background-color:#eee;font-family:Menlo,Monaco,Consolas,Courier New,monospace;" id="minScore">&nbsp;minScore</h3>
+    </a>
+        <code>
+        Object minScore ( min )
+    </code>
+
+    <div style="margin-left:15px">Filters out search results will scores less than the specified minimum score.</div><br>  
+   
+    <div class="alert-message block-message error">
+	<dl style="margin-left:15px;margin-right:20px;margin-top:0px;margin-bottom:3px;">
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</dl>
+</div>
+
+ 
+    <dl style="margin-left:15px;margin-right:20px;margin-top:0px;">  
+
+        
+    
+        <dt>Parameters</dt><dd>
+	
+
+            
+                <code>min</code>
+            
+
+            <code>&lt;Double&gt;</code>
+            
+            
+            
+            
+            
+            <span>a positive <code>double</code> value.</span>
+            <br>
+	
+	
+</dd>
+    
+        
+    
+        
+    
+        
+        <dt>Returns</dt>
+        <dd>
+    returns <code>this</code> so that calls can be chained.
+
+
+
+</dd>
+    
+        
+
+    </dl>
+
+</div>
+</td></tr>
+<tr><td>
+<div id="ejs.Request.partialField" class="method-body">
+    <a style="text-decoration:none" name="ejs.Request.partialField">
+        <h3 style="color:#557e2f;background-color:#eee;font-family:Menlo,Monaco,Consolas,Courier New,monospace;" id="partialField">&nbsp;partialField</h3>
+    </a>
+        <code>
+        Object partialField ( oPartialField )
+    </code>
+
+    <div style="margin-left:15px">Control what part of the _source will be loaded based on <code>PartialField</code>.</div><br>  
+   
+    <div class="alert-message block-message error">
+	<dl style="margin-left:15px;margin-right:20px;margin-top:0px;margin-bottom:3px;">
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</dl>
+</div>
+
+ 
+    <dl style="margin-left:15px;margin-right:20px;margin-top:0px;">  
+
+        
+    
+        <dt>Parameters</dt><dd>
+	
+
+            
+                <code>oPartialField</code>
+            
+
+            <code>&lt;PartialField&gt;</code>
+            
+            
+            
+            
+            
+            <span>A valid <code>PartialField</code>.</span>
+            <br>
+	
+	
+</dd>
+    
+        
+    
+        
+    
+        
+        <dt>Returns</dt>
+        <dd>
+    returns <code>this</code> so that calls can be chained.
+
+
+
+</dd>
+    
+        
+
+    </dl>
+
+</div>
+</td></tr>
+<tr><td>
+<div id="ejs.Request.post_filter" class="method-body">
+    <a style="text-decoration:none" name="ejs.Request.post_filter">
+        <h3 style="color:#557e2f;background-color:#eee;font-family:Menlo,Monaco,Consolas,Courier New,monospace;" id="post_filter">&nbsp;post_filter</h3>
+    </a>
+        <code>
+        Object post_filter ( filter )
+    </code>
+
+    <div style="margin-left:15px">Allows you to set a specified post_filter on this request object.</div><br>  
+   
+    <div class="alert-message block-message error">
+	<dl style="margin-left:15px;margin-right:20px;margin-top:0px;margin-bottom:3px;">
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</dl>
+</div>
+
+ 
+    <dl style="margin-left:15px;margin-right:20px;margin-top:0px;">  
+
+        
+    
+        <dt>Parameters</dt><dd>
+	
+
+            
+                <code>filter</code>
+            
+
+            <code>&lt;Object&gt;</code>
+            
+            
+            
+            
+            
+            <span>Any valid <code>Filter</code> object.</span>
+            <br>
+	
+	
+</dd>
+    
+        
+    
+        
+    
+        
+        <dt>Returns</dt>
+        <dd>
+    returns <code>this</code> so that calls can be chained.
+
+
+
+</dd>
+    
+        
+
+    </dl>
+
+</div>
+</td></tr>
+<tr><td>
+<div id="ejs.Request.query" class="method-body">
+    <a style="text-decoration:none" name="ejs.Request.query">
+        <h3 style="color:#557e2f;background-color:#eee;font-family:Menlo,Monaco,Consolas,Courier New,monospace;" id="query">&nbsp;query</h3>
+    </a>
+        <code>
+        Object query ( someQuery )
+    </code>
+
+    <div style="margin-left:15px">Allows you to set the specified query on this search object. This is the
+            query that will be used when the search is executed.</div><br>  
+   
+    <div class="alert-message block-message error">
+	<dl style="margin-left:15px;margin-right:20px;margin-top:0px;margin-bottom:3px;">
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</dl>
+</div>
+
+ 
+    <dl style="margin-left:15px;margin-right:20px;margin-top:0px;">  
+
+        
+    
+        <dt>Parameters</dt><dd>
+	
+
+            
+                <code>someQuery</code>
+            
+
+            <code>&lt;Query&gt;</code>
+            
+            
+            
+            
+            
+            <span>Any valid <code>Query</code> object.</span>
+            <br>
+	
+	
+</dd>
+    
+        
+    
+        
+    
+        
+        <dt>Returns</dt>
+        <dd>
+    returns <code>this</code> so that calls can be chained.
+
+
+
+</dd>
+    
+        
+
+    </dl>
+
+</div>
+</td></tr>
+<tr><td>
+<div id="ejs.Request.rescore" class="method-body">
+    <a style="text-decoration:none" name="ejs.Request.rescore">
+        <h3 style="color:#557e2f;background-color:#eee;font-family:Menlo,Monaco,Consolas,Courier New,monospace;" id="rescore">&nbsp;rescore</h3>
+    </a>
+        <code>
+        Object rescore ( r )
+    </code>
+
+    <div style="margin-left:15px">Once a query executes, you can use rescore to run a secondary, more
+            expensive query to re-order the results.</div><br>  
+   
+    <div class="alert-message block-message error">
+	<dl style="margin-left:15px;margin-right:20px;margin-top:0px;margin-bottom:3px;">
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</dl>
+</div>
+
+ 
+    <dl style="margin-left:15px;margin-right:20px;margin-top:0px;">  
+
+        
+    
+        <dt>Parameters</dt><dd>
+	
+
+            
+                <code>r</code>
+            
+
+            <code>&lt;Rescore&gt;</code>
+            
+            
+            
+            
+            
+            <span>The rescore configuration.</span>
+            <br>
+	
+	
+</dd>
+    
+        
+    
+        
+    
+        
+        <dt>Returns</dt>
+        <dd>
+    returns <code>this</code> so that calls can be chained.
+
+
+
+</dd>
+    
+        
+
+    </dl>
+
+</div>
+</td></tr>
+<tr><td>
+<div id="ejs.Request.scriptField" class="method-body">
+    <a style="text-decoration:none" name="ejs.Request.scriptField">
+        <h3 style="color:#557e2f;background-color:#eee;font-family:Menlo,Monaco,Consolas,Courier New,monospace;" id="scriptField">&nbsp;scriptField</h3>
+    </a>
+        <code>
+        Object scriptField ( oScriptField )
+    </code>
+
+    <div style="margin-left:15px">Computes a document property dynamically based on the supplied <code>ScriptField</code>.</div><br>  
+   
+    <div class="alert-message block-message error">
+	<dl style="margin-left:15px;margin-right:20px;margin-top:0px;margin-bottom:3px;">
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</dl>
+</div>
+
+ 
+    <dl style="margin-left:15px;margin-right:20px;margin-top:0px;">  
+
+        
+    
+        <dt>Parameters</dt><dd>
+	
+
+            
+                <code>oScriptField</code>
+            
+
+            <code>&lt;ScriptField&gt;</code>
+            
+            
+            
+            
+            
+            <span>A valid <code>ScriptField</code>.</span>
+            <br>
+	
+	
+</dd>
+    
+        
+    
+        
+    
+        
+        <dt>Returns</dt>
+        <dd>
+    returns <code>this</code> so that calls can be chained.
+
+
+
+</dd>
+    
+        
+
+    </dl>
+
+</div>
+</td></tr>
+<tr><td>
+<div id="ejs.Request.size" class="method-body">
+    <a style="text-decoration:none" name="ejs.Request.size">
+        <h3 style="color:#557e2f;background-color:#eee;font-family:Menlo,Monaco,Consolas,Courier New,monospace;" id="size">&nbsp;size</h3>
+    </a>
+        <code>
+        Object size ( s )
+    </code>
+
+    <div style="margin-left:15px">Sets the number of results/documents to be returned. This is set on a per page basis.</div><br>  
+   
+    <div class="alert-message block-message error">
+	<dl style="margin-left:15px;margin-right:20px;margin-top:0px;margin-bottom:3px;">
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</dl>
+</div>
+
+ 
+    <dl style="margin-left:15px;margin-right:20px;margin-top:0px;">  
+
+        
+    
+        <dt>Parameters</dt><dd>
+	
+
+            
+                <code>s</code>
+            
+
+            <code>&lt;Integer&gt;</code>
+            
+            
+            
+            
+            
+            <span>The number of results that are to be returned by the search.</span>
+            <br>
+	
+	
+</dd>
+    
+        
+    
+        
+    
+        
+        <dt>Returns</dt>
+        <dd>
+    returns <code>this</code> so that calls can be chained.
+
+
+
+</dd>
+    
+        
+
+    </dl>
+
+</div>
+</td></tr>
+<tr><td>
+<div id="ejs.Request.sort" class="method-body">
+    <a style="text-decoration:none" name="ejs.Request.sort">
+        <h3 style="color:#557e2f;background-color:#eee;font-family:Menlo,Monaco,Consolas,Courier New,monospace;" id="sort">&nbsp;sort</h3>
+    </a>
+        <code>
+        Object sort ( fieldName )
+    </code>
+
+    <div style="margin-left:15px"><p>Sets the sorting for the query.  This accepts many input formats.</p>
+
+            <dl>
+                <dd><code>sort()</code> - The current sorting values are returned.</dd>
+                <dd><code>sort(fieldName)</code> - Adds the field to the current list of sorting values.</dd>
+                <dd><code>sort(fieldName, order)</code> - Adds the field to the current list of
+                    sorting with the specified order.  Order must be asc or desc.</dd>
+                <dd><code>sort(ejs.Sort)</code> - Adds the Sort value to the current list of sorting values.</dd>
+                <dd><code>sort(array)</code> - Replaces all current sorting values with values
+                    from the array.  The array must contain only strings and Sort objects.</dd>
+            </dl>
+
+            <p>Multi-level sorting is supported so the order in which sort fields
+            are added to the query requests is relevant.</p>
+
+            <p>It is recommended to use <code>Sort</code> objects when possible.</p></div><br>  
+   
+    <div class="alert-message block-message error">
+	<dl style="margin-left:15px;margin-right:20px;margin-top:0px;margin-bottom:3px;">
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</dl>
+</div>
+
+ 
+    <dl style="margin-left:15px;margin-right:20px;margin-top:0px;">  
+
+        
+    
+        <dt>Parameters</dt><dd>
+	
+
+            
+                <code>fieldName</code>
+            
+
+            <code>&lt;String&gt;</code>
+            
+            
+            
+            
+            
+            <span>The field to be sorted by.</span>
+            <br>
+	
+	
+</dd>
+    
+        
+    
+        
+    
+        
+        <dt>Returns</dt>
+        <dd>
+    returns <code>this</code> so that calls can be chained.
+
+
+
+</dd>
+    
+        
+
+    </dl>
+
+</div>
+</td></tr>
+<tr><td>
+<div id="ejs.Request.source" class="method-body">
+    <a style="text-decoration:none" name="ejs.Request.source">
+        <h3 style="color:#557e2f;background-color:#eee;font-family:Menlo,Monaco,Consolas,Courier New,monospace;" id="source">&nbsp;source</h3>
+    </a>
+        <code>
+        Object source ( includes, excludes )
+    </code>
+
+    <div style="margin-left:15px">Allows to control how the _source field is returned with every hit.
+            By default operations return the contents of the _source field
+            unless you have used the fields parameter or if the _source field
+            is disabled.  Set the includes parameter to false to completely
+            disable returning the source field.</div><br>  
+   
+    <div class="alert-message block-message error">
+	<dl style="margin-left:15px;margin-right:20px;margin-top:0px;margin-bottom:3px;">
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</dl>
+</div>
+
+ 
+    <dl style="margin-left:15px;margin-right:20px;margin-top:0px;">  
+
+        
+    
+        <dt>Parameters</dt><dd>
+	
+
+            
+                <code>includes</code>
+            
+
+            <code>&lt;String | Boolean | String[]&gt;</code>
+            
+            
+            
+            
+            
+            <span>The field or list of fields to include as array.
+              Set to a boolean false to disable the source completely.</span>
+            <br>
+	
+	
+
+            
+                <code>excludes</code>
+            
+
+            <code>&lt;String | String[]&gt;</code>
+            
+            
+            
+            
+            
+            <span>The  optional field or list of fields to exclude.</span>
+            <br>
+	
+	
+</dd>
+    
+        
+    
+        
+    
+        
+        <dt>Returns</dt>
+        <dd>
+    returns <code>this</code> so that calls can be chained.
+
+
+
+</dd>
+    
+        
+
+    </dl>
+
+</div>
+</td></tr>
+<tr><td>
+<div id="ejs.Request.suggest" class="method-body">
+    <a style="text-decoration:none" name="ejs.Request.suggest">
+        <h3 style="color:#557e2f;background-color:#eee;font-family:Menlo,Monaco,Consolas,Courier New,monospace;" id="suggest">&nbsp;suggest</h3>
+    </a>
+        <code>
+        Object suggest ( s )
+    </code>
+
+    <div style="margin-left:15px">Allows you to set the specified suggester on this request object.
+            Multiple suggesters can be set, all of which will be returned when
+            the search is executed.  Global suggestion text can be set by
+            passing in a string vs. a <code>Suggest</code> object.</div><br>  
+   
+    <div class="alert-message block-message error">
+	<dl style="margin-left:15px;margin-right:20px;margin-top:0px;margin-bottom:3px;">
+	
+	
+	
+	<dt class="tag-since">Since</dt>
+	<dd class="tag-since">elasticsearch 0.90</dd>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</dl>
+</div>
+
+ 
+    <dl style="margin-left:15px;margin-right:20px;margin-top:0px;">  
+
+        
+    
+        <dt>Parameters</dt><dd>
+	
+
+            
+                <code>s</code>
+            
+
+            <code>&lt;String | Suggest&gt;</code>
+            
+            
+            
+            
+            
+            <span>A valid Suggest object or a String to
+              set as the global suggest text.</span>
+            <br>
+	
+	
+</dd>
+    
+        
+    
+        
+    
+        
+        <dt>Returns</dt>
+        <dd>
+    returns <code>this</code> so that calls can be chained.
+
+
+
+</dd>
+    
+        
+
+    </dl>
+
+</div>
+</td></tr>
+<tr><td>
+<div id="ejs.Request.timeout" class="method-body">
+    <a style="text-decoration:none" name="ejs.Request.timeout">
+        <h3 style="color:#557e2f;background-color:#eee;font-family:Menlo,Monaco,Consolas,Courier New,monospace;" id="timeout">&nbsp;timeout</h3>
+    </a>
+        <code>
+        Object timeout ( t )
+    </code>
+
+    <div style="margin-left:15px">A timeout, bounding the request to be executed within the
+            specified time value and bail when expired. Defaults to no timeout.
+
+            <p>This option is valid during the following operations:
+                <code>search</code> and <code>delete by query</code></p></div><br>  
+   
+    <div class="alert-message block-message error">
+	<dl style="margin-left:15px;margin-right:20px;margin-top:0px;margin-bottom:3px;">
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</dl>
+</div>
+
+ 
+    <dl style="margin-left:15px;margin-right:20px;margin-top:0px;">  
+
+        
+    
+        <dt>Parameters</dt><dd>
+	
+
+            
+                <code>t</code>
+            
+
+            <code>&lt;Long&gt;</code>
+            
+            
+            
+            
+            
+            <span>The timeout value in milliseconds.</span>
+            <br>
+	
+	
+</dd>
+    
+        
+    
+        
+    
+        
+        <dt>Returns</dt>
+        <dd>
+    returns <code>this</code> so that calls can be chained.
+
+
+
+</dd>
+    
+        
+
+    </dl>
+
+</div>
+</td></tr>
+<tr><td>
+<div id="ejs.Request.toJSON" class="method-body">
+    <a style="text-decoration:none" name="ejs.Request.toJSON">
+        <h3 style="color:#557e2f;background-color:#eee;font-family:Menlo,Monaco,Consolas,Courier New,monospace;" id="toJSON">&nbsp;toJSON</h3>
+    </a>
+        <code>
+        String toJSON ( )
+    </code>
+
+    <div style="margin-left:15px">Retrieves the internal <code>query</code> object. This is typically used by
+            internal API functions so use with caution.</div><br>  
+   
+    <div class="alert-message block-message error">
+	<dl style="margin-left:15px;margin-right:20px;margin-top:0px;margin-bottom:3px;">
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</dl>
+</div>
+
+ 
+    <dl style="margin-left:15px;margin-right:20px;margin-top:0px;">  
+
+        
+    
+        
+    
+        
+    
+        
+    
+        
+        <dt>Returns</dt>
+        <dd>
+    returns this object's internal object representation.
+
+
+
+</dd>
+    
+        
+
+    </dl>
+
+</div>
+</td></tr>
+<tr><td>
+<div id="ejs.Request.trackScores" class="method-body">
+    <a style="text-decoration:none" name="ejs.Request.trackScores">
+        <h3 style="color:#557e2f;background-color:#eee;font-family:Menlo,Monaco,Consolas,Courier New,monospace;" id="trackScores">&nbsp;trackScores</h3>
+    </a>
+        <code>
+        Object trackScores ( trueFalse )
+    </code>
+
+    <div style="margin-left:15px">Enables score computation and tracking during sorting.  Be default,
+           when sorting scores are not computed.</div><br>  
+   
+    <div class="alert-message block-message error">
+	<dl style="margin-left:15px;margin-right:20px;margin-top:0px;margin-bottom:3px;">
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</dl>
+</div>
+
+ 
+    <dl style="margin-left:15px;margin-right:20px;margin-top:0px;">  
+
+        
+    
+        <dt>Parameters</dt><dd>
+	
+
+            
+                <code>trueFalse</code>
+            
+
+            <code>&lt;Boolean&gt;</code>
+            
+            
+            
+            
+            
+            <span>If scores should be computed and tracked.</span>
+            <br>
+	
+	
+</dd>
+    
+        
+    
+        
+    
+        
+        <dt>Returns</dt>
+        <dd>
+    returns <code>this</code> so that calls can be chained.
+
+
+
+</dd>
+    
+        
+
+    </dl>
+
+</div>
+</td></tr>
+<tr><td>
+<div id="ejs.Request.version" class="method-body">
+    <a style="text-decoration:none" name="ejs.Request.version">
+        <h3 style="color:#557e2f;background-color:#eee;font-family:Menlo,Monaco,Consolas,Courier New,monospace;" id="version">&nbsp;version</h3>
+    </a>
+        <code>
+        Object version ( trueFalse )
+    </code>
+
+    <div style="margin-left:15px">Enable/Disable returning version number for each search result.</div><br>  
+   
+    <div class="alert-message block-message error">
+	<dl style="margin-left:15px;margin-right:20px;margin-top:0px;margin-bottom:3px;">
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</dl>
+</div>
+
+ 
+    <dl style="margin-left:15px;margin-right:20px;margin-top:0px;">  
+
+        
+    
+        <dt>Parameters</dt><dd>
+	
+
+            
+                <code>trueFalse</code>
+            
+
+            <code>&lt;Boolean&gt;</code>
+            
+            
+            
+            
+            
+            <span>true to enable, false to disable</span>
+            <br>
+	
+	
+</dd>
+    
+        
+    
+        
+    
+        
+        <dt>Returns</dt>
+        <dd>
+    returns <code>this</code> so that calls can be chained.
+
+
+
+</dd>
+    
+        
+
+    </dl>
+
+</div>
+</td></tr>
+
+                      </tbody>
+                    </table>
+
+                
+        
+                
+              </article>
+            
+
+          </div><!-- end span -->
+
+          <div class="span3">
+            <h3>Request</h3><ul class="toc-item"><li><a href="ejs.Highlight.html">Highlight</a></li><li><a href="ejs.InnerHits.html">InnerHits</a></li><li><a href="ejs.PartialField.html">PartialField</a></li><li><a href="ejs.Request.html">Request</a></li><li><a href="ejs.Rescore.html">Rescore</a></li><li><a href="ejs.ScriptField.html">ScriptField</a></li><li><a href="ejs.Sort.html">Sort</a></li></ul><h3>Queries</h3><ul class="toc-item"><li><a href="ejs.BoolQuery.html">BoolQuery</a></li><li><a href="ejs.BoostingQuery.html">BoostingQuery</a></li><li><a href="ejs.CommonTermsQuery.html">CommonTermsQuery</a></li><li><a href="ejs.ConstantScoreQuery.html">ConstantScoreQuery</a></li><li><a href="ejs.DisMaxQuery.html">DisMaxQuery</a></li><li><a href="ejs.FieldMaskingSpanQuery.html">FieldMaskingSpanQuery</a></li><li><a href="ejs.FilteredQuery.html">FilteredQuery</a></li><li><a href="ejs.FunctionScoreQuery.html">FunctionScoreQuery</a></li><li><a href="ejs.FuzzyLikeThisFieldQuery.html">FuzzyLikeThisFieldQuery</a></li><li><a href="ejs.FuzzyLikeThisQuery.html">FuzzyLikeThisQuery</a></li><li><a href="ejs.FuzzyQuery.html">FuzzyQuery</a></li><li><a href="ejs.GeoShapeQuery.html">GeoShapeQuery</a></li><li><a href="ejs.HasChildQuery.html">HasChildQuery</a></li><li><a href="ejs.HasParentQuery.html">HasParentQuery</a></li><li><a href="ejs.IdsQuery.html">IdsQuery</a></li><li><a href="ejs.IndicesQuery.html">IndicesQuery</a></li><li><a href="ejs.MatchAllQuery.html">MatchAllQuery</a></li><li><a href="ejs.MatchQuery.html">MatchQuery</a></li><li><a href="ejs.MoreLikeThisFieldQuery.html">MoreLikeThisFieldQuery</a></li><li><a href="ejs.MoreLikeThisQuery.html">MoreLikeThisQuery</a></li><li><a href="ejs.MultiMatchQuery.html">MultiMatchQuery</a></li><li><a href="ejs.NestedQuery.html">NestedQuery</a></li><li><a href="ejs.PrefixQuery.html">PrefixQuery</a></li><li><a href="ejs.QueryStringQuery.html">QueryStringQuery</a></li><li><a href="ejs.RangeQuery.html">RangeQuery</a></li><li><a href="ejs.RegexpQuery.html">RegexpQuery</a></li><li><a href="ejs.SpanFirstQuery.html">SpanFirstQuery</a></li><li><a href="ejs.SpanMultiTermQuery.html">SpanMultiTermQuery</a></li><li><a href="ejs.SpanNearQuery.html">SpanNearQuery</a></li><li><a href="ejs.SpanNotQuery.html">SpanNotQuery</a></li><li><a href="ejs.SpanOrQuery.html">SpanOrQuery</a></li><li><a href="ejs.SpanTermQuery.html">SpanTermQuery</a></li><li><a href="ejs.TermQuery.html">TermQuery</a></li><li><a href="ejs.TermsQuery.html">TermsQuery</a></li><li><a href="ejs.TopChildrenQuery.html">TopChildrenQuery</a></li><li><a href="ejs.WildcardQuery.html">WildcardQuery</a></li></ul><h3>Filters</h3><ul class="toc-item"><li><a href="ejs.AndFilter.html">AndFilter</a></li><li><a href="ejs.BoolFilter.html">BoolFilter</a></li><li><a href="ejs.ExistsFilter.html">ExistsFilter</a></li><li><a href="ejs.GeoBboxFilter.html">GeoBboxFilter</a></li><li><a href="ejs.GeoDistanceFilter.html">GeoDistanceFilter</a></li><li><a href="ejs.GeoDistanceRangeFilter.html">GeoDistanceRangeFilter</a></li><li><a href="ejs.GeoPolygonFilter.html">GeoPolygonFilter</a></li><li><a href="ejs.GeoShapeFilter.html">GeoShapeFilter</a></li><li><a href="ejs.HasChildFilter.html">HasChildFilter</a></li><li><a href="ejs.HasParentFilter.html">HasParentFilter</a></li><li><a href="ejs.IdsFilter.html">IdsFilter</a></li><li><a href="ejs.IndicesFilter.html">IndicesFilter</a></li><li><a href="ejs.LimitFilter.html">LimitFilter</a></li><li><a href="ejs.MatchAllFilter.html">MatchAllFilter</a></li><li><a href="ejs.MissingFilter.html">MissingFilter</a></li><li><a href="ejs.NestedFilter.html">NestedFilter</a></li><li><a href="ejs.NotFilter.html">NotFilter</a></li><li><a href="ejs.NumericRangeFilter.html">NumericRangeFilter</a></li><li><a href="ejs.OrFilter.html">OrFilter</a></li><li><a href="ejs.PrefixFilter.html">PrefixFilter</a></li><li><a href="ejs.QueryFilter.html">QueryFilter</a></li><li><a href="ejs.RangeFilter.html">RangeFilter</a></li><li><a href="ejs.RegexpFilter.html">RegexpFilter</a></li><li><a href="ejs.ScriptFilter.html">ScriptFilter</a></li><li><a href="ejs.TermFilter.html">TermFilter</a></li><li><a href="ejs.TermsFilter.html">TermsFilter</a></li><li><a href="ejs.TypeFilter.html">TypeFilter</a></li></ul><h3>Aggregations</h3><ul class="toc-item"><li><a href="ejs.AvgAggregation.html">AvgAggregation</a></li><li><a href="ejs.CardinalityAggregation.html">CardinalityAggregation</a></li><li><a href="ejs.ChildrenAggregation.html">ChildrenAggregation</a></li><li><a href="ejs.DateHistogramAggregation.html">DateHistogramAggregation</a></li><li><a href="ejs.DateRangeAggregation.html">DateRangeAggregation</a></li><li><a href="ejs.ExtendedStatsAggregation.html">ExtendedStatsAggregation</a></li><li><a href="ejs.FilterAggregation.html">FilterAggregation</a></li><li><a href="ejs.FiltersAggregation.html">FiltersAggregation</a></li><li><a href="ejs.GeoBoundsAggregation.html">GeoBoundsAggregation</a></li><li><a href="ejs.GeoDistanceAggregation.html">GeoDistanceAggregation</a></li><li><a href="ejs.GeoHashGridAggregation.html">GeoHashGridAggregation</a></li><li><a href="ejs.GlobalAggregation.html">GlobalAggregation</a></li><li><a href="ejs.HistogramAggregation.html">HistogramAggregation</a></li><li><a href="ejs.IPv4RangeAggregation.html">IPv4RangeAggregation</a></li><li><a href="ejs.MaxAggregation.html">MaxAggregation</a></li><li><a href="ejs.MinAggregation.html">MinAggregation</a></li><li><a href="ejs.MissingAggregation.html">MissingAggregation</a></li><li><a href="ejs.NestedAggregation.html">NestedAggregation</a></li><li><a href="ejs.PercentilesAggregation.html">PercentilesAggregation</a></li><li><a href="ejs.RangeAggregation.html">RangeAggregation</a></li><li><a href="ejs.ScriptedMetricAggregation.html">ScriptedMetricAggregation</a></li><li><a href="ejs.SignificantTermsAggregation.html">SignificantTermsAggregation</a></li><li><a href="ejs.StatsAggregation.html">StatsAggregation</a></li><li><a href="ejs.SumAggregation.html">SumAggregation</a></li><li><a href="ejs.TermsAggregation.html">TermsAggregation</a></li><li><a href="ejs.TopHitsAggregation.html">TopHitsAggregation</a></li><li><a href="ejs.ValueCountAggregation.html">ValueCountAggregation</a></li></ul><h3>Facets</h3><ul class="toc-item"><li><a href="ejs.DateHistogramFacet.html">DateHistogramFacet</a></li><li><a href="ejs.FilterFacet.html">FilterFacet</a></li><li><a href="ejs.GeoDistanceFacet.html">GeoDistanceFacet</a></li><li><a href="ejs.HistogramFacet.html">HistogramFacet</a></li><li><a href="ejs.QueryFacet.html">QueryFacet</a></li><li><a href="ejs.RangeFacet.html">RangeFacet</a></li><li><a href="ejs.StatisticalFacet.html">StatisticalFacet</a></li><li><a href="ejs.TermStatsFacet.html">TermStatsFacet</a></li><li><a href="ejs.TermsFacet.html">TermsFacet</a></li></ul><h3>Suggesters</h3><ul class="toc-item"><li><a href="ejs.CompletionSuggester.html">CompletionSuggester</a></li><li><a href="ejs.DirectGenerator.html">DirectGenerator</a></li><li><a href="ejs.PhraseSuggester.html">PhraseSuggester</a></li><li><a href="ejs.TermSuggester.html">TermSuggester</a></li></ul><h3>Geo</h3><ul class="toc-item"><li><a href="ejs.GeoPoint.html">GeoPoint</a></li><li><a href="ejs.IndexedShape.html">IndexedShape</a></li><li><a href="ejs.Shape.html">Shape</a></li></ul>
+          </div>
+
+        </div><!-- end row -->
+      <hr>
+      <footer>
+        <span style="font-size:12px;">Copyright &copy; <a href="http://www.fullscale.co">FullScale Labs</a>, LLC. 2012</span>
+        <span style="font-size:12px;float:right;">
+          Documentation generated by <a style="font-size:12px" href="https://github.com/micmath/jsdoc">JSDoc 3</a> on Wed Apr 13 2016 16:51:48 GMT+0100 (IST)
+        </span>
+      </footer>
+
+    </div><!-- end container -->
+  </body>
+</html>

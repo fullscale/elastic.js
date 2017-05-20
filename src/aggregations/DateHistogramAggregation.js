@@ -27,60 +27,10 @@
   ejs.DateHistogramAggregation = function (name) {
 
     var
-      _common = ejs.AggregationMixin(name),
+      _common = ejs.BucketsAggregationMixin(name, 'date_histogram'),
       agg = _common.toJSON();
 
-    agg[name].date_histogram = {};
-
     return extend(_common, {
-
-      /**
-      <p>Sets the field to gather terms from.</p>
-
-      @member ejs.DateHistogramAggregation
-      @param {String} field a valid field name..
-      @returns {Object} returns <code>this</code> so that calls can be chained.
-      */
-      field: function (field) {
-        if (field == null) {
-          return agg[name].date_histogram.field;
-        }
-
-        agg[name].date_histogram.field = field;
-        return this;
-      },
-
-      /**
-      Allows you generate or modify the terms using a script.
-
-      @member ejs.DateHistogramAggregation
-      @param {String} scriptCode A valid script string to execute.
-      @returns {Object} returns <code>this</code> so that calls can be chained.
-      */
-      script: function (scriptCode) {
-        if (scriptCode == null) {
-          return agg[name].date_histogram.script;
-        }
-
-        agg[name].date_histogram.script = scriptCode;
-        return this;
-      },
-
-      /**
-      The script language being used.
-
-      @member ejs.DateHistogramAggregation
-      @param {String} language The language of the script.
-      @returns {Object} returns <code>this</code> so that calls can be chained.
-      */
-      lang: function (language) {
-        if (language == null) {
-          return agg[name].date_histogram.lang;
-        }
-
-        agg[name].date_histogram.lang = language;
-        return this;
-      },
 
       /**
       Set the date time zone.
@@ -243,22 +193,6 @@
       },
 
       /**
-      Set to true to assume script values are sorted.
-
-      @member ejs.DateHistogramAggregation
-      @param {Boolean} trueFalse assume sorted values or not
-      @returns {Object} returns <code>this</code> so that calls can be chained.
-      */
-      scriptValuesSorted: function (trueFalse) {
-        if (trueFalse == null) {
-          return agg[name].date_histogram.script_values_sorted;
-        }
-
-        agg[name].date_histogram.script_values_sorted = trueFalse;
-        return this;
-      },
-
-      /**
       Set to true to apply interval adjusts to day and above intervals.
 
       @member ejs.DateHistogramAggregation
@@ -287,24 +221,6 @@
         }
 
         agg[name].date_histogram.min_doc_count = num;
-        return this;
-      },
-
-      /**
-      Sets parameters that will be applied to the script.  Overwrites
-      any existing params.
-
-      @member ejs.DateHistogramAggregation
-      @param {Object} p An object where the keys are the parameter name and
-        values are the parameter value.
-      @returns {Object} returns <code>this</code> so that calls can be chained.
-      */
-      params: function (p) {
-        if (p == null) {
-          return agg[name].date_histogram.params;
-        }
-
-        agg[name].date_histogram.params = p;
         return this;
       },
 

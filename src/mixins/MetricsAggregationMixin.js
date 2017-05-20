@@ -58,6 +58,38 @@
       },
 
       /**
+      Allows you generate or modify the terms/values using a script.
+
+      @member ejs.MetricsAggregationMixin
+      @param {String} scriptId A valid script id to execute.
+      @returns {Object} returns <code>this</code> so that calls can be chained.
+      */
+      scriptId: function (scriptId) {
+        if (scriptId == null) {
+          return agg[name][type].script_id;
+        }
+
+        agg[name][type].script_id = scriptId;
+        return this;
+      },
+
+      /**
+      Allows you generate or modify the terms/values using a script.
+
+      @member ejs.MetricsAggregationMixin
+      @param {String} scriptFile A valid script file to execute.
+      @returns {Object} returns <code>this</code> so that calls can be chained.
+      */
+      scriptFile: function (scriptFile) {
+        if (scriptFile == null) {
+          return agg[name][type].script_file;
+        }
+
+        agg[name][type].script_file = scriptFile;
+        return this;
+      },
+
+      /**
       The script language being used.
 
       @member ejs.MetricsAggregationMixin
@@ -70,22 +102,6 @@
         }
 
         agg[name][type].lang = language;
-        return this;
-      },
-
-      /**
-      Set to true to assume script values are sorted.
-
-      @member ejs.MetricsAggregationMixin
-      @param {Boolean} trueFalse assume sorted values or not
-      @returns {Object} returns <code>this</code> so that calls can be chained.
-      */
-      scriptValuesSorted: function (trueFalse) {
-        if (trueFalse == null) {
-          return agg[name][type].script_values_sorted;
-        }
-
-        agg[name][type].script_values_sorted = trueFalse;
         return this;
       },
 

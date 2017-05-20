@@ -1,6 +1,17 @@
+elastic.js can be used with elasticsearch 2.x and lower.
+There were several [breaking changes](https://www.elastic.co/guide/en/elasticsearch/reference/5.x/breaking_50_search_changes.html) in the 5.x release for the Query DSL.
+
+You can try [elastic-builder](https://github.com/sudo-suhas/elastic-builder) for elasticsearch version >= 5.x.
+
+doc is here : https://cdn.rawgit.com/ErwanPigneul/elastic.js/master/dist/docs/ejs.html
+
+
+
+
+
 # elastic.js
 
-A JavaScript implementation of the [ElasticSearch](http://www.elasticsearch.org/) DSL for use with the [official elasticsearch javascript client](http://www.elasticsearch.org/guide/en/elasticsearch/client/javascript-api/current/index.html).  
+A JavaScript implementation of the [ElasticSearch](http://www.elasticsearch.org/) DSL for use with the [official elasticsearch javascript client](http://www.elasticsearch.org/guide/en/elasticsearch/client/javascript-api/current/index.html).
 
 ## Documentation
 You can find the official documentation at the following locations:
@@ -63,6 +74,12 @@ client.msearch({
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [grunt](http://gruntjs.com/).
 
 _Also, please don't edit elastic.js and elastic.min.js files as they are generated via grunt. You'll find source code in the "src" subdirectory!_
+
+## Some tips (memo)
+cd docs/
+./build.sh
+
+##
 
 ## License
 Copyright (c) 2012-2014 FullScale Labs, LLC

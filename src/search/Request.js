@@ -251,6 +251,30 @@
       },
 
       /**
+            Control what part of the _source will be loaded based on <code>PartialField</code>.
+
+            @member ejs.Request
+            @param {PartialField} oPartialField A valid <code>PartialField</code>.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      partialField: function (oPartialField) {
+        if (oPartialField == null) {
+          return query.partial_fields;
+        }
+
+        if (query.partial_fields == null) {
+          query.partial_fields = {};
+        }
+
+        if (!isPartialField(oPartialField)) {
+          throw new TypeError('Argument must be a PartialField');
+        }
+
+        extend(query.partial_fields, oPartialField.toJSON());
+        return this;
+      },
+
+      /**
             Once a query executes, you can use rescore to run a secondary, more
             expensive query to re-order the results.
 
@@ -376,6 +400,26 @@
         }
 
         query.filter = filter.toJSON();
+        return this;
+      },
+
+      /**
+            Allows you to set a specified post_filter on this request object.
+
+            @member ejs.Request
+            @param {Object} filter Any valid <code>Filter</code> object.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      post_filter: function (filter) {
+        if (filter == null) {
+          return query.filter;
+        }
+
+        if (!isFilter(filter)) {
+          throw new TypeError('Argument must be a Filter');
+        }
+
+        query.post_filter = filter.toJSON();
         return this;
       },
 

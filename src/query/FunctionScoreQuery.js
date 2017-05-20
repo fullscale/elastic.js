@@ -125,6 +125,38 @@
       },
 
       /**
+      Sets the maximum boost value.
+
+      @member ejs.FunctionScoreQuery
+      @param {Float} maxBoost A positive <code>float</code> value.
+      @returns {Object} returns <code>this</code> so that calls can be chained.
+      */
+      maxBoost: function (maxBoost) {
+        if (maxBoost == null) {
+          return query.function_score.max_boost;
+        }
+
+        query.function_score.max_boost = maxBoost;
+        return this;
+      },
+
+      /**
+      Sets the minimum score a document should have to be included.
+
+      @member ejs.FunctionScoreQuery
+      @param {Float} minScore A positive <code>float</code> value.
+      @returns {Object} returns <code>this</code> so that calls can be chained.
+      */
+      minScore: function (minScore) {
+        if (minScore == null) {
+          return query.function_score.min_score;
+        }
+
+        query.function_score.min_score = minScore;
+        return this;
+      },
+
+      /**
       Add a single score function to the list of existing functions.
 
       @member ejs.FunctionScoreQuery

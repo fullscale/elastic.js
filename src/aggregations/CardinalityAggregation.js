@@ -8,6 +8,8 @@
     @ejs aggregation
     @borrows ejs.MetricsAggregationMixin.field as field
     @borrows ejs.MetricsAggregationMixin.script as script
+    @borrows ejs.MetricsAggregationMixin.scriptId as scriptId
+    @borrows ejs.MetricsAggregationMixin.scriptFile as scriptFile
     @borrows ejs.MetricsAggregationMixin.lang as lang
     @borrows ejs.MetricsAggregationMixin.params as params
     @borrows ejs.AggregationMixin._type as _type
@@ -24,9 +26,6 @@
     var
       _common = ejs.MetricsAggregationMixin(name, 'cardinality'),
       agg = _common.toJSON();
-
-    // not supported in cardinality aggregation
-    delete _common.scriptValuesSorted;
 
     return extend(_common, {
 

@@ -35,6 +35,32 @@
         }
 
         func.script_score.script = scriptCode;
+
+        if (func.script_score.script_id) {
+          delete func.script_score.script_id;
+        }
+
+        return this;
+      },
+
+      /**
+      Set the script id that will modify the score.
+
+      @member ejs.ScriptScoreFunction
+      @param {String} scriptId Id of an indexed script.
+      @returns {Object} returns <code>this</code> so that calls can be chained.
+      */
+      scriptId: function (scriptId) {
+        if (scriptId == null) {
+          return func.script_score.scriptId;
+        }
+
+        func.script_score.script_id = scriptId;
+
+        if (func.script_score.script) {
+          delete func.script_score.script;
+        }
+
         return this;
       },
 

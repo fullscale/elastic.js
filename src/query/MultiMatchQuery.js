@@ -126,7 +126,7 @@
             resulting <code>Query</code> should match.
 
             @member ejs.MultiMatchQuery
-            @param {Integer} minMatch An <code>integer</code> between 0 and 100.
+            @param {String} minMatch A min should match parameter.
             @returns {Object} returns <code>this</code> so that calls can be chained.
             */
       minimumShouldMatch: function (minMatch) {
@@ -280,7 +280,7 @@
         }
 
         type = type.toLowerCase();
-        if (type === 'boolean' || type === 'phrase' || type === 'phrase_prefix') {
+        if (type === 'best_fields' || type === 'most_fields' || type === 'cross_fields' || type === 'phrase' || type === 'phrase_prefix') {
           query.multi_match.type = type;
         }
 

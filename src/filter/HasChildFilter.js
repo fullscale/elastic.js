@@ -119,6 +119,60 @@
             */
       scope: function (s) {
         return this;
+      },
+
+      /**
+            Sets the inner hits options
+
+            @member ejs.HasChildFilter
+            @param {InnerHits} i A valid InnerHits object
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      innerHits: function(i) {
+        if (i == null) {
+          return filter.has_child.inner_hits;
+        }
+
+        if (!isInnerHits(i)) {
+          throw new TypeError('Argument must be a Highlight object');
+        }
+
+        filter.has_child.inner_hits = i.toJSON();
+        
+        return this;
+      },
+
+      /**
+            Sets the min_children value.
+
+            @member ejs.HasChildQuery
+            @param {Integer} min A positive <code>integer</code> value.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      minChildren: function(min) {
+        if (min == null) {
+          return filter.has_child.min_children;
+        }
+
+        filter.has_child.min_children = min;
+        return this;
+      },
+
+      /**
+            Sets the max_children value.
+
+            @member ejs.HasChildQuery
+            @param {Integer} max A positive <code>integer</code> value.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      maxChildren: function(max) {
+        if (max == null) {
+          return filter.has_child.max_children;
+        }
+
+        filter.has_child.max_children = max;
+
+        return this;
       }
 
     });

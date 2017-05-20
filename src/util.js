@@ -133,6 +133,10 @@
     return (isEJSObject(obj) && obj._type() === 'script field');
   };
 
+  isPartialField = function (obj) {
+    return (isEJSObject(obj) && obj._type() === 'partial field');
+  };
+
   isGeoPoint = function (obj) {
     return (isEJSObject(obj) && obj._type() === 'geo point');
   };
@@ -163,4 +167,8 @@
 
   isScoreFunction = function (obj) {
     return (isEJSObject(obj) && obj._type() === 'score function');
+  };
+
+  isInnerHits = function(obj) {
+    return (isEJSObject(obj) && obj._type() === 'inner hits');
   };

@@ -6,6 +6,12 @@
 
     @name ejs.HistogramAggregation
     @ejs aggregation
+    @borrows ejs.BucketsAggregationMixin.field as field
+    @borrows ejs.BucketsAggregationMixin.script as script
+    @borrows ejs.BucketsAggregationMixin.scriptId as scriptId
+    @borrows ejs.BucketsAggregationMixin.scriptFile as scriptFile
+    @borrows ejs.BucketsAggregationMixin.lang as lang
+    @borrows ejs.BucketsAggregationMixin.params as params
     @borrows ejs.AggregationMixin.aggregation as aggregation
     @borrows ejs.AggregationMixin.agg as agg
     @borrows ejs.AggregationMixin._type as _type
@@ -21,60 +27,10 @@
   ejs.HistogramAggregation = function (name) {
 
     var
-      _common = ejs.AggregationMixin(name),
+      _common = ejs.BucketsAggregationMixin(name, 'histogram'),
       agg = _common.toJSON();
 
-    agg[name].histogram = {};
-
     return extend(_common, {
-
-      /**
-      <p>Sets the field to gather terms from.</p>
-
-      @member ejs.HistogramAggregation
-      @param {String} field a valid field name..
-      @returns {Object} returns <code>this</code> so that calls can be chained.
-      */
-      field: function (field) {
-        if (field == null) {
-          return agg[name].histogram.field;
-        }
-
-        agg[name].histogram.field = field;
-        return this;
-      },
-
-      /**
-      Allows you generate or modify the terms using a script.
-
-      @member ejs.HistogramAggregation
-      @param {String} scriptCode A valid script string to execute.
-      @returns {Object} returns <code>this</code> so that calls can be chained.
-      */
-      script: function (scriptCode) {
-        if (scriptCode == null) {
-          return agg[name].histogram.script;
-        }
-
-        agg[name].histogram.script = scriptCode;
-        return this;
-      },
-
-      /**
-      The script language being used.
-
-      @member ejs.HistogramAggregation
-      @param {String} language The language of the script.
-      @returns {Object} returns <code>this</code> so that calls can be chained.
-      */
-      lang: function (language) {
-        if (language == null) {
-          return agg[name].histogram.lang;
-        }
-
-        agg[name].histogram.lang = language;
-        return this;
-      },
 
       /**
       Sets the format expression for the terms.  Use for number or date
@@ -169,40 +125,6 @@
         }
 
         agg[name].histogram.keyed = trueFalse;
-        return this;
-      },
-
-      /**
-      Set to true to assume script values are sorted.
-
-      @member ejs.HistogramAggregation
-      @param {Boolean} trueFalse assume sorted values or not
-      @returns {Object} returns <code>this</code> so that calls can be chained.
-      */
-      scriptValuesSorted: function (trueFalse) {
-        if (trueFalse == null) {
-          return agg[name].histogram.script_values_sorted;
-        }
-
-        agg[name].histogram.script_values_sorted = trueFalse;
-        return this;
-      },
-
-      /**
-      Sets parameters that will be applied to the script.  Overwrites
-      any existing params.
-
-      @member ejs.HistogramAggregation
-      @param {Object} p An object where the keys are the parameter name and
-        values are the parameter value.
-      @returns {Object} returns <code>this</code> so that calls can be chained.
-      */
-      params: function (p) {
-        if (p == null) {
-          return agg[name].histogram.params;
-        }
-
-        agg[name].histogram.params = p;
         return this;
       },
 

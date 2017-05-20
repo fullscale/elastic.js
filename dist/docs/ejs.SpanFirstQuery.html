@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+  	<title>elastic.js: Module: SpanFirstQuery</title>
+	
+    <link rel="stylesheet" type="text/css" href="styles/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="styles/style.css" />
+    <link rel="stylesheet" type="text/css" href="styles/prettify.css" />
+    <script src="scripts/prettify.js" type="text/javascript"></script>
+    
+    <!--link type="text/css" rel="stylesheet" href="styles/node-dark.css"-->
+    <!--link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css"-->
+    <meta name="author" content="diji inc.">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <style type="text/css">
+      body {padding-top: 60px;padding-bottom:25px;}
+
+      .page-header {
+        background-color: #f5f5f5;
+        border:none;
+        padding: 20px 20px 10px;
+        text-align:right;
+        -webkit-border-radius: 6px 6px 6px 6px;
+           -moz-border-radius: 0 0 6px 6px;
+                border-radius: 4px 4px 4px 4px;
+      }
+      .toc-item {margin: 0 0 0 10px;list-style:none;}
+      .toc-item a {line-height:16px; color:#557e2f}
+      .doc-ref {text-decoration:none;}
+      .ancestors a {color:#557e2f;}
+      a {color:#557e2f}
+      a:visited {color:#557e2f}
+      a:hover {color:#78ab44}
+      h3 {font-size:18.5px;color:#6e6e6e}
+      code {background-color:transparent; color:#6e6e6e}
+      pre {margin: 18px 0px 0px;}
+      .alert-message.default{
+        background-color: #f5f5f5;
+        background-repeat: repeat-x;
+        background-image: -khtml-gradient(linear, left top, left bottom, from(#ffffff), to(#f5f5f5));
+        background-image: -moz-linear-gradient(top, #ffffff, #f5f5f5);
+        background-image: -ms-linear-gradient(top, #ffffff, #f5f5f5);
+        background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffffff), color-stop(100%, #f5f5f5));
+        background-image: -webkit-linear-gradient(top, #ffffff, #f5f5f5);
+        background-image: -o-linear-gradient(top, #ffffff, #f5f5f5);
+        background-image: linear-gradient(top, #ffffff, #f5f5f5);
+        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#f5f5f5', GradientType=0);
+        border: 1px solid #ddd;
+        -webkit-border-radius: 3px;
+        -moz-border-radius: 3px;
+        border-radius: 3px;
+        -webkit-box-shadow: inset 0 1px 0 #ffffff;
+        -moz-box-shadow: inset 0 1px 0 #ffffff;
+        box-shadow: inset 0 1px 0 #ffffff;
+      }
+
+    </style>
+
+    <!-- Le fav and touch icons -->
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+
+    <!-- Google analytics -->
+    <script type="text/javascript">
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-12991832-4']);
+      _gaq.push(['_setDomainName', 'fullscale.co']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+  </head>
+
+  <body onload="prettyPrint()">
+
+    <div class="navbar navbar-fixed-top">
+        <div class="navbar-inner">
+            <div class="container-fluid">
+                <span class="brand">Documentation {<span style="color:#557e2f;font-weight:500;"> elastic.js </span>}</span>
+                <div class="nav-collapse collapse">
+                <ul class="nav">
+                    <li><a href="/elasticjs/">Home</a></li>
+                    <li><a target="_blank" href="http://www.fullscale.co/elasticjs/">Guide</a></li>
+                    <li><a target="_blank" href="https://github.com/fullscale/elastic.js/tree/master/examples">Examples</a></li>
+                    <li><a target="_blank" href="https://github.com/fullscale/elastic.js">Source</a></li>
+                    <li><a target="_blank" href="/translator/">Translator</a></li>
+                </ul>
+            </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+
+        <div class="row-fluid">
+          <div class="span8 offset1">
+    
+            
+     
+              <header>
+                <h3>
+                  <div class="alert-message default"><span class="ancestors" style="margin-left:10px"><a href="ejs.html">ejs</a> &rang; </span>SpanFirstQuery</div>
+                </h3>
+
+                <p class="class-description"><p>Matches spans near the beginning of a field. The spanFirstQuery allows you to search
+    for Spans that start and end within the first <code>n</code> positions of the document.
+    The span first query maps to Lucene SpanFirstQuery.</p></p>    
+              </header>  
+    
+              <article>    
+                <h3>Module</h3><table class="table table-bordered"><tbody><tr><td>
+<div id="ejs.SpanFirstQuery" class="method-body">
+    <a style="text-decoration:none" name="ejs.SpanFirstQuery">
+        <h3 style="color:#557e2f;background-color:#eee;font-family:Menlo,Monaco,Consolas,Courier New,monospace;" id="SpanFirstQuery">&nbsp;SpanFirstQuery</h3>
+    </a>
+        <code>
+        SpanFirstQuery ( spanQry, end )
+    </code>
+
+    <div style="margin-left:15px">Matches spans near the beginning of a field.</div><br>  
+   
+    <div class="alert-message block-message error">
+	<dl style="margin-left:15px;margin-right:20px;margin-top:0px;margin-bottom:3px;">
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</dl>
+</div>
+
+ 
+    <dl style="margin-left:15px;margin-right:20px;margin-top:0px;">  
+
+        
+    
+        <dt>Parameters</dt><dd>
+	
+
+            
+                <code>spanQry</code>
+            
+
+            <code>&lt;Query&gt;</code>
+            
+            
+            
+            
+            
+            <span>A valid SpanQuery</span>
+            <br>
+	
+	
+
+            
+                <code>end</code>
+            
+
+            <code>&lt;Integer&gt;</code>
+            
+            
+            
+            
+            
+            <span>the maximum end position in a match.</span>
+            <br>
+	
+	
+</dd>
+    
+        
+    
+        
+    
+        
+    
+        
+
+    </dl>
+
+</div>
+</td></tr>
+</tbody></table>
+        
+                
+        
+                
+        
+                
+        
+                
+        
+                
+        
+                
+        
+                
+            
+                    <h3 class="subsection-title">Method Summary</h3>
+            
+                    <table class="table table-bordered table-striped table-hover table-condensed">
+                      <thead>
+                        <tr>
+                          <th>Returns</th>
+                          <th>Name</th>
+                          <th>Description</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                      <div class="method-body">
+    <tr>
+        <td><code>String</code></td><td><code><a href="#ejs.SpanFirstQuery._type">_type()</a></code></td><td>The type of ejs object.  For internal use only.</td>
+    </tr>
+</div><div class="method-body">
+    <tr>
+        <td><code>Object</code></td><td><code><a href="#ejs.SpanFirstQuery.boost">boost(boost)</a></code></td><td>Sets the boost value for documents matching the <code>Query</code>.</td>
+    </tr>
+</div><div class="method-body">
+    <tr>
+        <td><code>Object</code></td><td><code><a href="#ejs.SpanFirstQuery.end">end(position)</a></code></td><td>Sets the maximum end position permitted in a match.</td>
+    </tr>
+</div><div class="method-body">
+    <tr>
+        <td><code>Object</code></td><td><code><a href="#ejs.SpanFirstQuery.match">match(spanQuery)</a></code></td><td>Sets the span query to match on.</td>
+    </tr>
+</div><div class="method-body">
+    <tr>
+        <td><code>String</code></td><td><code><a href="#ejs.SpanFirstQuery.toJSON">toJSON()</a></code></td><td>Retrieves the internal <code>query</code> object. This is typically used by
+            internal API functions so use with caution.</td>
+    </tr>
+</div>
+                      </tbody>
+                    </table>
+                    <br>
+
+                    <h3 class="subsection-title">Method Detail</h3>
+
+                    <table class="table table-bordered table-condensed">
+                      <tbody>
+                      <tr><td>
+<div id="ejs.SpanFirstQuery._type" class="method-body">
+    <a style="text-decoration:none" name="ejs.SpanFirstQuery._type">
+        <h3 style="color:#557e2f;background-color:#eee;font-family:Menlo,Monaco,Consolas,Courier New,monospace;" id="_type">&nbsp;_type</h3>
+    </a>
+        <code>
+        String _type ( )
+    </code>
+
+    <div style="margin-left:15px">The type of ejs object.  For internal use only.</div><br>  
+   
+    <div class="alert-message block-message error">
+	<dl style="margin-left:15px;margin-right:20px;margin-top:0px;margin-bottom:3px;">
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</dl>
+</div>
+
+ 
+    <dl style="margin-left:15px;margin-right:20px;margin-top:0px;">  
+
+        
+    
+        
+    
+        
+    
+        
+    
+        
+        <dt>Returns</dt>
+        <dd>
+    the type of object
+
+
+
+</dd>
+    
+        
+
+    </dl>
+
+</div>
+</td></tr>
+<tr><td>
+<div id="ejs.SpanFirstQuery.boost" class="method-body">
+    <a style="text-decoration:none" name="ejs.SpanFirstQuery.boost">
+        <h3 style="color:#557e2f;background-color:#eee;font-family:Menlo,Monaco,Consolas,Courier New,monospace;" id="boost">&nbsp;boost</h3>
+    </a>
+        <code>
+        Object boost ( boost )
+    </code>
+
+    <div style="margin-left:15px">Sets the boost value for documents matching the <code>Query</code>.</div><br>  
+   
+    <div class="alert-message block-message error">
+	<dl style="margin-left:15px;margin-right:20px;margin-top:0px;margin-bottom:3px;">
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</dl>
+</div>
+
+ 
+    <dl style="margin-left:15px;margin-right:20px;margin-top:0px;">  
+
+        
+    
+        <dt>Parameters</dt><dd>
+	
+
+            
+                <code>boost</code>
+            
+
+            <code>&lt;Double&gt;</code>
+            
+            
+            
+            
+            
+            <span>A positive <code>double</code> value.</span>
+            <br>
+	
+	
+</dd>
+    
+        
+    
+        
+    
+        
+        <dt>Returns</dt>
+        <dd>
+    returns <code>this</code> so that calls can be chained.
+
+
+
+</dd>
+    
+        
+
+    </dl>
+
+</div>
+</td></tr>
+<tr><td>
+<div id="ejs.SpanFirstQuery.end" class="method-body">
+    <a style="text-decoration:none" name="ejs.SpanFirstQuery.end">
+        <h3 style="color:#557e2f;background-color:#eee;font-family:Menlo,Monaco,Consolas,Courier New,monospace;" id="end">&nbsp;end</h3>
+    </a>
+        <code>
+        Object end ( position )
+    </code>
+
+    <div style="margin-left:15px">Sets the maximum end position permitted in a match.</div><br>  
+   
+    <div class="alert-message block-message error">
+	<dl style="margin-left:15px;margin-right:20px;margin-top:0px;margin-bottom:3px;">
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</dl>
+</div>
+
+ 
+    <dl style="margin-left:15px;margin-right:20px;margin-top:0px;">  
+
+        
+    
+        <dt>Parameters</dt><dd>
+	
+
+            
+                <code>position</code>
+            
+
+            <code>&lt;Number&gt;</code>
+            
+            
+            
+            
+            
+            <span>The maximum position length to consider.</span>
+            <br>
+	
+	
+</dd>
+    
+        
+    
+        
+    
+        
+        <dt>Returns</dt>
+        <dd>
+    returns <code>this</code> so that calls can be chained.
+
+
+
+</dd>
+    
+        
+
+    </dl>
+
+</div>
+</td></tr>
+<tr><td>
+<div id="ejs.SpanFirstQuery.match" class="method-body">
+    <a style="text-decoration:none" name="ejs.SpanFirstQuery.match">
+        <h3 style="color:#557e2f;background-color:#eee;font-family:Menlo,Monaco,Consolas,Courier New,monospace;" id="match">&nbsp;match</h3>
+    </a>
+        <code>
+        Object match ( spanQuery )
+    </code>
+
+    <div style="margin-left:15px">Sets the span query to match on.</div><br>  
+   
+    <div class="alert-message block-message error">
+	<dl style="margin-left:15px;margin-right:20px;margin-top:0px;margin-bottom:3px;">
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</dl>
+</div>
+
+ 
+    <dl style="margin-left:15px;margin-right:20px;margin-top:0px;">  
+
+        
+    
+        <dt>Parameters</dt><dd>
+	
+
+            
+                <code>spanQuery</code>
+            
+
+            <code>&lt;Object&gt;</code>
+            
+            
+            
+            
+            
+            <span>Any valid span type query.</span>
+            <br>
+	
+	
+</dd>
+    
+        
+    
+        
+    
+        
+        <dt>Returns</dt>
+        <dd>
+    returns <code>this</code> so that calls can be chained.
+
+
+
+</dd>
+    
+        
+
+    </dl>
+
+</div>
+</td></tr>
+<tr><td>
+<div id="ejs.SpanFirstQuery.toJSON" class="method-body">
+    <a style="text-decoration:none" name="ejs.SpanFirstQuery.toJSON">
+        <h3 style="color:#557e2f;background-color:#eee;font-family:Menlo,Monaco,Consolas,Courier New,monospace;" id="toJSON">&nbsp;toJSON</h3>
+    </a>
+        <code>
+        String toJSON ( )
+    </code>
+
+    <div style="margin-left:15px">Retrieves the internal <code>query</code> object. This is typically used by
+            internal API functions so use with caution.</div><br>  
+   
+    <div class="alert-message block-message error">
+	<dl style="margin-left:15px;margin-right:20px;margin-top:0px;margin-bottom:3px;">
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</dl>
+</div>
+
+ 
+    <dl style="margin-left:15px;margin-right:20px;margin-top:0px;">  
+
+        
+    
+        
+    
+        
+    
+        
+    
+        
+        <dt>Returns</dt>
+        <dd>
+    returns this object's internal <code>query</code> property.
+
+
+
+</dd>
+    
+        
+
+    </dl>
+
+</div>
+</td></tr>
+
+                      </tbody>
+                    </table>
+
+                
+        
+                
+              </article>
+            
+
+          </div><!-- end span -->
+
+          <div class="span3">
+            <h3>Request</h3><ul class="toc-item"><li><a href="ejs.Highlight.html">Highlight</a></li><li><a href="ejs.InnerHits.html">InnerHits</a></li><li><a href="ejs.PartialField.html">PartialField</a></li><li><a href="ejs.Request.html">Request</a></li><li><a href="ejs.Rescore.html">Rescore</a></li><li><a href="ejs.ScriptField.html">ScriptField</a></li><li><a href="ejs.Sort.html">Sort</a></li></ul><h3>Queries</h3><ul class="toc-item"><li><a href="ejs.BoolQuery.html">BoolQuery</a></li><li><a href="ejs.BoostingQuery.html">BoostingQuery</a></li><li><a href="ejs.CommonTermsQuery.html">CommonTermsQuery</a></li><li><a href="ejs.ConstantScoreQuery.html">ConstantScoreQuery</a></li><li><a href="ejs.DisMaxQuery.html">DisMaxQuery</a></li><li><a href="ejs.FieldMaskingSpanQuery.html">FieldMaskingSpanQuery</a></li><li><a href="ejs.FilteredQuery.html">FilteredQuery</a></li><li><a href="ejs.FunctionScoreQuery.html">FunctionScoreQuery</a></li><li><a href="ejs.FuzzyLikeThisFieldQuery.html">FuzzyLikeThisFieldQuery</a></li><li><a href="ejs.FuzzyLikeThisQuery.html">FuzzyLikeThisQuery</a></li><li><a href="ejs.FuzzyQuery.html">FuzzyQuery</a></li><li><a href="ejs.GeoShapeQuery.html">GeoShapeQuery</a></li><li><a href="ejs.HasChildQuery.html">HasChildQuery</a></li><li><a href="ejs.HasParentQuery.html">HasParentQuery</a></li><li><a href="ejs.IdsQuery.html">IdsQuery</a></li><li><a href="ejs.IndicesQuery.html">IndicesQuery</a></li><li><a href="ejs.MatchAllQuery.html">MatchAllQuery</a></li><li><a href="ejs.MatchQuery.html">MatchQuery</a></li><li><a href="ejs.MoreLikeThisFieldQuery.html">MoreLikeThisFieldQuery</a></li><li><a href="ejs.MoreLikeThisQuery.html">MoreLikeThisQuery</a></li><li><a href="ejs.MultiMatchQuery.html">MultiMatchQuery</a></li><li><a href="ejs.NestedQuery.html">NestedQuery</a></li><li><a href="ejs.PrefixQuery.html">PrefixQuery</a></li><li><a href="ejs.QueryStringQuery.html">QueryStringQuery</a></li><li><a href="ejs.RangeQuery.html">RangeQuery</a></li><li><a href="ejs.RegexpQuery.html">RegexpQuery</a></li><li><a href="ejs.SpanFirstQuery.html">SpanFirstQuery</a></li><li><a href="ejs.SpanMultiTermQuery.html">SpanMultiTermQuery</a></li><li><a href="ejs.SpanNearQuery.html">SpanNearQuery</a></li><li><a href="ejs.SpanNotQuery.html">SpanNotQuery</a></li><li><a href="ejs.SpanOrQuery.html">SpanOrQuery</a></li><li><a href="ejs.SpanTermQuery.html">SpanTermQuery</a></li><li><a href="ejs.TermQuery.html">TermQuery</a></li><li><a href="ejs.TermsQuery.html">TermsQuery</a></li><li><a href="ejs.TopChildrenQuery.html">TopChildrenQuery</a></li><li><a href="ejs.WildcardQuery.html">WildcardQuery</a></li></ul><h3>Filters</h3><ul class="toc-item"><li><a href="ejs.AndFilter.html">AndFilter</a></li><li><a href="ejs.BoolFilter.html">BoolFilter</a></li><li><a href="ejs.ExistsFilter.html">ExistsFilter</a></li><li><a href="ejs.GeoBboxFilter.html">GeoBboxFilter</a></li><li><a href="ejs.GeoDistanceFilter.html">GeoDistanceFilter</a></li><li><a href="ejs.GeoDistanceRangeFilter.html">GeoDistanceRangeFilter</a></li><li><a href="ejs.GeoPolygonFilter.html">GeoPolygonFilter</a></li><li><a href="ejs.GeoShapeFilter.html">GeoShapeFilter</a></li><li><a href="ejs.HasChildFilter.html">HasChildFilter</a></li><li><a href="ejs.HasParentFilter.html">HasParentFilter</a></li><li><a href="ejs.IdsFilter.html">IdsFilter</a></li><li><a href="ejs.IndicesFilter.html">IndicesFilter</a></li><li><a href="ejs.LimitFilter.html">LimitFilter</a></li><li><a href="ejs.MatchAllFilter.html">MatchAllFilter</a></li><li><a href="ejs.MissingFilter.html">MissingFilter</a></li><li><a href="ejs.NestedFilter.html">NestedFilter</a></li><li><a href="ejs.NotFilter.html">NotFilter</a></li><li><a href="ejs.NumericRangeFilter.html">NumericRangeFilter</a></li><li><a href="ejs.OrFilter.html">OrFilter</a></li><li><a href="ejs.PrefixFilter.html">PrefixFilter</a></li><li><a href="ejs.QueryFilter.html">QueryFilter</a></li><li><a href="ejs.RangeFilter.html">RangeFilter</a></li><li><a href="ejs.RegexpFilter.html">RegexpFilter</a></li><li><a href="ejs.ScriptFilter.html">ScriptFilter</a></li><li><a href="ejs.TermFilter.html">TermFilter</a></li><li><a href="ejs.TermsFilter.html">TermsFilter</a></li><li><a href="ejs.TypeFilter.html">TypeFilter</a></li></ul><h3>Aggregations</h3><ul class="toc-item"><li><a href="ejs.AvgAggregation.html">AvgAggregation</a></li><li><a href="ejs.CardinalityAggregation.html">CardinalityAggregation</a></li><li><a href="ejs.ChildrenAggregation.html">ChildrenAggregation</a></li><li><a href="ejs.DateHistogramAggregation.html">DateHistogramAggregation</a></li><li><a href="ejs.DateRangeAggregation.html">DateRangeAggregation</a></li><li><a href="ejs.ExtendedStatsAggregation.html">ExtendedStatsAggregation</a></li><li><a href="ejs.FilterAggregation.html">FilterAggregation</a></li><li><a href="ejs.FiltersAggregation.html">FiltersAggregation</a></li><li><a href="ejs.GeoBoundsAggregation.html">GeoBoundsAggregation</a></li><li><a href="ejs.GeoDistanceAggregation.html">GeoDistanceAggregation</a></li><li><a href="ejs.GeoHashGridAggregation.html">GeoHashGridAggregation</a></li><li><a href="ejs.GlobalAggregation.html">GlobalAggregation</a></li><li><a href="ejs.HistogramAggregation.html">HistogramAggregation</a></li><li><a href="ejs.IPv4RangeAggregation.html">IPv4RangeAggregation</a></li><li><a href="ejs.MaxAggregation.html">MaxAggregation</a></li><li><a href="ejs.MinAggregation.html">MinAggregation</a></li><li><a href="ejs.MissingAggregation.html">MissingAggregation</a></li><li><a href="ejs.NestedAggregation.html">NestedAggregation</a></li><li><a href="ejs.PercentilesAggregation.html">PercentilesAggregation</a></li><li><a href="ejs.RangeAggregation.html">RangeAggregation</a></li><li><a href="ejs.ScriptedMetricAggregation.html">ScriptedMetricAggregation</a></li><li><a href="ejs.SignificantTermsAggregation.html">SignificantTermsAggregation</a></li><li><a href="ejs.StatsAggregation.html">StatsAggregation</a></li><li><a href="ejs.SumAggregation.html">SumAggregation</a></li><li><a href="ejs.TermsAggregation.html">TermsAggregation</a></li><li><a href="ejs.TopHitsAggregation.html">TopHitsAggregation</a></li><li><a href="ejs.ValueCountAggregation.html">ValueCountAggregation</a></li></ul><h3>Facets</h3><ul class="toc-item"><li><a href="ejs.DateHistogramFacet.html">DateHistogramFacet</a></li><li><a href="ejs.FilterFacet.html">FilterFacet</a></li><li><a href="ejs.GeoDistanceFacet.html">GeoDistanceFacet</a></li><li><a href="ejs.HistogramFacet.html">HistogramFacet</a></li><li><a href="ejs.QueryFacet.html">QueryFacet</a></li><li><a href="ejs.RangeFacet.html">RangeFacet</a></li><li><a href="ejs.StatisticalFacet.html">StatisticalFacet</a></li><li><a href="ejs.TermStatsFacet.html">TermStatsFacet</a></li><li><a href="ejs.TermsFacet.html">TermsFacet</a></li></ul><h3>Suggesters</h3><ul class="toc-item"><li><a href="ejs.CompletionSuggester.html">CompletionSuggester</a></li><li><a href="ejs.DirectGenerator.html">DirectGenerator</a></li><li><a href="ejs.PhraseSuggester.html">PhraseSuggester</a></li><li><a href="ejs.TermSuggester.html">TermSuggester</a></li></ul><h3>Geo</h3><ul class="toc-item"><li><a href="ejs.GeoPoint.html">GeoPoint</a></li><li><a href="ejs.IndexedShape.html">IndexedShape</a></li><li><a href="ejs.Shape.html">Shape</a></li></ul>
+          </div>
+
+        </div><!-- end row -->
+      <hr>
+      <footer>
+        <span style="font-size:12px;">Copyright &copy; <a href="http://www.fullscale.co">FullScale Labs</a>, LLC. 2012</span>
+        <span style="font-size:12px;float:right;">
+          Documentation generated by <a style="font-size:12px" href="https://github.com/micmath/jsdoc">JSDoc 3</a> on Wed Apr 13 2016 16:51:54 GMT+0100 (IST)
+        </span>
+      </footer>
+
+    </div><!-- end container -->
+  </body>
+</html>
