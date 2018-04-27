@@ -164,3 +164,8 @@
   isScoreFunction = function (obj) {
     return (isEJSObject(obj) && obj._type() === 'score function');
   };
+
+  isScript = function (obj) {
+    return (isEJSObject(obj) && obj._type() === 'script');
+  };
+

@@ -152,6 +152,7 @@ exports.queries = {
   ScriptScoreFunction: function (test) {
     test.expect(9);
 
+    var script = new ejs.Script().scriptId('s1');
     var scoreFunc = ejs.ScriptScoreFunction(),
       termFilter1 = ejs.TermFilter('tf1', 'fv1'),
       expected,
@@ -167,16 +168,19 @@ exports.queries = {
     test.ok(scoreFunc.toJSON(), 'toJSON() works');
     doTest();
 
-    scoreFunc.script('s1');
-    expected.script_score.script = 's1';
+    expected.script_score.script = {};
+    scoreFunc.script(script);
+    expected.script_score.script.id = 's1';
     doTest();
 
-    scoreFunc.lang('mvel');
-    expected.script_score.lang = 'mvel';
+    script.lang('mvel');
+    scoreFunc.script(script);
+    expected.script_score.script.lang = 'mvel';
     doTest();
 
-    scoreFunc.params({p1: 'v1'});
-    expected.script_score.params = {p1: 'v1'};
+    script.params({p1: 'v1'});
+    scoreFunc.script(script);
+    expected.script_score.script.params = {p1: 'v1'};
     doTest();
 
     scoreFunc.filter(termFilter1);
