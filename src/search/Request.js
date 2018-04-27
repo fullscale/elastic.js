@@ -388,14 +388,14 @@
             */
       filter: function (filter) {
         if (filter == null) {
-          return query.filter;
+          return query.post_filter;
         }
 
         if (!isFilter(filter)) {
           throw new TypeError('Argument must be a Filter');
         }
 
-        query.filter = filter.toJSON();
+        query.post_filter = filter.toJSON();
         return this;
       },
 

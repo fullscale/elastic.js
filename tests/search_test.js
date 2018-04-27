@@ -1284,7 +1284,7 @@ exports.search = {
     doTest();
 
     req.filter(termFilter);
-    expected.filter = termFilter.toJSON();
+    expected.post_filter = termFilter.toJSON();
     doTest();
 
     req.suggest("global suggest text");
