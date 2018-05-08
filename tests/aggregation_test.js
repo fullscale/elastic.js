@@ -1458,12 +1458,12 @@ exports.aggregations = {
     expected.myagg.top_hits.script_fields = { f: {} };
     doTest();
 
-    agg.fieldDataFields(['foo', 'bar']);
-    expected.myagg.top_hits.fielddata_fields = ['foo', 'bar'];
+    agg.docValueFields(['foo', 'bar']);
+    expected.myagg.top_hits.docvalue_fields = ['foo', 'bar'];
     doTest();
 
-    agg.fieldDataFields(['foo', 'bar']);
-    expected.myagg.top_hits.fielddata_fields = ['foo', 'bar'];
+    agg.docValueFields(['foo', 'bar']);
+    expected.myagg.top_hits.docvalue_fields = ['foo', 'bar'];
     doTest();
 
     agg.source(true);

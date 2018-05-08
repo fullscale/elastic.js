@@ -1,4 +1,4 @@
-/*! elastic.js - v1.2.0 - 2018-04-27
+/*! elastic.js - v1.2.0 - 2018-05-08
  * https://github.com/fullscale/elastic.js
  * Copyright (c) 2018 FullScale Labs, LLC; Licensed MIT */
 
@@ -5918,20 +5918,20 @@
       @param {Array} Fields to return field data representation for.
       @returns {Object} returns <code>this</code> so that calls can be chained.
       */
-      fieldDataFields: function (fieldList) {
+      docValueFields: function (fieldList) {
         var query = agg[name].top_hits;
         if (fieldList == null) {
-          return query.fielddata_fields;
+          return query.docvalue_fields;
         }
 
-        if (query.fielddata_fields == null) {
-          query.fielddata_fields = [];
+        if (query.docvalue_fields == null) {
+          query.docvalue_fields = [];
         }
 
         if (isString(fieldList)) {
-          query.fielddata_fields.push(fieldList);
+          query.docvalue_fields.push(fieldList);
         } else if (isArray(fieldList)) {
-          query.fielddata_fields = fieldList;
+          query.docvalue_fields = fieldList;
         } else {
           throw new TypeError('Argument must be a string or an array');
         }
@@ -16560,19 +16560,19 @@
         return this;
       },
 
-      fieldDataFields: function (fieldList) {
+      docValueFields: function (fieldList) {
         if (fieldList == null) {
-          return query.fielddata_fields;
+          return query.docvalue_fields;
         }
 
-        if (query.fielddata_fields == null) {
-          query.fielddata_fields = [];
+        if (query.docvalue_fields == null) {
+          query.docvalue_fields = [];
         }
 
         if (isString(fieldList)) {
-          query.fielddata_fields.push(fieldList);
+          query.docvalue_fields.push(fieldList);
         } else if (isArray(fieldList)) {
-          query.fielddata_fields = fieldList;
+          query.docvalue_fields = fieldList;
         } else {
           throw new TypeError('Argument must be a string or an array');
         }
