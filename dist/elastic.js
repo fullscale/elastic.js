@@ -1,6 +1,6 @@
-/*! elastic.js - v1.2.0 - 2014-10-13
+/*! elastic.js - v1.2.0 - 2018-05-08
  * https://github.com/fullscale/elastic.js
- * Copyright (c) 2014 FullScale Labs, LLC; Licensed MIT */
+ * Copyright (c) 2018 FullScale Labs, LLC; Licensed MIT */
 
 /**
  @namespace
@@ -55,6 +55,7 @@
     isSuggest, // checks valid ejs Suggest object
     isGenerator, // checks valid ejs Generator object
     isScoreFunction, // checks valid ejs ScoreFunction object
+    isScript, // checks valid ejs Script object
 
     // create ejs object
     ejs;
@@ -231,6 +232,11 @@
   isScoreFunction = function (obj) {
     return (isEJSObject(obj) && obj._type() === 'score function');
   };
+
+  isScript = function (obj) {
+    return (isEJSObject(obj) && obj._type() === 'script');
+  };
+
 
   /**
     @mixin
@@ -3787,6 +3793,61 @@
 
   /**
     @class
+    <p>Defines a single bucket of all the documents in the current document set
+    context that match a specified filter. Often this will be used to narrow down
+    the current aggregation context to a specific set of documents.</p>
+
+    @name ejs.FilterAggregation
+    @ejs aggregation
+    @borrows ejs.AggregationMixin.aggregation as aggregation
+    @borrows ejs.AggregationMixin.agg as agg
+    @borrows ejs.AggregationMixin._type as _type
+    @borrows ejs.AggregationMixin.toJSON as toJSON
+
+    @desc
+    <p>Defines a single bucket of all the documents that match a given filter.</p>
+
+    @param {String} name The name which be used to refer to this aggregation.
+
+    */
+  ejs.FiltersAggregation = function (name) {
+
+    var
+      _common = ejs.AggregationMixin(name),
+      agg = _common.toJSON();
+
+    return extend(_common, {
+
+      /**
+      <p>Sets the filters to be used for this aggregation.</p>
+
+      @member ejs.FilterAggregation
+      @param {Filter} oFilter A valid <code>Filter</code> object.
+      @returns {Object} returns <code>this</code> so that calls can be chained.
+      */
+      filters: function (oFilters) {
+        if (oFilters == null) {
+          return agg[name].filters;
+        }
+        var filters = {}, key, oFilter;
+        agg[name].filters = {
+          filters: filters
+        };
+        for (key in oFilters) {
+          oFilter = oFilters[key];
+          if (!isFilter(oFilter)) {
+            throw new TypeError('Argument must be a Filter');
+          }
+          filters[key] = oFilter.toJSON();
+        }
+        return this;
+      }
+
+    });
+  };
+
+  /**
+    @class
     <p>A multi-bucket aggregation that works on geo_point fields and conceptually
     works very similar to the range aggregation. The user can define a point of
     origin and a set of distance range buckets. The aggregation evaluate the
@@ -4805,11 +4866,15 @@
       @returns {Object} returns <code>this</code> so that calls can be chained.
       */
       compression: function (c) {
+        var tdigest = agg[name].percentiles.tdigest;
         if (c == null) {
-          return agg[name].percentiles.compression;
+          return tdigest && tdigest.compression;
+        }
+        if (!tdigest) {
+          tdigest = agg[name].percentiles.tdigest = {};
         }
 
-        agg[name].percentiles.compression = c;
+        tdigest.compression = c;
         return this;
       }
 
@@ -4981,6 +5046,54 @@
         }
 
         agg[name].range.params = p;
+        return this;
+      }
+
+    });
+  };
+
+  /**
+    @class
+    <p>A special single bucket aggregation that enables aggregating nested
+    documents.</p>
+
+    @name ejs.ReverseNestedAggregation
+    @ejs aggregation
+    @borrows ejs.AggregationMixin.aggregation as aggregation
+    @borrows ejs.AggregationMixin.agg as agg
+    @borrows ejs.AggregationMixin._type as _type
+    @borrows ejs.AggregationMixin.toJSON as toJSON
+
+    @desc
+    <p>A special single bucket aggregation that enables aggregating nested
+    documents.</p>
+
+    @param {String} name The name which be used to refer to this aggregation.
+
+    */
+  ejs.ReverseNestedAggregation = function (name) {
+
+    var
+      _common = ejs.AggregationMixin(name),
+      agg = _common.toJSON();
+
+    agg[name].reverse_nested = {};
+
+    return extend(_common, {
+
+      /**
+       <p>Sets the nested path.</p>
+
+       @member ejs.ReverseNestedAggregation
+       @param {String} path The nested path value.
+       @returns {Object} returns <code>this</code> so that calls can be chained.
+       */
+      reversePath: function (path) {
+        if (path == null) {
+          return agg[name].reverse_nested.path;
+        }
+
+        agg[name].reverse_nested.path = path;
         return this;
       }
 
@@ -5587,6 +5700,11 @@
     _common = ejs.MetricsAggregationMixin(name, 'top_hits'),
     agg = _common.toJSON();
 
+    agg[name].top_hits = {
+      size: 0,
+      from: 0
+    };
+
     return extend(_common, {
       /**
       <p> The offset from the first result you want to fetch. </p>
@@ -5596,7 +5714,7 @@
       @returns {Object} returns <code>this</code> so that calls can be chained.
       */
       from: function (from) {
-        if (from === null) {
+        if (from == null) {
           return agg[name].top_hits.from;
         }
 
@@ -5612,7 +5730,7 @@
       @returns {Object} returns <code>this</code> so that calls can be chained.
       */
       size: function (size) {
-        if (size === null) {
+        if (size == null) {
           return agg[name].top_hits.size;
         }
 
@@ -5623,16 +5741,80 @@
       /**
       <p>The maximum number of top matching hits to return per bucket.</p>
 
+       <dl>
+       <dd><code>sort()</code> - The current sorting values are returned.</dd>
+       <dd><code>sort(fieldName)</code> - Adds the field to the current list of sorting values.</dd>
+       <dd><code>sort(fieldName, order)</code> - Adds the field to the current list of
+       sorting with the specified order.  Order must be asc or desc.</dd>
+       <dd><code>sort(ejs.Sort)</code> - Adds the Sort value to the current list of sorting values.</dd>
+       <dd><code>sort(array)</code> - Replaces all current sorting values with values
+       from the array.  The array must contain only strings and Sort objects.</dd>
+       </dl>
+
+       <p>Multi-level sorting is supported so the order in which sort fields
+       are added to the query requests is relevant.</p>
+
+       <p>It is recommended to use <code>Sort</code> objects when possible.</p>
+
       @member ejs.TopHitsAggregation
       @param {Array} sort How to sort the the top matching hits
       @returns {Object} returns <code>this</code> so that calls can be chained.
       */
-      sort: function (sort) {
-        if (sort === null) {
-          return agg[name].top_hits.sort;
+      sort: function () {
+        var i, len;
+        var query = agg[name].top_hits;
+
+        if (!has(query, "sort")) {
+          query.sort = [];
         }
 
-        agg[name].top_hits.sort = sort;
+        if (arguments.length === 0) {
+          return query.sort;
+        }
+
+        // if passed a single argument
+        if (arguments.length === 1) {
+          var sortVal = arguments[0];
+
+          if (isString(sortVal)) {
+            // add  a single field name
+            query.sort.push(sortVal);
+          } else if (isSort(sortVal)) {
+            // add the Sort object
+            query.sort.push(sortVal.toJSON());
+          } else if (isArray(sortVal)) {
+            // replace with all values in the array
+            // the values must be a fieldName (string) or a
+            // Sort object.  Any other type throws an Error.
+            query.sort = [];
+            for (i = 0, len = sortVal.length; i < len; i++) {
+              if (isString(sortVal[i])) {
+                query.sort.push(sortVal[i]);
+              } else if (isSort(sortVal[i])) {
+                query.sort.push(sortVal[i].toJSON());
+              } else {
+                throw new TypeError('Invalid object in array');
+              }
+            }
+          } else {
+            // Invalid object type as argument.
+            throw new TypeError('Argument must be string, Sort, or array');
+          }
+        } else if (arguments.length === 2) {
+          // handle the case where a single field name and order are passed
+          var field = arguments[0],
+            order = arguments[1];
+
+          if (isString(field) && isString(order)) {
+            order = order.toLowerCase();
+            if (order === 'asc' || order === 'desc') {
+              var sortObj = {};
+              sortObj[field] = {order: order};
+              query.sort.push(sortObj);
+            }
+          }
+        }
+
         return this;
       },
 
@@ -5645,7 +5827,7 @@
       @returns {Object} returns <code>this</code> so that calls can be chained.
       */
       trackScores: function (trueFalse) {
-        if (trueFalse === null) {
+        if (trueFalse == null) {
           return agg[name].top_hits.track_scores;
         }
 
@@ -5661,7 +5843,7 @@
       @returns {Object} returns <code>this</code> so that calls can be chained.
       */
       version: function (trueFalse) {
-        if (trueFalse === null) {
+        if (trueFalse == null) {
           return agg[name].top_hits.version;
         }
 
@@ -5677,7 +5859,7 @@
       @returns {Object} returns <code>this</code> so that calls can be chained.
       */
       explain: function (trueFalse) {
-        if (trueFalse === null) {
+        if (trueFalse == null) {
           return agg[name].top_hits.explain;
         }
 
@@ -5693,7 +5875,7 @@
       @returns {Object} returns <code>this</code> so that calls can be chained.
       */
       highlight: function (h) {
-        if (h === null) {
+        if (h == null) {
           return agg[name].top_hits.highlight;
         }
 
@@ -5713,11 +5895,11 @@
       @returns {Object} returns <code>this</code> so that calls can be chained.
       */
       scriptField: function (oScriptField) {
-        if (oScriptField === null) {
+        if (oScriptField == null) {
           return agg[name].top_hits.script_fields;
         }
 
-        if (agg[name].top_hits.script_fields === undefined) {
+        if (agg[name].top_hits.script_fields == null) {
           agg[name].top_hits.script_fields = {};
         }
 
@@ -5736,12 +5918,24 @@
       @param {Array} Fields to return field data representation for.
       @returns {Object} returns <code>this</code> so that calls can be chained.
       */
-      fieldDataFields: function (fielddata_fields) {
-        if (fielddata_fields === null) {
-          return agg[name].top_hits.fielddata_fields;
+      docValueFields: function (fieldList) {
+        var query = agg[name].top_hits;
+        if (fieldList == null) {
+          return query.docvalue_fields;
         }
 
-        agg[name].top_hits.fielddata_fields = fielddata_fields;
+        if (query.docvalue_fields == null) {
+          query.docvalue_fields = [];
+        }
+
+        if (isString(fieldList)) {
+          query.docvalue_fields.push(fieldList);
+        } else if (isArray(fieldList)) {
+          query.docvalue_fields = fieldList;
+        } else {
+          throw new TypeError('Argument must be a string or an array');
+        }
+
         return this;
       },
 
@@ -5759,27 +5953,28 @@
        @returns {Object} returns <code>this</code> so that calls can be chained.
        */
       source: function (includes, excludes) {
-        if (includes === undefined && excludes === undefined) {
-          return agg[name].top_hits._source;
+        var query = agg[name].top_hits;
+        if (includes == null && excludes == null) {
+          return query._source;
         }
 
         if (!isArray(includes) && !isString(includes) && !isBoolean(includes)) {
           throw new TypeError('Argument includes must be a string, an array, or a boolean');
         }
 
-        if (excludes !== undefined && !isArray(excludes) && !isString(excludes)) {
+        if (excludes != null && !isArray(excludes) && !isString(excludes)) {
           throw new TypeError('Argument excludes must be a string or an array');
         }
 
         if (isBoolean(includes)) {
-          agg[name].top_hits._source = includes;
+          query._source = includes;
         } else {
-          agg[name].top_hits._source = {
+          query._source = {
             includes: includes
           };
 
-          if (excludes !== undefined) {
-            agg[name].top_hits._source = excludes;
+          if (excludes != null) {
+            query._source.excludes = excludes;
           }
         }
 
@@ -6324,11 +6519,11 @@
           return filter.geo_distance.distance;
         }
       
-        if (!isNumber(numericDistance)) {
-          throw new TypeError('Argument must be a numeric value');
+        if (!isNumber(numericDistance) && !isString(numericDistance)) {
+          throw new TypeError('Argument must be a numeric or string value');
         }
         
-        filter.geo_distance.distance = numericDistance;
+        filter.geo_distance.distance = numericDistance + "";
         return this;
       },
 
@@ -9176,8 +9371,28 @@
 
         query.bool.minimum_number_should_match = minMatch;
         return this;
+      },
+
+      /**
+       Adds the filter to apply a constant score to.
+
+       @member ejs.BoolQuery
+       @param {Object} oFilter A valid <code>Filter</code> object
+       @returns {Object} returns <code>this</code> so that calls can be chained.
+       */
+      filter: function (oFilter) {
+        if (oFilter == null) {
+          return query.bool.filter;
+        }
+
+        if (!isFilter(oFilter)) {
+          throw new TypeError('Argument must be a Filter');
+        }
+
+        query.bool.filter = oFilter.toJSON();
+        return this;
       }
-      
+
     });
   };
 
@@ -15133,6 +15348,81 @@
 
   /**
     @class
+    <p>The script_score function allows you to wrap another query and customize
+    the scoring of it optionally with a computation derived from other numeric
+    field values in the doc using a script expression.</p>
+
+    @name ejs.FieldValueScoreFunction
+    @ejs scorefunction
+    @borrows ejs.ScoreFunctionMixin.filter as filter
+    @borrows ejs.ScoreFunctionMixin._type as _type
+    @borrows ejs.ScoreFunctionMixin.toJSON as toJSON
+
+    @desc
+    <p>Modify a documents score using a script.</p>
+
+    */
+  ejs.FieldValueScoreFunction = function () {
+
+    var
+      _common = ejs.ScoreFunctionMixin('field_value_factor'),
+      func = _common.toJSON();
+
+    return extend(_common, {
+
+      /**
+       Set the field that will modify the score.
+
+       @member ejs.FieldValueScoreFunction
+       @param {String} field A valid field string.
+       @returns {Object} returns <code>this</code> so that calls can be chained.
+       */
+      field: function (field) {
+        if (field == null) {
+          return func.field_value_factor.field;
+        }
+
+        func.field_value_factor.field = field;
+        return this;
+      },
+
+      /**
+       The factor being used.
+
+       @member ejs.FieldValueScoreFunction
+       @param {String} factor The factor.
+       @returns {Object} returns <code>this</code> so that calls can be chained.
+       */
+      factor: function (factor) {
+        if (factor == null) {
+          return func.field_value_factor.factor;
+        }
+
+        func.field_value_factor.factor = factor;
+        return this;
+      },
+
+      /**
+       The modifier being used.
+
+       @member ejs.FieldValueScoreFunction
+       @param {String} factor The modifier.
+       @returns {Object} returns <code>this</code> so that calls can be chained.
+       */
+      modifier: function (modifier) {
+        if (modifier == null) {
+          return func.field_value_factor.modifier;
+        }
+
+        func.field_value_factor.modifier = modifier;
+        return this;
+      }
+
+    });
+  };
+
+  /**
+    @class
     <p>The random_score generates scores via a pseudo random number algorithm
     that is initialized with a seed.</p>
 
@@ -15204,51 +15494,141 @@
       @param {String} scriptCode A valid script string to execute.
       @returns {Object} returns <code>this</code> so that calls can be chained.
       */
-      script: function (scriptCode) {
-        if (scriptCode == null) {
+      script: function (oScript) {
+        if (oScript == null) {
           return func.script_score.script;
         }
 
-        func.script_score.script = scriptCode;
+        if (!isScript(oScript)) {
+          throw new TypeError('Argument must be a Script');
+        }
+
+        func.script_score.script = oScript.toJSON();
         return this;
       },
+    });
+  };
+
+  /**
+    @class
+    <p>Script's allow you create srcipt to call it at script score
+
+    @name ejs.Script
+    @ejs request
+
+    @desc
+    <p>Computes dynamic document properties based on information from other fields.</p>
+
+    @param {String} fieldName A name of the script field to create.
+
+    */
+  ejs.Script = function (fieldName) {
+    var script = {};
+
+    return {
 
       /**
-      The script language being used.
+            The script language being used. Currently supported values are
+            <code>javascript</code> and <code>mvel</code>.
 
-      @member ejs.ScriptScoreFunction
-      @param {String} language The language of the script.
-      @returns {Object} returns <code>this</code> so that calls can be chained.
-      */
+            @member ejs.Script
+            @param {String} language The language of the script.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
       lang: function (language) {
         if (language == null) {
-          return func.script_score.lang;
+          return script.lang;
         }
-
-        func.script_score.lang = language;
+      
+        script.lang = language;
         return this;
       },
 
       /**
-      Sets parameters that will be applied to the script.  Overwrites
-      any existing params.
+            Sets the script/code that will be used to perform the calculation.
 
-      @member ejs.ScriptScoreFunction
-      @param {Object} p An object where the keys are the parameter name and
-        values are the parameter value.
-      @returns {Object} returns <code>this</code> so that calls can be chained.
-      */
-      params: function (p) {
-        if (p == null) {
-          return func.script_score.params;
+            @member ejs.Script
+            @param {String} expression The script/code to use.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      inline: function (expression) {
+        if (expression == null) {
+          return script.inline;
+        }
+      
+        script.inline = expression;
+        return this;
+      },
+
+      /**
+            Sets the script/code file that will be used to perform the calculation.
+
+            @member ejs.Script
+            @param {String} file The script/code to use.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      file: function (file) {
+        if (file == null) {
+          return script.file;
         }
 
-        func.script_score.params = p;
+        script.file = file;
         return this;
+      },
+
+      /**
+            Allows you to set script parameters to be used during the execution of the script.
+
+            @member ejs.Script
+            @param {Object} oParams An object containing key/value pairs representing param name/value.
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      params: function (oParams) {
+        if (oParams == null) {
+          return script.params;
+        }
+      
+        script.params = oParams;
+        return this;
+      },
+
+      /**
+            Set the script id that will modify the score.
+
+            @member ejs.Script
+            @param {Boolean} string
+            @returns {Object} returns <code>this</code> so that calls can be chained.
+            */
+      scriptId: function (scriptId) {
+        if (scriptId == null) {
+          return script.id;
+        }
+
+        script.id = scriptId;
+        return this;
+      },
+
+      /**
+            The type of ejs object.  For internal use only.
+            
+            @member ejs.Script
+            @returns {String} the type of object
+            */
+      _type: function () {
+        return 'script';
+      },
+      
+      /**
+            Retrieves the internal <code>script</code> object. This is typically used by
+            internal API functions so use with caution.
+
+            @member ejs.Script
+            @returns {String} returns this object's internal <code>facet</code> property.
+            */
+      toJSON: function () {
+        return script;
       }
-
-
-    });
+    };
   };
 
   /**
@@ -16180,6 +16560,26 @@
         return this;
       },
 
+      docValueFields: function (fieldList) {
+        if (fieldList == null) {
+          return query.docvalue_fields;
+        }
+
+        if (query.docvalue_fields == null) {
+          query.docvalue_fields = [];
+        }
+
+        if (isString(fieldList)) {
+          query.docvalue_fields.push(fieldList);
+        } else if (isArray(fieldList)) {
+          query.docvalue_fields = fieldList;
+        } else {
+          throw new TypeError('Argument must be a string or an array');
+        }
+
+        return this;
+      },
+
       /**
             Allows to control how the _source field is returned with every hit.
             By default operations return the contents of the _source field
@@ -16339,14 +16739,14 @@
             */
       filter: function (filter) {
         if (filter == null) {
-          return query.filter;
+          return query.post_filter;
         }
 
         if (!isFilter(filter)) {
           throw new TypeError('Argument must be a Filter');
         }
 
-        query.filter = filter.toJSON();
+        query.post_filter = filter.toJSON();
         return this;
       },
 

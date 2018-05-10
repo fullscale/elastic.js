@@ -188,7 +188,27 @@
 
         query.bool.minimum_number_should_match = minMatch;
         return this;
+      },
+
+      /**
+       Adds the filter to apply a constant score to.
+
+       @member ejs.BoolQuery
+       @param {Object} oFilter A valid <code>Filter</code> object
+       @returns {Object} returns <code>this</code> so that calls can be chained.
+       */
+      filter: function (oFilter) {
+        if (oFilter == null) {
+          return query.bool.filter;
+        }
+
+        if (!isFilter(oFilter)) {
+          throw new TypeError('Argument must be a Filter');
+        }
+
+        query.bool.filter = oFilter.toJSON();
+        return this;
       }
-      
+
     });
   };

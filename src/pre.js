@@ -51,6 +51,7 @@
     isSuggest, // checks valid ejs Suggest object
     isGenerator, // checks valid ejs Generator object
     isScoreFunction, // checks valid ejs ScoreFunction object
+    isScript, // checks valid ejs Script object
 
     // create ejs object
     ejs;

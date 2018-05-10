@@ -209,6 +209,26 @@
         return this;
       },
 
+      docValueFields: function (fieldList) {
+        if (fieldList == null) {
+          return query.docvalue_fields;
+        }
+
+        if (query.docvalue_fields == null) {
+          query.docvalue_fields = [];
+        }
+
+        if (isString(fieldList)) {
+          query.docvalue_fields.push(fieldList);
+        } else if (isArray(fieldList)) {
+          query.docvalue_fields = fieldList;
+        } else {
+          throw new TypeError('Argument must be a string or an array');
+        }
+
+        return this;
+      },
+
       /**
             Allows to control how the _source field is returned with every hit.
             By default operations return the contents of the _source field
@@ -368,14 +388,14 @@
             */
       filter: function (filter) {
         if (filter == null) {
-          return query.filter;
+          return query.post_filter;
         }
 
         if (!isFilter(filter)) {
           throw new TypeError('Argument must be a Filter');
         }
 
-        query.filter = filter.toJSON();
+        query.post_filter = filter.toJSON();
         return this;
       },
 

@@ -280,7 +280,7 @@ exports.aggregations = {
     doTest();
 
     agg.compression(200);
-    expected.myagg.percentiles.compression = 200;
+    expected.myagg.percentiles.tdigest = { compression: 200 };
     doTest();
 
     test.strictEqual(agg._type(), 'aggregation');
@@ -1419,7 +1419,7 @@ exports.aggregations = {
 
     expected = {
       myagg: {
-        top_hits: {}
+        top_hits: { from: 0 }
       }
     };
 
@@ -1431,7 +1431,7 @@ exports.aggregations = {
     doTest();
 
     agg.sort('foo');
-    expected.myagg.top_hits.sort = 'foo';
+    expected.myagg.top_hits.sort = ['foo'];
     doTest();
 
     agg.trackScores(true);
@@ -1458,12 +1458,12 @@ exports.aggregations = {
     expected.myagg.top_hits.script_fields = { f: {} };
     doTest();
 
-    agg.fieldDataFields(['foo', 'bar']);
-    expected.myagg.top_hits.fielddata_fields = ['foo', 'bar'];
+    agg.docValueFields(['foo', 'bar']);
+    expected.myagg.top_hits.docvalue_fields = ['foo', 'bar'];
     doTest();
 
-    agg.fieldDataFields(['foo', 'bar']);
-    expected.myagg.top_hits.fielddata_fields = ['foo', 'bar'];
+    agg.docValueFields(['foo', 'bar']);
+    expected.myagg.top_hits.docvalue_fields = ['foo', 'bar'];
     doTest();
 
     agg.source(true);
@@ -1475,7 +1475,7 @@ exports.aggregations = {
     doTest();
 
     agg.source(['foo'], 'bar');
-    expected.myagg.top_hits._source = 'bar';
+    expected.myagg.top_hits._source = {includes: ['foo'], excludes: 'bar'};
     doTest();
 
 
